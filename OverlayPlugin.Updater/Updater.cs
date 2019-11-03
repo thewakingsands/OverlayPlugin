@@ -17,6 +17,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         public static async Task<(bool, Version, string)> CheckForUpdate()
         {
+            return (false, null, "");
             var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
             Version remoteVersion;
 
@@ -66,6 +67,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         public static async Task<bool> InstallUpdate(Version version, string pluginDirectory)
         {
+            return true;
             var url = DL.Replace("{VERSION}", version.ToString());
 
             var result = await Installer.Run(url, pluginDirectory, true);
@@ -102,6 +104,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         public static async void PerformUpdateIfNecessary(Control parent, string pluginDirectory, bool alwaysTalk = false)
         {
+            return;
             var (newVersion, remoteVersion, releaseNotes) = await CheckForUpdate();
 
             if (newVersion)

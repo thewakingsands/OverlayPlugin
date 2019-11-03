@@ -15,6 +15,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         public static async Task<bool> EnsureCef(string cefPath)
         {
+            return true;
             var manifest = Path.Combine(cefPath, "version.txt");
 
             if (File.Exists(manifest))
@@ -31,6 +32,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         public static async Task<bool> InstallCef(string cefPath)
         {
+            return true;
             while (!File.Exists("C:\\Windows\\system32\\msvcp140.dll"))
             {
                 var response = MessageBox.Show(

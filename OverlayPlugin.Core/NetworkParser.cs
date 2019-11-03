@@ -94,7 +94,7 @@ namespace RainbowMage.OverlayPlugin
                     OnOnlineStatusChanged?.Invoke(null, new OnlineStatusChangedArgs(packet->MessageHeader.ActorID, packet->param1));
                     */
 
-                    if (*((ushort*)&buffer[MessageType_Offset]) != 0x164) return;
+                    if (*((ushort*)&buffer[MessageType_Offset]) != 0x142) return;
                     if (*((UInt16*)&buffer[Category_Offset]) != 0x1f8) return;
 
                     OnOnlineStatusChanged?.Invoke(null, new OnlineStatusChangedArgs(*(uint*)&buffer[ActorID_Offset], *(uint*)&buffer[Param1_Offset]));
