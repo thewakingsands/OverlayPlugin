@@ -27,7 +27,7 @@ namespace RainbowMage.OverlayPlugin
 
             cbErrorReports.Checked = config.ErrorReports;
             cbUpdateCheck.Checked = config.UpdateCheck;
-            cbHideOverlaysWhenNotActive.Checked = config.HideOverlayDuringCutscene;
+            cbHideOverlaysWhenNotActive.Checked = config.HideOverlaysWhenNotActive;
             cbHideOverlaysDuringCutscene.Checked = config.HideOverlayDuringCutscene;
 
             // Attach the event handlers only *after* loading the configuration because we'd otherwise trigger them ourselves.
@@ -75,11 +75,13 @@ namespace RainbowMage.OverlayPlugin
         private void cbHideOverlaysWhenNotActive_CheckedChanged(object sender, EventArgs e)
         {
             config.HideOverlaysWhenNotActive = cbHideOverlaysWhenNotActive.Checked;
+            OverlayHider.UpdateOverlays();
         }
 
         private void cbHideOverlaysDuringCutscene_CheckedChanged(object sender, EventArgs e)
         {
-           config.HideOverlayDuringCutscene = cbHideOverlaysDuringCutscene.Checked;
+            config.HideOverlayDuringCutscene = cbHideOverlaysDuringCutscene.Checked;
+            OverlayHider.UpdateOverlays();
         }
     }
 }

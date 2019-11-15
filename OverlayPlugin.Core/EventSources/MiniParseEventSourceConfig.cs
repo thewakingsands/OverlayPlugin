@@ -7,6 +7,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
     public class MiniParseEventSourceConfig
     {
         public event EventHandler UpdateIntervalChanged;
+        public event EventHandler EnmityIntervalChanged;
         public event EventHandler SortKeyChanged;
         public event EventHandler SortDescChanged;
         public event EventHandler UpdateDpsDuringImportChanged;
@@ -23,6 +24,23 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 {
                     this.updateInterval = value;
                     UpdateIntervalChanged?.Invoke(this, new EventArgs());
+                }
+            }
+        }
+
+        private int enmityIntervalMs;
+        public int EnmityIntervalMs
+        {
+            get
+            {
+                return this.enmityIntervalMs;
+            }
+            set
+            {
+                if (this.enmityIntervalMs != value)
+                {
+                    this.enmityIntervalMs = value;
+                    EnmityIntervalChanged?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -81,6 +99,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         public MiniParseEventSourceConfig()
         {
             this.updateInterval = 1;
+            this.enmityIntervalMs = 100;
             this.sortKey = null;
             this.sortDesc = true;
             this.updateDpsDuringImport = false;
@@ -97,6 +116,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 if (obj.TryGetValue("UpdateInterval", out JToken value))
                 {
                     result.updateInterval = value.ToObject<int>();
+                }
+
+                if (obj.TryGetValue("EnmityIntervalMs", out value))
+                {
+                    result.enmityIntervalMs = value.ToObject<int>();
                 }
 
                 if (obj.TryGetValue("SortKey", out value))

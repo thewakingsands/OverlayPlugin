@@ -101,7 +101,7 @@ namespace RainbowMage.OverlayPlugin
             {
                 // FIXME: is this *really* correct way to get version of current assembly?
                 this.Overlay = new OverlayForm(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-                    this.Name, "about:blank", this.Config.MaxFrameRate, new OverlayApi(this));
+                    this.Name, Config.Url, this.Config.MaxFrameRate, new OverlayApi(this));
 
                 UpdateHotKey();
 
@@ -142,15 +142,6 @@ namespace RainbowMage.OverlayPlugin
                 {
                     Navigate(e.NewUrl);
                 };
-
-                if (CheckUrl(this.Config.Url))
-                {
-                    Navigate(this.Config.Url);
-                }
-                else
-                {
-                    Navigate("about:blank");
-                }
 
                 this.Overlay.UpdateRender();
                 this.Overlay.Show();
@@ -231,44 +222,6 @@ namespace RainbowMage.OverlayPlugin
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// URL が妥当であり、さらにローカルファイルであれば存在するかどうかをチェックします。
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        private bool CheckUrl(string url)
-        {
-            if (url == "") return false;
-
-            try
-            {
-                var uri = new System.Uri(url);
-
-                // ローカルファイルの場合はファイルが存在するかチェックし、存在しなければ警告を出力
-                if (uri.Scheme == "file")
-                {
-                    if (!File.Exists(uri.LocalPath))
-                    {
-                        Log(LogLevel.Warning,
-                            Resources.InitOverlayLocalFileIsMissing,
-                            uri.LocalPath);
-                        return false;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // URL パースエラー
-                Log(LogLevel.Error,
-                    Resources.InitOverlayUrlError,
-                    this.Config.Url,
-                    ex);
-                return false;
-            }
-
-            return true;
         }
 
         /// <summary>

@@ -99,6 +99,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources.zh-CN.resx" />
     <EmbeddedResource Include="UpdateQuestionForm.resx">
       <DependentUpon>UpdateQuestionForm.cs</DependentUpon>
     </EmbeddedResource>

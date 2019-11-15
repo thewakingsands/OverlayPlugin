@@ -38,12 +38,16 @@
             this.checkSortDesc = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cbUpdateDuringImport = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textEnmityInterval = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.textEnmityInterval, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.comboSortKey, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
@@ -101,6 +105,17 @@
             this.cbUpdateDuringImport.UseVisualStyleBackColor = true;
             this.cbUpdateDuringImport.CheckedChanged += new System.EventHandler(this.cbUpdateDuringImport_CheckedChanged);
             // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // textEnmityInterval
+            // 
+            resources.ApplyResources(this.textEnmityInterval, "textEnmityInterval");
+            this.textEnmityInterval.Name = "textEnmityInterval";
+            this.textEnmityInterval.Leave += new System.EventHandler(this.TextEnmityInterval_Leave);
+            // 
             // MiniParseEventSourceConfigPanel
             // 
             resources.ApplyResources(this, "$this");
@@ -125,5 +140,7 @@
         private System.Windows.Forms.CheckBox checkSortDesc;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbUpdateDuringImport;
+        private System.Windows.Forms.TextBox textEnmityInterval;
+        private System.Windows.Forms.Label label5;
     }
 }

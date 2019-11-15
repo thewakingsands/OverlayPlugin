@@ -24,7 +24,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             Config.ActwsCompatibilityChanged += (o, e) =>
             {
-                Navigate(Overlay.Url);
+                if (lastLoadedUrl != null) Navigate(lastLoadedUrl);
             };
 
             Overlay.Renderer.BrowserStartLoading += PrepareWebsite;
@@ -51,8 +51,10 @@ namespace RainbowMage.OverlayPlugin.Overlays
             {
                 var charName = JsonConvert.SerializeObject(FFXIVRepository.GetPlayerName() ?? "YOU");
                 var charID = JsonConvert.SerializeObject(FFXIVRepository.GetPlayerID());
-                
-                ExecuteScript("__OverlayPlugin_ws_faker({ type: 'broadcast', msgtype: 'SendCharName', msg: { charName: " + charName + ", charID: " + charID + " }});");
+
+                ExecuteScript(@"if (window.__OverlayPlugin_ws_faker) {
+                    __OverlayPlugin_ws_faker({ type: 'broadcast', msgtype: 'SendCharName', msg: { charName: " + charName + ", charID: " + charID + @" }});
+                }");
             }
         }
 
@@ -77,6 +79,8 @@ namespace RainbowMage.OverlayPlugin.Overlays
                             window.__OverlayPlugin_ws_faker = (msg) => {
                                 if (this.onmessage) this.onmessage({ data: JSON.stringify(msg) });
                             };
+                            this.close = () => null;
+
                             console.log(" + JsonConvert.SerializeObject(shimMsg) + @");
 
                             if (queue !== null) {
@@ -114,23 +118,33 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         public override void Navigate(string url)
         {
-            // If this URL was just loaded (see PrepareWebsite), ignore this request since we're loading that URL already.
-            if (url == lastLoadedUrl) return;
-
             if (Config.ActwsCompatibility)
             {
                 if (!url.Contains("HOST_PORT="))
                 {
-                    url += "?HOST_PORT=ws://127.0.0.1/fake/";
+                    if (!url.EndsWith("?"))
+                    {
+                        if (url.Contains("?"))
+                        {
+                            url += "&";
+                        } else
+                        {
+                            url += "?";
+                        }
+                    }
+                    url += "HOST_PORT=ws://127.0.0.1/fake/";
                 }
             } else
             {
                 int pos = url.IndexOf("HOST_PORT=");
-                if (pos > -1)
+                if (pos > -1 && url.Contains("/fake/"))
                 {
-                    url = url.Substring(0, pos);
+                    url = url.Substring(0, pos).Trim(new char[] { '?', '&' });
                 }
             }
+
+            // If this URL was just loaded (see PrepareWebsite), ignore this request since we're loading that URL already.
+            if (url == lastLoadedUrl) return;
 
             lastUrlChange = DateTime.Now;
             if (url != Overlay.Url)

@@ -279,5 +279,8 @@ namespace RainbowMage.OverlayPlugin
         public static extern bool PostMessageA(IntPtr hWnd, int nBar, int wParam, int lParam);
         [DllImport("user32.dll")]
         public static extern bool GetScrollRange(IntPtr hWnd, int nBar, out int lpMinPos, out int lpMaxPos);
-    }
+
+        [DllImport("kernel32.dll")]
+        public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, IntPtr nSize, ref IntPtr lpNumberOfBytesRead);
+  }
 }

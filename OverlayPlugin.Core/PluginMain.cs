@@ -88,18 +88,6 @@ namespace RainbowMage.OverlayPlugin
                 watch.Reset();
 #endif
 
-                if (Config.WSServerRunning)
-                {
-                    try
-                    {
-                        WSServer.Initialize();
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Log(LogLevel.Error, "InitPlugin: {0}", e);
-                    }
-                }
-
                 // プラグイン間のメッセージ関連
                 OverlayApi.BroadcastMessage += (o, e) =>
                 {
@@ -163,12 +151,27 @@ namespace RainbowMage.OverlayPlugin
                 initTimer.Interval = 100;
                 initTimer.Tick += (o, e) =>
                 {
-                    if (ActGlobals.oFormActMain.InitActDone)
+                    if (ActGlobals.oFormActMain.InitActDone && ActGlobals.oFormActMain.Handle != IntPtr.Zero)
                     {
                         initTimer.Stop();
                         LoadAddons();
                         InitializeOverlays();
                         controlPanel.InitializeOverlayConfigTabs();
+
+                        Registry.Register(new KeyboardHook());
+                        OverlayHider.Initialize();
+
+                        if (Config.WSServerRunning)
+                        {
+                            try
+                            {
+                                WSServer.Initialize();
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Log(LogLevel.Error, "InitPlugin: {0}", ex);
+                            }
+                        }
                     }
                 };
                 initTimer.Start();
@@ -187,8 +190,6 @@ namespace RainbowMage.OverlayPlugin
         /// </summary>
         private void InitializeOverlays()
         {
-            Registry.Register(new KeyboardHook());
-
             // オーバーレイ初期化
             this.Overlays = new List<IOverlay>();
             foreach (var overlayConfig in this.Config.Overlays)
@@ -207,61 +208,6 @@ namespace RainbowMage.OverlayPlugin
                     Logger.Log(LogLevel.Error, "InitPlugin: Could not find addon for {0}.", overlayConfig.Name);
                 }
             }
-
-            var gameActive = true;
-            var inCutscene = false;
-            NativeMethods.ActiveWindowChanged += (sender, hWndFg) =>
-            {
-                if (!Config.HideOverlaysWhenNotActive || hWndFg == IntPtr.Zero) return;
-                try
-                {
-                    try
-                    {
-                        NativeMethods.GetWindowThreadProcessId(hWndFg, out uint pid);
-
-                        if (pid == 0)
-                            return;
-
-                        var exePath = Process.GetProcessById((int)pid).MainModule.FileName;
-                        var fileName = Path.GetFileName(exePath.ToString());
-                        gameActive = (fileName == "ffxiv.exe" || fileName == "ffxiv_dx11.exe" ||
-                                      exePath.ToString() == Process.GetCurrentProcess().MainModule.FileName);
-                    }
-                    catch (System.ComponentModel.Win32Exception ex)
-                    {
-                        // Ignore access denied errors. Those usually happen if the foreground window is running with
-                        // admin permissions but we are not.
-                        if (ex.ErrorCode == -2147467259)  // 0x80004005
-                        {
-                            gameActive = false;
-                        }
-                        else
-                        {
-                            Logger.Log(LogLevel.Error, "XivWindowWatcher: {0}", ex.ToString());
-                        }
-                    }
-
-                    foreach (var overlay in this.Overlays)
-                    {
-                        if (overlay.Config.IsVisible) overlay.Visible = gameActive && !inCutscene;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Log(LogLevel.Error, "XivWindowWatcher: {0}", ex.ToString());
-                }
-            };
-
-            NetworkParser.OnOnlineStatusChanged += (o, e) =>
-            {
-                if (!Config.HideOverlayDuringCutscene || e.Target != FFXIVRepository.GetPlayerID()) return;
-
-                inCutscene = e.Status == 15;
-                foreach (var overlay in Overlays)
-                {
-                    if (overlay.Config.IsVisible) overlay.Visible = gameActive && !inCutscene;
-                }
-            };
         }
 
         /// <summary>
@@ -337,11 +283,12 @@ namespace RainbowMage.OverlayPlugin
 
                 var Addons = new List<IOverlayAddonV2>();
 
+                // Make sure the event source is ready before we load any overlays.
+                Registry.RegisterEventSource<MiniParseEventSource>();
+
                 Registry.RegisterOverlay<MiniParseOverlay>();
                 Registry.RegisterOverlay<SpellTimerOverlay>();
                 Registry.RegisterOverlay<LabelOverlay>();
-
-                Registry.RegisterEventSource<MiniParseEventSource>();
 
                 var version = typeof(PluginMain).Assembly.GetName().Version;
 
@@ -476,7 +423,7 @@ namespace RainbowMage.OverlayPlugin
         /// </summary>
         private void SaveConfig()
         {
-            if (Config == null || Overlays == null) return;
+            if (Config == null || Overlays == null || Registry.EventSources == null) return;
 
             try
             {
@@ -487,7 +434,8 @@ namespace RainbowMage.OverlayPlugin
 
                 foreach (var es in Registry.EventSources)
                 {
-                    es.SaveConfig(Config);
+                    if (es != null)
+                        es.SaveConfig(Config);
                 }
 
                 Config.SaveJson(GetConfigPath());

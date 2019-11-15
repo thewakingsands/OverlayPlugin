@@ -91,12 +91,24 @@ namespace RainbowMage.HtmlRenderer
             }
             this.scriptQueue.Clear();
 
-            BrowserStartLoading?.Invoke(this, new BrowserLoadEventArgs(0, e.Url));
+            try
+            {
+                BrowserStartLoading?.Invoke(this, new BrowserLoadEventArgs(0, e.Url));
+            } catch(Exception ex)
+            {
+                BrowserConsoleLog?.Invoke(this, new BrowserConsoleLogEventArgs(ex.ToString(), "", 1));
+            }
         }
 
         private void Browser_LoadError(object sender, LoadErrorEventArgs e)
         {
-            BrowserError?.Invoke(sender, new BrowserErrorEventArgs(e.ErrorCode, e.ErrorText, e.FailedUrl));
+            try
+            {
+                BrowserError?.Invoke(sender, new BrowserErrorEventArgs(e.ErrorCode, e.ErrorText, e.FailedUrl));
+            } catch(Exception ex)
+            {
+                BrowserConsoleLog?.Invoke(this, new BrowserConsoleLogEventArgs(ex.ToString(), "", 1));
+            }
         }
 
         public void Browser_ConsoleMessage(object sender, ConsoleMessageEventArgs e)
@@ -112,7 +124,13 @@ namespace RainbowMage.HtmlRenderer
                 urlToLoad = null;
             }
 
-            BrowserLoad?.Invoke(sender, new BrowserLoadEventArgs(e.HttpStatusCode, e.Url));
+            try
+            {
+                BrowserLoad?.Invoke(sender, new BrowserLoadEventArgs(e.HttpStatusCode, e.Url));
+            } catch(Exception ex)
+            {
+                BrowserConsoleLog?.Invoke(this, new BrowserConsoleLogEventArgs(ex.ToString(), "", 1));
+            }
         }
 
         public void Load(string url)
@@ -329,8 +347,6 @@ namespace RainbowMage.HtmlRenderer
                         // TODO: Log this exception.
                     }
                 }
-
-                Cef.EnableHighDPISupport();
 
                 var lang = System.Globalization.CultureInfo.CurrentCulture.Name;
                 var langPak = Path.Combine(appDataDirectory, "OverlayPluginCef", Environment.Is64BitProcess ? "x64" : "x86",
