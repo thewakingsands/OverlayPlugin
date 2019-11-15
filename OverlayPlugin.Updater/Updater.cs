@@ -15,9 +15,18 @@ namespace RainbowMage.OverlayPlugin.Updater
         const string REL_URL = "https://api.github.com/repos/ngld/OverlayPlugin/releases";
         const string DL = "https://github.com/ngld/OverlayPlugin/releases/download/v{VERSION}/OverlayPlugin-{VERSION}.7z";
 
+        public static bool DebugMode => (bool)System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name.StartsWith("Cafe");
+
         public static async Task<(bool, Version, string)> CheckForUpdate()
         {
-            return (false, null, "");
+            if (DebugMode)
+            {
+                return (false, null, "");
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
             var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
             Version remoteVersion;
 
@@ -104,7 +113,6 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         public static async void PerformUpdateIfNecessary(Control parent, string pluginDirectory, bool alwaysTalk = false)
         {
-            return;
             var (newVersion, remoteVersion, releaseNotes) = await CheckForUpdate();
 
             if (newVersion)

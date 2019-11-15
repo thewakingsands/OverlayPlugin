@@ -142,7 +142,7 @@ namespace RainbowMage.OverlayPlugin
                 Logger.Log(LogLevel.Info, "InitPlugin: Initialized.");
                 this.label.Text = "Initialized.";
 
-                if (Config.UpdateCheck)
+                if (true) //if (Config.UpdateCheck)
                 {
                     Updater.Updater.PerformUpdateIfNecessary(controlPanel, PluginDirectory);
                 }
