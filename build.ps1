@@ -11,7 +11,7 @@ try {
     }
 
     # This assumes Visual Studio 2019 is installed in C:. You might have to change this depending on your system.
-    $ENV:PATH = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin;C:\Program Files\7-Zip;${ENV:PATH}";
+    $ENV:PATH = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin;C:\Program Files\7-Zip;${ENV:PATH}";
 
     echo "==> Building..."
 
