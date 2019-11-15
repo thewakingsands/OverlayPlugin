@@ -98,8 +98,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private const int aggroEnmityOffset = 0x908;
 
         // Offsets from the targetAddress to find the correct target type.
-        private const int targetTargetOffset = -0x18;
-        private const int focusTargetOffset = 0x38;
+        private const int targetTargetOffset = 0x0;
+        private const int focusTargetOffset = 0x58;
         private const int hoverTargetOffset = 0x20;
 
         // Constants.
@@ -327,16 +327,16 @@ namespace RainbowMage.OverlayPlugin.EventSources
             [FieldOffset(0xA8)]
             public Single PosZ;
 
-            [FieldOffset(0x1820)]
+            [FieldOffset(0x1818)]
             public uint TargetID;
 
-            [FieldOffset(0x18B8)]
+            [FieldOffset(0x18A4)]
             public int CurrentHP;
 
-            [FieldOffset(0x18BC)]
+            [FieldOffset(0x18A8)]
             public int MaxHP;
 
-            [FieldOffset(0x18F4)]
+            [FieldOffset(0x18DC)]
             public byte Job;
         }
 
