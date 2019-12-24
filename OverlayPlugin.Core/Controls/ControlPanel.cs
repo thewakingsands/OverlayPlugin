@@ -202,7 +202,7 @@ namespace RainbowMage.OverlayPlugin
             newOverlayDialog.Dispose();
         }
 
-        private IOverlay CreateAndRegisterOverlay(Type overlayType, string name)
+        public IOverlay CreateAndRegisterOverlay(Type overlayType, string name)
         {
             var parameters = new NamedParameterOverloads();
             parameters["config"] = null;
@@ -218,7 +218,7 @@ namespace RainbowMage.OverlayPlugin
             return overlay;
         }
 
-        private void buttonRemoveOverlay_Click(object sender, EventArgs e)
+        public void buttonRemoveOverlay_Click(object sender, EventArgs e)
         {
             if (tabControl.SelectedTab == null) // ???
                 tabControl.SelectedTab = tabControl.TabPages[0];

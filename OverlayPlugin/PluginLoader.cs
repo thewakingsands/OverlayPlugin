@@ -49,6 +49,8 @@ namespace RainbowMage.OverlayPlugin
                 return;
             }
 
+            pluginScreenSpace.Text = "ngld悬浮窗(伤害统计美化)";
+
             Initialize(pluginScreenSpace, pluginStatusText);
         }
 

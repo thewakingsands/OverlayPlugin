@@ -17,7 +17,7 @@ namespace RainbowMage.OverlayPlugin
     {
         TabPage tabPage;
         Label label;
-        ControlPanel controlPanel;
+        public ControlPanel controlPanel;
 
         TabPage wsTabPage;
         WSConfigPanel wsConfigPanel;
