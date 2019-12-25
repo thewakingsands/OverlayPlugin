@@ -119,7 +119,8 @@
   </resheader>
   <data name="FailedToLoadCommon" xml:space="preserve">
     <value>加载公共库失败！</value>
-  </data>  <data name="WaitingForAct" xml:space="preserve">
+  </data>
+  <data name="WaitingForAct" xml:space="preserve">
     <value>正在等待ACT启动完毕...</value>
   </data>
   <data name="InitCef" xml:space="preserve">
@@ -129,13 +130,10 @@
     <value>正在安装运行库...</value>
   </data>
   <data name="AssemblyMismatch" xml:space="preserve">
-    <value>ACT尝试加载与您的OverlayPlugin版本({2})不匹配的{0} {1}。正在中止插件加载。
+    <value>ACT尝试加载与您的 ngld 悬浮窗插件版本({2})不匹配的{0} {1}。插件加载失败。
 
-请确保已禁用旧的OverlayPlugin，然后重新启动ACT。如果仍不能解决问题，请删除上述文件以及同一目录中的所有OverlayPlugin*.dll，CEF或HtmlRenderer.dll文件。
-</value>
+请尝试重启 ACT 解决，或是卸载重新安装 “ngld悬浮窗插件” 后再试。</value>
   </data>
-
-
   <data name="CoreOrHtmlRendererInsane" xml:space="preserve">
     <value>核心或HtmlRenderer不匹配。</value>
   </data>
@@ -147,4 +145,5 @@
   </data>
   <data name="CefInstallerFailed" xml:space="preserve">
     <value>Cef安装程序无法加载。</value>
-  </data></root>
+  </data>
+</root>
