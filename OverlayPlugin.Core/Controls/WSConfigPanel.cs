@@ -10,6 +10,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Net;
 using System.Diagnostics;
+using RainbowMage.OverlayPlugin.Updater;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -31,6 +32,12 @@ namespace RainbowMage.OverlayPlugin
 
             UpdateStatus(null, new WSServer.StateChangedArgs(WSServer.IsRunning(), WSServer.IsFailed()));
             WSServer.OnStateChanged += UpdateStatus;
+
+            lblUrlConfidentWarning.Visible = false;
+            Registry.Resolve<PluginMain>().OverlaysChanged += (o, e) =>
+            {
+                RebuildOverlayOptions();
+            };
         }
 
         private void UpdateStatus(object sender, WSServer.StateChangedArgs e)
@@ -61,7 +68,7 @@ namespace RainbowMage.OverlayPlugin
         private void startBtn_Click(object sender, EventArgs e)
         {
             Config.WSServerRunning = true;
-            WSServer.Initialize();
+            WSServer.Init();
         }
 
         private void stopBtn_Click(object sender, EventArgs e)
@@ -88,15 +95,9 @@ namespace RainbowMage.OverlayPlugin
                 {
                     logDisplay.AppendText("Downloading mkcert...\r\n");
 
-                    if ((ServicePointManager.SecurityProtocol & SecurityProtocolType.Tls12) != SecurityProtocolType.Tls12)
-                    {
-                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                    }
-                    var client = new WebClient();
-
                     try
                     {
-                        client.DownloadFile(MKCERT_DOWNLOAD, mkcertPath);
+                        CurlWrapper.Get(MKCERT_DOWNLOAD, new Dictionary<string, string>(), mkcertPath, null, false);
                     }
                     catch (Exception e)
                     {
@@ -205,7 +206,7 @@ namespace RainbowMage.OverlayPlugin
         private void ipTxt_Leave(object sender, EventArgs e)
         {
             IPAddress addr = null;
-            if (IPAddress.TryParse(ipTxt.Text, out addr))
+            if (ipTxt.Text == "*" || IPAddress.TryParse(ipTxt.Text, out addr))
             {
                 Config.WSServerIP = ipTxt.Text;
             }
@@ -218,6 +219,41 @@ namespace RainbowMage.OverlayPlugin
                     MessageBoxIcon.Error
                     );
             }
+        }
+
+        private void RebuildOverlayOptions()
+        {
+            cbOverlay.Items.Clear();
+
+            foreach (var overlay in Registry.Resolve<PluginMain>().Overlays)
+            {
+                if (overlay.GetType() == typeof(Overlays.MiniParseOverlay))
+                {
+                    cbOverlay.Items.Add(new
+                    {
+                        label = overlay.Config.Name,
+                        overlay
+                    });
+                }
+            }
+        }
+
+        private void cbOverlay_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var item = cbOverlay.Items[cbOverlay.SelectedIndex];
+            var overlay = (Overlays.MiniParseOverlay) item.GetType().GetProperty("overlay").GetValue(item);
+            if (overlay == null) return;
+
+            var (confident, url) = WSServer.GetUrl(overlay);
+
+            lblUrlConfidentWarning.Visible = !confident;
+            txtOverlayUrl.Text = url;
+        }
+
+        private void txtOverlayUrl_Click(object sender, EventArgs e)
+        {
+            txtOverlayUrl.SelectAll();
+            txtOverlayUrl.Copy();
         }
 
         private class ShowLineArgs : EventArgs

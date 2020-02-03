@@ -12,6 +12,7 @@ let aggrolist = new Vue({
   attached: function() {
     window.addOverlayListener('EnmityAggroList', this.update);
     document.addEventListener('onOverlayStateUpdate', this.updateState);
+    document.addEventListener('onExampleShowcase', this.showExample);
     window.startOverlayEvents();
   },
   detached: function() {
@@ -32,5 +33,29 @@ let aggrolist = new Vue({
     toggleCollapse: function() {
       this.collapsed = !this.collapsed;
     },
+    showExample: function() {
+      this.update({
+        AggroList: [
+          {
+            isMe: false,
+            isCurrentTarget: true,
+            HateRate: 90,
+            Name: 'Tank',
+            Job: 'PLD',
+            MaxHP: 100,
+            CurrentHP: 3
+          },
+          {
+            isMe: false,
+            isCurrentTarget: false,
+            HateRate: 3,
+            Name: 'Off-Tank',
+            Job: 'WAR',
+            MaxHP: 5000,
+            CurrentHP: 4980,
+          }
+        ]
+      });
+    }
   },
 });

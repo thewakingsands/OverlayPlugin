@@ -35,18 +35,21 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         private void SetupControlProperties()
         {
+            if (config.GlobalHotkeys.Count < 1)
+                config.GlobalHotkeys.Add(new GlobalHotkey());
+
             this.checkMiniParseVisible.Checked = config.IsVisible;
             this.checkMiniParseClickthru.Checked = config.IsClickThru;
             this.checkLock.Checked = config.IsLocked;
             this.textLogParseUrl.Text = config.Url;
             this.nudMaxFrameRate.Value = config.MaxFrameRate;
-            this.checkEnableGlobalHotkey.Checked = config.GlobalHotkeyEnabled;
+            this.checkEnableGlobalHotkey.Checked = config.GlobalHotkeys[0].Enabled;
             this.textGlobalHotkey.Enabled = this.checkEnableGlobalHotkey.Checked;
-            this.textGlobalHotkey.Text = Util.GetHotkeyString(config.GlobalHotkeyModifiers, config.GlobalHotkey);
+            this.textGlobalHotkey.Text = Util.GetHotkeyString(config.GlobalHotkeys[0].Modifiers, config.GlobalHotkeys[0].Key);
             this.comboHotkeyType.DisplayMember = "Key";
             this.comboHotkeyType.ValueMember = "Value";
             this.comboHotkeyType.DataSource = hotkeyTypeDict;
-            this.comboHotkeyType.SelectedValue = config.GlobalHotkeyType;
+            this.comboHotkeyType.SelectedValue = config.GlobalHotkeys[0].Type;
             this.comboHotkeyType.SelectedIndexChanged += ComboHotkeyMode_SelectedIndexChanged;
         }
 
@@ -80,26 +83,14 @@ namespace RainbowMage.OverlayPlugin.Overlays
                     this.nudMaxFrameRate.Value = e.NewFrameRate;
                 });
             };
-            this.config.GlobalHotkeyEnabledChanged += (o, e) =>
-            {
-                this.InvokeIfRequired(() =>
-                {
-                    this.checkEnableGlobalHotkey.Checked = e.NewGlobalHotkeyEnabled;
-                    this.textGlobalHotkey.Enabled = this.checkEnableGlobalHotkey.Checked;
-                });
-            };
             this.config.GlobalHotkeyChanged += (o, e) =>
             {
                 this.InvokeIfRequired(() =>
                 {
-                    this.textGlobalHotkey.Text = Util.GetHotkeyString(this.config.GlobalHotkeyModifiers, e.NewHotkey);
-                });
-            };
-            this.config.GlobalHotkeyModifiersChanged += (o, e) =>
-            {
-                this.InvokeIfRequired(() =>
-                {
-                    this.textGlobalHotkey.Text = Util.GetHotkeyString(e.NewHotkey, this.config.GlobalHotkey);
+                    checkEnableGlobalHotkey.Checked = config.GlobalHotkeys[0].Enabled;
+                    textGlobalHotkey.Enabled = checkEnableGlobalHotkey.Checked;
+                    textGlobalHotkey.Text = Util.GetHotkeyString(config.GlobalHotkeys[0].Modifiers, config.GlobalHotkeys[0].Key);
+                    comboHotkeyType.SelectedValue = config.GlobalHotkeys[0].Type;
                 });
             };
             this.config.LockChanged += (o, e) =>
@@ -107,13 +98,6 @@ namespace RainbowMage.OverlayPlugin.Overlays
                 this.InvokeIfRequired(() =>
                 {
                     this.checkLock.Checked = e.IsLocked;
-                });
-            };
-            this.config.GlobalHotkeyTypeChanged += (o, e) =>
-            {
-                this.InvokeIfRequired(() =>
-                {
-                    this.comboHotkeyType.SelectedValue = e.NewHotkeyType;
                 });
             };
         }
@@ -153,7 +137,8 @@ namespace RainbowMage.OverlayPlugin.Overlays
         private void ComboHotkeyMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             var value = (GlobalHotkeyType)this.comboHotkeyType.SelectedValue;
-            this.config.GlobalHotkeyType = value;
+            config.GlobalHotkeys[0].Type = value;
+            config.TriggerGlobalHotkeyChanged();
         }
 
         private void nudMaxFrameRate_ValueChanged(object sender, EventArgs e)
@@ -198,16 +183,18 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         private void checkBoxEnableGlobalHotkey_CheckedChanged(object sender, EventArgs e)
         {
-            this.config.GlobalHotkeyEnabled = this.checkEnableGlobalHotkey.Checked;
-            this.textGlobalHotkey.Enabled = this.config.GlobalHotkeyEnabled;
+            config.GlobalHotkeys[0].Enabled = checkEnableGlobalHotkey.Checked;
+            textGlobalHotkey.Enabled = config.GlobalHotkeys[0].Enabled;
+            config.TriggerGlobalHotkeyChanged();
         }
 
         private void textBoxGlobalHotkey_KeyDown(object sender, KeyEventArgs e)
         {
             e.SuppressKeyPress = true;
             var key = Util.RemoveModifiers(e.KeyCode, e.Modifiers);
-            this.config.GlobalHotkey = key;
-            this.config.GlobalHotkeyModifiers = e.Modifiers;
+            config.GlobalHotkeys[0].Key = key;
+            config.GlobalHotkeys[0].Modifiers = e.Modifiers;
+            config.TriggerGlobalHotkeyChanged();
         }
 
         private void checkLock_CheckedChanged(object sender, EventArgs e)

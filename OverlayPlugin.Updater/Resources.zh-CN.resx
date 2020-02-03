@@ -123,7 +123,7 @@
 {0}</value>
   </data>
   <data name="ErrorTitle" xml:space="preserve">
-    <value>OverlayPlugin错误</value>
+    <value>{0}错误</value>
   </data>
   <data name="LogRetry" xml:space="preserve">
     <value>正在重试...</value>
@@ -144,7 +144,7 @@
     <value>正在恢复下载...</value>
   </data>
   <data name="OverlayPluginTitle" xml:space="preserve">
-    <value>伤害统计美化</value>
+    <value>OverlayPlugin</value>
   </data>
   <data name="LaunchingInstallerFailed" xml:space="preserve">
     <value>打开安装程序失败：{0}</value>
@@ -156,7 +156,7 @@
     <value>[{0}/{1}]:正在准备解压缩...</value>
   </data>
   <data name="DownloadFailedContentLengthMissing" xml:space="preserve">
-    <value>下载失败！下载没有文件大小（缺少内容长度头）。</value>
+    <value>下载失败！没有下载文件大小（Content-Length标头缺失）。</value>
   </data>
   <data name="UpdateParseVersionError" xml:space="preserve">
     <value>解析版本失败:
@@ -181,10 +181,10 @@
     <value>解压缩被用户终止。</value>
   </data>
   <data name="UpdateCheckTitle" xml:space="preserve">
-    <value>OverlayPlugin检查更新</value>
+    <value>{0}检查更新</value>
   </data>
   <data name="UpdateCefDlFailed" xml:space="preserve">
-    <value>下载CEF失败！您将不能使用OverlayPlugin。重试？</value>
+    <value>下载CEF失败！检查OverlayPlugin.dll选项卡以获取详细信息。</value>
   </data>
   <data name="Exception" xml:space="preserve">
     <value>失败：{0}</value>
@@ -209,13 +209,13 @@
   </data>
   <data name="MsvcrtMissing" xml:space="preserve">
     <value>你没有安装MS Visual C++ Redistributable for Visual Studio 2019。
-OverlayPlugin运行需要它。现在安装？</value>
+OverlayPlugin的运行需要它。现在安装？</value>
   </data>
   <data name="CreatingTempDirFailed" xml:space="preserve">
     <value>创建或清空缓存目录"{0}": {1}失败</value>
   </data>
   <data name="UpdateTitle" xml:space="preserve">
-    <value>OverlayPlugin更新</value>
+    <value>{0}更新</value>
   </data>
   <data name="StatusCancelled" xml:space="preserve">
     <value>已取消！</value>
@@ -231,4 +231,43 @@ OverlayPlugin运行需要它。现在安装？</value>
   </data>
   <data name="UpdateSuccess" xml:space="preserve">
     <value>更新成功。请重新运行ACT来加载新版插件。</value>
-  </data></root>
+  </data>
+  <data name="LogBackingUpOldFiles" xml:space="preserve">
+    <value>正在备份旧文件...</value>
+  </data>
+  <data name="LogRemovingOldBackup" xml:space="preserve">
+    <value>正在删除旧备份目录...</value>
+  </data>
+  <data name="LogOverwritingOldFiles" xml:space="preserve">
+    <value>正在覆写旧文件...</value>
+  </data>
+  <data name="LogRestoringBackup" xml:space="preserve">
+    <value>正在恢复备份...</value>
+  </data>
+  <data name="LogDone" xml:space="preserve">
+    <value>完成。</value>
+  </data>
+  <data name="LogFailedReplaceDirectory" xml:space="preserve">
+    <value>无法替换旧目录：{0}</value>
+  </data>
+  <data name="LogMovingDirectory" xml:space="preserve">
+    <value>正在移动目录...</value>
+  </data>
+  <data name="LogDeletingTempFiles" xml:space="preserve">
+    <value>正在删除临时文件...</value>
+  </data>
+  <data name="LogFailedToDelete" xml:space="preserve">
+    <value>无法删除{0}：{1}</value>
+  </data>
+  <data name="LogCleaningUp" xml:space="preserve">
+    <value>正在执行清理...</value>
+  </data>
+  <data name="LogOverwritingOldFilesFailed" xml:space="preserve">
+    <value>无法覆写旧文件：{0}
+警告：插件可能处于无法使用的状态！！
+再次运行更新检查或重新安装插件，否则它可能无法在下次ACT重新启动时正常工作。</value>
+  </data>  <data name="SharpCompressOutdatedError" xml:space="preserve">
+    <value>当前加载的SharpCompress版本过旧！
+请确保先加载OverlayPlugin，再加载其他也使用SharpCompress的插件（例如ACTWebSocket）。</value>
+  </data>
+</root>

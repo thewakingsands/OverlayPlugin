@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="buttonOK.Text" xml:space="preserve">
+    <value>확인</value>
+  </data>
   <data name="buttonCancel.Text" xml:space="preserve">
     <value>취소</value>
   </data>
@@ -125,21 +128,25 @@
     <value>14, 29</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
+    <value>29, 13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>이름</value>
   </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
+  <data name="lblType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 13</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>형식</value>
+  <data name="lblType.Text" xml:space="preserve">
+    <value>유형</value>
   </data>
-  <data name="comboBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 77</value>
+  <data name="lblTypeDesc.Text" xml:space="preserve">
+    <value>대부분의 오버레이는 MiniParse 유형을 선택합니다. cactbot 오버레이도 마찬가지로 MiniParse 유형을 필요로 합니다.
+
+Label 유형을 사용하면 오버레이에 텍스트나 HTML을 표시할 수 있습니다. 메모나 반복 알림 표시에 유용합니다.
+SpellTimer는 ACT에 내장된 스펠 타이머를 표시하며, Hojoring의 스페스페와는 아무런 관련이 없습니다.
+</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>새 오버레이</value>
+    <value>새 오버레이 생성</value>
   </data>
 </root>

@@ -20,6 +20,8 @@ namespace RainbowMage.OverlayPlugin
         Logger logger;
         static AssemblyResolver asmResolver;
         string pluginDirectory;
+        TabPage pluginScreenSpace;
+        Label pluginStatusText;
 
         public void InitPlugin(TabPage pluginScreenSpace, Label pluginStatusText)
         {
@@ -35,6 +37,9 @@ namespace RainbowMage.OverlayPlugin
                 });
             }
 
+            this.pluginScreenSpace = pluginScreenSpace;
+            this.pluginStatusText = pluginStatusText;
+
             /*
              * We explicitly load OverlayPlugin.Common here for two reasons:
              *  * To prevent a stack overflow in the assembly loaded handler when we use the logger interface.
@@ -48,16 +53,15 @@ namespace RainbowMage.OverlayPlugin
                 pluginStatusText.Text = Resources.FailedToLoadCommon;
                 return;
             }
-
+            
             pluginScreenSpace.Text = "ngld悬浮窗插件";
-
-            Initialize(pluginScreenSpace, pluginStatusText);
+            Initialize();
         }
 
         // AssemblyResolver でカスタムリゾルバを追加する前に PluginMain が解決されることを防ぐために、
         // インライン展開を禁止したメソッドに処理を分離
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private async void Initialize(TabPage pluginScreenSpace, Label pluginStatusText)
+        private async void Initialize()
         {
             pluginStatusText.Text = Resources.InitRuntime;
 
@@ -69,6 +73,22 @@ namespace RainbowMage.OverlayPlugin
 
             pluginStatusText.Text = Resources.InitCef;
 
+            SanityChecker.CheckDependencyVersions();
+
+            try
+            {
+                CurlWrapper.Init(pluginDirectory);
+            } catch (Exception ex)
+            {
+                logger.Log(LogLevel.Error, ex.ToString());
+                ActGlobals.oFormActMain.WriteDebugLog(ex.ToString());
+            }
+
+            await FinishInit();
+        }
+
+        public async Task FinishInit()
+        {
             if (await CefInstaller.EnsureCef(GetCefPath()))
             {
                 // Finally, load the html renderer. We load it here since HtmlRenderer depends on CEF which we can't load these before
@@ -84,6 +104,9 @@ namespace RainbowMage.OverlayPlugin
                 {
                     pluginStatusText.Text = Resources.CoreOrHtmlRendererInsane;
                 }
+            } else
+            {
+                pluginScreenSpace.Controls.Add(new CefMissingTab(GetCefPath(), this));
             }
         }
 

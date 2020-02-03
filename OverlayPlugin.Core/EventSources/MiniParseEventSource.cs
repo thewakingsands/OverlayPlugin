@@ -281,8 +281,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
 
 #if DEBUG
-            //var stopwatch = new Stopwatch();
-            //stopwatch.Start();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 #endif
 
             var allies = ActGlobals.oFormActMain.ActiveZone.ActiveEncounter.GetAllies();
@@ -350,18 +350,18 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             obj["isActive"] = ActGlobals.oFormActMain.ActiveZone.ActiveEncounter.Active ? "true" : "false";
 
-#if DEBUG
-            //stopwatch.Stop();
-            //Log(LogLevel.Trace, "CreateUpdateScript: {0} msec", stopwatch.Elapsed.TotalMilliseconds);
+#if TRACE
+            stopwatch.Stop();
+            Log(LogLevel.Trace, "CreateUpdateScript: {0} msec", stopwatch.Elapsed.TotalMilliseconds);
 #endif
             return obj;
         }
 
         private List<KeyValuePair<CombatantData, Dictionary<string, string>>> GetCombatantList(List<CombatantData> allies)
         {
-#if DEBUG
-            //var stopwatch = new Stopwatch();
-            //stopwatch.Start();
+#if TRACE
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 #endif
 
             var combatantList = new List<KeyValuePair<CombatantData, Dictionary<string, string>>>();
@@ -412,9 +412,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
             );
 
-#if DEBUG
-            //stopwatch.Stop();
-            //Log(LogLevel.Trace, "GetCombatantList: {0} msec", stopwatch.Elapsed.TotalMilliseconds);
+#if TRACE
+            stopwatch.Stop();
+            Log(LogLevel.Trace, "GetCombatantList: {0} msec", stopwatch.Elapsed.TotalMilliseconds);
 #endif
 
             return combatantList;
@@ -422,9 +422,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         private Dictionary<string, string> GetEncounterDictionary(List<CombatantData> allies)
         {
-#if DEBUG
-            //var stopwatch = new Stopwatch();
-            //stopwatch.Start();
+#if TRACE
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 #endif
 
             var encounterDict = new Dictionary<string, string>();
@@ -462,9 +462,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 }
             }
 
-#if DEBUG
-            //stopwatch.Stop();
-            //Log(LogLevel.Trace, "GetEncounterDictionary: {0} msec", stopwatch.Elapsed.TotalMilliseconds);
+#if TRACE
+            stopwatch.Stop();
+            Log(LogLevel.Trace, "GetEncounterDictionary: {0} msec", stopwatch.Elapsed.TotalMilliseconds);
 #endif
 
             return encounterDict;

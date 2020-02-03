@@ -120,7 +120,7 @@
     <value>最大帧速率</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>设置美化 开/关 快捷键</value>
+    <value>设置悬浮窗 开/关 快捷键</value>
   </data>
   <data name="buttonOpenDevTools.Text" xml:space="preserve">
     <value>启动Debug工具</value>
@@ -129,22 +129,22 @@
     <value>复制变量到剪切板</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
-    <value>启用美化窗口</value>
+    <value>显示悬浮窗</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
-    <value>美化模板路径</value>
+    <value>悬浮窗路径</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>启用美化 开/关 快捷键</value>
+    <value>启用悬浮窗 开/关 快捷键</value>
   </data>
   <data name="buttonSpellTimerSelectFile.Text" xml:space="preserve">
     <value>浏览</value>
   </data>
   <data name="buttonReloadBrowser.Text" xml:space="preserve">
-    <value>重新加载（用于更换模板后即时刷新）</value>
+    <value>重新加载（用于更换悬浮窗后即时刷新）</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>锁定美化窗口</value>
+    <value>锁定悬浮窗</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>快捷键功能</value>

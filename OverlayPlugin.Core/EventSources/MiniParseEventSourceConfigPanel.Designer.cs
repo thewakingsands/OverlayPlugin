@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MiniParseEventSourceConfigPanel));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.textEnmityInterval = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.comboSortKey = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -38,8 +40,6 @@
             this.checkSortDesc = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cbUpdateDuringImport = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textEnmityInterval = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,6 +57,17 @@
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.cbUpdateDuringImport, 1, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // textEnmityInterval
+            // 
+            resources.ApplyResources(this.textEnmityInterval, "textEnmityInterval");
+            this.textEnmityInterval.Name = "textEnmityInterval";
+            this.textEnmityInterval.Leave += new System.EventHandler(this.TextEnmityInterval_Leave);
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
             // 
             // comboSortKey
             // 
@@ -104,17 +115,6 @@
             this.cbUpdateDuringImport.Name = "cbUpdateDuringImport";
             this.cbUpdateDuringImport.UseVisualStyleBackColor = true;
             this.cbUpdateDuringImport.CheckedChanged += new System.EventHandler(this.cbUpdateDuringImport_CheckedChanged);
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
-            // textEnmityInterval
-            // 
-            resources.ApplyResources(this.textEnmityInterval, "textEnmityInterval");
-            this.textEnmityInterval.Name = "textEnmityInterval";
-            this.textEnmityInterval.Leave += new System.EventHandler(this.TextEnmityInterval_Leave);
             // 
             // MiniParseEventSourceConfigPanel
             // 

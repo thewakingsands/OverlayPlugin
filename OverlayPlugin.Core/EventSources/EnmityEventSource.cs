@@ -41,6 +41,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
         {
             try
             {
+#if TRACE
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+#endif
+
                 if (memory == null || !memory.IsValid())
                     return;
 
@@ -59,6 +64,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 {
                     this.DispatchEvent(CreateAggroList(combatants));
                 }
+
+#if TRACE
+                Log(LogLevel.Trace, "UpdateEnmity: {0}ms", stopwatch.ElapsedMilliseconds);
+#endif
             }
             catch (Exception ex)
             {

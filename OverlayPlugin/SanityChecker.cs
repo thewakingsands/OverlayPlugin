@@ -23,8 +23,24 @@ namespace RainbowMage.OverlayPlugin
         public static bool LoadSaneAssembly(string name)
         {
             var loaderVersion = Assembly.GetExecutingAssembly().GetName().Version;
-            var asm = Assembly.Load(name);
-            var asmVersion = asm.GetName().Version;
+            Assembly asm = null;
+            Version asmVersion = null;
+
+            try
+            {
+                asm = Assembly.Load(name);
+                asmVersion = asm.GetName().Version;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    string.Format(Resources.AssemblyMissing, name, ex),
+                    "OverlayPlugin Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return false;
+            }
 
             if (loaderVersion != asmVersion)
             {
@@ -39,6 +55,42 @@ namespace RainbowMage.OverlayPlugin
             }
 
             return true;
+        }
+
+        public static void CheckDependencyVersions()
+        {
+            var logger = Registry.Resolve<ILogger>();
+            var expectedVersions = new Dictionary<string, string>
+            {
+                { "Newtonsoft.Json", "12.0.0" },
+                { "websocket-sharp", "1.0.2" },
+            };
+
+            
+            foreach (var pair in expectedVersions)
+            {
+                Version asmVersion = null;
+
+                try
+                {
+                    var asm = Assembly.Load(pair.Key);
+                    asmVersion = asm.GetName().Version;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        string.Format(Resources.DependencyMissing, pair.Key, ex),
+                        "OvlerayPlugin Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+
+                if (asmVersion != null && asmVersion < Version.Parse(pair.Value))
+                {
+                    logger.Log(LogLevel.Error, string.Format(Resources.DependencyOutdated, pair.Key, asmVersion, pair.Value));
+                }
+            }
         }
     }
 }

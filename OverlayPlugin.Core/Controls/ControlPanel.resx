@@ -157,7 +157,7 @@
     <value>tabControl</value>
   </data>
   <data name="&gt;&gt;tabControl.Type" xml:space="preserve">
-    <value>RainbowMage.OverlayPlugin.TabControlExt, OverlayPlugin.Core, Version=0.10.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>RainbowMage.OverlayPlugin.TabControlExt, OverlayPlugin.Core, Version=0.12.2.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabControl.Parent" xml:space="preserve">
     <value>tableLayoutPanel0</value>
@@ -231,6 +231,30 @@
   <data name="&gt;&gt;buttonRemoveOverlay.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="buttonRename.Location" type="System.Drawing.Point, System.Drawing">
+    <value>189, 3</value>
+  </data>
+  <data name="buttonRename.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 30</value>
+  </data>
+  <data name="buttonRename.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="buttonRename.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="&gt;&gt;buttonRename.Name" xml:space="preserve">
+    <value>buttonRename</value>
+  </data>
+  <data name="&gt;&gt;buttonRename.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonRename.Parent" xml:space="preserve">
+    <value>flowLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;buttonRename.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="checkBoxFollowLog.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -238,7 +262,7 @@
     <value>Fill</value>
   </data>
   <data name="checkBoxFollowLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>189, 3</value>
+    <value>278, 3</value>
   </data>
   <data name="checkBoxFollowLog.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 31</value>
@@ -259,13 +283,13 @@
     <value>flowLayoutPanel</value>
   </data>
   <data name="&gt;&gt;checkBoxFollowLog.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="buttonClearLog.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="buttonClearLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>315, 3</value>
+    <value>404, 3</value>
   </data>
   <data name="buttonClearLog.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 31</value>
@@ -286,7 +310,7 @@
     <value>flowLayoutPanel</value>
   </data>
   <data name="&gt;&gt;buttonClearLog.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="flowLayoutPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>

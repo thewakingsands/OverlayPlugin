@@ -77,6 +77,8 @@ namespace RainbowMage.OverlayPlugin
         [Browsable(false)]
         public string VersionString { get; set; }
 
+        public DateTime LastUpdateCheck { get; set; }
+
         /// <summary>
         /// 設定が新規に作成されたことを示すフラグを取得または設定します。
         /// </summary>
@@ -96,8 +98,6 @@ namespace RainbowMage.OverlayPlugin
 
         [XmlIgnore]
         public Dictionary<string, JObject> EventSourceConfigs { get; set; }
-
-        internal const string DefaultMiniParseOverlayName = "Mini Parse";
 
         public PluginConfig()
         {
@@ -233,13 +233,7 @@ namespace RainbowMage.OverlayPlugin
         /// <param name="pluginDirectory"></param>
         public void SetDefaultOverlayConfigs(string pluginDirectory)
         {
-            var miniparseOverlayConfig = new MiniParseOverlayConfig(DefaultMiniParseOverlayName);
-            miniparseOverlayConfig.Position = new Point(20, 20);
-            miniparseOverlayConfig.Size = new Size(500, 300);
-            miniparseOverlayConfig.Url = new Uri(Path.Combine(pluginDirectory, "resources", "miniparse.html")).ToString();
-
             this.Overlays = new OverlayConfigList<IOverlayConfig>();
-            this.Overlays.Add(miniparseOverlayConfig);
 
             this.WSServerIP = "127.0.0.1";
             this.WSServerPort = 10501;

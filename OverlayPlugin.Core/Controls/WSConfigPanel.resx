@@ -138,7 +138,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ipTxt.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>15</value>
   </data>
   <data name="portTxt.Location" type="System.Drawing.Point, System.Drawing">
     <value>124, 77</value>
@@ -159,7 +159,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;portTxt.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>14</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -186,7 +186,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>13</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -213,7 +213,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>12</value>
   </data>
   <data name="genSslBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>124, 110</value>
@@ -237,7 +237,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;genSslBtn.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>11</value>
   </data>
   <data name="sslBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -267,7 +267,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;sslBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>10</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="logDisplay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -303,7 +303,7 @@ Afterwards, you should be able to enable SSL.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;logDisplay.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="startBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>384, 48</value>
@@ -327,7 +327,7 @@ Afterwards, you should be able to enable SSL.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;startBtn.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="stopBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>384, 75</value>
@@ -351,7 +351,7 @@ Afterwards, you should be able to enable SSL.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;stopBtn.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>7</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -378,7 +378,7 @@ Afterwards, you should be able to enable SSL.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="statusLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -405,13 +405,142 @@ Afterwards, you should be able to enable SSL.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;statusLabel.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 371</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 13</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Overlay:</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 396</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 13</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>URL:</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="cbOverlay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>73, 368</value>
+  </data>
+  <data name="cbOverlay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 21</value>
+  </data>
+  <data name="cbOverlay.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;cbOverlay.Name" xml:space="preserve">
+    <value>cbOverlay</value>
+  </data>
+  <data name="&gt;&gt;cbOverlay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbOverlay.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cbOverlay.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblUrlConfidentWarning.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblUrlConfidentWarning.Location" type="System.Drawing.Point, System.Drawing">
+    <value>70, 419</value>
+  </data>
+  <data name="lblUrlConfidentWarning.Size" type="System.Drawing.Size, System.Drawing">
+    <value>346, 13</value>
+  </data>
+  <data name="lblUrlConfidentWarning.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="lblUrlConfidentWarning.Text" xml:space="preserve">
+    <value>This URL might not work if the overlay doesn't support ACTWebSocket.</value>
+  </data>
+  <data name="&gt;&gt;lblUrlConfidentWarning.Name" xml:space="preserve">
+    <value>lblUrlConfidentWarning</value>
+  </data>
+  <data name="&gt;&gt;lblUrlConfidentWarning.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblUrlConfidentWarning.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblUrlConfidentWarning.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="txtOverlayUrl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="txtOverlayUrl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>73, 396</value>
+  </data>
+  <data name="txtOverlayUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>520, 20</value>
+  </data>
+  <data name="txtOverlayUrl.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;txtOverlayUrl.Name" xml:space="preserve">
+    <value>txtOverlayUrl</value>
+  </data>
+  <data name="&gt;&gt;txtOverlayUrl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtOverlayUrl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;txtOverlayUrl.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>619, 408</value>
+    <value>619, 441</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>WSConfigPanel</value>

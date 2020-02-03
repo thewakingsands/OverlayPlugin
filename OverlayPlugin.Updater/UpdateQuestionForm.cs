@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using Markdig;
 
 namespace RainbowMage.OverlayPlugin.Updater
 {
@@ -38,11 +37,13 @@ code {
 }
 </style>";
 
-        public UpdateQuestionForm(string description)
+        public UpdateQuestionForm(UpdaterOptions options, string description)
         {
             InitializeComponent();
 
-            webBrowser1.DocumentText = MarkdownStyle + Markdown.ToHtml(description);
+            Text = string.Format(Text, options.project);
+            label1.Text = string.Format(label1.Text, options.project);
+            webBrowser1.DocumentText = MarkdownStyle + description;
         }
 
         private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using Newtonsoft.Json;
@@ -23,7 +24,7 @@ namespace RainbowMage.OverlayPlugin
 
         public static EventHandler<StateChangedArgs> OnStateChanged;
 
-        public static void Initialize()
+        public static void Init()
         {
             _inst = new WSServer();
         }
@@ -73,7 +74,14 @@ namespace RainbowMage.OverlayPlugin
                 var sslPath = GetCertPath();
                 var secure = cfg.WSServerSSL && File.Exists(sslPath);
 
-                _server = new HttpServer(IPAddress.Parse(cfg.WSServerIP), cfg.WSServerPort, secure);
+                if (cfg.WSServerIP == "*")
+                {
+                    _server = new HttpServer(cfg.WSServerPort, secure);
+                } else
+                {
+                    _server = new HttpServer(IPAddress.Parse(cfg.WSServerIP), cfg.WSServerPort, secure);
+                }
+                
                 _server.ReuseAddress = true;
                 _server.Log.Output += (LogData d, string msg) =>
                 {
@@ -105,50 +113,36 @@ namespace RainbowMage.OverlayPlugin
     <head>
         <title>OverlayPlugin WSServer</title>
     </head>
-    <script type='text/javascript'>
-        window.addEventListener('load', () => {
-            var links = document.querySelectorAll('a');
-            for (var i = 0; i < links.length; i++) {
-                var data = JSON.parse(links[i].getAttribute('data-info'));
-                var endpoint = data.arg === 'OVERLAY_WS' ? 'ws' : '';
-                links[i].href = data.url + '?' + data.arg + '=' + location.href.replace('http', 'ws') + endpoint;
-                
-                if (data.url.indexOf('file://') === 0) {
-                    links[i].parentNode.innerText = 'Local: ' + links[i].innerText + ': ' + links[i].href;
-                }
-            }
-        });
-    </script>
     <body>
         " + Resources.WSIndexPage + @"
         <ul>");
 
                         foreach (var overlay in plugin.Overlays)
                         {
-                            var argName = "OVERLAY_WS";
-                            if (overlay.GetType() == typeof(MiniParseOverlay))
+                            if (overlay.GetType() != typeof(MiniParseOverlay)) continue;
+
+                            var (confident, url) = GetUrl((MiniParseOverlay) overlay);
+
+                            url = url.Replace("&", "&amp;").Replace("\"", "&quot;");
+                            var overlayName = overlay.Name.Replace("&", "&amp;").Replace("<", "&lt;");
+                            
+                            if (url.StartsWith("file://"))
                             {
-                                var config = (MiniParseOverlayConfig)overlay.Config;
-                                if (config.ActwsCompatibility)
-                                {
-                                    argName = "HOST_PORT";
-                                }
+                                builder.Append($"<li>Local: {overlayName}: {url}</li>");
+                            } else
+                            {
+                                builder.Append($"<li><a href=\"{url}\">{overlayName}</a>");
+                            }
+                            
+                            if (!confident)
+                            {
+                                builder.Append(" " + Resources.WSNotConfidentLink);
                             }
 
-                            var jsonInfo = JsonConvert.SerializeObject(new
-                            {
-                                url = overlay.Config.Url,
-                                arg = argName
-                            });
-
-                            // HTML escaping
-                            jsonInfo = jsonInfo.Replace("\"", "&quot;").Replace(">", "&gt;");
-                            var overlayName = overlay.Name.Replace("&", "&amp;").Replace("<", "&lt;");
-
-                            builder.Append($"<li><a href=\"#\" data-info=\"{jsonInfo}\">{overlayName}</a></li>");
+                            builder.Append("</li>");
                         }
 
-                        builder.Append("</body></html>");
+                        builder.Append("</ul></body></html>");
 
                         var res = e.Response;
                         res.StatusCode = 200;
@@ -168,6 +162,40 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
+        public static (bool, string) GetUrl(MiniParseOverlay overlay)
+        {
+            var cfg = Registry.Resolve<IPluginConfig>();
+            string argName = "HOST_PORT";
+
+            if (overlay.ModernApi)
+            {
+                argName = "OVERLAY_WS";
+            }
+
+            var url = Regex.Replace(overlay.Config.Url, @"[?&](?:HOST_PORT|OVERLAY_WS)=[^&]*", "");
+            if (url.Contains("?"))
+            {
+                url += "&";
+            } else
+            {
+                url += "?";
+            }
+
+            url += argName + "=ws";
+            if (cfg.WSServerSSL) url += "s";
+            url += "://";
+            if (cfg.WSServerIP == "*" || cfg.WSServerIP == "0.0.0.0")
+                url += "127.0.0.1";
+            else
+                url += cfg.WSServerIP;
+
+            url += ":" + cfg.WSServerPort + "/";
+
+            if (argName == "OVERLAY_WS") url += "ws";
+
+            return (argName != "HOST_PORT" || overlay.Config.ActwsCompatibility, url);
+        }
+
         public static string GetCertPath()
         {
             var path = Path.Combine(
@@ -185,6 +213,8 @@ namespace RainbowMage.OverlayPlugin
 
         public class SocketHandler : WebSocketBehavior, IEventReceiver
         {
+            public string Name => "WSHandler";
+
             public void HandleEvent(JObject e)
             {
                 SendAsync(e.ToString(Formatting.None), (success) =>
@@ -252,6 +282,10 @@ namespace RainbowMage.OverlayPlugin
                     {
                         var response = EventDispatcher.CallHandler(data);
 
+                        if (response != null && response.Type != JTokenType.Object) {
+                            throw new Exception("Handler response must be an object or null");
+                        }
+
                         if (response == null) {
                             response = new JObject();
                             response["$isNull"] = true;
@@ -278,6 +312,7 @@ namespace RainbowMage.OverlayPlugin
 
         private class LegacyHandler : WebSocketBehavior, IEventReceiver
         {
+            public string Name => "WSLegacyHandler";
             protected override void OnOpen()
             {
                 base.OnOpen();
@@ -321,6 +356,33 @@ namespace RainbowMage.OverlayPlugin
                         break;
                     case "ChangePrimaryPlayer":
                         Send("{\"type\":\"broadcast\",\"msgtype\":\"SendCharName\",\"msg\":" + e.ToString(Formatting.None) + "}");
+                        break;
+                }
+            }
+
+            protected override void OnMessage(MessageEventArgs e)
+            {
+                JObject data = null;
+
+                try
+                {
+                    data = JObject.Parse(e.Data);
+                }
+                catch (JsonException ex)
+                {
+                    Log(LogLevel.Error, Resources.WSInvalidDataRecv, ex, e.Data);
+                    return;
+                }
+
+                if (!data.ContainsKey("type") || !data.ContainsKey("msgtype")) return;
+
+                switch (data["msgtype"].ToString())
+                {
+                    case "Capture":
+                        Log(LogLevel.Warning, "ACTWS Capture is not supported outside of overlays.");
+                        break;
+                    case "RequestEnd":
+                        ActGlobals.oFormActMain.EndCombat(true);
                         break;
                 }
             }

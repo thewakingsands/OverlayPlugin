@@ -128,5 +128,8 @@
   <data name="label1.Text" xml:space="preserve">
     <value>排序方式</value>
   </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>仇恨更新间隔（毫秒）</value>
+  </data>
 
 </root>

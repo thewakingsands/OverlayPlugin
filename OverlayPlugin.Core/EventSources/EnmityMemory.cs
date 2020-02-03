@@ -36,6 +36,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
         public Single PosZ;
 
         public string Distance;
+        public byte EffectiveDistance;
+
+        public List<EffectEntry> Effects;
 
         public string DistanceString(Combatant target)
         {
@@ -73,6 +76,19 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         // Target of Enemy
         public EnmityEntry Target;
+
+        // Effects
+        public List<EffectEntry> Effects;
+    }
+
+    [Serializable]
+    public class EffectEntry
+    {
+        public ushort BuffID;
+        public ushort Stack;
+        public float Timer;
+        public uint ActorID;
+        public bool isOwner;
     }
 
     public class EnmityMemory
@@ -114,7 +130,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             GetPointerAddress();
         }
 
-        private void ResetPointers(Process process)
+        private void ResetPointers(object sender, EventArgs _)
         {
             charmapAddress = IntPtr.Zero;
             targetAddress = IntPtr.Zero;
@@ -145,6 +161,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             if (!HasValidPointers())
                 return false;
+
             return true;
         }
 
@@ -223,7 +240,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             if (address == IntPtr.Zero)
                 return null;
             byte[] source = memory.GetByteArray(address, CombatantMemory.Size);
-            return GetCombatantFromByteArray(source);
+            return GetCombatantFromByteArray(source, 0, false);
         }
 
         public Combatant GetTargetCombatant()
@@ -237,7 +254,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             if (address == IntPtr.Zero)
                 return null;
             byte[] source = memory.GetByteArray(address, CombatantMemory.Size);
-            return GetCombatantFromByteArray(source);
+            return GetCombatantFromByteArray(source, 0, true, true);
         }
 
         public Combatant GetFocusCombatant()
@@ -254,6 +271,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         {
             var result = new List<Combatant>();
             var seen = new HashSet<uint>();
+            var mychar = GetSelfCombatant();
 
             int sz = 8;
             byte[] source = memory.GetByteArray(charmapAddress, sz * numMemoryCombatants);
@@ -269,7 +287,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     continue;
 
                 byte[] c = memory.GetByteArray(p, CombatantMemory.Size);
-                Combatant combatant = GetMobFromByteArray(c);
+                Combatant combatant = GetMobFromByteArray(c, mychar == null ? 0 : mychar.ID);
                 if (combatant == null)
                     continue;
                 if (seen.Contains(combatant.ID))
@@ -284,7 +302,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         }
 
         // Returns a combatant if the combatant is a mob or a PC.
-        public unsafe Combatant GetMobFromByteArray(byte[] source)
+        public unsafe Combatant GetMobFromByteArray(byte[] source, uint mycharID)
         {
             fixed (byte* p = source)
             {
@@ -295,7 +313,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 if (mem.ID == 0 || mem.ID == emptyID)
                     return null;
             }
-            return GetCombatantFromByteArray(source);
+            return GetCombatantFromByteArray(source, mycharID, false);
         }
 
         [StructLayout(LayoutKind.Explicit)]
@@ -305,6 +323,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             // Unknown size, but this is the bytes up to the next field.
             public const int nameBytes = 68;
+
+            // (effect container size: 12) * (Max. effects: 60)
+            public const int effectBytes = 720;
 
             [FieldOffset(0x30)]
             public fixed byte Name[nameBytes];
@@ -317,6 +338,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             [FieldOffset(0x8C)]
             public byte Type;
+
+            [FieldOffset(0x92)]
+            public byte EffectiveDistance;
 
             [FieldOffset(0xA0)]
             public Single PosX;
@@ -338,15 +362,41 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             [FieldOffset(0x18DC)]
             public byte Job;
+
+            [FieldOffset(0x1978)]
+            public fixed byte Effects[effectBytes];
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 12)]
+        public struct EffectMemory
+        {
+            public static int Size => Marshal.SizeOf(typeof(EffectMemory));
+
+            [FieldOffset(0)]
+            public ushort BuffID;
+
+            [FieldOffset(2)]
+            public ushort Stack;
+
+            [FieldOffset(4)]
+            public float Timer;
+
+            [FieldOffset(8)]
+            public uint ActorID;
         }
 
         // Will return any kind of combatant, even if not a mob.
         // This function always returns a combatant object, even if empty.
-        public unsafe Combatant GetCombatantFromByteArray(byte[] source)
+        public unsafe Combatant GetCombatantFromByteArray(byte[] source, uint mycharID, bool isPlayer, bool exceptEffects = false)
         {
             fixed (byte* p = source)
             {
                 CombatantMemory mem = *(CombatantMemory*)&p[0];
+
+                if (isPlayer)
+                {
+                    mycharID = mem.ID;
+                }
 
                 Combatant combatant = new Combatant()
                 {
@@ -355,12 +405,14 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     ID = mem.ID,
                     OwnerID = mem.OwnerID == emptyID ? 0 : mem.OwnerID,
                     Type = (ObjectType)mem.Type,
+                    EffectiveDistance = mem.EffectiveDistance,
                     PosX = mem.PosX,
                     PosY = mem.PosY,
                     PosZ = mem.PosZ,
                     TargetID = mem.TargetID,
                     CurrentHP = mem.CurrentHP,
                     MaxHP = mem.MaxHP,
+                    Effects = exceptEffects ? new List<EffectEntry>() : GetEffectEntries(mem.Effects, (ObjectType)mem.Type, mycharID),
                 };
                 if (combatant.Type != ObjectType.PC && combatant.Type != ObjectType.Monster)
                 {
@@ -489,6 +541,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     Name = c.Name,
                     MaxHP = c.MaxHP,
                     CurrentHP = c.CurrentHP,
+                    Effects = c.Effects,
                 };
 
                 // TODO: it seems like when your chocobo has aggro, this entry
@@ -514,6 +567,52 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 result.Add(entry);
             }
             return result;
+        }
+
+        public unsafe List<EffectEntry> GetEffectEntries(byte* source, ObjectType type, uint mycharID)
+        {
+            var result = new List<EffectEntry>();
+            int maxEffects = (type == ObjectType.PC) ? 30 : 60;
+            var size = EffectMemory.Size * maxEffects;
+
+            var bytes = new byte[size];
+            Marshal.Copy((IntPtr)source, bytes, 0, size);
+
+            for (int i = 0; i < maxEffects; i++)
+            {
+                var effect = GetEffectEntryFromBytes(bytes, i);
+
+                if (effect.BuffID > 0 &&
+                    effect.Stack >= 0 &&
+                    effect.Timer >= 0.0f &&
+                    effect.ActorID > 0)
+                {
+                    effect.isOwner = effect.ActorID == mycharID;
+
+                    result.Add(effect);
+                }
+            }
+
+            return result;
+        }
+
+        public unsafe EffectEntry GetEffectEntryFromBytes(byte[] source, int num = 0)
+        {
+            fixed (byte* p = source)
+            {
+                EffectMemory mem = *(EffectMemory*)&p[num * EffectMemory.Size];
+
+                EffectEntry effectEntry = new EffectEntry()
+                {
+                    BuffID = mem.BuffID,
+                    Stack = mem.Stack,
+                    Timer = mem.Timer,
+                    ActorID = mem.ActorID,
+                    isOwner = false,
+                };
+
+                return effectEntry;
+            }
         }
     }
 }

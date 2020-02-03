@@ -145,5 +145,15 @@
   </data>
   <data name="CefInstallerFailed" xml:space="preserve">
     <value>Cef安装程序无法加载。</value>
+  </data>  <data name="DependencyMissing" xml:space="preserve">
+    <value>加载依赖失败{0}: {1}
+确保您解压缩了整个插件压缩包，并且没有删除任何文件。</value>
+  </data>
+  <data name="AssemblyMissing" xml:space="preserve">
+    <value>加载失败{0}: {1}
+确保您解压缩了整个插件压缩包，并且没有删除任何内容（比如libs文件夹）。</value>
+  </data>
+  <data name="DependencyOutdated" xml:space="preserve">
+    <value>致命错误：已加载的{0}版本早于预期 ({1}  &lt; {2})! 这可能会导致OverlayPlugin及其附件发生奇怪错误。</value>
   </data>
 </root>

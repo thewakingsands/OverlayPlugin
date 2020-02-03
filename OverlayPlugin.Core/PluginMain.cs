@@ -26,6 +26,7 @@ namespace RainbowMage.OverlayPlugin
 
         internal PluginConfig Config { get; private set; }
         internal List<IOverlay> Overlays { get; private set; }
+        internal event EventHandler OverlaysChanged;
 
         public static Logger Logger { get; private set; }
         internal static string PluginDirectory { get; private set; }
@@ -63,10 +64,13 @@ namespace RainbowMage.OverlayPlugin
                 watch.Start();
 #endif
 
+                // ** Init phase 1
+                // Only init stuff here that works without the FFXIV plugin or addons (event sources, overlays).
+                // Everything else should be initialized in the second phase.
+                NativeMethods.Init();
                 FFXIVExportVariables.Init();
-                NetworkParser.Init();
-
-                // LoadAddons();
+                EventDispatcher.Init();
+                Registry.Register(new KeyboardHook());
                 LoadConfig();
 
 #if DEBUG
@@ -144,33 +148,59 @@ namespace RainbowMage.OverlayPlugin
 
                 if (true) //if (Config.UpdateCheck)
                 {
-                    Updater.Updater.PerformUpdateIfNecessary(controlPanel, PluginDirectory);
+                    Updater.Updater.PerformUpdateIfNecessary(PluginDirectory);
                 }
 
                 initTimer = new Timer();
-                initTimer.Interval = 100;
-                initTimer.Tick += (o, e) =>
+                initTimer.Interval = 300;
+                initTimer.Tick += async (o, e) =>
                 {
-                    if (ActGlobals.oFormActMain.InitActDone && ActGlobals.oFormActMain.Handle != IntPtr.Zero)
+                    if (ActGlobals.oFormActMain == null)
                     {
+                        // Something went really wrong.
                         initTimer.Stop();
-                        LoadAddons();
-                        InitializeOverlays();
-                        controlPanel.InitializeOverlayConfigTabs();
-
-                        Registry.Register(new KeyboardHook());
-                        OverlayHider.Initialize();
-
-                        if (Config.WSServerRunning)
+                    } else if (ActGlobals.oFormActMain.InitActDone && ActGlobals.oFormActMain.Handle != IntPtr.Zero)
+                    {
+                        try
                         {
-                            try
+                            initTimer.Stop();
+
+                            // ** Init phase 2
+
+                            // Initialize the parser in the second phase since it needs the FFXIV plugin.
+                            // If OverlayPlugin is placed above the FFXIV plugin, it won't be available in the first
+                            // phase but it'll be loaded by the time we enter the second phase.
+                            NetworkParser.Init();
+
+                            TriggIntegration.Init();
+
+                            // This timer runs on the UI thread (it has to since we create UI controls) but LoadAddons()
+                            // can block for some time. We run it on the background thread to avoid blocking the UI.
+                            // We can't run LoadAddons() in the first init phase since it checks other ACT plugins for
+                            // addons. Plugins below OverlayPlugin wouldn't have been loaded in the first init phase.
+                            // However, in the second phase all plugins have been loaded which means we can look for addons
+                            // in that list.
+                            await Task.Run(LoadAddons);
+
+                            ActGlobals.oFormActMain.Invoke((Action)(() =>
                             {
-                                WSServer.Initialize();
-                            }
-                            catch (Exception ex)
-                            {
-                                Logger.Log(LogLevel.Error, "InitPlugin: {0}", ex);
-                            }
+                                // Now that addons have been loaded, we can finish the overlay setup.
+                                InitializeOverlays();
+                                controlPanel.InitializeOverlayConfigTabs();
+                                OverlayHider.Init();
+                                OverlayZCorrector.Init();
+
+                                // WSServer has to start after the LoadAddons() call because clients can connect immediately
+                                // after it's initialized and that requires the event sources to be initialized.
+                                if (Config.WSServerRunning)
+                                {
+                                    WSServer.Init();
+                                }
+                            }));
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(LogLevel.Error, "InitPlugin: {0}", ex);
                         }
                     }
                 };
@@ -219,6 +249,8 @@ namespace RainbowMage.OverlayPlugin
             overlay.OnLog += (o, e) => Logger.Log(e.Level, e.Message);
             overlay.Start();
             this.Overlays.Add(overlay);
+
+            OverlaysChanged?.Invoke(this, null);
         }
 
         /// <summary>
@@ -229,6 +261,8 @@ namespace RainbowMage.OverlayPlugin
         {
             this.Overlays.Remove(overlay);
             overlay.Dispose();
+
+            OverlaysChanged?.Invoke(this, null);
         }
 
         /// <summary>
@@ -253,7 +287,7 @@ namespace RainbowMage.OverlayPlugin
             try { WSServer.Stop(); }
             catch { }
 
-            if (this.wsTabPage != null)
+            if (this.wsTabPage != null && this.wsTabPage.Parent != null)
                 ((TabControl)this.wsTabPage.Parent).TabPages.Remove(this.wsTabPage);
 
             Logger.Log(LogLevel.Info, "DeInitPlugin: Finalized.");
@@ -265,6 +299,7 @@ namespace RainbowMage.OverlayPlugin
         /// </summary>
         private void LoadAddons()
         {
+
             try
             {
                 // <プラグイン本体があるディレクトリ>\plugins\*.dll を検索する
@@ -285,6 +320,7 @@ namespace RainbowMage.OverlayPlugin
 
                 // Make sure the event source is ready before we load any overlays.
                 Registry.RegisterEventSource<MiniParseEventSource>();
+                Registry.StartEventSources();
 
                 Registry.RegisterOverlay<MiniParseOverlay>();
                 Registry.RegisterOverlay<SpellTimerOverlay>();
@@ -410,12 +446,6 @@ namespace RainbowMage.OverlayPlugin
 
             Registry.Register(Config);
             Registry.Register<IPluginConfig>(Config);
-
-            foreach (var es in Registry.EventSources)
-            {
-                es.LoadConfig(Config);
-                es.Start();
-            }
         }
 
         /// <summary>

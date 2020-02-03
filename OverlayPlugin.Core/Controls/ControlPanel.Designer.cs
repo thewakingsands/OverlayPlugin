@@ -30,6 +30,7 @@ namespace RainbowMage.OverlayPlugin
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.label_ListEmpty = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonRename = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -72,6 +73,7 @@ namespace RainbowMage.OverlayPlugin
             // 
             this.flowLayoutPanel.Controls.Add(this.buttonNewOverlay);
             this.flowLayoutPanel.Controls.Add(this.buttonRemoveOverlay);
+            this.flowLayoutPanel.Controls.Add(this.buttonRename);
             this.flowLayoutPanel.Controls.Add(this.checkBoxFollowLog);
             this.flowLayoutPanel.Controls.Add(this.buttonClearLog);
             resources.ApplyResources(this.flowLayoutPanel, "flowLayoutPanel");
@@ -131,6 +133,13 @@ namespace RainbowMage.OverlayPlugin
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
+            // buttonRename
+            // 
+            resources.ApplyResources(this.buttonRename, "buttonRename");
+            this.buttonRename.Name = "buttonRename";
+            this.buttonRename.UseVisualStyleBackColor = true;
+            this.buttonRename.Click += new System.EventHandler(this.buttonRename_Click);
+            // 
             // ControlPanel
             // 
             resources.ApplyResources(this, "$this");
@@ -164,6 +173,6 @@ namespace RainbowMage.OverlayPlugin
         private TextBox logBox;
         private CheckBox checkBoxFollowLog;
         private Button buttonClearLog;
-        public TabControlExt tabControl;
+        private Button buttonRename;
     }
 }

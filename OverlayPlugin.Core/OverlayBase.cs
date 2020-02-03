@@ -13,11 +13,11 @@ using RainbowMage.HtmlRenderer;
 
 namespace RainbowMage.OverlayPlugin
 {
-    public abstract class OverlayBase<TConfig> : IOverlay, IEventReceiver
+    public abstract class OverlayBase<TConfig> : IOverlay, IEventReceiver, IApiBase
         where TConfig: OverlayConfigBase
     {
         private bool disableLog = false;
-        private Action hotKeyCallback = null;
+        private List<Action> hotKeyCallbacks = new List<Action>();
 
         protected System.Timers.Timer timer;
         /// <summary>
@@ -40,11 +40,13 @@ namespace RainbowMage.OverlayPlugin
         /// </summary>
         public TConfig Config { get; private set; }
 
-/// <summary>
+        /// <summary>
         /// プラグインの設定を取得します。
         /// </summary>
         public IPluginConfig PluginConfig { get; private set; }
         IOverlayConfig IOverlay.Config { get => Config; set => Config = (TConfig)value; }
+        IntPtr IOverlay.Handle { get => Overlay == null ? IntPtr.Zero : Overlay.Handle; }
+
         public bool Visible {
             get
             {
@@ -70,6 +72,7 @@ namespace RainbowMage.OverlayPlugin
             InitializeOverlay();
             InitializeTimer();
             InitializeConfigHandlers();
+            UpdateHotKey();
         }
 
         public abstract Control CreateConfigControl();
@@ -99,11 +102,7 @@ namespace RainbowMage.OverlayPlugin
         {
             try
             {
-                // FIXME: is this *really* correct way to get version of current assembly?
-                this.Overlay = new OverlayForm(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-                    this.Name, Config.Url, this.Config.MaxFrameRate, new OverlayApi(this));
-
-                UpdateHotKey();
+                this.Overlay = new OverlayForm(this.Name, Config.Url, this.Config.MaxFrameRate, new OverlayApi(this));
 
                 // 画面外にウィンドウがある場合は、初期表示位置をシステムに設定させる
                 if (!Util.IsOnScreen(this.Overlay))
@@ -136,14 +135,15 @@ namespace RainbowMage.OverlayPlugin
                 };
                 this.Overlay.Renderer.BrowserConsoleLog += (o, e) =>
                 {
-                    Log(LogLevel.Info, "BrowserConsole: {0} (Source: {1}, Line: {2})", e.Message, e.Source, e.Line);
-                };
-                this.Config.UrlChanged += (o, e) =>
-                {
-                    Navigate(e.NewUrl);
+                    if (Config.LogConsoleMessages)
+                        Log(LogLevel.Info, "BrowserConsole: {0} (Source: {1}, Line: {2})", e.Message, e.Source, e.Line);
                 };
 
-                this.Overlay.UpdateRender();
+                if (!this.Config.Disabled)
+                {
+                    this.Overlay.Renderer.BeginRender();
+                }
+
                 this.Overlay.Show();
 
                 this.Overlay.Visible = this.Config.IsVisible;
@@ -182,43 +182,48 @@ namespace RainbowMage.OverlayPlugin
         {
             var hook = Registry.Resolve<KeyboardHook>();
 
-            // Clear the old hotkey
-            if (hotKeyCallback != null)
+            // Clear the old hotkeys
+            foreach (var cb in hotKeyCallbacks)
             {
-                hook.UnregisterHotKey(hotKeyCallback);
+                hook.UnregisterHotKey(cb);
             }
+            hotKeyCallbacks.Clear();
 
-            if (this.Config.GlobalHotkeyEnabled)
+            foreach (var entry in Config.GlobalHotkeys)
             {
-                var modifierKeys = GetModifierKey(this.Config.GlobalHotkeyModifiers);
-                var key = this.Config.GlobalHotkey;
-                var hotkeyType = this.Config.GlobalHotkeyType;
-
-                if (key != Keys.None)
+                if (entry.Enabled && entry.Key != Keys.None)
                 {
-                    switch (hotkeyType)
+                    var modifierKeys = GetModifierKey(entry.Modifiers);
+                    Action cb = null;
+
+                    switch (entry.Type)
                     {
                         case GlobalHotkeyType.ToggleVisible:
-                            hotKeyCallback = () => this.Config.IsVisible = !this.Config.IsVisible;
+                            cb = () => this.Config.IsVisible = !this.Config.IsVisible;
                             break;
                         case GlobalHotkeyType.ToggleClickthru:
-                            hotKeyCallback = () => this.Config.IsClickThru = !this.Config.IsClickThru;
+                            cb = () => this.Config.IsClickThru = !this.Config.IsClickThru;
                             break;
                         case GlobalHotkeyType.ToggleLock:
-                            hotKeyCallback = () => this.Config.IsLocked = !this.Config.IsLocked;
+                            cb = () => this.Config.IsLocked = !this.Config.IsLocked;
+                            break;
+                        case GlobalHotkeyType.ToogleEnabled:
+                            cb = () => this.Config.Disabled = !this.Config.Disabled;
                             break;
                         default:
-                            hotKeyCallback = () => this.Config.IsVisible = !this.Config.IsVisible;
+                            cb = () => this.Config.IsVisible = !this.Config.IsVisible;
                             break;
                     }
 
+                    hotKeyCallbacks.Add(cb);
                     try
                     {
-                        hook.RegisterHotKey(modifierKeys, key, hotKeyCallback);
+                        hook.RegisterHotKey(modifierKeys, entry.Key, cb);
                     }
                     catch (Exception e)
                     {
                         Log(LogLevel.Error, Resources.OverlayBaseRegisterHotkeyError, e.Message);
+                        hotKeyCallbacks.Remove(cb);
                     }
                 }
             }
@@ -268,8 +273,10 @@ namespace RainbowMage.OverlayPlugin
                 if (this.Overlay != null) this.Overlay.MaxFrameRate = this.Config.MaxFrameRate;
             };
             this.Config.GlobalHotkeyChanged += (o, e) => UpdateHotKey();
-            this.Config.GlobalHotkeyEnabledChanged += (o, e) => UpdateHotKey();
-            this.Config.GlobalHotkeyModifiersChanged += (o, e) => UpdateHotKey();
+            this.Config.UrlChanged += (o, e) =>
+            {
+                Navigate(e.NewUrl);
+            };
         }
 
         /// <summary>
@@ -295,9 +302,11 @@ namespace RainbowMage.OverlayPlugin
                     this.Overlay.Close();
                     this.Overlay.Dispose();
                 }
-                if (hotKeyCallback != null)
+
+                var hook = Registry.Resolve<KeyboardHook>();
+                foreach (var cb in hotKeyCallbacks)
                 {
-                    Registry.Resolve<KeyboardHook>().UnregisterHotKey(hotKeyCallback);
+                    hook.UnregisterHotKey(cb);
                 }
             }
             catch (Exception ex)
@@ -406,6 +415,11 @@ namespace RainbowMage.OverlayPlugin
         public virtual void InitModernAPI()
         {
 
+        }
+
+        public virtual Bitmap Screenshot()
+        {
+            return Overlay.Renderer.Screenshot();
         }
     }
 }

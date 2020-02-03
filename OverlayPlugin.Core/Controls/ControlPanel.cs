@@ -18,6 +18,17 @@ namespace RainbowMage.OverlayPlugin
         PluginConfig config;
         TabPage generalTab;
 
+        static Dictionary<string, string> esNames = new Dictionary<string, string>
+        {
+            { "MiniParseEventSource", Resources.MapESMiniParse },
+        };
+        static Dictionary<string, string> overlayNames = new Dictionary<string, string>
+        {
+            { "LabelOverlay", Resources.MapOverlayLabel },
+            { "MiniParseOverlay", Resources.MapOverlayMiniParse },
+            { "SpellTimerOverlay", Resources.MapOverlaySpellTimer },
+        };
+
         public ControlPanel(PluginMain pluginMain, PluginConfig config)
         {
             InitializeComponent();
@@ -31,14 +42,13 @@ namespace RainbowMage.OverlayPlugin
 
             generalTab = new ConfigTabPage
             {
-                Name = "General",
+                Name = Resources.GeneralTab,
                 Text = "",
             };
             generalTab.Controls.Add(new GeneralConfigTab());
 
             PluginMain.Logger.RegisterListener(AddLogEntry);
-            Registry.EventSourceRegistered += AddEventSourceTab;
-            // InitializeOverlayConfigTabs(null, null);
+            Registry.EventSourceRegistered += (o, e) => Invoke((Action)(() => AddEventSourceTab(o, e)));
         }
 
         protected override void Dispose(bool disposing)
@@ -117,10 +127,14 @@ namespace RainbowMage.OverlayPlugin
 
         private void AddConfigTab(IOverlay overlay)
         {
+            var label = overlay.GetType().Name;
+            if (overlayNames.ContainsKey(label))
+                label = overlayNames[label];
+
             var tabPage = new ConfigTabPage
             {
                 Name = overlay.Name,
-                Text = overlay.GetType().Name,
+                Text = label,
                 IsOverlay = true,
             };
 
@@ -137,10 +151,14 @@ namespace RainbowMage.OverlayPlugin
 
         private void AddConfigTab(IEventSource source)
         {
+            var label = source.GetType().Name;
+            if (esNames.ContainsKey(label))
+                label = esNames[label];
+
             var tabPage = new ConfigTabPage
             {
                 Name = source.Name,
-                Text = "Event Source " + source.GetType().Name,
+                Text = Resources.TabsESLabel + " " + label,
                 IsEventSource = true,
             };
 
@@ -175,13 +193,13 @@ namespace RainbowMage.OverlayPlugin
                     // 空もしくは空白文字のみの名前は許容しない
                     if (string.IsNullOrWhiteSpace(name))
                     {
-                        MessageBox.Show("Name must not be empty or white space only.");
+                        MessageBox.Show(Resources.ErrorOverlayNameEmpty);
                         return false;
                     }
                     // 名前の重複も許容しない
                     else if (config.Overlays.Where(x => x.Name == name).Any())
                     {
-                        MessageBox.Show("Name should be unique.");
+                        MessageBox.Show(Resources.ErrorOverlayNameNotUnique);
                         return false;
                     }
                     else
@@ -196,20 +214,14 @@ namespace RainbowMage.OverlayPlugin
                 {
                     this.tabControl.TabPages.Remove(this.tabPageMain);
                 }
-                CreateAndRegisterOverlay(newOverlayDialog.SelectedOverlayType, newOverlayDialog.OverlayName);
+                CreateAndRegisterOverlay(newOverlayDialog.SelectedOverlay);
             }
             
             newOverlayDialog.Dispose();
         }
 
-        public IOverlay CreateAndRegisterOverlay(Type overlayType, string name)
+        public IOverlay CreateAndRegisterOverlay(IOverlay overlay)
         {
-            var parameters = new NamedParameterOverloads();
-            parameters["config"] = null;
-            parameters["name"] = name;
-
-            var overlay = (IOverlay) Registry.Container.Resolve(overlayType, parameters);
-
             config.Overlays.Add(overlay.Config);
             pluginMain.RegisterOverlay(overlay);
 
@@ -266,6 +278,31 @@ namespace RainbowMage.OverlayPlugin
 
             // タープを更新
             this.tabControl.Update();
+        }
+
+        private void buttonRename_Click(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedTab == null) // ???
+                tabControl.SelectedTab = tabControl.TabPages[0];
+
+            if (!((ConfigTabPage)tabControl.SelectedTab).IsOverlay)
+                return;
+
+            string selectedOverlayName = tabControl.SelectedTab.Name;
+            int selectedOverlayIndex = tabControl.TabPages.IndexOf(tabControl.SelectedTab);
+
+            var config = this.config.Overlays.Where(x => x.Name == selectedOverlayName).FirstOrDefault();
+            if (config == null)
+                return;
+
+            var dialog = new Controls.RenameOverlayDialog(config.Name);
+            if (dialog.ShowDialog(ParentForm) == DialogResult.OK)
+            {
+                config.Name = dialog.OverlayName;
+            }
+
+            tabControl.SelectedTab.Name = config.Name;
+            tabControl.Update();
         }
 
         private void CheckBoxFollowLog_CheckedChanged(object sender, EventArgs e)

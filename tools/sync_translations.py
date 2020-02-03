@@ -7,7 +7,6 @@ from xml.parsers import expat
 
 BASE_DIR = os.path.join(os.path.dirname(__file__), '..')
 PROJECTS = ('HtmlRenderer', 'OverlayPlugin', 'OverlayPlugin.Common', 'OverlayPlugin.Core', 'OverlayPlugin.Updater')
-LANGS = ('en', 'ja-JP', 'ko-KR')
 ATTRIB_WHITELIST = ('Text',)
 JSON_PATH = os.path.join(BASE_DIR, 'translations.json')
 
@@ -36,7 +35,6 @@ class XmlUpdater:
         self._output.append(self._data[self._pos:])
 
     def dumps(self):
-        # Join output and normalize line breaks
         return b''.join(self._output)
 
     def escape(self, value):
@@ -65,7 +63,7 @@ class XmlUpdater:
             if self._key in self._trans:
                 new_value = self.escape(self._trans[self._key])
 
-                if old_value != new_value:
+                if old_value.strip() != new_value.strip():
                     print('Updating %s (%s -> %s)' % (self._key, old_value.decode('utf8'),
                                                       new_value.decode('utf8')))
 
@@ -83,9 +81,9 @@ class XmlUpdater:
 
             for key in set(self._trans.keys()) - self._done:
                 print('Adding ' + key)
-                self._output.append(b'\n  <data name="%s" xml:space="preserve">\n' % self.escape(key))
+                self._output.append(b'  <data name="%s" xml:space="preserve">\n' % self.escape(key))
                 self._output.append(b'    <value>%s</value>\n' % self.escape(self._trans[key]))
-                self._output.append(b'  </data>')
+                self._output.append(b'  </data>\n')
         elif name == 'data':
             self._key = None
 
@@ -106,13 +104,17 @@ for project in PROJECTS:
 
         relpath = os.path.dirname(relpath) + '/' + chunks[0]
         root = ET.parse(filepath)
+        file_data = resx_data.setdefault(relpath, {})
         for node in root.iter('data'):
             key = node.attrib['name']
 
             if '.' in key and not key.endswith(ATTRIB_WHITELIST):
                 continue
 
-            item = resx_data.setdefault(relpath, {}).setdefault(key, {})
+            if node.attrib.get('type', '') == 'System.Resources.ResXFileRef, System.Windows.Forms':
+                continue
+
+            item = file_data.setdefault(key, {})
             item[lang] = node.find('value').text
 
             if lang == 'en':

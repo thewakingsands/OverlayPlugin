@@ -1,5 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
+using System.Reflection;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using CefSharp.OffScreen;
 using CefSharp.Structs;
 using CefSharp.Enums;
@@ -7,9 +13,7 @@ using CefSharp;
 using CefSharp.Internals;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Windows.Forms;
-using System.Reflection;
+using System.Threading.Tasks;
 
 namespace RainbowMage.HtmlRenderer
 {
@@ -22,33 +26,27 @@ namespace RainbowMage.HtmlRenderer
         public event EventHandler<BrowserLoadEventArgs> BrowserLoad;
         public event EventHandler<BrowserConsoleLogEventArgs> BrowserConsoleLog;
 
-        private ChromiumWebBrowser _browser;
-        private OverlayForm _form;
+        private BrowserWrapper _browser;
+        protected IRenderTarget _target;
         private object _api;
+        private Func<int, int, bool> _ctxMenuCallback = null;
         private List<String> scriptQueue = new List<string>();
         private string urlToLoad = null;
-        
-        public string OverlayVersion {
-            get { return overlayVersion; }
-        }
-
-        public string OverlayName {
-          get { return overlayName; }
-        }
+        private string lastUrl = null;
 
         private int clickCount;
         private MouseButtonType lastClickButton;
         private DateTime lastClickTime;
         private int lastClickPosX;
         private int lastClickPosY;
-        private string overlayVersion;
         private string overlayName;
+        public Region DraggableRegion;
 
-        public Renderer(string overlayVersion, string overlayName, OverlayForm form, object api)
+        public Renderer(string overlayName, string url, IRenderTarget target, object api)
         {
-            this.overlayVersion = overlayVersion;
             this.overlayName = overlayName;
-            this._form = form;
+            this._target = target;
+            this.lastUrl = url;
             this._api = api;
 
             InitBrowser();
@@ -56,34 +54,57 @@ namespace RainbowMage.HtmlRenderer
 
         public void InitBrowser()
         {
-            this._browser = new BrowserWrapper("about:blank", automaticallyCreateBrowser: false, form: _form);
+            this._browser = new BrowserWrapper(lastUrl ?? "about:blank", automaticallyCreateBrowser: false, target: _target);
             _browser.RequestHandler = new CustomRequestHandler(this);
+            _browser.MenuHandler = new ContextMenuHandler(_ctxMenuCallback);
             _browser.BrowserInitialized += _browser_BrowserInitialized;
             _browser.FrameLoadStart += Browser_FrameLoadStart;
             _browser.FrameLoadEnd += Browser_FrameLoadEnd;
             _browser.LoadError += Browser_LoadError;
             _browser.ConsoleMessage += Browser_ConsoleMessage;
+            _browser.DragHandler = new DragHandler(this);
 
             if (_api != null)
             {
-                _browser.JavascriptObjectRepository.Register("OverlayPluginApi", _api, isAsync: true);
+                SetApi(_api);
             }
+        }
+
+        public void SetApi(object api)
+        {
+            _api = api;
+            if (api != null)
+                _browser.JavascriptObjectRepository.Register("OverlayPluginApi", api, isAsync: true);
+        }
+
+        public void SetContextMenuCallback(Func<int, int, bool> ctxMenuCallback)
+        {
+            _ctxMenuCallback = ctxMenuCallback;
+            _browser.MenuHandler = new ContextMenuHandler(ctxMenuCallback);
         }
 
         private void _browser_BrowserInitialized(object sender, EventArgs e)
         {
             // Make sure we use the correct size for rendering. CEF sometimes ignores the size passed in WindowInfo (see BeginRender()).
-            Resize(_form.Width, _form.Height);
+            Resize(_target.Width, _target.Height);
         }
 
         private void Browser_FrameLoadStart(object sender, FrameLoadStartEventArgs e)
         {
-            var initScript = @"(async () => {
-                await CefSharp.BindObjectAsync('OverlayPluginApi');
-                OverlayPluginApi.overlayName = " + JsonConvert.SerializeObject(this.overlayName) + @";
-                OverlayPluginApi.ready = true;
-            })();";
-            e.Frame.ExecuteJavaScriptAsync(initScript, "init");
+            if (!e.Frame.IsMain)
+                return;
+
+            lastUrl = e.Url;
+
+            if (_api != null)
+            {
+                var initScript = @"(async () => {
+                    await CefSharp.BindObjectAsync('OverlayPluginApi');
+                    OverlayPluginApi.overlayName = " + JsonConvert.SerializeObject(this.overlayName) + @";
+                    OverlayPluginApi.ready = true;
+                })();";
+                e.Frame.ExecuteJavaScriptAsync(initScript, "init");
+            }
 
             foreach (var item in this.scriptQueue)
             {
@@ -118,6 +139,9 @@ namespace RainbowMage.HtmlRenderer
 
         private void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
+            if (!e.Frame.IsMain)
+                return;
+
             if (urlToLoad != null)
             {
                 _browser.Load(urlToLoad);
@@ -146,26 +170,19 @@ namespace RainbowMage.HtmlRenderer
 
         public void BeginRender()
         {
-            _form.UpdateRender();
-        }
-
-        public void BeginRender(int width, int height, string url, int maxFrameRate = 30)
-        {
             EndRender();
 
             var cefWindowInfo = new WindowInfo();
             cefWindowInfo.SetAsWindowless(IntPtr.Zero);
-            cefWindowInfo.Width = width;
-            cefWindowInfo.Height = height;
+            cefWindowInfo.Width = _target.Width;
+            cefWindowInfo.Height = _target.Height;
 
             var cefBrowserSettings = new BrowserSettings();
-            cefBrowserSettings.WindowlessFrameRate = maxFrameRate;
+            cefBrowserSettings.WindowlessFrameRate = _target.MaxFrameRate;
             _browser.CreateBrowser(cefWindowInfo, cefBrowserSettings);
 
             cefBrowserSettings.Dispose();
             cefWindowInfo.Dispose();
-
-            urlToLoad = url;
         }
 
         public void EndRender()
@@ -173,6 +190,10 @@ namespace RainbowMage.HtmlRenderer
             if (_browser != null && _browser.IsBrowserInitialized)
             {
                 _browser.GetBrowser().CloseBrowser(true);
+                _browser.GetBrowserHost().CloseBrowser(true);
+                _browser.Dispose();
+
+                InitBrowser();
             }
         }
 
@@ -197,6 +218,22 @@ namespace RainbowMage.HtmlRenderer
             if (this._browser != null)  // && _browser.IsBrowserInitialized)
             {
                 this._browser.Size = new System.Drawing.Size(width, height);
+            }
+        }
+
+        public void SetZoomLevel(double zoom)
+        {
+            if (this._browser != null && this._browser.IsBrowserInitialized)
+            {
+                this._browser.SetZoomLevel(zoom);
+            }
+        }
+
+        public void SetMuted(bool muted)
+        {
+            if (this._browser != null && this._browser.IsBrowserInitialized)
+            {
+                this._browser.GetBrowserHost().SetAudioMuted(muted);
             }
         }
 
@@ -242,6 +279,14 @@ namespace RainbowMage.HtmlRenderer
 
                 var mouseEvent = new MouseEvent(x, y, modifiers);
                 host.SendMouseMoveEvent(mouseEvent, false);
+            }
+        }
+
+        public void SendMouseLeave()
+        {
+            if (this._browser != null && this._browser.IsBrowserInitialized)
+            {
+                this._browser.GetBrowserHost().SendMouseMoveEvent(new MouseEvent(0, 0, 0), true);
             }
         }
 
@@ -303,7 +348,7 @@ namespace RainbowMage.HtmlRenderer
 
         public void SendKeyEvent(KeyEvent keyEvent)
         {
-            if (this._browser != null)
+            if (this._browser != null && this._browser.IsBrowserInitialized)
             {
                 var host = this._browser.GetBrowserHost();
 
@@ -313,12 +358,22 @@ namespace RainbowMage.HtmlRenderer
 
         public void showDevTools(bool firstwindow = true)
         {
-            if (_browser != null)
+            if (_browser != null && _browser.IsBrowserInitialized)
             {
                 WindowInfo wi = new WindowInfo();
                 wi.SetAsPopup(_browser.GetBrowserHost().GetWindowHandle(), "DevTools");
                 _browser.GetBrowserHost().ShowDevTools(wi);
             }
+        }
+
+        public Bitmap Screenshot()
+        {
+            if (_browser != null && _browser.IsBrowserInitialized)
+            {
+                return _browser.Screenshot();
+            }
+
+            return null;
         }
 
         public void Dispose()
@@ -381,6 +436,9 @@ namespace RainbowMage.HtmlRenderer
 
                 // Allow websites to play sound even if the user never interacted with that site (pretty common for our overlays)
                 cefSettings.CefCommandLineArgs["autoplay-policy"] = "no-user-gesture-required";
+
+                // Disable Flash. We don't need it and it can cause issues.
+                cefSettings.CefCommandLineArgs.Remove("enable-system-flash");
 
                 cefSettings.EnableAudio();
 
@@ -546,53 +604,74 @@ MaxUploadsPerDay=0
 
     internal class BrowserWrapper : ChromiumWebBrowser, IRenderWebBrowser
     {
-        OverlayForm form;
+        IRenderTarget target;
+        TaskCompletionSource<Bitmap> screenshotSource = null;
+        object screenshotLock = new object();
 
         public BrowserWrapper(string address = "", BrowserSettings browserSettings = null,
-            RequestContext requestContext = null, bool automaticallyCreateBrowser = true, OverlayForm form = null) :
+            RequestContext requestContext = null, bool automaticallyCreateBrowser = true, IRenderTarget target = null) :
             base(address, browserSettings, requestContext, automaticallyCreateBrowser)
         {
-            this.form = form;
-            this.MenuHandler = new ContextMenuHandler();
+            this.target = target;
+        }
+
+        public Bitmap Screenshot()
+        {
+            lock (screenshotLock)
+            {
+                var source = new TaskCompletionSource<Bitmap>();
+                screenshotSource = source;
+                source.Task.Wait();
+
+                if (source.Task.Exception != null) throw source.Task.Exception;
+                return source.Task.Result;
+            }
         }
 
         void IRenderWebBrowser.OnPaint(PaintElementType type, Rect dirtyRect, IntPtr buffer, int width, int height)
         {
-            form.RenderFrame(dirtyRect, buffer, width, height);
+            if (screenshotSource != null)
+            {
+                try
+                {
+                    var bmp = new Bitmap(width, height);
+                    var data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+                    NativeMethods.CopyMemory(data.Scan0, buffer, (uint)(width * height * 4));
+                    bmp.UnlockBits(data);
+
+                    screenshotSource.SetResult(bmp);
+                    screenshotSource = null;
+                } catch (Exception ex)
+                {
+                    screenshotSource.SetException(ex);
+                    screenshotSource = null;
+                }
+            } else
+            {
+                target.RenderFrame(type, dirtyRect, buffer, width, height);
+            }
+        }
+
+        void IRenderWebBrowser.OnPopupSize(Rect rect)
+        {
+            target.MovePopup(rect);
+        }
+
+        void IRenderWebBrowser.OnPopupShow(bool show)
+        {
+            target.SetPopupVisible(show);
         }
 
         void IRenderWebBrowser.OnCursorChange(IntPtr cursor, CursorType type, CursorInfo customCursorInfo)
         {
-            form.Cursor = new Cursor(cursor);
+            target.Cursor = new Cursor(cursor);
         }
 
         bool IRenderWebBrowser.GetScreenPoint(int contentX, int contentY, out int screenX, out int screenY)
         {
-            screenX = (int) (contentX + form.Location.X);
-            screenY = (int) (contentY + form.Location.Y);
+            screenX = (int) (contentX + target.Location.X);
+            screenY = (int) (contentY + target.Location.Y);
 
-            return true;
-        }
-    }
-
-    internal class ContextMenuHandler : IContextMenuHandler
-    {
-        public void OnBeforeContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
-        {
-        }
-
-        public bool OnContextMenuCommand(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, CefMenuCommand commandId, CefEventFlags eventFlags)
-        {
-            return false;
-        }
-
-        public void OnContextMenuDismissed(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame)
-        {
-        }
-
-        public bool RunContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model, IRunContextMenuCallback callback)
-        {
-            // Suppress the context menu.
             return true;
         }
     }

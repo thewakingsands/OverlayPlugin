@@ -15,21 +15,68 @@ namespace RainbowMage.OverlayPlugin.Overlays
 {
     public partial class MiniParseOverlay : OverlayBase<MiniParseOverlayConfig>
     {
-        protected bool modernApi = false;
         protected DateTime lastUrlChange;
         protected string lastLoadedUrl;
+        protected System.Threading.Timer previewTimer;
+
+        public bool Preview = false;
+
+        public bool ModernApi { get; protected set; }
 
         public MiniParseOverlay(MiniParseOverlayConfig config, string name)
             : base(config, name)
         {
+            if (Overlay == null) return;
+
             Config.ActwsCompatibilityChanged += (o, e) =>
             {
-                if (lastLoadedUrl != null) Navigate(lastLoadedUrl);
+                if (lastLoadedUrl != null && lastLoadedUrl != "about:blank") Navigate(lastLoadedUrl);
+            };
+            Config.NoFocusChanged += (o, e) =>
+            {
+                Overlay.SetAcceptFocus(!Config.NoFocus);
+            };
+            Config.ZoomChanged += (o, e) =>
+            {
+                Overlay.Renderer.SetZoomLevel(Config.Zoom / 100.0);
+            };
+            Config.ForceWhiteBackgroundChanged += (o, e) =>
+            {
+                var color = Config.ForceWhiteBackground ? "white" : "transparent";
+                ExecuteScript($"document.body.style.backgroundColor = \"{color}\";");
+            };
+            Config.DisabledChanged += (o, e) =>
+            {
+                if (Config.Disabled)
+                {
+                    Overlay.Renderer.EndRender();
+                    Overlay.ClearFrame();
+                } else
+                {
+                    Overlay.Renderer.BeginRender();
+                }
+            };
+            Config.VisibleChanged += (o, e) =>
+            {
+                if (Config.MuteWhenHidden)
+                {
+                    Overlay.Renderer.SetMuted(!Config.IsVisible);
+                }
+            };
+            Config.MuteWhenHiddenChanged += (o, e) =>
+            {
+                Overlay.Renderer.SetMuted(Config.MuteWhenHidden ? !Config.IsVisible : false);
             };
 
             Overlay.Renderer.BrowserStartLoading += PrepareWebsite;
             Overlay.Renderer.BrowserLoad += FinishLoading;
             Overlay.Renderer.BrowserConsoleLog += Renderer_BrowserConsoleLog;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            previewTimer?.Dispose();
         }
 
         public override Control CreateConfigControl()
@@ -52,19 +99,61 @@ namespace RainbowMage.OverlayPlugin.Overlays
                 var charName = JsonConvert.SerializeObject(FFXIVRepository.GetPlayerName() ?? "YOU");
                 var charID = JsonConvert.SerializeObject(FFXIVRepository.GetPlayerID());
 
-                ExecuteScript(@"if (window.__OverlayPlugin_ws_faker) {
-                    __OverlayPlugin_ws_faker({ type: 'broadcast', msgtype: 'SendCharName', msg: { charName: " + charName + ", charID: " + charID + @" }});
+                ExecuteScript(@"var msg = { charName: " + charName + ", charID: " + charID + @" };
+                if (window.__OverlayPlugin_ws_faker) {
+                    __OverlayPlugin_ws_faker({ type: 'broadcast', msgtype: 'SendCharName', msg });
+                } else {
+                    window.__OverlayPlugin_char_msg = msg;
                 }");
+            }
+
+            if (Preview)
+            {
+                try
+                {
+#if DEBUG
+                    var previewPath = Path.Combine(PluginMain.PluginDirectory, "libs", "resources", "preview.json");
+#else
+                    var previewPath = Path.Combine(PluginMain.PluginDirectory, "resources", "preview.json");
+#endif
+                    var eventData = JObject.Parse(File.ReadAllText(previewPath));
+
+                    // Since we can't be sure when the overlay is ready to receive events, we'll just send one
+                    // per second (which is the same rate the real events are sent at).
+                    previewTimer = new System.Threading.Timer((state) =>
+                    {
+                        HandleEvent(eventData);
+
+                        ExecuteScript("document.dispatchEvent(new CustomEvent('onExampleShowcase', null));");
+                    }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+                } catch (Exception ex)
+                {
+                    Registry.Resolve<ILogger>().Log(LogLevel.Error, $"{Name}: Failed to load preview data: {ex}");
+                }
             }
         }
 
         private void PrepareWebsite(object sender, BrowserLoadEventArgs e)
         {
+            if (e.Url.StartsWith("about:blank"))
+                return;
+
             lastLoadedUrl = e.Url;
             Config.Url = e.Url;
 
+            // Reset page-specific state
+            Overlay.Renderer.SetZoomLevel(Config.Zoom / 100.0);
+            ModernApi = false;
+
+            if (Config.ForceWhiteBackground)
+            {
+                ExecuteScript("document.body.style.backgroundColor = 'white';");
+            }
+
             if (Config.ActwsCompatibility)
             {
+                Overlay.SetAcceptFocus(!Config.NoFocus);
+
                 var shimMsg = Resources.ActwsShimEnabled;
 
                 // Install a fake WebSocket so we can directly call the event handler.
@@ -72,6 +161,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
                     let realWS = window.WebSocket;
                     let queue = [];
                     window.__OverlayPlugin_ws_faker = (msg) => queue.push(msg);
+                    window.overlayWindowId = 'ACTWS_shim';
 
                     window.WebSocket = function(url) {
                         if (url.indexOf('ws://127.0.0.1/fake/') > -1)
@@ -80,6 +170,19 @@ namespace RainbowMage.OverlayPlugin.Overlays
                                 if (this.onmessage) this.onmessage({ data: JSON.stringify(msg) });
                             };
                             this.close = () => null;
+                            this.send = (msg) => {
+                                if (msg === '.') return;
+
+                                msg = JSON.parse(msg);
+                                switch (msg.msgtype) {
+                                    case 'Capture':
+                                        OverlayPluginApi.makeScreenshot();
+                                        break;
+                                    case 'RequestEnd':
+                                        OverlayPluginApi.endEncounter();
+                                        break;
+                                }
+                            };
 
                             console.log(" + JsonConvert.SerializeObject(shimMsg) + @");
 
@@ -87,6 +190,8 @@ namespace RainbowMage.OverlayPlugin.Overlays
                                 setTimeout(() => {
                                     queue.forEach(__OverlayPlugin_ws_faker);
                                     queue = null;
+
+                                    if (window.__OverlayPlugin_char_msg) this.__OverlayPlugin_ws_faker(window.__OverlayPlugin_char_msg);
                                 }, 100);
                             }
                         }
@@ -101,18 +206,13 @@ namespace RainbowMage.OverlayPlugin.Overlays
                 Subscribe("LogLine");
                 Subscribe("ChangeZone");
                 Subscribe("ChangePrimaryPlayer");
-
-                // ACTWS overlays always accept input focus.
-                SetAcceptFocus(true);
             } else {
-                // Subscriptions are cleared on page navigation so we have to restore this after every load.
+                // Reset page-specific state
+                Overlay.SetAcceptFocus(false);
 
-                modernApi = false;
+                // Subscriptions are cleared on page navigation so we have to restore this after every load.
                 Subscribe("CombatData");
                 Subscribe("LogLine");
-
-                // Reset the focus setting to make sure that a previously loaded overlay doesn't affect a different one.
-                SetAcceptFocus(false);
             }
         }
 
@@ -120,7 +220,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             if (Config.ActwsCompatibility)
             {
-                if (!url.Contains("HOST_PORT="))
+                if (!url.Contains("HOST_PORT=") && url != "about:blank")
                 {
                     if (!url.EndsWith("?"))
                     {
@@ -175,11 +275,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         public override void HandleEvent(JObject e)
         {
-            if (modernApi)
-            {
-                base.HandleEvent(e);
-            }
-            else if (Config.ActwsCompatibility)
+            if (Config.ActwsCompatibility)
             {
                 // NOTE: Keep this in sync with WSServer's LegacyHandler.
                 switch (e["type"].ToString())
@@ -198,6 +294,10 @@ namespace RainbowMage.OverlayPlugin.Overlays
                         break;
                 }
             }
+            else if(ModernApi)
+            {
+                base.HandleEvent(e);
+            }
             else
             {
                 // Old OverlayPlugin API
@@ -215,12 +315,12 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         public override void InitModernAPI()
         {
-            if (!modernApi)
+            if (!ModernApi)
             {
                 // Clear the subscription set in PrepareWebsite().
                 Unsubscribe("CombatData");
                 Unsubscribe("LogLine");
-                modernApi = true;
+                ModernApi = true;
             }
         }
 

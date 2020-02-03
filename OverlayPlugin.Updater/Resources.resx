@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActUpdateCheckFailed" xml:space="preserve">
+    <value>Update check for {0} through ACT failed, retrying with GitHub API.</value>
+    <comment>The placeholder here is the project being updated (i.e. OverlayPlugin or Cactbot)</comment>
+  </data>
+  <data name="ActUpdateException" xml:space="preserve">
+    <value>ACT Update check for {0} failed, falling back to GitHub API: {1}</value>
+    <comment>The first placeholder here is the project being updated (i.e. OverlayPlugin or Cactbot)</comment>
+  </data>
   <data name="CreatingTempDirFailed" xml:space="preserve">
     <value>Failed to create or empty the temporary directory "{0}": {1}</value>
   </data>
@@ -124,7 +132,8 @@
     <value>Download failed! The download has no file size (Content-Length header is missing).</value>
   </data>
   <data name="ErrorTitle" xml:space="preserve">
-    <value>OverlayPlugin Error</value>
+    <value>{0} Error</value>
+    <comment>The placeholder here is the project being updated (i.e. OverlayPlugin or Cactbot)</comment>
   </data>
   <data name="Exception" xml:space="preserve">
     <value>Failed: {0}</value>
@@ -132,8 +141,27 @@
   <data name="LaunchingInstallerFailed" xml:space="preserve">
     <value>Failed to launch installer: {0}</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="libcurl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\libcurl.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="libcurl_x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\libcurl-x64.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="LogAbortedByUser" xml:space="preserve">
     <value>Aborted by user.</value>
+  </data>
+  <data name="LogBackingUpOldFiles" xml:space="preserve">
+    <value>Backing up old files...</value>
+  </data>
+  <data name="LogCleaningUp" xml:space="preserve">
+    <value>Cleaning up...</value>
+  </data>
+  <data name="LogDeletingTempFiles" xml:space="preserve">
+    <value>Deleting temporary files...</value>
+  </data>
+  <data name="LogDone" xml:space="preserve">
+    <value>Done.</value>
   </data>
   <data name="LogDownloadFailed" xml:space="preserve">
     <value>Download failed: {0}</value>
@@ -150,6 +178,12 @@
   <data name="LogExtractionAbortedByUser" xml:space="preserve">
     <value>Extraction aborted by user.</value>
   </data>
+  <data name="LogFailedReplaceDirectory" xml:space="preserve">
+    <value>Failed to replace old directory: {0}</value>
+  </data>
+  <data name="LogFailedToDelete" xml:space="preserve">
+    <value>Failed to delete {0}: {1}</value>
+  </data>
   <data name="LogInstallerFailed" xml:space="preserve">
     <value>Error: The installer did not finish correctly.</value>
   </data>
@@ -159,8 +193,25 @@
   <data name="LogLaunchingInstaller" xml:space="preserve">
     <value>Launching installer...</value>
   </data>
+  <data name="LogMovingDirectory" xml:space="preserve">
+    <value>Moving directory...</value>
+  </data>
   <data name="LogOpeningArchive" xml:space="preserve">
     <value>Opening archive...</value>
+  </data>
+  <data name="LogOverwritingOldFiles" xml:space="preserve">
+    <value>Overwriting old files...</value>
+  </data>
+  <data name="LogOverwritingOldFilesFailed" xml:space="preserve">
+    <value>Failed to overwrite old files: {0}
+WARNING: The plugin might be in an unusable state!!
+Run the update check again or reinstall the plugin, otherwise it might not survive the next ACT restart.</value>
+  </data>
+  <data name="LogRemovingOldBackup" xml:space="preserve">
+    <value>Removing old backup directory...</value>
+  </data>
+  <data name="LogRestoringBackup" xml:space="preserve">
+    <value>Restoring backup...</value>
   </data>
   <data name="LogResumingDownload" xml:space="preserve">
     <value>Resuming download...</value>
@@ -183,6 +234,10 @@ You'll need that for OverlayPlugin. Install it now?</value>
   </data>
   <data name="OverlayPluginTitle" xml:space="preserve">
     <value>OverlayPlugin</value>
+  </data>
+  <data name="SharpCompressOutdatedError" xml:space="preserve">
+    <value>The currently loaded version of SharpCompress is outdated!
+Make sure you load OverlayPlugin before any other plugins that also use SharpCompress (like ACTWebSocket).</value>
   </data>
   <data name="StatusCancelled" xml:space="preserve">
     <value>Cancelled!</value>
@@ -213,14 +268,15 @@ You'll need that for OverlayPlugin. Install it now?</value>
     <value>You are already on the latest version.</value>
   </data>
   <data name="UpdateCefDlFailed" xml:space="preserve">
-    <value>Failed to download CEF! You will not be able to use OverlayPlugin. Retry?</value>
+    <value>Failed to download CEF! Check the OverlayPlugin.dll tab for details.</value>
   </data>
   <data name="UpdateCheckException" xml:space="preserve">
     <value>Failed to check for updates:
 {0}</value>
   </data>
   <data name="UpdateCheckTitle" xml:space="preserve">
-    <value>OverlayPlugin Update Check</value>
+    <value>{0} Update Check</value>
+    <comment>The placeholder here is the project being updated (i.e. OverlayPlugin or Cactbot)</comment>
   </data>
   <data name="UpdateFailedError" xml:space="preserve">
     <value>Failed to update the plugin. It might not load the next time you start ACT. Retry?</value>
@@ -233,6 +289,7 @@ You'll need that for OverlayPlugin. Install it now?</value>
     <value>The update was successful. Please restart ACT to load the new plugin version.</value>
   </data>
   <data name="UpdateTitle" xml:space="preserve">
-    <value>OverlayPlugin Update</value>
+    <value>{0} Update</value>
+    <comment>The placeholder here is the project being updated (i.e. OverlayPlugin or Cactbot)</comment>
   </data>
 </root>

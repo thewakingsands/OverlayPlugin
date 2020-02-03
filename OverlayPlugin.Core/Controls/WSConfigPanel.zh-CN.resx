@@ -146,4 +146,16 @@
 然后，您将可以启用SSL。</value>
   </data>
 
+  <data name="label4.Text" xml:space="preserve">
+    <value>悬浮窗：</value>
+  </data>
+  <data name="ctxMenuLinkCopy.Text" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="lblUrlConfidentWarning.Text" xml:space="preserve">
+    <value>如果此悬浮窗不支持ACTWebSocket，则此链接可能不会生效。</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>悬浮窗链接：</value>
+  </data>
 </root>

@@ -26,6 +26,8 @@ namespace RainbowMage.OverlayPlugin
 
         bool Visible { get; set; }
 
+        IntPtr Handle { get; }
+
         Control CreateConfigControl();
 
         /// <summary>
@@ -42,6 +44,8 @@ namespace RainbowMage.OverlayPlugin
         /// オーバーレイの更新を停止します。
         /// </summary>
         void Stop();
+
+        void Reload();
 
         /// <summary>
         /// 指定した URL を表示します。

@@ -10,9 +10,16 @@ namespace RainbowMage.OverlayPlugin
 {
     class EventDispatcher
     {
-        static Dictionary<string, Func<JObject, JToken>> handlers = new Dictionary<string, Func<JObject, JToken>>();
-        static Dictionary<string, List<IEventReceiver>> eventFilter = new Dictionary<string, List<IEventReceiver>>();
-        static Dictionary<string, Func<JObject>> stateCallbacks = new Dictionary<string, Func<JObject>>();
+        static Dictionary<string, Func<JObject, JToken>> handlers;
+        static Dictionary<string, List<IEventReceiver>> eventFilter;
+        static Dictionary<string, Func<JObject>> stateCallbacks;
+
+        public static void Init()
+        {
+            handlers = new Dictionary<string, Func<JObject, JToken>>();
+            eventFilter = new Dictionary<string, List<IEventReceiver>>();
+            stateCallbacks = new Dictionary<string, Func<JObject>>();
+        }
 
         private static void Log(LogLevel level, string message, params object[] args)
         {
@@ -136,7 +143,63 @@ namespace RainbowMage.OverlayPlugin
                 throw new Exception(string.Format(Resources.MissingHandlerError, handlerName));
             }
 
-            return handlers[handlerName](e);
+            var result = handlers[handlerName](e);
+            if (result != null && result.Type != JTokenType.Object)
+            {
+                throw new Exception("Handler response must be an object or null");
+            }
+            return result;
+        }
+
+        public static JToken ProcessHandlerMessage(IEventReceiver receiver, string data)
+        {
+            try
+            {
+                var message = JObject.Parse(data);
+                if (!message.ContainsKey("call"))
+                {
+                    PluginMain.Logger.Log(LogLevel.Error, Resources.OverlayApiInvalidHandlerCall, receiver.Name + ": " + data);
+                    return null;
+                }
+
+                var handler = message["call"].ToString();
+                if (handler == "subscribe")
+                {
+                    if (!message.ContainsKey("events"))
+                    {
+                        PluginMain.Logger.Log(LogLevel.Error, Resources.OverlayApiMissingEventsField, receiver.Name + ": " + data);
+                        return null;
+                    }
+
+                    foreach (var name in message["events"].ToList())
+                    {
+                        Subscribe(name.ToString(), receiver);
+                        PluginMain.Logger.Log(LogLevel.Debug, Resources.OverlayApiSubscribed, receiver.Name, name.ToString());
+                    }
+                    return null;
+                }
+                else if (handler == "unsubscribe")
+                {
+                    if (!message.ContainsKey("events"))
+                    {
+                        PluginMain.Logger.Log(LogLevel.Error, Resources.OverlayApiMissingEventsFieldUnsub, receiver.Name + ": " + data);
+                        return null;
+                    }
+
+                    foreach (var name in message["events"].ToList())
+                    {
+                        Unsubscribe(name.ToString(), receiver);
+                    }
+                    return null;
+                }
+
+                return CallHandler(message);
+            }
+            catch (Exception e)
+            {
+                PluginMain.Logger.Log(LogLevel.Error, Resources.JsHandlerCallException, e);
+                return null;
+            }
         }
     }
 }

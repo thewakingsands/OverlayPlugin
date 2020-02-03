@@ -215,4 +215,78 @@
   <data name="WSLoadingCert" xml:space="preserve">
     <value>WS: Loading SSL certificate {0}...</value>
   </data>
+  <data name="ErrorOverlayNameEmpty" xml:space="preserve">
+    <value>Name must not be empty or white space only.</value>
+  </data>
+  <data name="ErrorOverlayNameNotUnique" xml:space="preserve">
+    <value>Name should be unique.</value>
+  </data>
+  <data name="GeneralTab" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="HotkeyActionToggleClickthrough" xml:space="preserve">
+    <value>Toggle clickthrough</value>
+  </data>
+  <data name="HotkeyActionToggleLock" xml:space="preserve">
+    <value>Toggle lock</value>
+  </data>
+  <data name="HotkeyActionToggleVisible" xml:space="preserve">
+    <value>Toggle visible/hide</value>
+  </data>
+  <data name="MapESMiniParse" xml:space="preserve">
+    <value>MiniParseEventSource</value>
+  </data>
+  <data name="MapOverlayLabel" xml:space="preserve">
+    <value>LabelOverlay</value>
+    <comment>This name appears on the overlay list underneath the overlay name.</comment>
+  </data>
+  <data name="MapOverlayMiniParse" xml:space="preserve">
+    <value>MiniParseOverlay</value>
+    <comment>This name appears on the overlay list underneath the overlay name.</comment>
+  </data>
+  <data name="MapOverlayShortLabel" xml:space="preserve">
+    <value>Label</value>
+    <comment>This name appears in the combo box for new overlays.</comment>
+  </data>
+  <data name="MapOverlayShortMiniParse" xml:space="preserve">
+    <value>MiniParse</value>
+    <comment>This name appears in the combo box for new overlays.</comment>
+  </data>
+  <data name="MapOverlayShortSpellTimer" xml:space="preserve">
+    <value>SpellTimer</value>
+    <comment>This name appears in the combo box for new overlays.</comment>
+  </data>
+  <data name="MapOverlaySpellTimer" xml:space="preserve">
+    <value>SpellTimerOverlay</value>
+    <comment>This name appears on the overlay list underneath the overlay name.</comment>
+  </data>
+  <data name="PromptSelectOverlayType" xml:space="preserve">
+    <value>Please select overlay type.</value>
+  </data>
+  <data name="TabsESLabel" xml:space="preserve">
+    <value>Event Source</value>
+  </data>
+  <data name="WSNotConfidentLink" xml:space="preserve">
+    <value>This link might not work if the overlay doesn't support ACTWebSocket.</value>
+  </data>
+  <data name="HotkeyActionToggleEnabled" xml:space="preserve">
+    <value>Toggle enabled</value>
+  </data>
+  <data name="CustomPresetLabel" xml:space="preserve">
+    <value>Custom</value>
+    <comment>This is the name for the preset entry that allows the user to select a custom overlay type instead of using a preset.</comment>
+  </data>
+  <data name="ErrorCouldNotLoadPresets" xml:space="preserve">
+    <value>NewOverlayDialog: Failed to load presets: {0}</value>
+  </data>
+  <data name="OverlayPreviewName" xml:space="preserve">
+    <value>Preview</value>
+    <comment>This is used as the temporary name for the preview overlay.</comment>
+  </data>
+  <data name="PromptSelectPreset" xml:space="preserve">
+    <value>Please select a preset.</value>
+  </data>
+  <data name="PresetUsesUnsupportedType" xml:space="preserve">
+    <value>Preset {0} uses unsupported type {1}!</value>
+  </data>
 </root>

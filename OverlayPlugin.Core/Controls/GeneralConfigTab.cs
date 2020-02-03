@@ -39,7 +39,7 @@ namespace RainbowMage.OverlayPlugin
 
         private void BtnUpdateCheck_Click(object sender, EventArgs e)
         {
-            Updater.Updater.PerformUpdateIfNecessary(this, PluginMain.PluginDirectory, true);
+            Updater.Updater.PerformUpdateIfNecessary(PluginMain.PluginDirectory, true);
         }
 
         private void CbErrorReports_CheckedChanged(object sender, EventArgs e)
@@ -82,6 +82,11 @@ namespace RainbowMage.OverlayPlugin
         {
             config.HideOverlayDuringCutscene = cbHideOverlaysDuringCutscene.Checked;
             OverlayHider.UpdateOverlays();
+        }
+
+        private void lnkGithubRepo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(lnkGithubRepo.Text);
         }
     }
 }

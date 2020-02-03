@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RainbowMage.OverlayPlugin</RootNamespace>
     <AssemblyName>OverlayPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -103,6 +103,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources.fr-FR.resx" />
+    <EmbeddedResource Include="Resources.ja-JP.resx" />
+    <EmbeddedResource Include="Resources.ko-KR.resx" />
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -111,9 +114,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(Platform) == x86 xcopy /Y /R /S "$(SolutionDir)Thirdparty\CefBinary_x86\*" "$(TargetDir)"
-if $(Platform) == x64 xcopy /Y /R /S "$(SolutionDir)Thirdparty\CefBinary_x64\*" "$(TargetDir)"
-xcopy /Y /R "$(SolutionDir)README.md" "$(TargetDir)"
+    <PostBuildEvent>xcopy /Y /R "$(SolutionDir)README"* "$(TargetDir)"
+
 xcopy /Y /R "$(SolutionDir)LICENSE.txt" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>

@@ -22,7 +22,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RainbowMage.OverlayPlugin.Updater.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,27 @@ namespace RainbowMage.OverlayPlugin.Updater {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update check for {0} through ACT failed, retrying with GitHub API..
+        /// </summary>
+        public static string ActUpdateCheckFailed {
+            get {
+                return ResourceManager.GetString("ActUpdateCheckFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACT Update check for {0} failed, falling back to GitHub API: {1}.
+        /// </summary>
+        public static string ActUpdateException {
+            get {
+                return ResourceManager.GetString("ActUpdateException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to create or empty the temporary directory &quot;{0}&quot;: {1}.
         /// </summary>
-        internal static string CreatingTempDirFailed {
+        public static string CreatingTempDirFailed {
             get {
                 return ResourceManager.GetString("CreatingTempDirFailed", resourceCulture);
             }
@@ -72,16 +90,16 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Download failed! The download has no file size (Content-Length header is missing)..
         /// </summary>
-        internal static string DownloadFailedContentLengthMissing {
+        public static string DownloadFailedContentLengthMissing {
             get {
                 return ResourceManager.GetString("DownloadFailedContentLengthMissing", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OverlayPlugin Error.
+        ///   Looks up a localized string similar to {0} Error.
         /// </summary>
-        internal static string ErrorTitle {
+        public static string ErrorTitle {
             get {
                 return ResourceManager.GetString("ErrorTitle", resourceCulture);
             }
@@ -90,7 +108,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Failed: {0}.
         /// </summary>
-        internal static string Exception {
+        public static string Exception {
             get {
                 return ResourceManager.GetString("Exception", resourceCulture);
             }
@@ -99,16 +117,36 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Failed to launch installer: {0}.
         /// </summary>
-        internal static string LaunchingInstallerFailed {
+        public static string LaunchingInstallerFailed {
             get {
                 return ResourceManager.GetString("LaunchingInstallerFailed", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] libcurl {
+            get {
+                object obj = ResourceManager.GetObject("libcurl", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] libcurl_x64 {
+            get {
+                object obj = ResourceManager.GetObject("libcurl_x64", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aborted by user..
         /// </summary>
-        internal static string LogAbortedByUser {
+        public static string LogAbortedByUser {
             get {
                 return ResourceManager.GetString("LogAbortedByUser", resourceCulture);
             }
@@ -117,7 +155,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Backing up old files....
         /// </summary>
-        internal static string LogBackingUpOldFiles {
+        public static string LogBackingUpOldFiles {
             get {
                 return ResourceManager.GetString("LogBackingUpOldFiles", resourceCulture);
             }
@@ -126,7 +164,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Cleaning up....
         /// </summary>
-        internal static string LogCleaningUp {
+        public static string LogCleaningUp {
             get {
                 return ResourceManager.GetString("LogCleaningUp", resourceCulture);
             }
@@ -135,7 +173,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Deleting temporary files....
         /// </summary>
-        internal static string LogDeletingTempFiles {
+        public static string LogDeletingTempFiles {
             get {
                 return ResourceManager.GetString("LogDeletingTempFiles", resourceCulture);
             }
@@ -144,7 +182,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Done..
         /// </summary>
-        internal static string LogDone {
+        public static string LogDone {
             get {
                 return ResourceManager.GetString("LogDone", resourceCulture);
             }
@@ -153,7 +191,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Download failed: {0}.
         /// </summary>
-        internal static string LogDownloadFailed {
+        public static string LogDownloadFailed {
             get {
                 return ResourceManager.GetString("LogDownloadFailed", resourceCulture);
             }
@@ -162,7 +200,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Downloading &quot;{0}&quot; into {1}....
         /// </summary>
-        internal static string LogDownloading {
+        public static string LogDownloading {
             get {
                 return ResourceManager.GetString("LogDownloading", resourceCulture);
             }
@@ -171,7 +209,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to The download was interrupted: {0}.
         /// </summary>
-        internal static string LogDownloadInterrupted {
+        public static string LogDownloadInterrupted {
             get {
                 return ResourceManager.GetString("LogDownloadInterrupted", resourceCulture);
             }
@@ -180,7 +218,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Extracting files....
         /// </summary>
-        internal static string LogExtractingFiles {
+        public static string LogExtractingFiles {
             get {
                 return ResourceManager.GetString("LogExtractingFiles", resourceCulture);
             }
@@ -189,7 +227,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Extraction aborted by user..
         /// </summary>
-        internal static string LogExtractionAbortedByUser {
+        public static string LogExtractionAbortedByUser {
             get {
                 return ResourceManager.GetString("LogExtractionAbortedByUser", resourceCulture);
             }
@@ -198,7 +236,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Failed to replace old directory: {0}.
         /// </summary>
-        internal static string LogFailedReplaceDirectory {
+        public static string LogFailedReplaceDirectory {
             get {
                 return ResourceManager.GetString("LogFailedReplaceDirectory", resourceCulture);
             }
@@ -207,7 +245,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Failed to delete {0}: {1}.
         /// </summary>
-        internal static string LogFailedToDelete {
+        public static string LogFailedToDelete {
             get {
                 return ResourceManager.GetString("LogFailedToDelete", resourceCulture);
             }
@@ -216,7 +254,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Error: The installer did not finish correctly..
         /// </summary>
-        internal static string LogInstallerFailed {
+        public static string LogInstallerFailed {
             get {
                 return ResourceManager.GetString("LogInstallerFailed", resourceCulture);
             }
@@ -225,7 +263,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Waiting for installer to exit....
         /// </summary>
-        internal static string LogInstallerWaiting {
+        public static string LogInstallerWaiting {
             get {
                 return ResourceManager.GetString("LogInstallerWaiting", resourceCulture);
             }
@@ -234,7 +272,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Launching installer....
         /// </summary>
-        internal static string LogLaunchingInstaller {
+        public static string LogLaunchingInstaller {
             get {
                 return ResourceManager.GetString("LogLaunchingInstaller", resourceCulture);
             }
@@ -243,7 +281,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Moving directory....
         /// </summary>
-        internal static string LogMovingDirectory {
+        public static string LogMovingDirectory {
             get {
                 return ResourceManager.GetString("LogMovingDirectory", resourceCulture);
             }
@@ -252,7 +290,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Opening archive....
         /// </summary>
-        internal static string LogOpeningArchive {
+        public static string LogOpeningArchive {
             get {
                 return ResourceManager.GetString("LogOpeningArchive", resourceCulture);
             }
@@ -261,7 +299,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Overwriting old files....
         /// </summary>
-        internal static string LogOverwritingOldFiles {
+        public static string LogOverwritingOldFiles {
             get {
                 return ResourceManager.GetString("LogOverwritingOldFiles", resourceCulture);
             }
@@ -272,16 +310,16 @@ namespace RainbowMage.OverlayPlugin.Updater {
         ///WARNING: The plugin might be in an unusable state!!
         ///Run the update check again or reinstall the plugin, otherwise it might not survive the next ACT restart..
         /// </summary>
-        internal static string LogOverwritingOldFilesFailed {
+        public static string LogOverwritingOldFilesFailed {
             get {
                 return ResourceManager.GetString("LogOverwritingOldFilesFailed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removing old backup....
+        ///   Looks up a localized string similar to Removing old backup directory....
         /// </summary>
-        internal static string LogRemovingOldBackup {
+        public static string LogRemovingOldBackup {
             get {
                 return ResourceManager.GetString("LogRemovingOldBackup", resourceCulture);
             }
@@ -290,7 +328,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Restoring backup....
         /// </summary>
-        internal static string LogRestoringBackup {
+        public static string LogRestoringBackup {
             get {
                 return ResourceManager.GetString("LogRestoringBackup", resourceCulture);
             }
@@ -299,7 +337,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Resuming download....
         /// </summary>
-        internal static string LogResumingDownload {
+        public static string LogResumingDownload {
             get {
                 return ResourceManager.GetString("LogResumingDownload", resourceCulture);
             }
@@ -308,7 +346,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Trying again....
         /// </summary>
-        internal static string LogRetry {
+        public static string LogRetry {
             get {
                 return ResourceManager.GetString("LogRetry", resourceCulture);
             }
@@ -317,7 +355,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Retrying in 1 second..
         /// </summary>
-        internal static string LogRetryAfter1s {
+        public static string LogRetryAfter1s {
             get {
                 return ResourceManager.GetString("LogRetryAfter1s", resourceCulture);
             }
@@ -326,7 +364,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to The MSVCRT installation failed..
         /// </summary>
-        internal static string MsvcrtFailed {
+        public static string MsvcrtFailed {
             get {
                 return ResourceManager.GetString("MsvcrtFailed", resourceCulture);
             }
@@ -336,7 +374,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         ///   Looks up a localized string similar to You&apos;re missing the MS Visual C++ Redistributable for Visual Studio 2019.
         ///You&apos;ll need that for OverlayPlugin. Install it now?.
         /// </summary>
-        internal static string MsvcrtMissing {
+        public static string MsvcrtMissing {
             get {
                 return ResourceManager.GetString("MsvcrtMissing", resourceCulture);
             }
@@ -345,7 +383,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Out of retries..
         /// </summary>
-        internal static string OutOfRetries {
+        public static string OutOfRetries {
             get {
                 return ResourceManager.GetString("OutOfRetries", resourceCulture);
             }
@@ -354,16 +392,26 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to OverlayPlugin.
         /// </summary>
-        internal static string OverlayPluginTitle {
+        public static string OverlayPluginTitle {
             get {
                 return ResourceManager.GetString("OverlayPluginTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The currently loaded version of SharpCompress is outdated!
+        ///Make sure you load OverlayPlugin before any other plugins that also use SharpCompress (like ACTWebSocket)..
+        /// </summary>
+        public static string SharpCompressOutdatedError {
+            get {
+                return ResourceManager.GetString("SharpCompressOutdatedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancelled!.
         /// </summary>
-        internal static string StatusCancelled {
+        public static string StatusCancelled {
             get {
                 return ResourceManager.GetString("StatusCancelled", resourceCulture);
             }
@@ -372,7 +420,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Cancelling....
         /// </summary>
-        internal static string StatusCancelling {
+        public static string StatusCancelling {
             get {
                 return ResourceManager.GetString("StatusCancelling", resourceCulture);
             }
@@ -381,7 +429,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to [{0}/{1}]: Done..
         /// </summary>
-        internal static string StatusDone {
+        public static string StatusDone {
             get {
                 return ResourceManager.GetString("StatusDone", resourceCulture);
             }
@@ -390,7 +438,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to [{0}/{1}]: Starting download....
         /// </summary>
-        internal static string StatusDownloadStarted {
+        public static string StatusDownloadStarted {
             get {
                 return ResourceManager.GetString("StatusDownloadStarted", resourceCulture);
             }
@@ -399,7 +447,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
-        internal static string StatusError {
+        public static string StatusError {
             get {
                 return ResourceManager.GetString("StatusError", resourceCulture);
             }
@@ -408,7 +456,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to [{0}/{1}]: Launching installer....
         /// </summary>
-        internal static string StatusLaunchingInstaller {
+        public static string StatusLaunchingInstaller {
             get {
                 return ResourceManager.GetString("StatusLaunchingInstaller", resourceCulture);
             }
@@ -417,7 +465,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to [{0}/{1}]: Preparing extraction....
         /// </summary>
-        internal static string StatusPreparingExtraction {
+        public static string StatusPreparingExtraction {
             get {
                 return ResourceManager.GetString("StatusPreparingExtraction", resourceCulture);
             }
@@ -426,16 +474,16 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to You are already on the latest version..
         /// </summary>
-        internal static string UpdateAlreadyLatest {
+        public static string UpdateAlreadyLatest {
             get {
                 return ResourceManager.GetString("UpdateAlreadyLatest", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to download CEF! You will not be able to use OverlayPlugin. Retry?.
+        ///   Looks up a localized string similar to Failed to download CEF! Check the OverlayPlugin.dll tab for details..
         /// </summary>
-        internal static string UpdateCefDlFailed {
+        public static string UpdateCefDlFailed {
             get {
                 return ResourceManager.GetString("UpdateCefDlFailed", resourceCulture);
             }
@@ -445,16 +493,16 @@ namespace RainbowMage.OverlayPlugin.Updater {
         ///   Looks up a localized string similar to Failed to check for updates:
         ///{0}.
         /// </summary>
-        internal static string UpdateCheckException {
+        public static string UpdateCheckException {
             get {
                 return ResourceManager.GetString("UpdateCheckException", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OverlayPlugin Update Check.
+        ///   Looks up a localized string similar to {0} Update Check.
         /// </summary>
-        internal static string UpdateCheckTitle {
+        public static string UpdateCheckTitle {
             get {
                 return ResourceManager.GetString("UpdateCheckTitle", resourceCulture);
             }
@@ -463,7 +511,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to Failed to update the plugin. It might not load the next time you start ACT. Retry?.
         /// </summary>
-        internal static string UpdateFailedError {
+        public static string UpdateFailedError {
             get {
                 return ResourceManager.GetString("UpdateFailedError", resourceCulture);
             }
@@ -473,7 +521,7 @@ namespace RainbowMage.OverlayPlugin.Updater {
         ///   Looks up a localized string similar to Failed to parse version:
         ///{0}.
         /// </summary>
-        internal static string UpdateParseVersionError {
+        public static string UpdateParseVersionError {
             get {
                 return ResourceManager.GetString("UpdateParseVersionError", resourceCulture);
             }
@@ -482,16 +530,16 @@ namespace RainbowMage.OverlayPlugin.Updater {
         /// <summary>
         ///   Looks up a localized string similar to The update was successful. Please restart ACT to load the new plugin version..
         /// </summary>
-        internal static string UpdateSuccess {
+        public static string UpdateSuccess {
             get {
                 return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OverlayPlugin Update.
+        ///   Looks up a localized string similar to {0} Update.
         /// </summary>
-        internal static string UpdateTitle {
+        public static string UpdateTitle {
             get {
                 return ResourceManager.GetString("UpdateTitle", resourceCulture);
             }

@@ -127,7 +127,7 @@
     <value>추가</value>
   </data>
   <data name="label_ListEmpty.Text" xml:space="preserve">
-    <value>[추가] 버튼을 눌러서 오버레이를 설정해주세요.</value>
+    <value>[추가] 버튼을 눌러서 오버레이를 설정해주십시오.</value>
   </data>
   <data name="tabPageMain.Text" xml:space="preserve">
     <value>일반</value>
@@ -153,5 +153,17 @@
   </data>
   <data name="contextMenuLogList.Size" type="System.Drawing.Size, System.Drawing">
     <value>181, 104</value>
+  </data>
+
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>추가/삭제 오버레이</value>
+  </data>
+
+  <data name="buttonClearLog.Text" xml:space="preserve">
+    <value>로그 지우기</value>
+  </data>
+
+  <data name="checkBoxFollowLog.Text" xml:space="preserve">
+    <value>로그 자동 스크롤</value>
   </data>
 </root>

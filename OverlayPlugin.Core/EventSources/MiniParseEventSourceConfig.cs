@@ -100,7 +100,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         {
             this.updateInterval = 1;
             this.enmityIntervalMs = 100;
-            this.sortKey = null;
+            this.sortKey = "encdps";
             this.sortDesc = true;
             this.updateDpsDuringImport = false;
         }

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label6.Text" xml:space="preserve">
-    <value>최대 프레임 레이트</value>
+    <value>최대 프레임 레이트 (FPS)</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>클릭 무시</value>
@@ -132,13 +132,82 @@
   <data name="buttonMiniParseReloadBrowser.Text" xml:space="preserve">
     <value>새로고침</value>
   </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>글로벌 핫 키 사용</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>글로벌 핫 키</value>
-  </data>
   <data name="label9.Text" xml:space="preserve">
     <value>위치 잠금</value>
+  </data>
+
+  <data name="lblNoFocus.Text" xml:space="preserve">
+    <value>키 입력 무시</value>
+  </data>
+
+  <data name="buttonResetOverlayPosition.Text" xml:space="preserve">
+    <value>오버레이 위치 초기화</value>
+  </data>
+
+  <data name="label4.Text" xml:space="preserve">
+    <value>오버레이 배경을 흰색으로 변경하기</value>
+  </data>
+
+  <data name="checkLogConsoleMessages.Text" xml:space="preserve">
+    <value>오버레이 콘솔 메시지를 로그에 표시</value>
+  </data>
+
+  <data name="label1.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+
+  <data name="label11.Text" xml:space="preserve">
+    <value>오버레이를 OverlayPlugin으로 연결했을 때, 정상적으로 동작하지 않는다면 이 기능을 사용합니다.</value>
+  </data>
+
+  <data name="btnResetZoom.Text" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+
+  <data name="checkNoFocus.Text" xml:space="preserve">
+    <value>이 오버레이에 포커스를 두지 않음 (키 입력 무시)</value>
+  </data>
+
+  <data name="checkActwsCompatbility.Text" xml:space="preserve">
+    <value>오버레이를 ACTWebSocket으로 연결하기</value>
+  </data>
+
+  <data name="label12.Text" xml:space="preserve">
+    <value>오버레이가 잘 보이지 않거나 크기 조정을 할 수 없는 경우에만 이 기능을 사용합니다.</value>
+  </data>
+
+  <data name="label5.Text" xml:space="preserve">
+    <value>ACTWS 호환성</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>확대/축소</value>
+  </data>
+  <data name="btnApplyHotkeyChanges.Text" xml:space="preserve">
+    <value>수정 내용 적용</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>오버레이를 끄면 CPU 사용량을 줄이지만, 오버레이가 하는 모든 것을 중단시킵니다. (소리 등)
+오버레이를 표시하지 않는 것은 단순히 보이지 않게 할 뿐입니다. 여전히 백그라운드에서 소리를 내보내고, 통계를 수집하는 등의 일을 합니다.</value>
+  </data>
+  <data name="tabACTWS.Text" xml:space="preserve">
+    <value>ACT 웹소켓</value>
+  </data>
+  <data name="tabAdvanced.Text" xml:space="preserve">
+    <value>고급</value>
+  </data>
+  <data name="tabGeneral.Text" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>오버레이 켜기</value>
+  </data>
+  <data name="tabHotkeys.Text" xml:space="preserve">
+    <value>단축키</value>
+  </data>
+  <data name="btnAddHotkey.Text" xml:space="preserve">
+    <value>새 단축키 추가</value>
+  </data>
+  <data name="btnRemoveHotkey.Text" xml:space="preserve">
+    <value>선택한 단축키 제거</value>
   </data>
 </root>

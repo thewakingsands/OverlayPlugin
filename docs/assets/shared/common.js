@@ -11,7 +11,7 @@
   if (wsUrl) {
     sendMessage = (obj) => {
       if (queue)
-        queue.push(msg);
+        queue.push(obj);
       else
         ws.send(JSON.stringify(obj));
     };

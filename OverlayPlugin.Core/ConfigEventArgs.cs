@@ -80,14 +80,6 @@ namespace RainbowMage.OverlayPlugin
         }
     }
 
-    public class GlobalHotkeyChangedEventArgs : EventArgs
-    {
-        public Keys NewHotkey { get; private set; }
-        public GlobalHotkeyChangedEventArgs(Keys hotkey)
-        {
-            this.NewHotkey = hotkey;
-        }
-    }
     public class GlobalHotkeyTypeChangedEventArgs : EventArgs
     {
         public GlobalHotkeyType NewHotkeyType { get; private set; }

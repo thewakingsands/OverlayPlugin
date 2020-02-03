@@ -2,40 +2,26 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Xml.Serialization;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace RainbowMage.OverlayPlugin
 {
-    /// <summary>
-    /// IOverlayConfig を実装するオーバーレイ設定クラスの抽象クラス。
-    /// 実装する場合、XmlSerializer でシリアライズ可能である必要があります。
-    /// </summary>
-    [Serializable]
     public abstract class OverlayConfigBase : IOverlayConfig
     {
         public event EventHandler<VisibleStateChangedEventArgs> VisibleChanged;
+        public event EventHandler DisabledChanged;
         public event EventHandler<ThruStateChangedEventArgs> ClickThruChanged;
         public event EventHandler<UrlChangedEventArgs> UrlChanged;
         public event EventHandler<MaxFrameRateChangedEventArgs> MaxFrameRateChanged;
-        public event EventHandler<GlobalHotkeyEnabledChangedEventArgs> GlobalHotkeyEnabledChanged;
-        public event EventHandler<GlobalHotkeyChangedEventArgs> GlobalHotkeyChanged;
-        public event EventHandler<GlobalHotkeyChangedEventArgs> GlobalHotkeyModifiersChanged;
+        public event EventHandler GlobalHotkeyChanged;
         public event EventHandler<LockStateChangedEventArgs> LockChanged;
-        public event EventHandler<GlobalHotkeyTypeChangedEventArgs> GlobalHotkeyTypeChanged;
+        public event EventHandler LogConsoleMessagesChanged;
 
-        /// <summary>
-        /// ユーザーが設定したオーバーレイの名前を取得または設定します。
-        /// </summary>
-        [XmlElement("Name")]
         public string Name { get; set; }
 
         private bool isVisible;
-        /// <summary>
-        /// オーバーレイが可視状態であるかどうかを取得または設定します。
-        /// </summary>
-        [XmlElement("IsVisible")]
         public bool IsVisible
         {
             get
@@ -47,19 +33,29 @@ namespace RainbowMage.OverlayPlugin
                 if (this.isVisible != value)
                 {
                     this.isVisible = value;
-                    if (VisibleChanged != null)
-                    {
-                        VisibleChanged(this, new VisibleStateChangedEventArgs(this.isVisible));
-                    }
+                    VisibleChanged?.Invoke(this, new VisibleStateChangedEventArgs(this.isVisible));
+                }
+            }
+        }
+
+        private bool disabled;
+        public bool Disabled
+        {
+            get
+            {
+                return disabled;
+            }
+            set
+            {
+                if (disabled != value)
+                {
+                    disabled = value;
+                    DisabledChanged?.Invoke(this, new EventArgs());
                 }
             }
         }
 
         private bool isClickThru;
-        /// <summary>
-        /// オーバーレイがマウスの入力を透過するかどうかを取得または設定します。
-        /// </summary>
-        [XmlElement("IsClickThru")]
         public bool IsClickThru
         {
             get
@@ -71,31 +67,15 @@ namespace RainbowMage.OverlayPlugin
                 if (this.isClickThru != value)
                 {
                     this.isClickThru = value;
-                    if (ClickThruChanged != null)
-                    {
-                        ClickThruChanged(this, new ThruStateChangedEventArgs(this.isClickThru));
-                    }
+                    ClickThruChanged?.Invoke(this, new ThruStateChangedEventArgs(this.isClickThru));
                 }
             }
         }
 
-        /// <summary>
-        /// オーバーレイの位置を取得または設定します。
-        /// </summary>
-        [XmlElement("Position")]
         public Point Position { get; set; }
-
-        /// <summary>
-        /// オーバーレイの大きさを取得または設定します。
-        /// </summary>
-        [XmlElement("Size")]
         public Size Size { get; set; }
 
         private string url;
-        /// <summary>
-        /// オーバーレイが表示する URL を取得または設定します。
-        /// </summary>
-        [XmlElement("Url")]
         public string Url
         {
             get
@@ -107,19 +87,12 @@ namespace RainbowMage.OverlayPlugin
                 if (this.url != value)
                 {
                     this.url = value;
-                    if (UrlChanged != null)
-                    {
-                        UrlChanged(this, new UrlChangedEventArgs(this.url));
-                    }
+                    UrlChanged?.Invoke(this, new UrlChangedEventArgs(this.url));
                 }
             }
         }
 
         private int maxFrameRate;
-        /// <summary>
-        /// オーバーレイの最大フレームレートを取得または設定します。
-        /// </summary>
-        [XmlElement("MaxFrameRate")]
         public int MaxFrameRate
         {
             get
@@ -131,112 +104,70 @@ namespace RainbowMage.OverlayPlugin
                 if (this.maxFrameRate != value)
                 {
                     this.maxFrameRate = value;
-                    if (MaxFrameRateChanged != null)
-                    {
-                        MaxFrameRateChanged(this, new MaxFrameRateChangedEventArgs(this.maxFrameRate));
-                    }
+                    MaxFrameRateChanged?.Invoke(this, new MaxFrameRateChangedEventArgs(this.maxFrameRate));
                 }
             }
         }
 
         private bool globalHotkeyEnabled;
-        /// <summary>
-        /// オーバーレイに設定されたグローバルホットキーによって表示切替を行うかどうかを取得または設定します。
-        /// </summary>
-        [XmlElement("GlobalHotkeyEnabled")]
+        [Obsolete("Use the GlobalHotkeys list instead", true)]
         public bool GlobalHotkeyEnabled
         {
             get
             {
-                return this.globalHotkeyEnabled;
+                return globalHotkeyEnabled;
             }
             set
             {
-                if (this.globalHotkeyEnabled != value)
-                {
-                    this.globalHotkeyEnabled = value;
-                    if (GlobalHotkeyEnabledChanged != null)
-                    {
-                        GlobalHotkeyEnabledChanged(this, new GlobalHotkeyEnabledChangedEventArgs(this.globalHotkeyEnabled));
-                    }
-                }
+                globalHotkeyEnabled = value;
             }
         }
 
         private Keys globalHotkey;
-        /// <summary>
-        /// オーバーレイのグローバルホットキーを取得または設定します。
-        /// </summary>
-        [XmlElement("GlobalHotkey")]
+        [Obsolete("Use the GlobalHotkeys list instead", true)]
         public Keys GlobalHotkey
         {
             get
             {
-                return this.globalHotkey;
+                return globalHotkey;
             }
             set
             {
-                if (this.globalHotkey != value)
-                {
-                    this.globalHotkey = value;
-                    if (GlobalHotkeyChanged != null)
-                    {
-                        GlobalHotkeyChanged(this, new GlobalHotkeyChangedEventArgs(this.globalHotkey));
-                    }
-                }
+                globalHotkey = value;
             }
         }
 
         private Keys globalHotkeyModifiers;
-        /// <summary>
-        /// オーバーレイのグローバルホットキーの修飾キーを取得または設定します。
-        /// </summary>
-        [XmlElement("GlobalHotkeyModifiers")]
+        [Obsolete("Use the GlobalHotkeys list instead", true)]
         public Keys GlobalHotkeyModifiers
         {
             get
             {
-                return this.globalHotkeyModifiers;
+                return globalHotkeyModifiers;
             }
             set
             {
-                if (this.globalHotkeyModifiers != value)
-                {
-                    this.globalHotkeyModifiers = value;
-                    if (GlobalHotkeyModifiersChanged != null)
-                    {
-                        GlobalHotkeyModifiersChanged(this, new GlobalHotkeyChangedEventArgs(this.globalHotkeyModifiers));
-                    }
-                }
+                globalHotkeyModifiers = value;
             }
         }
 
         private GlobalHotkeyType globalHotkeyType;
-        [XmlElement("GlobalHotkeyType")]
+        [Obsolete("Use the GlobalHotkeys list instead", true)]
         public GlobalHotkeyType GlobalHotkeyType
         {
             get
             {
-                return this.globalHotkeyType;
+                return globalHotkeyType;
             }
             set
             {
-                if(this.globalHotkeyType != value)
-                {
-                    this.globalHotkeyType = value;
-                    if (GlobalHotkeyTypeChanged != null)
-                    {
-                        GlobalHotkeyTypeChanged(this, new GlobalHotkeyTypeChangedEventArgs(this.globalHotkeyType));
-                    }
-                }
+                globalHotkeyType = value;
             }
         }
+
+        public List<GlobalHotkey> GlobalHotkeys;
         
         private bool isLocked;
-        /// <summary>
-        /// オーバーレイがマウスの入力を透過するかどうかを取得または設定します。
-        /// </summary>
-        [XmlElement("IsLocked")]
         public bool IsLocked
         {
             get
@@ -248,10 +179,24 @@ namespace RainbowMage.OverlayPlugin
                 if (this.isLocked != value)
                 {
                     this.isLocked = value;
-                    if (LockChanged != null)
-                    {
-                        LockChanged(this, new LockStateChangedEventArgs(this.isLocked));
-                    }
+                    LockChanged?.Invoke(this, new LockStateChangedEventArgs(this.isLocked));
+                }
+            }
+        }
+
+        private bool logConsoleMessages = true;
+        public bool LogConsoleMessages
+        {
+            get
+            {
+                return this.logConsoleMessages;
+            }
+            set
+            {
+                if (this.logConsoleMessages != value)
+                {
+                    this.logConsoleMessages = value;
+                    LogConsoleMessagesChanged?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -265,13 +210,34 @@ namespace RainbowMage.OverlayPlugin
             this.Size = new Size(300, 300);
             this.Url = "";
             this.MaxFrameRate = 30;
-            this.globalHotkeyEnabled = false;
-            this.GlobalHotkey = Keys.None;
-            this.globalHotkeyModifiers = Keys.None;
-            this.globalHotkeyType = GlobalHotkeyType.ToggleVisible;
+            this.GlobalHotkeys = new List<GlobalHotkey>();
+            this.logConsoleMessages = true;
         }
 
-        [XmlIgnore]
+        [OnDeserialized]
+        public void ConvertOldSettings(StreamingContext ctx)
+        {
+            if (globalHotkey != Keys.None)
+            {
+                GlobalHotkeys.Add(new GlobalHotkey
+                {
+                    Enabled = globalHotkeyEnabled,
+                    Modifiers = globalHotkeyModifiers,
+                    Key = globalHotkey,
+                    Type = globalHotkeyType
+                });
+
+                globalHotkeyEnabled = false;
+                globalHotkeyModifiers = Keys.None;
+                globalHotkey = Keys.None;
+            }
+        }
+
+        public void TriggerGlobalHotkeyChanged()
+        {
+            GlobalHotkeyChanged?.Invoke(null, new EventArgs());
+        }
+
         [JsonIgnore]
         public abstract Type OverlayType { get; }
     }
@@ -280,6 +246,15 @@ namespace RainbowMage.OverlayPlugin
     {
         ToggleVisible,
         ToggleClickthru,
-        ToggleLock
+        ToggleLock,
+        ToogleEnabled,
+    }
+
+    public class GlobalHotkey
+    {
+        public bool Enabled;
+        public Keys Key;
+        public Keys Modifiers;
+        public GlobalHotkeyType Type;
     }
 }

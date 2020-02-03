@@ -16,7 +16,7 @@ namespace RainbowMage.OverlayPlugin
         static ILogger logger;
         static PluginMain main;
 
-        public static void Initialize()
+        public static void Init()
         {
             config = Registry.Resolve<IPluginConfig>();
             logger = Registry.Resolve<ILogger>();

@@ -155,7 +155,8 @@ namespace RainbowMage.OverlayPlugin
         public static void RegisterNetworkParser(Action<string, long, byte[]> handler)
         {
             var sub = GetSubscription();
-            sub.NetworkReceived += new NetworkReceivedDelegate(handler);
+            if (sub != null)
+                sub.NetworkReceived += new NetworkReceivedDelegate(handler);
         }
 
         // PartyListChangedDelegate(ReadOnlyCollection<uint> partyList, int partySize)
@@ -168,7 +169,8 @@ namespace RainbowMage.OverlayPlugin
         public static void RegisterPartyChangeDelegate(Action<ReadOnlyCollection<uint>, int> handler)
         {
             var sub = GetSubscription();
-            sub.PartyListChanged += new PartyListChangedDelegate(handler);
+            if (sub != null)
+                sub.PartyListChanged += new PartyListChangedDelegate(handler);
         }
     }
 }

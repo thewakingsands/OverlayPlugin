@@ -31,7 +31,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "OverlayForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OverlayForm_FormClosed);
-            this.Load += new System.EventHandler(this.OverlayForm_Load);
             this.ResumeLayout(false);
 
         }

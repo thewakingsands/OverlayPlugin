@@ -13,6 +13,15 @@ let localeStrings = {
       TargetOfTarget: 'ToT',
     },
   },
+  'French': {
+    target: 'Cible',
+    distance: 'Distance',
+    titles: {
+      Target: 'Cible',
+      Focus: 'Focus',
+      Hover: 'Survol',
+      TargetOfTarget: 'ToT',
+    },
   'Japanese': {
     target: 'ターゲット',
     distance: '距離',
@@ -39,7 +48,7 @@ let targetinfo = new Vue({
       if (msg.language in localeStrings)
         this.strings = localeStrings[msg.language];
       else
-        this.strings = localStrings['English'];
+        this.strings = localeStrings['English'];
 
       window.addOverlayListener('EnmityTargetData', this.update);
       document.addEventListener('onOverlayStateUpdate', this.updateState);

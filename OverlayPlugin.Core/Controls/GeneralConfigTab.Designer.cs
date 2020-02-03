@@ -29,24 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneralConfigTab));
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.cbErrorReports = new System.Windows.Forms.CheckBox();
             this.cbUpdateCheck = new System.Windows.Forms.CheckBox();
             this.btnUpdateCheck = new System.Windows.Forms.Button();
             this.cbHideOverlaysWhenNotActive = new System.Windows.Forms.CheckBox();
             this.cbHideOverlaysDuringCutscene = new System.Windows.Forms.CheckBox();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.lblGithub = new System.Windows.Forms.Label();
+            this.lnkGithubRepo = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.cbErrorReports, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cbUpdateCheck, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnUpdateCheck, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.cbHideOverlaysWhenNotActive, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.cbHideOverlaysDuringCutscene, 1, 3);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // cbErrorReports
             // 
@@ -79,26 +69,43 @@
             this.cbHideOverlaysDuringCutscene.Name = "cbHideOverlaysDuringCutscene";
             this.cbHideOverlaysDuringCutscene.UseVisualStyleBackColor = true;
             // 
+            // lblGithub
+            // 
+            resources.ApplyResources(this.lblGithub, "lblGithub");
+            this.lblGithub.Name = "lblGithub";
+            // 
+            // lnkGithubRepo
+            // 
+            resources.ApplyResources(this.lnkGithubRepo, "lnkGithubRepo");
+            this.lnkGithubRepo.Name = "lnkGithubRepo";
+            this.lnkGithubRepo.TabStop = true;
+            this.lnkGithubRepo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkGithubRepo_LinkClicked);
+            // 
             // GeneralConfigTab
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.lnkGithubRepo);
+            this.Controls.Add(this.lblGithub);
+            this.Controls.Add(this.btnUpdateCheck);
+            this.Controls.Add(this.cbErrorReports);
+            this.Controls.Add(this.cbUpdateCheck);
+            this.Controls.Add(this.cbHideOverlaysDuringCutscene);
+            this.Controls.Add(this.cbHideOverlaysWhenNotActive);
             this.Name = "GeneralConfigTab";
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox cbErrorReports;
         private System.Windows.Forms.CheckBox cbUpdateCheck;
         private System.Windows.Forms.Button btnUpdateCheck;
         private System.Windows.Forms.CheckBox cbHideOverlaysWhenNotActive;
         private System.Windows.Forms.CheckBox cbHideOverlaysDuringCutscene;
+        private System.Windows.Forms.Label lblGithub;
+        private System.Windows.Forms.LinkLabel lnkGithubRepo;
     }
 }

@@ -73,6 +73,16 @@ namespace RainbowMage.OverlayPlugin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to load {0}: {1}
+        ///Make sure you extracted the whole plugin archive and didn&apos;t delete anything (like the libs folder)..
+        /// </summary>
+        internal static string AssemblyMissing {
+            get {
+                return ResourceManager.GetString("AssemblyMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AssemblyResolver: Error: {0}.
         /// </summary>
         internal static string AssemblyResolverError {
@@ -105,6 +115,25 @@ namespace RainbowMage.OverlayPlugin {
         internal static string CoreOrHtmlRendererInsane {
             get {
                 return ResourceManager.GetString("CoreOrHtmlRendererInsane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load dependency {0}: {1}
+        ///Make sure you extracted the whole plugin archive and didn&apos;t delete any files..
+        /// </summary>
+        internal static string DependencyMissing {
+            get {
+                return ResourceManager.GetString("DependencyMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fatal: The loaded {0} version is older than expected ({1}  &lt; {2})! This might cause strange bugs in OverlayPlugin and its addons..
+        /// </summary>
+        internal static string DependencyOutdated {
+            get {
+                return ResourceManager.GetString("DependencyOutdated", resourceCulture);
             }
         }
         
