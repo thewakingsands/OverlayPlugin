@@ -163,6 +163,7 @@ namespace RainbowMage.OverlayPlugin
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
+        public RainbowMage.OverlayPlugin.TabControlExt tabControl;
         private System.Windows.Forms.TabPage tabPageMain;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button buttonRemoveOverlay;

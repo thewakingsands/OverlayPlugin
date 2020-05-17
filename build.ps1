@@ -1,6 +1,6 @@
 try {
     # This assumes Visual Studio 2019 is installed in C:. You might have to change this depending on your system.
-    $VS_PATH = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community"
+    $VS_PATH = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise"
 
     if ( -not (Test-Path "$VS_PATH")) {
         echo "Error: VS_PATH isn't set correctly! Update the variable in build.ps1 for your system."
@@ -79,13 +79,13 @@ try {
 
     if (Test-Path $archive) { rm $archive }
     cd OverlayPlugin
-    7z a ..\$archive .
+    & "C:\Program Files\7-Zip\7z.exe" a ..\$archive .
     cd ..
 
     $archive = "..\OverlayPlugin-$version.zip"
 
     if (Test-Path $archive) { rm $archive }
-    7z a $archive OverlayPlugin
+    & "C:\Program Files\7-Zip\7z.exe" a $archive OverlayPlugin
 } catch {
     Write-Error $Error[0]
 }
