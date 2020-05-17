@@ -274,16 +274,16 @@ namespace RainbowMage.OverlayPlugin.EventSources
             [FieldOffset(0xA8)]
             public Single PosZ;
 
-            [FieldOffset(0x1818)]
+            [FieldOffset(0x1820)]
             public uint TargetID;
 
-            [FieldOffset(0x18A4)]
+            [FieldOffset(0x18B8)]
             public int CurrentHP;
 
-            [FieldOffset(0x18A8)]
+            [FieldOffset(0x18BC)]
             public int MaxHP;
 
-            [FieldOffset(0x18DC)]
+            [FieldOffset(0x18F4)]
             public byte Job;
 
             [FieldOffset(0x1978)]
