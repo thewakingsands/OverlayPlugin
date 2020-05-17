@@ -1,59 +1,53 @@
 ﻿{
-  "Kagerou": {
+  "Kagerou 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://hibiyasleep.github.io/kagerou/overlay/",
-    "size": [500, 300],
-    "supports": ["legacy", "actws"]
+    "url": "https://ainou.plus/kagerou",
+    "size": [ 500, 300 ],
+    "supports": [ "legacy", "actws" ]
   },
-  "MopiMopi": {
+  "MopiMopi 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://haeruhaeru.github.io/mopimopi/",
-    "size": [600, 500],
-    "supports": ["actws"]
+    "url": "https://ainou.plus/mopimopi",
+    "size": [ 600, 500 ],
+    "supports": [ "actws" ]
   },
-  "Ember": {
+  "faceroll 精简悬浮窗": {
     "type": "MiniParse",
-    "url": "https://goldenchrysus.github.io/ffxiv/ember-overlay/",
-    "size": [600, 400],
-    "supports": ["legacy", "actws"]
+    "url": "https://ainou.plus/faceroll",
+    "size": [ 600, 400 ],
+    "supports": [ "legacy", "actws" ]
   },
-  "Horizoverlay": {
+  "Horizoverlay 横版悬浮窗": {
     "type": "MiniParse",
-    "url": "https://bsides.github.io/horizoverlay/",
-    "size": ["90%", 300],
-    "supports": ["legacy", "actws"]
+    "url": "https://ainou.plus/horizoverlay",
+    "size": [ "90%", 300 ],
+    "supports": [ "legacy", "actws" ]
   },
-  "Ikegami": {
-    "type": "MiniParse",
-    "url": "https://idyllshi.re/ikegami/",
-    "size": ["90%", 500],
-    "supports": ["legacy", "actws"]
-  },
-  "Enmity (Relative Values)": {
+  "仇恨显示(相对值)": {
     "type": "MiniParse",
     "url": "%%/enmity/enmity_relative.html",
     "size": [300, 400],
     "supports": ["modern"]
   },
-  "Enmity (Absolute Values)": {
+  "仇恨显示(绝对值)": {
     "type": "MiniParse",
     "url": "%%/enmity/enmity_absolute.html",
     "size": [300, 400],
     "supports": ["modern"]
   },
-  "Enmity (Aggrolist)": {
+  "仇恨显示(聚合)": {
     "type": "MiniParse",
     "url": "%%/enmity/aggrolist.html",
     "size": [300, 400],
     "supports": ["modern"]
   },
-  "SkillDisplay": {
+  "输出循环显示": {
     "type": "MiniParse",
-    "url": "https://rawrington.github.io/SkillDisplay/",
-    "size": [800, 300],
-    "supports": ["actws"]
+    "url": "https://ainou.plus/skilldisplay",
+    "size": [ 800, 300 ],
+    "supports": [ "actws" ]
   },
-  "Basic RainbowMage": {
+  "本地精简悬浮窗": {
     "type": "MiniParse",
     "url": "%%/miniparse.html",
     "size": [700, 300],

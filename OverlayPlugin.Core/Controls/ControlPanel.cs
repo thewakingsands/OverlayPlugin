@@ -242,6 +242,22 @@ namespace RainbowMage.OverlayPlugin
             return overlay;
         }
 
+        public IOverlay CreateAndRegisterOverlay(Type overlayType, string name)
+        {
+            var parameters = new NamedParameterOverloads();
+            parameters["config"] = null;
+            parameters["name"] = name;
+
+            var overlay = (IOverlay)Registry.Container.Resolve(overlayType, parameters);
+
+            config.Overlays.Add(overlay.Config);
+            pluginMain.RegisterOverlay(overlay);
+
+            AddConfigTab(overlay);
+
+            return overlay;
+        }
+
         public void buttonRemoveOverlay_Click(object sender, EventArgs e)
         {
             if (tabControl.SelectedTab == null) // ???

@@ -22,7 +22,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
             _cefPath = cefPath;
             _pluginLoader = pluginLoader;
-            lnkManual.Text = CefInstaller.GetUrl();
+            lnkManual.Text = "https://aka.ms/vs/16/release/vc_redist.x64.exe";
         }
 
         private async void btnOpenManual_Click(object sender, EventArgs e)
