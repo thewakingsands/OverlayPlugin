@@ -127,10 +127,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="textEnmityInterval.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 107</value>
+    <value>158, 99</value>
   </data>
   <data name="textEnmityInterval.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 20</value>
+    <value>490, 21</value>
   </data>
   <data name="textEnmityInterval.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -157,10 +157,10 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 104</value>
+    <value>3, 96</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 26</value>
+    <value>149, 24</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -187,10 +187,10 @@
     <value>Fill</value>
   </data>
   <data name="comboSortKey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 29</value>
+    <value>158, 27</value>
   </data>
   <data name="comboSortKey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 21</value>
+    <value>490, 20</value>
   </data>
   <data name="comboSortKey.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -214,10 +214,10 @@
     <value>Fill</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 26</value>
+    <value>3, 24</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 26</value>
+    <value>149, 24</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -250,7 +250,7 @@
     <value>3, 0</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 26</value>
+    <value>149, 24</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -280,7 +280,7 @@
     <value>158, 3</value>
   </data>
   <data name="textUpdateInterval.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 20</value>
+    <value>490, 21</value>
   </data>
   <data name="textUpdateInterval.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -304,10 +304,10 @@
     <value>Fill</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 52</value>
+    <value>3, 48</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 26</value>
+    <value>149, 24</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -337,10 +337,10 @@
     <value>Fill</value>
   </data>
   <data name="checkSortDesc.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 55</value>
+    <value>158, 51</value>
   </data>
   <data name="checkSortDesc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 20</value>
+    <value>490, 18</value>
   </data>
   <data name="checkSortDesc.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -364,10 +364,10 @@
     <value>Fill</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 78</value>
+    <value>3, 72</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 26</value>
+    <value>149, 24</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -397,10 +397,10 @@
     <value>Fill</value>
   </data>
   <data name="cbUpdateDuringImport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 81</value>
+    <value>158, 75</value>
   </data>
   <data name="cbUpdateDuringImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 20</value>
+    <value>490, 18</value>
   </data>
   <data name="cbUpdateDuringImport.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -427,7 +427,7 @@
     <value>6</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>651, 388</value>
+    <value>651, 358</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -445,16 +445,16 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="textEnmityInterval" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="comboSortKey" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="textUpdateInterval" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkSortDesc" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbUpdateDuringImport" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,155,Percent,100" /&gt;&lt;Rows Styles="Absolute,26,Absolute,26,Absolute,26,Absolute,26,Absolute,26,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="textEnmityInterval" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="comboSortKey" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="textUpdateInterval" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkSortDesc" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbUpdateDuringImport" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,155,Percent,100" /&gt;&lt;Rows Styles="Absolute,24,Absolute,24,Absolute,24,Absolute,24,Absolute,24,Absolute,18" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>6, 12</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>651, 388</value>
+    <value>651, 358</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>BuiltinEventConfigPanel</value>

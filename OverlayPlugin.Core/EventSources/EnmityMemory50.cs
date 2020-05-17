@@ -30,9 +30,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private const int aggroEnmityOffset = 0x908;
 
         // Offsets from the targetAddress to find the correct target type.
-        private const int targetTargetOffset = 0x0;
-        private const int focusTargetOffset = 0x58;
-        private const int hoverTargetOffset = 0x20;
+        private const int targetTargetOffset = -24;
+        private const int focusTargetOffset = 56;
+        private const int hoverTargetOffset = 32;
 
         // Constants.
         private const uint emptyID = 0xE0000000;
