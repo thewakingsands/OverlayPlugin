@@ -115,6 +115,15 @@ namespace RainbowMage.OverlayPlugin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event Settings.
+        /// </summary>
+        internal static string EventConfigTab {
+            get {
+                return ResourceManager.GetString("EventConfigTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to dispatch event {0} to {1}! {2}.
         /// </summary>
         internal static string EventHandlerException {
@@ -327,6 +336,15 @@ namespace RainbowMage.OverlayPlugin {
         internal static string NetworkParserInitException {
             get {
                 return ResourceManager.GetString("NetworkParserInitException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find Machina or the FFXIV plugin. This is only an issue if you&apos;re using ACT with FFXIV..
+        /// </summary>
+        internal static string NetworkParserNoFfxiv {
+            get {
+                return ResourceManager.GetString("NetworkParserNoFfxiv", resourceCulture);
             }
         }
         

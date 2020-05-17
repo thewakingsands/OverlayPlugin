@@ -289,4 +289,10 @@
   <data name="PresetUsesUnsupportedType" xml:space="preserve">
     <value>Preset {0} uses unsupported type {1}!</value>
   </data>
+  <data name="NetworkParserNoFfxiv" xml:space="preserve">
+    <value>Could not find Machina or the FFXIV plugin. This is only an issue if you're using ACT with FFXIV.</value>
+  </data>
+  <data name="EventConfigTab" xml:space="preserve">
+    <value>Event Settings</value>
+  </data>
 </root>

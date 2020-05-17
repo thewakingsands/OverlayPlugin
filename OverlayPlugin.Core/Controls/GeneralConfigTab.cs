@@ -37,6 +37,12 @@ namespace RainbowMage.OverlayPlugin
             cbHideOverlaysDuringCutscene.CheckedChanged += cbHideOverlaysDuringCutscene_CheckedChanged;
         }
 
+        public void SetReadmeVisible(bool visible)
+        {
+            lblReadMe.Visible = visible;
+            lblNewUserWelcome.Visible = visible;
+        }
+
         private void BtnUpdateCheck_Click(object sender, EventArgs e)
         {
             Updater.Updater.PerformUpdateIfNecessary(PluginMain.PluginDirectory, true);
@@ -87,6 +93,11 @@ namespace RainbowMage.OverlayPlugin
         private void lnkGithubRepo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(lnkGithubRepo.Text);
+        }
+
+        private void newUserWelcome_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

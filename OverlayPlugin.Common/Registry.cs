@@ -22,6 +22,7 @@ namespace RainbowMage.OverlayPlugin
         public static IReadOnlyList<IOverlayPreset> OverlayPresets => _overlayPresets;
 
         public static event EventHandler<EventSourceRegisteredEventArgs> EventSourceRegistered;
+        public static event EventHandler EventSourcesStarted;
 
         public static void Init()
         {
@@ -106,6 +107,8 @@ namespace RainbowMage.OverlayPlugin
                 source.LoadConfig(config);
                 source.Start();
             }
+
+            EventSourcesStarted(null, null);
         }
 
         #region Shortcuts

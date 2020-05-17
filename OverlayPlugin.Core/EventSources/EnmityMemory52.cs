@@ -6,123 +6,38 @@ using System.Threading;
 
 namespace RainbowMage.OverlayPlugin.EventSources
 {
-    public enum ObjectType : byte
-    {
-        Unknown = 0x00,
-        PC = 0x01,
-        Monster = 0x02,
-        NPC = 0x03,
-        Aetheryte = 0x05,
-        Gathering = 0x06,
-        Minion = 0x09
-    }
-
-    [Serializable]
-    public class Combatant
-    {
-        public uint ID;
-        public uint OwnerID;
-        public ObjectType Type;
-        public uint TargetID;
-
-        public byte Job;
-        public string Name;
-
-        public int CurrentHP;
-        public int MaxHP;
-
-        public Single PosX;
-        public Single PosY;
-        public Single PosZ;
-
-        public string Distance;
-        public byte EffectiveDistance;
-
-        public List<EffectEntry> Effects;
-
-        public string DistanceString(Combatant target)
-        {
-            var distanceX = (float)Math.Abs(PosX - target.PosX);
-            var distanceY = (float)Math.Abs(PosY - target.PosY);
-            var distanceZ = (float)Math.Abs(PosZ - target.PosZ);
-            var distance = (float)Math.Sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ));
-            return distance.ToString("0.00");
-        }
-    }
-
-    [Serializable]
-    public class EnmityEntry
-    {
-        public uint ID;
-        public uint OwnerID;
-        public string Name;
-        public uint Enmity;
-        public bool isMe;
-        public int HateRate;
-        public byte Job;
-    }
-
-    [Serializable]
-    public class AggroEntry
-    {
-        public uint ID;
-        public string Name;
-        public int HateRate;
-        public int Order;
-        public bool isCurrentTarget;
-
-        public int CurrentHP;
-        public int MaxHP;
-
-        // Target of Enemy
-        public EnmityEntry Target;
-
-        // Effects
-        public List<EffectEntry> Effects;
-    }
-
-    [Serializable]
-    public class EffectEntry
-    {
-        public ushort BuffID;
-        public ushort Stack;
-        public float Timer;
-        public uint ActorID;
-        public bool isOwner;
-    }
-
-    public class EnmityMemory
+    public class EnmityMemory52 : EnmityMemory
     {
         private FFXIVMemory memory;
         private ILogger logger;
+        private DateTime lastSigScan = DateTime.MinValue;
 
         private IntPtr charmapAddress = IntPtr.Zero;
         private IntPtr targetAddress = IntPtr.Zero;
         private IntPtr enmityAddress = IntPtr.Zero;
         private IntPtr aggroAddress = IntPtr.Zero;
 
-        private const string charmapSignature = "488b420848c1e8033da701000077248bc0488d0d";
-        private const string targetSignature = "41bc000000e041bd01000000493bc47555488d0d";
+        private const string charmapSignature = "48c1ea0381faa7010000????8bc2488d0d";
+        private const string targetSignatureH0 = "83E901740832C04883C4205BC3488D0D"; // pre hotfix
+        private const string targetSignatureH1 = "e8f2652f0084c00f8591010000488d0d"; // post hotfix 1
         private const string enmitySignature = "83f9ff7412448b048e8bd3488d0d";
 
         // Offsets from the signature to find the correct address.
         private const int charmapSignatureOffset = 0;
-        private const int targetSignatureOffset = 192;
-        private const int enmitySignatureOffset = -4648;
-
-        // Offset from the enmityAddress to find various enmity data structures.
-        private const int aggroEnmityOffset = 0x908;
+        private const int targetSignatureOffset = 0;
+        private const int enmitySignatureOffset = -2608;
+        private const int aggroEnmityOffset = -2336;
 
         // Offsets from the targetAddress to find the correct target type.
-        private const int targetTargetOffset = 0x0;
-        private const int focusTargetOffset = 0x58;
-        private const int hoverTargetOffset = 0x20;
+        private const int targetTargetOffset = 176;
+        private const int focusTargetOffset = 248;
+        private const int hoverTargetOffset = 208;
 
         // Constants.
         private const uint emptyID = 0xE0000000;
-        private const int numMemoryCombatants = 344;
+        private const int numMemoryCombatants = 421;
 
-        public EnmityMemory(ILogger logger)
+        public EnmityMemory52(ILogger logger)
         {
             this.memory = new FFXIVMemory(logger);
             this.memory.OnProcessChange += ResetPointers;
@@ -151,7 +66,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             return true;
         }
 
-        public bool IsValid()
+        public override bool IsValid()
         {
             if (!memory.IsValid())
                 return false;
@@ -170,6 +85,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
             if (!memory.IsValid())
                 return false;
 
+            // Don't scan too often to avoid excessive CPU load
+            if ((DateTime.Now - lastSigScan) < TimeSpan.FromSeconds(5))
+                return false;
+
+            lastSigScan = DateTime.Now;
             bool success = true;
             bool bRIP = true;
 
@@ -177,7 +97,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             /// CHARMAP
             List<IntPtr> list = memory.SigScan(charmapSignature, 0, bRIP);
-            if (list != null && list.Count == 1)
+            if (list != null && list.Count > 0)
             {
                 charmapAddress = list[0] + charmapSignatureOffset;
             }
@@ -190,10 +110,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             // ENMITY
             list = memory.SigScan(enmitySignature, 0, bRIP);
-            if (list != null && list.Count == 1)
+            if (list != null && list.Count > 0)
             {
-                enmityAddress = list[0] + enmitySignatureOffset;
-                aggroAddress = IntPtr.Add(enmityAddress, aggroEnmityOffset);
+                enmityAddress = IntPtr.Add(list[0], enmitySignatureOffset);
+                aggroAddress = IntPtr.Add(list[0], aggroEnmityOffset);
             }
             else
             {
@@ -205,8 +125,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
 
             /// TARGET
-            list = memory.SigScan(targetSignature, 0, bRIP);
-            if (list != null && list.Count == 1)
+            list = memory.SigScan(targetSignatureH1, 0, bRIP);
+            if (list == null || list.Count == 0)
+                list = memory.SigScan(targetSignatureH0, 0, bRIP);
+
+            if (list != null && list.Count > 0)
             {
                 targetAddress = list[0] + targetSignatureOffset;
             }
@@ -219,6 +142,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             logger.Log(LogLevel.Debug, "charmapAddress: 0x{0:X}", charmapAddress.ToInt64());
             logger.Log(LogLevel.Debug, "enmityAddress: 0x{0:X}", enmityAddress.ToInt64());
+            logger.Log(LogLevel.Debug, "aggroAddress: 0x{0:X}", aggroAddress.ToInt64());
             logger.Log(LogLevel.Debug, "targetAddress: 0x{0:X}", targetAddress.ToInt64());
             Combatant c = GetSelfCombatant();
             if (c != null)
@@ -228,7 +152,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             if (!success)
             {
-                logger.Log(LogLevel.Error, "Failed to memory scan: {0}.", String.Join(",", fail));
+                logger.Log(LogLevel.Error, "Failed to memory scan 5.2: {0}.", String.Join(",", fail));
+            } else
+            {
+                logger.Log(LogLevel.Info, "Found enmity memory for 5.2.");
             }
 
             return success;
@@ -243,12 +170,12 @@ namespace RainbowMage.OverlayPlugin.EventSources
             return GetCombatantFromByteArray(source, 0, false);
         }
 
-        public Combatant GetTargetCombatant()
+        public override Combatant GetTargetCombatant()
         {
             return GetTargetRelativeCombatant(targetTargetOffset);
         }
 
-        public Combatant GetSelfCombatant()
+        public override Combatant GetSelfCombatant()
         {
             IntPtr address = memory.ReadIntPtr(charmapAddress);
             if (address == IntPtr.Zero)
@@ -257,17 +184,17 @@ namespace RainbowMage.OverlayPlugin.EventSources
             return GetCombatantFromByteArray(source, 0, true, true);
         }
 
-        public Combatant GetFocusCombatant()
+        public override Combatant GetFocusCombatant()
         {
             return GetTargetRelativeCombatant(focusTargetOffset);
         }
 
-        public Combatant GetHoverCombatant()
+        public override Combatant GetHoverCombatant()
         {
             return GetTargetRelativeCombatant(hoverTargetOffset);
         }
 
-        public unsafe List<Combatant> GetCombatantList()
+        public override unsafe List<Combatant> GetCombatantList()
         {
             var result = new List<Combatant>();
             var seen = new HashSet<uint>();
@@ -351,19 +278,22 @@ namespace RainbowMage.OverlayPlugin.EventSources
             [FieldOffset(0xA8)]
             public Single PosZ;
 
-            [FieldOffset(0x1818)]
+            [FieldOffset(0xB0)]
+            public Single Rotation;
+
+            [FieldOffset(0x17F8)]
             public uint TargetID;
 
-            [FieldOffset(0x18A4)]
+            [FieldOffset(0x1898)]
             public int CurrentHP;
 
-            [FieldOffset(0x18A8)]
+            [FieldOffset(0x189C)]
             public int MaxHP;
 
-            [FieldOffset(0x18DC)]
+            [FieldOffset(0x18D6)]
             public byte Job;
 
-            [FieldOffset(0x1978)]
+            [FieldOffset(0x1958)]
             public fixed byte Effects[effectBytes];
         }
 
@@ -409,6 +339,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     PosX = mem.PosX,
                     PosY = mem.PosY,
                     PosZ = mem.PosZ,
+                    Rotation = mem.Rotation,
                     TargetID = mem.TargetID,
                     CurrentHP = mem.CurrentHP,
                     MaxHP = mem.MaxHP,
@@ -424,28 +355,27 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
         }
 
-        [StructLayout(LayoutKind.Explicit, Size=72)]
+        [StructLayout(LayoutKind.Explicit, Size=8)]
         struct EnmityListEntry
         {
             public static int Size => Marshal.SizeOf(typeof(EnmityListEntry));
 
-            [FieldOffset(0x38)]
+            [FieldOffset(0x00)]
             public uint ID;
 
-            [FieldOffset(0x3C)]
+            [FieldOffset(0x04)]
             public uint Enmity;
         }
 
         // A byte[] -> EnmityListEntry[] converter.
         // Owns the memory and returns out EnmityListEntry objects from it.
-        // Both the enmity list and the aggro list use this same structure.
         private class EnmityList
         {
             public int numEntries = 0;
             private byte[] buffer;
 
-            public const short maxEntries = 31;
-            public const int numEntryOffset = 0x8F8;
+            public const short maxEntries = 31; // or 32?
+            public const int numEntryOffset = 256;
             // The number of entries is a short at the end of the array of entries.  Hence, +2.
             public const int totalBytesSize = numEntryOffset + 2;
 
@@ -473,7 +403,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         }
 
         // Converts an EnmityList into a List<EnmityEntry>.
-        public List<EnmityEntry> GetEnmityEntryList(List<Combatant> combatantList)
+        public override List<EnmityEntry> GetEnmityEntryList(List<Combatant> combatantList)
         {
             uint topEnmity = 0;
             Combatant mychar = GetSelfCombatant();
@@ -507,8 +437,55 @@ namespace RainbowMage.OverlayPlugin.EventSources
             return result;
         }
 
+        [StructLayout(LayoutKind.Explicit, Size = 72)]
+        struct AggroListEntry
+        {
+            public static int Size => Marshal.SizeOf(typeof(AggroListEntry));
+
+            [FieldOffset(0x38)]
+            public uint ID;
+
+            [FieldOffset(0x3C)]
+            public uint Enmity;
+        }
+
+        // A byte[] -> AggroListEntry[] converter.
+        // Owns the memory and returns out AggroListEntry objects from it.
+        private class AggroList
+        {
+            public int numEntries = 0;
+            private byte[] buffer;
+
+            public const short maxEntries = 31;
+            public const int numEntryOffset = 0x8F8;
+            // The number of entries is a short at the end of the array of entries.  Hence, +2.
+            public const int totalBytesSize = numEntryOffset + 2;
+
+            public unsafe AggroListEntry GetEntry(int i)
+            {
+                fixed (byte* p = buffer)
+                {
+                    return *(AggroListEntry*)&p[i * AggroListEntry.Size];
+                }
+            }
+
+            public unsafe AggroList(byte[] buffer)
+            {
+                Debug.Assert(maxEntries * AggroListEntry.Size <= totalBytesSize);
+                Debug.Assert(buffer.Length >= totalBytesSize);
+
+                this.buffer = buffer;
+                fixed (byte* p = buffer) numEntries = Math.Min((short)p[numEntryOffset], maxEntries);
+            }
+        }
+
+        private AggroList ReadAggroList(IntPtr address)
+        {
+            return new AggroList(memory.GetByteArray(address, AggroList.totalBytesSize));
+        }
+
         // Converts an EnmityList into a List<AggroEntry>.
-        public unsafe List<AggroEntry> GetAggroList(List<Combatant> combatantList)
+        public override unsafe List<AggroEntry> GetAggroList(List<Combatant> combatantList)
         {
             Combatant mychar = GetSelfCombatant();
 
@@ -521,10 +498,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             var result = new List<AggroEntry>();
 
-            EnmityList list = ReadEnmityList(aggroAddress);
+            AggroList list = ReadAggroList(aggroAddress);
             for (int i = 0; i < list.numEntries; i++)
             {
-                EnmityListEntry e = list.GetEntry(i);
+                AggroListEntry e = list.GetEntry(i);
                 if (e.ID <= 0)
                     continue;
                 Combatant c = combatantList.Find(x => x.ID == e.ID);

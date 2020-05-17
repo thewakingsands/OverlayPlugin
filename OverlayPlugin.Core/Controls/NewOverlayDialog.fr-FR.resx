@@ -143,4 +143,16 @@ SpellTimer Affiche les timers intégrés d'ACT et n'a rien à voir avec SPESPE S
   <data name="lblType.Text" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="lblPreset.Text" xml:space="preserve">
+    <value>Preset</value>
+  </data>
+  <data name="lblPresetDescription.Text" xml:space="preserve">
+    <value>Une fois un preset choisi, un aperçu sera affiché.
+Vous pouvez déplacer l'aperçu en l'attrapant avec votre souris.
+Pour redimensionner l'aperçu, attrapez le coin inférieur droit.
+
+Si vous voulez utiliser un overlay qui n'est pas dans la liste, choisissez Personnalisé et le bon type d'overlay.
+
+Si vous voulez ajouter un nouveau preset, faites un PR sur le repo GitHub (un lien est présent sur l'onglet Général).</value>
+  </data>
 </root>

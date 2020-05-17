@@ -31,6 +31,33 @@ namespace RainbowMage.OverlayPlugin.EventSources
             { 23, "LookingForParty" },
         };
 
+        private readonly List<string> DefaultCombatantFields = new List<string>
+        {
+            "CurrentWorldID",
+            "WorldID",
+            "WorldName",
+            "BNpcID",
+            "BNpcNameID",
+            "PartyType",
+            "ID",
+            "OwnerID",
+            "type",
+            "Job",
+            "Level",
+            "Name",
+            "CurrentHP",
+            "MaxHP",
+            "CurrentMP",
+            "MaxMP",
+            "PosX",
+            "PosY",
+            "PosZ",
+            "Heading"
+        };
+
+        private Dictionary<string, System.Reflection.PropertyInfo> CachedCombatantPropertyInfos
+            = new Dictionary<string, System.Reflection.PropertyInfo>();
+
         private const string CombatDataEvent = "CombatData";
         private const string LogLineEvent = "LogLine";
         private const string ImportedLogLinesEvent = "ImportedLogLines";
@@ -42,7 +69,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         // Event Source
 
-        public MiniParseEventSourceConfig Config { get; set; }
+        public BuiltinEventConfig Config { get; set; }
 
         public MiniParseEventSource(ILogger logger) : base(logger)
         {
@@ -73,6 +100,82 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 });
             });
 
+            RegisterEventHandler("getCombatants", (msg) => {
+                List<uint> ids = new List<uint>();
+
+                if (msg["ids"] != null)
+                {
+                    foreach (var id in ((JArray)msg["ids"]))
+                    {
+                        ids.Add(id.ToObject<uint>());
+                    }
+                }
+
+                List<string> names = new List<string>();
+
+                if (msg["names"] != null)
+                {
+                    foreach (var name in ((JArray)msg["names"]))
+                    {
+                        names.Add(name.ToString());
+                    }
+                }
+
+                List<string> props = new List<string>();
+
+                if (msg["props"] != null)
+                {
+                    foreach (var prop in ((JArray)msg["props"]))
+                    {
+                        props.Add(prop.ToString());
+                    }
+                }
+
+                var combatants = GetCombatants(ids, names, props);
+                return JObject.FromObject(new
+                {
+                    combatants
+                });
+            });
+
+            RegisterEventHandler("saveData", (msg) => {
+                var key = msg["key"]?.ToString();
+                if (key == null)
+                    return null;
+
+                Config.OverlayData[key] = msg["data"];
+                return null;
+            });
+
+            RegisterEventHandler("loadData", (msg) => {
+                var key = msg["key"]?.ToString();
+                if (key == null)
+                    return null;
+
+                if (!Config.OverlayData.ContainsKey(key))
+                    return null;
+
+                var ret = new JObject();
+                ret["key"] = key;
+                ret["data"] = Config.OverlayData[key];
+                return ret;
+            });
+
+            RegisterEventHandler("say", (msg) => {
+                var text = msg["text"]?.ToString();
+                if (text == null)
+                    return null;
+
+                ActGlobals.oFormActMain.TTS(text);
+                return null;
+            });
+
+            foreach (var propName in DefaultCombatantFields)
+            {
+                CachedCombatantPropertyInfos.Add(propName, 
+                    typeof(FFXIV_ACT_Plugin.Common.Models.Combatant).GetProperty(propName));
+            }
+
             ActGlobals.oFormActMain.BeforeLogLineRead += LogLineHandler;
             NetworkParser.OnOnlineStatusChanged += (o, e) =>
             {
@@ -86,8 +189,78 @@ namespace RainbowMage.OverlayPlugin.EventSources
             };
 
             FFXIVRepository.RegisterPartyChangeDelegate((partyList, partySize) => DispatchPartyChangeEvent());
+        }
 
-            InitializeEnmityEventSource();
+        private List<Dictionary<string, object>> GetCombatants(List<uint> ids, List<string> names, List<string> props)
+        {
+            List<Dictionary<string, object>> filteredCombatants = new List<Dictionary<string, object>>();
+
+            var combatants = FFXIVRepository.GetCombatants();
+
+            foreach (var combatant in combatants)
+            {
+                if (combatant.ID == 0)
+                {
+                    continue;
+                }
+                
+                bool include = false;
+
+                var combatantName = CachedCombatantPropertyInfos["Name"].GetValue(combatant);
+                
+                if (ids.Count == 0 && names.Count == 0)
+                {
+                    include = true;
+                }
+                else
+                {
+                    foreach (var id in ids)
+                    {
+                        if (combatant.ID == id)
+                        {
+                            include = true;
+                            break;
+                        }
+                    }
+
+                    if (!include)
+                    {
+                        foreach (var name in names)
+                        {
+                            if (combatantName.Equals(name))
+                            {
+                                include = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (include)
+                {
+                    Dictionary<string, object> filteredCombatant = new Dictionary<string, object>();
+                    if (props.Count > 0)
+                    {
+                        foreach (var prop in props)
+                        {
+                            if (CachedCombatantPropertyInfos.ContainsKey(prop))
+                            {
+                                filteredCombatant.Add(prop, CachedCombatantPropertyInfos[prop].GetValue(combatant));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var prop in CachedCombatantPropertyInfos.Keys)
+                        {
+                            filteredCombatant.Add(prop, CachedCombatantPropertyInfos[prop].GetValue(combatant));
+                        }
+                    }
+                    filteredCombatants.Add(filteredCombatant);
+                }
+            }
+
+            return filteredCombatants;
         }
 
         private void LogLineHandler(bool isImport, LogLineEventArgs args)
@@ -198,24 +371,22 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         public override Control CreateConfigControl()
         {
-            return new MiniParseEventSourceConfigPanel(this);
+            return null;
         }
 
         public override void LoadConfig(IPluginConfig config)
         {
-            this.Config = MiniParseEventSourceConfig.LoadConfig(config);
+            this.Config = Registry.Resolve<BuiltinEventConfig>();
 
             this.Config.UpdateIntervalChanged += (o, e) =>
             {
                 this.Start();
             };
-
-            LoadEnmityConfig();
         }
 
         public override void SaveConfig(IPluginConfig config)
         {
-            this.Config.SaveConfig(config);
+            
         }
 
         public override void Start()

@@ -119,7 +119,7 @@
   </resheader>
 
   <data name="$this.Text" xml:space="preserve">
-    <value>Mise à jour d'{0}</value>
+    <value>Mise à jour de {0}</value>
   </data>
   <data name="btnConfirm.Text" xml:space="preserve">
     <value>Installer la mise à jour</value>

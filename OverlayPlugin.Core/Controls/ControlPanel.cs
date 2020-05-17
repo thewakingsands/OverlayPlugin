@@ -16,7 +16,7 @@ namespace RainbowMage.OverlayPlugin
     {
         PluginMain pluginMain;
         PluginConfig config;
-        TabPage generalTab;
+        TabPage generalTab, eventTab;
 
         static Dictionary<string, string> esNames = new Dictionary<string, string>
         {
@@ -46,6 +46,13 @@ namespace RainbowMage.OverlayPlugin
                 Text = "",
             };
             generalTab.Controls.Add(new GeneralConfigTab());
+
+            eventTab = new ConfigTabPage
+            {
+                Name = Resources.EventConfigTab,
+                Text = "",
+            };
+            eventTab.Controls.Add(new EventSources.BuiltinEventConfigPanel());
 
             PluginMain.Logger.RegisterListener(AddLogEntry);
             Registry.EventSourceRegistered += (o, e) => Invoke((Action)(() => AddEventSourceTab(o, e)));
@@ -108,6 +115,7 @@ namespace RainbowMage.OverlayPlugin
         {
             tabControl.TabPages.Clear();
             tabControl.TabPages.Add(generalTab);
+            tabControl.TabPages.Add(eventTab);
 
             foreach (var source in Registry.EventSources)
             {
@@ -119,9 +127,12 @@ namespace RainbowMage.OverlayPlugin
                 AddConfigTab(overlay);
             }
 
-            if (tabControl.TabCount == 0)
+            if (this.pluginMain.Overlays.Count == 0)
             {
-                tabControl.TabPages.Add(this.tabPageMain);
+                ((GeneralConfigTab) generalTab.Controls[0]).SetReadmeVisible(true);
+            } else
+            {
+                ((GeneralConfigTab) generalTab.Controls[0]).SetReadmeVisible(false);
             }
         }
 
@@ -146,6 +157,7 @@ namespace RainbowMage.OverlayPlugin
                 tabPage.Controls.Add(control);
 
                 this.tabControl.TabPages.Add(tabPage);
+                ((GeneralConfigTab) generalTab.Controls[0]).SetReadmeVisible(false);
             }
         }
 
@@ -158,7 +170,7 @@ namespace RainbowMage.OverlayPlugin
             var tabPage = new ConfigTabPage
             {
                 Name = source.Name,
-                Text = Resources.TabsESLabel + " " + label,
+                Text = "",
                 IsEventSource = true,
             };
 
@@ -278,6 +290,10 @@ namespace RainbowMage.OverlayPlugin
 
             // タープを更新
             this.tabControl.Update();
+            if (this.pluginMain.Overlays.Count == 0)
+            {
+                ((GeneralConfigTab) generalTab.Controls[0]).SetReadmeVisible(true);
+            }
         }
 
         private void buttonRename_Click(object sender, EventArgs e)

@@ -22,6 +22,7 @@ let localeStrings = {
       Hover: 'Survol',
       TargetOfTarget: 'ToT',
     },
+  },
   'Japanese': {
     target: 'ターゲット',
     distance: '距離',

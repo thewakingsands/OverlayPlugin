@@ -36,6 +36,8 @@
             this.cbHideOverlaysDuringCutscene = new System.Windows.Forms.CheckBox();
             this.lblGithub = new System.Windows.Forms.Label();
             this.lnkGithubRepo = new System.Windows.Forms.LinkLabel();
+            this.lblNewUserWelcome = new System.Windows.Forms.Label();
+            this.lblReadMe = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cbErrorReports
@@ -81,11 +83,25 @@
             this.lnkGithubRepo.TabStop = true;
             this.lnkGithubRepo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkGithubRepo_LinkClicked);
             // 
+            // lblNewUserWelcome
+            // 
+            resources.ApplyResources(this.lblNewUserWelcome, "lblNewUserWelcome");
+            this.lblNewUserWelcome.Name = "lblNewUserWelcome";
+            this.lblNewUserWelcome.Click += new System.EventHandler(this.newUserWelcome_Click);
+            // 
+            // lblReadMe
+            // 
+            resources.ApplyResources(this.lblReadMe, "lblReadMe");
+            this.lblReadMe.ForeColor = System.Drawing.Color.Red;
+            this.lblReadMe.Name = "lblReadMe";
+            // 
             // GeneralConfigTab
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Controls.Add(this.lblReadMe);
+            this.Controls.Add(this.lblNewUserWelcome);
             this.Controls.Add(this.lnkGithubRepo);
             this.Controls.Add(this.lblGithub);
             this.Controls.Add(this.btnUpdateCheck);
@@ -107,5 +123,7 @@
         private System.Windows.Forms.CheckBox cbHideOverlaysDuringCutscene;
         private System.Windows.Forms.Label lblGithub;
         private System.Windows.Forms.LinkLabel lnkGithubRepo;
+        private System.Windows.Forms.Label lblNewUserWelcome;
+        private System.Windows.Forms.Label lblReadMe;
     }
 }

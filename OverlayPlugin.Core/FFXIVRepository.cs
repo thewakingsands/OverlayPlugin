@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using System.Linq;
+using System.IO;
 using Advanced_Combat_Tracker;
 using FFXIV_ACT_Plugin.Common;
 
@@ -99,7 +101,7 @@ namespace RainbowMage.OverlayPlugin
             return subscription;
         }
 
-        public static Process GetCurrentFFXIVProcess()
+        private static Process GetCurrentFFXIVProcessImpl()
         {
             var repo = GetRepository();
             if (repo == null) return null;
@@ -107,7 +109,19 @@ namespace RainbowMage.OverlayPlugin
             return repo.GetCurrentFFXIVProcess();
         }
 
-        public static uint GetPlayerID()
+        public static Process GetCurrentFFXIVProcess()
+        {
+            try
+            {
+                return GetCurrentFFXIVProcessImpl();
+            } catch (FileNotFoundException)
+            {
+                // The FFXIV plugin isn't loaded
+                return null;
+            }
+        }
+
+        public static uint GetPlayerIDImpl()
         {
             var repo = GetRepository();
             if (repo == null) return 0;
@@ -115,7 +129,19 @@ namespace RainbowMage.OverlayPlugin
             return repo.GetCurrentPlayerID();
         }
 
-        public static string GetPlayerName()
+        public static uint GetPlayerID()
+        {
+            try
+            {
+                return GetPlayerIDImpl();
+            } catch (FileNotFoundException)
+            {
+                // The FFXIV plugin isn't loaded
+                return 0;
+            }
+        }
+
+        public static string GetPlayerNameImpl()
         {
             var repo = GetRepository();
             if (repo == null) return null;
@@ -126,6 +152,19 @@ namespace RainbowMage.OverlayPlugin
             if (playerInfo == null) return null;
 
             return playerInfo.Name;
+        }
+
+        public static string GetPlayerName()
+        {
+            try
+            {
+                return GetPlayerNameImpl();
+            }
+            catch (FileNotFoundException)
+            {
+                // The FFXIV plugin isn't loaded
+                return null;
+            }
         }
 
         public static ReadOnlyCollection<FFXIV_ACT_Plugin.Common.Models.Combatant> GetCombatants()
@@ -148,7 +187,8 @@ namespace RainbowMage.OverlayPlugin
         public static void RegisterLogLineHandler(Action<uint, uint, string> handler)
         {
             var sub = GetSubscription();
-            sub.LogLine += new LogLineDelegate(handler);
+            if (sub != null)
+                sub.LogLine += new LogLineDelegate(handler);
         }
 
         // NetworkReceivedDelegate(string connection, long epoch, byte[] message)

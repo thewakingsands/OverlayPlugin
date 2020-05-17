@@ -61,8 +61,8 @@ try {
     cp -Recurse libs\*.dll OverlayPlugin\libs
 
     # Translations
-    cp -Recurse @("fr-FR", "ja-JP", "ko-KR", "zh-CN") OverlayPlugin
-    cp -Recurse @("libs\fr-FR", "libs\ja-JP", "libs\ko-KR", "libs\zh-CN") OverlayPlugin\libs
+    cp -Recurse @("de-DE", "fr-FR", "ja-JP", "ko-KR", "zh-CN") OverlayPlugin
+    cp -Recurse @("libs\de-DE", "libs\fr-FR", "libs\ja-JP", "libs\ko-KR", "libs\zh-CN") OverlayPlugin\libs
 
 
     $text = [System.IO.File]::ReadAllText("$PWD\..\..\OverlayPlugin\Properties\AssemblyInfo.cs");

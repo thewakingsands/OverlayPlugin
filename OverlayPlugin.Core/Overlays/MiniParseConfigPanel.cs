@@ -14,6 +14,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
     {
         private MiniParseOverlayConfig config;
         private MiniParseOverlay overlay;
+        private Dictionary<string, NewOverlayDialog.OverlayPreset> presets;
 
         static readonly List<KeyValuePair<string, GlobalHotkeyType>> hotkeyTypeDict = new List<KeyValuePair<string, GlobalHotkeyType>>()
         {
@@ -56,6 +57,10 @@ namespace RainbowMage.OverlayPlugin.Overlays
             hotkeyColAction.DataSource = hotkeyTypeDict;
 
             hotkeyGridView.DataSource = new BindingList<GlobalHotkey>(config.GlobalHotkeys);
+
+            // TODO
+            applyPresetCombo.Visible = false;
+            //presets = NewOverlayDialog.PreparePresetCombo(applyPresetCombo);
         }
 
         private void SetupConfigEventHandlers()

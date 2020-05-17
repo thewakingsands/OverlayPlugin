@@ -285,6 +285,11 @@ Make sure you load OverlayPlugin before any other plugins that also use SharpCom
     <value>Failed to parse version:
 {0}</value>
   </data>
+  <data name="UpdateSliderDetails" xml:space="preserve">
+    <value>{0} was updated successfully.</value>
+    <comment>The placeholder here is the project being updated (i.e. OverlayPlugin or Cactbot)
+This text is displayed in ACT's restart prompt. ACT already asks the user to restart so we don't have to.</comment>
+  </data>
   <data name="UpdateSuccess" xml:space="preserve">
     <value>The update was successful. Please restart ACT to load the new plugin version.</value>
   </data>

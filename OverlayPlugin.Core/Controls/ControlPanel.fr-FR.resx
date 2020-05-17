@@ -138,4 +138,7 @@
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>Ajout/Suppression overlays</value>
-  </data></root>
+  </data>  <data name="buttonRename.Text" xml:space="preserve">
+    <value>Renommer</value>
+  </data>
+</root>

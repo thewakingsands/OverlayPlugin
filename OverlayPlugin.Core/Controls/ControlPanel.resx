@@ -231,11 +231,17 @@
   <data name="&gt;&gt;buttonRemoveOverlay.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="buttonRename.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
   <data name="buttonRename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>189, 3</value>
+    <value>189, 4</value>
+  </data>
+  <data name="buttonRename.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 4, 3, 4</value>
   </data>
   <data name="buttonRename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 30</value>
+    <value>83, 29</value>
   </data>
   <data name="buttonRename.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -285,14 +291,17 @@
   <data name="&gt;&gt;checkBoxFollowLog.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="buttonClearLog.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="buttonClearLog.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="buttonClearLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>404, 3</value>
+    <value>404, 4</value>
+  </data>
+    <data name="buttonClearLog.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 4, 3, 4</value>
   </data>
   <data name="buttonClearLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 31</value>
+    <value>83, 29</value>
   </data>
   <data name="buttonClearLog.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>

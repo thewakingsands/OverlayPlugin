@@ -59,7 +59,18 @@ namespace RainbowMage.OverlayPlugin
 
             cbType.DisplayMember = "Key";
             cbType.SelectedIndex = 0;
+            presets = PreparePresetCombo(cbPreset);
 
+            lblType.Visible = false;
+            cbType.Visible = false;
+            lblTypeDesc.Visible = false;
+
+            textBox1.Focus();
+        }
+
+        public static Dictionary<string, OverlayPreset> PreparePresetCombo(ComboBox cbPreset)
+        {
+            
 #if DEBUG
             var presetFile = Path.Combine(PluginMain.PluginDirectory, "libs", "resources", "presets.json");
 #else
@@ -75,7 +86,7 @@ namespace RainbowMage.OverlayPlugin
                 Registry.Resolve<ILogger>().Log(LogLevel.Error, string.Format(Resources.ErrorCouldNotLoadPresets, ex));
             }
             
-            presets = JsonConvert.DeserializeObject<Dictionary<string, OverlayPreset>>(presetData);
+            var presets = JsonConvert.DeserializeObject<Dictionary<string, OverlayPreset>>(presetData);
             foreach (var pair in presets)
             {
                 pair.Value.Name = pair.Key;
@@ -94,12 +105,7 @@ namespace RainbowMage.OverlayPlugin
             });
 
             cbPreset.DisplayMember = "Name";
-
-            lblType.Visible = false;
-            cbType.Visible = false;
-            lblTypeDesc.Visible = false;
-
-            textBox1.Focus();
+            return presets;
         }
         
         /// <summary>
@@ -242,7 +248,7 @@ namespace RainbowMage.OverlayPlugin
         }
 
         [JsonObject(NamingStrategyType = typeof(Newtonsoft.Json.Serialization.SnakeCaseNamingStrategy))]
-        private class OverlayPreset : IOverlayPreset
+        public class OverlayPreset : IOverlayPreset
         {
             public string Name { get; set; }
             public string Type { get; set; }

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace RainbowMage.OverlayPlugin.EventSources
 {
     [Serializable]
-    public class MiniParseEventSourceConfig
+    public class BuiltinEventConfig
     {
         public event EventHandler UpdateIntervalChanged;
         public event EventHandler EnmityIntervalChanged;
@@ -96,7 +97,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
         }
 
-        public MiniParseEventSourceConfig()
+        // Data that overlays can save/load via event handlers.
+        public Dictionary<string, JToken> OverlayData = new Dictionary<string, JToken>();
+
+        public BuiltinEventConfig()
         {
             this.updateInterval = 1;
             this.enmityIntervalMs = 100;
@@ -105,9 +109,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
             this.updateDpsDuringImport = false;
         }
 
-        public static MiniParseEventSourceConfig LoadConfig(IPluginConfig Config)
+        public static BuiltinEventConfig LoadConfig(IPluginConfig Config)
         {
-            var result = new MiniParseEventSourceConfig();
+            var result = new BuiltinEventConfig();
 
             if (Config.EventSourceConfigs.ContainsKey("MiniParse"))
             {
@@ -136,6 +140,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 if (obj.TryGetValue("UpdateDpsDuringImport", out value))
                 {
                     result.updateDpsDuringImport = value.ToObject<bool>();
+                }
+
+                if (obj.TryGetValue("OverlayData", out value))
+                {
+                    result.OverlayData = value.ToObject<Dictionary<string, JToken>>();
                 }
             }
 

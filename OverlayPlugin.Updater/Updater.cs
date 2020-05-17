@@ -193,6 +193,18 @@ namespace RainbowMage.OverlayPlugin.Updater
             });
         }
 
+        public static bool TryRestartACT(bool showIgnoreButton, string message)
+        {
+            var form = ActGlobals.oFormActMain;
+            var method = form.GetType().GetMethod("RestartACT");
+
+            if (method == null)
+                return false;
+
+            method.Invoke(form, new object[] {  showIgnoreButton, message });
+            return true;
+        }
+
         public static async Task<bool> InstallUpdate(string url, UpdaterOptions options)
         {
             var result = false;
@@ -216,12 +228,15 @@ namespace RainbowMage.OverlayPlugin.Updater
                 }
             }
 
-            MessageBox.Show(
-                Resources.UpdateSuccess,
-                string.Format(Resources.UpdateTitle, options.project),
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+            if (!TryRestartACT(true, string.Format(Resources.UpdateSliderDetails, options.project)))
+            {
+                MessageBox.Show(
+                    Resources.UpdateSuccess,
+                    string.Format(Resources.UpdateTitle, options.project),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
 
             return true;
         }

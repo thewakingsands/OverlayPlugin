@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbErrorReports.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="cbUpdateCheck.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -178,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbUpdateCheck.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="btnUpdateCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -205,7 +205,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnUpdateCheck.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="cbHideOverlaysWhenNotActive.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -235,7 +235,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbHideOverlaysWhenNotActive.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="cbHideOverlaysDuringCutscene.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -265,7 +265,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbHideOverlaysDuringCutscene.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="lblGithub.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -292,7 +292,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblGithub.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="lnkGithubRepo.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -319,6 +319,63 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lnkGithubRepo.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblNewUserWelcome.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 243</value>
+  </data>
+  <data name="lblNewUserWelcome.Size" type="System.Drawing.Size, System.Drawing">
+    <value>501, 119</value>
+  </data>
+  <data name="lblNewUserWelcome.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="lblNewUserWelcome.Text" xml:space="preserve">
+    <value>If you're looking for a URL field here, you're either used to the old OverlayPlugin or following an outdated guide. You need to create an overlay using the New button in the bottom-left corner before you will see any overlays from OverlayPlugin.
+Please try using the presets instead of manually setting the URL since this can prevent a bunch of issues.
+
+</value>
+  </data>
+  <data name="&gt;&gt;lblNewUserWelcome.Name" xml:space="preserve">
+    <value>lblNewUserWelcome</value>
+  </data>
+  <data name="&gt;&gt;lblNewUserWelcome.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblNewUserWelcome.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblNewUserWelcome.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblReadMe.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblReadMe.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 11pt, style=Bold</value>
+  </data>
+  <data name="lblReadMe.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 216</value>
+  </data>
+  <data name="lblReadMe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 18</value>
+  </data>
+  <data name="lblReadMe.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="lblReadMe.Text" xml:space="preserve">
+    <value>READ THIS:</value>
+  </data>
+  <data name="&gt;&gt;lblReadMe.Name" xml:space="preserve">
+    <value>lblReadMe</value>
+  </data>
+  <data name="&gt;&gt;lblReadMe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblReadMe.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblReadMe.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

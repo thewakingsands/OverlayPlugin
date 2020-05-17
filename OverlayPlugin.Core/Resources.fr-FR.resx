@@ -236,12 +236,21 @@
     <value>Aperçu</value>
   </data>
   <data name="PromptSelectPreset" xml:space="preserve">
-    <value>Sélectionnez un préréglage.</value>
+    <value>Sélectionnez un preset.</value>
   </data>
   <data name="ErrorCouldNotLoadPresets" xml:space="preserve">
     <value>NewOverlayDialog: Impossible de charger les préréglages : {0}</value>
   </data>
   <data name="CustomPresetLabel" xml:space="preserve">
     <value>Personnalisé</value>
+  </data>
+  <data name="PresetUsesUnsupportedType" xml:space="preserve">
+    <value>Le preset {0} utilise un type non supporté {1} !</value>
+  </data>
+  <data name="WSNotConfidentLink" xml:space="preserve">
+    <value>Ce lien peut ne pas fonctionner si l'overlay ne supporte pas ACTWebSocket.</value>
+  </data>
+  <data name="NetworkParserNoFfxiv" xml:space="preserve">
+    <value>Impossible de trouver le plugin FFXIV ou Machina. C'est seulement un problème si vous utilisez ACT avec FFXIV.</value>
   </data>
 </root>

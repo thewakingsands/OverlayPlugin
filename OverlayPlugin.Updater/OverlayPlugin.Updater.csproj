@@ -17,7 +17,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\out\Debug\libs\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -89,6 +89,9 @@
       <DependentUpon>UpdateQuestionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Updater.cs" />
+    <EmbeddedResource Include="CefMissingTab.de-DE.resx">
+      <DependentUpon>CefMissingTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CefMissingTab.fr-FR.resx">
       <DependentUpon>CefMissingTab.cs</DependentUpon>
     </EmbeddedResource>
@@ -103,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CefMissingTab.zh-CN.resx">
       <DependentUpon>CefMissingTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgressDisplay.de-DE.resx">
+      <DependentUpon>ProgressDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressDisplay.fr-FR.resx">
       <DependentUpon>ProgressDisplay.cs</DependentUpon>
@@ -119,6 +125,7 @@
     <EmbeddedResource Include="ProgressDisplay.zh-CN.resx">
       <DependentUpon>ProgressDisplay.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources.de-DE.resx" />
     <EmbeddedResource Include="Resources.fr-FR.resx" />
     <EmbeddedResource Include="Resources.ja-JP.resx" />
     <EmbeddedResource Include="Resources.ko-KR.resx" />
@@ -127,6 +134,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.zh-CN.resx" />
+    <EmbeddedResource Include="UpdateQuestionForm.de-DE.resx">
+      <DependentUpon>UpdateQuestionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UpdateQuestionForm.fr-FR.resx">
       <DependentUpon>UpdateQuestionForm.cs</DependentUpon>
     </EmbeddedResource>

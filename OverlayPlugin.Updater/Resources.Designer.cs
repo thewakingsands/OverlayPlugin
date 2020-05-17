@@ -528,6 +528,15 @@ namespace RainbowMage.OverlayPlugin.Updater {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} was updated successfully..
+        /// </summary>
+        public static string UpdateSliderDetails {
+            get {
+                return ResourceManager.GetString("UpdateSliderDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The update was successful. Please restart ACT to load the new plugin version..
         /// </summary>
         public static string UpdateSuccess {

@@ -154,4 +154,8 @@ Vérifier que l'ancien OverlayPlugin est désactivé et relancez ACT. Si le prob
     <value>Impossible de charger les dépendences {0}: {1}
 Vérifiez que vous avez extrait toute l'archive et n'avez pas effacé de fichiers.</value>
   </data>
+  <data name="AssemblyMissing" xml:space="preserve">
+    <value>Impossible de charger {0}: {1}
+Assurez vous d'avoir extrait l'ensemble de l'archive du plugin et de n'avoir rien supprimé (comme le répertoire libs).</value>
+  </data>
 </root>

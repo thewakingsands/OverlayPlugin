@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 
 namespace RainbowMage.OverlayPlugin
@@ -23,9 +19,6 @@ namespace RainbowMage.OverlayPlugin
         /**
          * We use reflection to calculate the field offsets since there's no public Machina DLL we could link
          * against. I want to avoid copying the relevant structures so reflection is the last option left.
-         * 
-         * IMPORTANT: Remove the parsing code, once the parser parses the network packet and provides
-         * an event or log line for it.
         */
 
         public static void Init()
@@ -54,6 +47,9 @@ namespace RainbowMage.OverlayPlugin
 #endif
 
                 FFXIVRepository.RegisterNetworkParser(Parse);
+            } catch (System.IO.FileNotFoundException)
+            {
+                Registry.Resolve<ILogger>().Log(LogLevel.Error, Resources.NetworkParserNoFfxiv);
             } catch (Exception e)
             {
                 Registry.Resolve<ILogger>().Log(LogLevel.Error, Resources.NetworkParserInitException, e);
@@ -129,7 +125,7 @@ namespace RainbowMage.OverlayPlugin
                     */
 
                     if (*((ushort*)&buffer[MessageType_Offset]) != ActorControl142_Opcode) return;
-                    if (*((UInt16*)&buffer[Category_Offset]) != 0x1f8) return;
+                    if (*((ushort*)&buffer[Category_Offset]) != 0x1f8) return;
 
                     OnOnlineStatusChanged?.Invoke(null, new OnlineStatusChangedArgs(*(uint*)&buffer[ActorID_Offset], *(uint*)&buffer[Param1_Offset]));
                 }
@@ -140,9 +136,9 @@ namespace RainbowMage.OverlayPlugin
     public class OnlineStatusChangedArgs : EventArgs
     {
         public uint Target { get; private set; }
-        public UInt32 Status { get; private set; }
+        public uint Status { get; private set; }
 
-        public OnlineStatusChangedArgs(uint target, UInt32 status)
+        public OnlineStatusChangedArgs(uint target, uint status)
         {
             this.Target = target;
             this.Status = status;

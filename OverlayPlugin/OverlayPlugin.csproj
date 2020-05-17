@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\out\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -103,6 +103,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources.de-DE.resx" />
     <EmbeddedResource Include="Resources.fr-FR.resx" />
     <EmbeddedResource Include="Resources.ja-JP.resx" />
     <EmbeddedResource Include="Resources.ko-KR.resx" />

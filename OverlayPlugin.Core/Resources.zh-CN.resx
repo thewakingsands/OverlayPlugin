@@ -274,4 +274,16 @@
   <data name="CustomPresetLabel" xml:space="preserve">
     <value>自订</value>
   </data>
+  <data name="PresetUsesUnsupportedType" xml:space="preserve">
+    <value>预设{0}使用不受支持的类型{1}！</value>
+  </data>
+  <data name="NetworkParserNoFfxiv" xml:space="preserve">
+    <value>找不到Machina或FFXIV插件。仅当您将ACT与FFXIV一起使用时才是问题。</value>
+  </data>
+  <data name="EventConfigTab" xml:space="preserve">
+    <value>基本设置</value>
+  </data>
+  <data name="HotkeyActionToggleEnabled" xml:space="preserve">
+    <value>切换悬浮窗 启用/关闭</value>
+  </data>
 </root>

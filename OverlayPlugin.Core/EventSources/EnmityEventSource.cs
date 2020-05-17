@@ -4,40 +4,82 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace RainbowMage.OverlayPlugin.EventSources
 {
-    partial class MiniParseEventSource : EventSourceBase
+    public class EnmityEventSource : EventSourceBase
     {
         private EnmityMemory memory;
-        private Timer enmityTimer;
-        private const int defaultEnmityInterval = 100;
+        private List<EnmityMemory> memoryCandidates;
+        private bool memoryValid = false;
+
+        const int MEMORY_SCAN_INTERVAL = 3000;
 
         // General information about the target, focus target, hover target.  Also, enmity entries for main target.
         private const string EnmityTargetDataEvent = "EnmityTargetData";
         // All of the mobs with aggro on the player.  Equivalent of the sidebar aggro list in game.
         private const string EnmityAggroListEvent = "EnmityAggroList";
 
-        public void InitializeEnmityEventSource()
+        public BuiltinEventConfig Config { get; set; }
+
+        public EnmityEventSource(ILogger logger) : base(logger)
         {
-            this.memory = new EnmityMemory(logger);
+            // this.memory = new EnmityMemory(logger);
+            if(FFXIVRepository.GetLanguage() == FFXIV_ACT_Plugin.Common.Language.Chinese)
+            {
+                memoryCandidates = new List<EnmityMemory>()
+                {
+                    new EnmityMemory50(logger)
+                };
+            }
+            else if (FFXIVRepository.GetLanguage() == FFXIV_ACT_Plugin.Common.Language.Korean)
+            {
+                memoryCandidates = new List<EnmityMemory>()
+                {
+                    new EnmityMemory50(logger)
+                };
+            }
+            else
+            {
+                memoryCandidates = new List<EnmityMemory>()
+                {
+                    new EnmityMemory52(logger), new EnmityMemory50(logger)
+                };
+            }
 
             RegisterEventTypes(new List<string> {
                 EnmityTargetDataEvent, EnmityAggroListEvent,
             });
         }
 
-        public void LoadEnmityConfig()
+        public override Control CreateConfigControl()
         {
-            enmityTimer = new Timer(UpdateEnmity, null, Timeout.Infinite, this.Config.EnmityIntervalMs);
-            enmityTimer.Change(0, this.Config.EnmityIntervalMs);
+            return null;
+        }
+
+        public override void LoadConfig(IPluginConfig cfg)
+        {
+            this.Config = Registry.Resolve<BuiltinEventConfig>();
+
             this.Config.EnmityIntervalChanged += (o, e) =>
             {
-                enmityTimer.Change(0, this.Config.EnmityIntervalMs);
+                if (memory != null)
+                    timer.Change(0, this.Config.EnmityIntervalMs);
             };
         }
 
-        protected void UpdateEnmity(object state)
+        public override void Start()
+        {
+            memoryValid = false;
+            timer.Change(0, MEMORY_SCAN_INTERVAL);
+        }
+
+        public override void SaveConfig(IPluginConfig config)
+        {
+        }
+
+        protected override void Update()
         {
             try
             {
@@ -46,8 +88,34 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 stopwatch.Start();
 #endif
 
+                if (memory == null)
+                {
+                    foreach (var candidate in memoryCandidates)
+                    {
+                        if (candidate.IsValid())
+                        {
+                            memory = candidate;
+                            memoryCandidates = null;
+                            break;
+                        }
+                    }
+                }
+
                 if (memory == null || !memory.IsValid())
+                {
+                    if (memoryValid)
+                    {
+                        timer.Change(MEMORY_SCAN_INTERVAL, MEMORY_SCAN_INTERVAL);
+                        memoryValid = false;
+                    }
+
                     return;
+                } else if (!memoryValid)
+                {
+                    // Increase the update interval now that we found our memory
+                    timer.Change(this.Config.EnmityIntervalMs, this.Config.EnmityIntervalMs);
+                    memoryValid = true;
+                }
 
                 bool targetData = HasSubscriber(EnmityTargetDataEvent);
                 bool aggroList = HasSubscriber(EnmityAggroListEvent);
@@ -58,6 +126,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
                 if (targetData)
                 {
+                    // See CreateTargetData() below
                     this.DispatchEvent(CreateTargetData(combatants));
                 }
                 if (aggroList)

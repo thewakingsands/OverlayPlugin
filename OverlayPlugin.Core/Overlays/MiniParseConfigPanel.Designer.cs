@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MiniParseConfigPanel));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
+            this.applyPresetCombo = new System.Windows.Forms.ComboBox();
             this.cbMuteHidden = new System.Windows.Forms.CheckBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -102,6 +103,7 @@
             // tabGeneral
             // 
             resources.ApplyResources(this.tabGeneral, "tabGeneral");
+            this.tabGeneral.Controls.Add(this.applyPresetCombo);
             this.tabGeneral.Controls.Add(this.cbMuteHidden);
             this.tabGeneral.Controls.Add(this.label13);
             this.tabGeneral.Controls.Add(this.label10);
@@ -121,6 +123,13 @@
             this.tabGeneral.Controls.Add(this.label12);
             this.tabGeneral.Name = "tabGeneral";
             this.tabGeneral.UseVisualStyleBackColor = true;
+            // 
+            // applyPresetCombo
+            // 
+            resources.ApplyResources(this.applyPresetCombo, "applyPresetCombo");
+            this.applyPresetCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.applyPresetCombo.FormattingEnabled = true;
+            this.applyPresetCombo.Name = "applyPresetCombo";
             // 
             // cbMuteHidden
             // 
@@ -519,5 +528,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn hotkeyColEnabled;
         private System.Windows.Forms.DataGridViewTextBoxColumn hotkeyColHotkey;
         private System.Windows.Forms.DataGridViewComboBoxColumn hotkeyColAction;
+        private System.Windows.Forms.ComboBox applyPresetCombo;
     }
 }

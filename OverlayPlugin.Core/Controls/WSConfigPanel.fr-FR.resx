@@ -136,7 +136,7 @@ Après, vous devriez pouvoir activer SSL.</value>
     <value>Démarrer</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>Etat :</value>
+    <value>Etat</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Port :</value>

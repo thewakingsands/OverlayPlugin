@@ -397,7 +397,7 @@ namespace RainbowMage.HtmlRenderer
                     {
                         // Enable the Crashpad reporter. This *HAS* to happen before libcef.dll is loaded.
                         EnableErrorReports(appDataDirectory);
-                    } catch (Exception e)
+                    } catch (Exception)
                     {
                         // TODO: Log this exception.
                     }
