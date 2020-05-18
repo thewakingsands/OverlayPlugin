@@ -30,9 +30,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private const int aggroEnmityOffset = 0x908;
 
         // Offsets from the targetAddress to find the correct target type.
-        private const int targetTargetOffset = -24;
-        private const int focusTargetOffset = 56;
-        private const int hoverTargetOffset = 32;
+        private const int targetTargetOffset = -0x18;
+        private const int focusTargetOffset = 0x38;
+        private const int hoverTargetOffset = 0x20;
 
         // Constants.
         private const uint emptyID = 0xE0000000;
@@ -149,7 +149,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
             if (!success)
             {
                 logger.Log(LogLevel.Error, "Failed to memory scan for 5.0: {0}.", String.Join(",", fail));
-            } else
+            }
+            else
             {
                 logger.Log(LogLevel.Info, "Found enmity memory for 5.0.");
             }
@@ -347,7 +348,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
         }
 
-        [StructLayout(LayoutKind.Explicit, Size=72)]
+        [StructLayout(LayoutKind.Explicit, Size = 72)]
         struct EnmityListEntry
         {
             public static int Size => Marshal.SizeOf(typeof(EnmityListEntry));
