@@ -20,6 +20,8 @@ namespace RainbowMage.OverlayPlugin
          *   * OverlayPlugin.Core (PluginMain.InitPlugin)
          */
 
+        public static bool CheckEntryAssembly => (bool)Assembly.GetEntryAssembly()?.GetName().Name.StartsWith("Caf");
+
         public static bool LoadSaneAssembly(string name)
         {
             var loaderVersion = Assembly.GetExecutingAssembly().GetName().Version;
@@ -28,7 +30,14 @@ namespace RainbowMage.OverlayPlugin
 
             try
             {
-                asm = Assembly.Load(name);
+                if (CheckEntryAssembly)
+                {
+                    asm = Assembly.Load(name);
+                }
+                else
+                {
+                    asm = Assembly.Load("CefSharp.OffScreen.ChromeWebBrowser.Initialize");
+                }
                 asmVersion = asm.GetName().Version;
             }
             catch (Exception ex)
