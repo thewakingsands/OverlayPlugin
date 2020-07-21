@@ -30,7 +30,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             {
                 memoryCandidates = new List<EnmityMemory>()
                 {
-                    new EnmityMemory50(logger)
+                    new EnmityMemory52(logger)
                 };
             }
             else if (FFXIVRepository.GetLanguage() == FFXIV_ACT_Plugin.Common.Language.Korean)

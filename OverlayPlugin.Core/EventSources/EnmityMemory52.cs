@@ -125,9 +125,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
 
             /// TARGET
-            list = memory.SigScan(targetSignatureH1, 0, bRIP);
-            if (list == null || list.Count == 0)
-                list = memory.SigScan(targetSignatureH0, 0, bRIP);
+            list = memory.SigScan(targetSignatureH0, 0, bRIP);
 
             if (list != null && list.Count > 0)
             {
