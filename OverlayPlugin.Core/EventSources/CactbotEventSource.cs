@@ -159,7 +159,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             var control = new OverlayControl();
             var initDone = false;
 
-            var url = "https://quisquous.github.io/cactbot/ui/config/config.html";
+            var url = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline", "ui", "config", "config.html");
             control.VisibleChanged += (o, e) =>
             {
                 if (initDone)
@@ -218,7 +218,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             };
             fast_update_timer_.AutoReset = false;
 
-            language_ = ffxiv.GetLocaleString();
+            language_ = "cn";
             pc_locale_ = System.Globalization.CultureInfo.CurrentUICulture.Name;
 
             Version overlay = typeof(IOverlay).Assembly.GetName().Version;
@@ -539,7 +539,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     {
                         var file_path = new Uri(new Uri(url), "data/" + data_filename);
                         file_data[data_filename] = web.DownloadString(file_path);
-                        LogInfo("Read file " + data_filename);
+                        LogDebug("Read file " + data_filename);
                     }
                     catch (Exception e)
                     {
@@ -758,19 +758,19 @@ namespace RainbowMage.OverlayPlugin.EventSources
             Registry.RegisterOverlayPreset(new OverlayPreset
             {
                 Name = $"Cactbot {name}",
-                Url = Path.Combine("https://quisquous.github.io/cactbot", "ui", lc, $"{filename}.html"),
+                Url = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline", "ui", lc, $"{filename}.html"), // Path.Combine("https://quisquous.github.io/cactbot", "ui", lc, $"{filename}.html"),
                 Size = new int[] { width, height },
                 Locked = false,
             });
         }
 
-        private void RegisterDpsPreset(string name, string file, int width, int height)
+        private void RegisterDpsPreset(string name, string file, int width, int height, string displayName)
         {
             string lc = name.ToLowerInvariant();
             Registry.RegisterOverlayPreset(new OverlayPreset
             {
-                Name = $"Cactbot DPS {name}",
-                Url = Path.Combine("https://quisquous.github.io/cactbot", "ui", "dps", lc, $"{file}.html"),
+                Name = $"Cactbot {displayName}",
+                Url = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline", "ui", "dps", lc, $"{file}.html"), // Path.Combine("https://quisquous.github.io/cactbot", "ui", "dps", lc, $"{file}.html"),
                 Size = new int[] { width, height },
                 Locked = false,
             });
@@ -778,19 +778,19 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         private void RegisterPresets()
         {
-            RegisterPreset("Raidboss", width: 1100, height: 300, "Raidboss (Combined Alerts & Timeline)", "raidboss");
-            RegisterPreset("Raidboss", width: 1100, height: 300, "Raidboss Alerts Only", "raidboss_alerts_only");
-            RegisterPreset("Raidboss", width: 320, height: 220, "Raidboss Timeline Only", "raidboss_timeline_only");
-            RegisterPreset("Jobs", width: 600, height: 300);
-            RegisterPreset("Eureka", width: 400, height: 400);
-            RegisterPreset("Fisher", width: 500, height: 500);
-            RegisterPreset("OopsyRaidsy", width: 400, height: 400);
-            RegisterPreset("PullCounter", width: 200, height: 200);
-            RegisterPreset("Radar", width: 300, height: 400);
-            RegisterPreset("Test", width: 300, height: 300);
+            RegisterPreset("Raidboss", width: 1100, height: 300, "副本辅助(时间轴+触发器)", "raidboss");
+            RegisterPreset("Raidboss", width: 1100, height: 300, "副本辅助(单触发器)", "raidboss_alerts_only");
+            RegisterPreset("Raidboss", width: 320, height: 220, "副本辅助(单时间轴)", "raidboss_timeline_only");
+            RegisterPreset("Jobs", width: 600, height: 300, "职业辅助");
+            RegisterPreset("Eureka", width: 400, height: 400, "优雷卡辅助");
+            RegisterPreset("Fisher", width: 500, height: 500, "捕鱼辅助");
+            RegisterPreset("OopsyRaidsy", width: 400, height: 400, "犯错监控");
+            RegisterPreset("PullCounter", width: 200, height: 200, "团灭计数");
+            RegisterPreset("Radar", width: 300, height: 400, "狩猎雷达");
+            RegisterPreset("Test", width: 300, height: 300, "测试");
             // FIXME: these should be consistently named.
-            RegisterDpsPreset("Xephero", "xephero-cactbot", width: 600, height: 400);
-            RegisterDpsPreset("Rdmty", "dps", width: 600, height: 400);
+            RegisterDpsPreset("Xephero", "xephero-cactbot", width: 600, height: 400, "Xephero DPS 悬浮窗");
+            RegisterDpsPreset("Rdmty", "dps", width: 600, height: 400, "Rdmty DPS 悬浮窗");
         }
 
         // State that is tracked and sent to JS when it changes.

@@ -14,6 +14,8 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         private IntPtr processHandle;
         private FFXIVRepository repository;
 
+        private bool hasLoggedDx9 = false;
+
         public FFXIVMemory(TinyIoCContainer container)
         {
             logger = container.Resolve<ILogger>();
@@ -35,7 +37,11 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
             if (proc.ProcessName == "ffxiv")
             {
-                logger.Log(LogLevel.Error, "{0}", "DX9 is not supported.");
+                if (!hasLoggedDx9)
+                {
+                    hasLoggedDx9 = true;
+                    logger.Log(LogLevel.Error, "{0}", "DX9 is not supported.");
+                }
                 return;
             }
             else if (proc.ProcessName != "ffxiv_dx11")
@@ -78,7 +84,11 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
             if (proc.ProcessName == "ffxiv")
             {
-                logger.Log(LogLevel.Error, "{0}", "DX9 is not supported.");
+                if (!hasLoggedDx9)
+                {
+                    hasLoggedDx9 = true;
+                    logger.Log(LogLevel.Error, "{0}", "DX9 is not supported.");
+                }
                 return;
             }
             else if (proc.ProcessName != "ffxiv_dx11")

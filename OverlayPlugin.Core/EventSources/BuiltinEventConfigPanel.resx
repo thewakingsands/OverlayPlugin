@@ -121,11 +121,80 @@
   <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="cbEndEncounterOutOfCombat.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 141</value>
+  </data>
+  <data name="cbEndEncounterOutOfCombat.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 14</value>
+  </data>
+  <data name="cbEndEncounterOutOfCombat.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;cbEndEncounterOutOfCombat.Name" xml:space="preserve">
+    <value>cbEndEncounterOutOfCombat</value>
+  </data>
+  <data name="&gt;&gt;cbEndEncounterOutOfCombat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbEndEncounterOutOfCombat.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbEndEncounterOutOfCombat.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cbEndEncounterAfterWipe.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 123</value>
+  </data>
+  <data name="cbEndEncounterAfterWipe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 12</value>
+  </data>
+  <data name="cbEndEncounterAfterWipe.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;cbEndEncounterAfterWipe.Name" xml:space="preserve">
+    <value>cbEndEncounterAfterWipe</value>
+  </data>
+  <data name="&gt;&gt;cbEndEncounterAfterWipe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbEndEncounterAfterWipe.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbEndEncounterAfterWipe.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 138</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 20</value>
+  </data>
+  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="textEnmityInterval.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="textEnmityInterval.Location" type="System.Drawing.Point, System.Drawing">
     <value>158, 99</value>
   </data>
@@ -145,7 +214,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;textEnmityInterval.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -181,7 +250,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="comboSortKey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -205,7 +274,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;comboSortKey.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -238,7 +307,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -271,7 +340,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="textUpdateInterval.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -295,7 +364,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;textUpdateInterval.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -328,7 +397,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="checkSortDesc.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -355,7 +424,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;checkSortDesc.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -388,7 +457,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="cbUpdateDuringImport.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -415,7 +484,115 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbUpdateDuringImport.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
+  </data>
+  <data name="experimentalWarning.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="experimentalWarning.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="experimentalWarning.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 178</value>
+  </data>
+  <data name="experimentalWarning.Size" type="System.Drawing.Size, System.Drawing">
+    <value>645, 20</value>
+  </data>
+  <data name="experimentalWarning.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="experimentalWarning.Text" xml:space="preserve">
+    <value>Experimental Options:</value>
+  </data>
+  <data name="&gt;&gt;experimentalWarning.Name" xml:space="preserve">
+    <value>experimentalWarning</value>
+  </data>
+  <data name="&gt;&gt;experimentalWarning.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;experimentalWarning.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;experimentalWarning.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="lblCutsceneDetectionLog.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblCutsceneDetectionLog.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="lblCutsceneDetectionLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 198</value>
+  </data>
+  <data name="lblCutsceneDetectionLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 160</value>
+  </data>
+  <data name="lblCutsceneDetectionLog.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="lblCutsceneDetectionLog.Text" xml:space="preserve">
+    <value>Log custsence detection</value>
+  </data>
+  <data name="&gt;&gt;lblCutsceneDetectionLog.Name" xml:space="preserve">
+    <value>lblCutsceneDetectionLog</value>
+  </data>
+  <data name="&gt;&gt;lblCutsceneDetectionLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCutsceneDetectionLog.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;lblCutsceneDetectionLog.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="cbCutsceneDetectionLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 201</value>
+  </data>
+  <data name="cbCutsceneDetectionLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 24</value>
+  </data>
+  <data name="cbCutsceneDetectionLog.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;cbCutsceneDetectionLog.Name" xml:space="preserve">
+    <value>cbCutsceneDetectionLog</value>
+  </data>
+  <data name="&gt;&gt;cbCutsceneDetectionLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbCutsceneDetectionLog.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;cbCutsceneDetectionLog.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 120</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 18</value>
+  </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>16</value>
   </data>
   <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -445,7 +622,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="textEnmityInterval" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="comboSortKey" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="textUpdateInterval" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkSortDesc" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbUpdateDuringImport" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,155,Percent,100" /&gt;&lt;Rows Styles="Absolute,24,Absolute,24,Absolute,24,Absolute,24,Absolute,24,Absolute,18" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cbEndEncounterOutOfCombat" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbEndEncounterAfterWipe" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label7" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="textEnmityInterval" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="comboSortKey" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="textUpdateInterval" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkSortDesc" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbUpdateDuringImport" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="experimentalWarning" Row="8" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="lblCutsceneDetectionLog" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbCutsceneDetectionLog" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,155,Percent,100" /&gt;&lt;Rows Styles="Absolute,24,Absolute,24,Absolute,24,Absolute,24,Absolute,24,Absolute,18,Absolute,20,Absolute,20,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

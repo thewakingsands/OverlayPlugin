@@ -243,8 +243,9 @@ namespace RainbowMage.OverlayPlugin.Updater
             return true;
         }
 
-        public static Task RunAutoUpdater(UpdaterOptions options, bool manualCheck = false)
+        public static async Task RunAutoUpdater(UpdaterOptions options, bool manualCheck = false)
         {
+            return;
             // Backwards compatibility for old plugins. Try to get the container from our global plugin instance.
             TinyIoCContainer container = null;
             foreach (var entry in ActGlobals.oFormActMain.ActPlugins)
@@ -267,7 +268,8 @@ namespace RainbowMage.OverlayPlugin.Updater
                 throw new Exception("OverlayPlugin not found!!");
             }
 
-            return RunAutoUpdater(options, container, manualCheck);
+            await RunAutoUpdater(options, container, manualCheck);
+            return;
         }
 
         public static async Task RunAutoUpdater(UpdaterOptions options, TinyIoCContainer container, bool manualCheck = false)
@@ -327,6 +329,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         public static async void PerformUpdateIfNecessary(string pluginDirectory, TinyIoCContainer container, bool manualCheck = false)
         {
+            return;
             var config = container.Resolve<IPluginConfig>();
             var options = new UpdaterOptions
             {

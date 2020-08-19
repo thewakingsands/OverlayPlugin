@@ -148,12 +148,12 @@ namespace RainbowMage.OverlayPlugin
                 this.controlPanel = new ControlPanel(_container);
                 this.controlPanel.Dock = DockStyle.Fill;
                 this.tabPage.Controls.Add(this.controlPanel);
-                this.tabPage.Name = "OverlayPlugin";
+                this.tabPage.Name = "ngld悬浮窗";
 
                 this.wsConfigPanel = new WSConfigPanel(_container);
                 this.wsConfigPanel.Dock = DockStyle.Fill;
 
-                this.wsTabPage = new TabPage("OverlayPlugin WSServer");
+                this.wsTabPage = new TabPage("悬浮窗WS服务");
                 this.wsTabPage.Controls.Add(wsConfigPanel);
                 ((TabControl)this.tabPage.Parent).TabPages.Add(this.wsTabPage);
                 

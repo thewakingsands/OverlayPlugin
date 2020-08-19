@@ -34,7 +34,6 @@
             this.cbEndEncounterOutOfCombat = new System.Windows.Forms.CheckBox();
             this.cbEndEncounterAfterWipe = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.textEnmityInterval = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.comboSortKey = new System.Windows.Forms.ComboBox();
@@ -48,6 +47,7 @@
             this.experimentalWarning = new System.Windows.Forms.Label();
             this.lblCutsceneDetectionLog = new System.Windows.Forms.Label();
             this.cbCutsceneDetectionLog = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,7 +57,6 @@
             this.tableLayoutPanel1.Controls.Add(this.cbEndEncounterOutOfCombat, 1, 6);
             this.tableLayoutPanel1.Controls.Add(this.cbEndEncounterAfterWipe, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.label7, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.textEnmityInterval, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.comboSortKey, 1, 1);
@@ -71,6 +70,7 @@
             this.tableLayoutPanel1.Controls.Add(this.experimentalWarning, 0, 8);
             this.tableLayoutPanel1.Controls.Add(this.lblCutsceneDetectionLog, 0, 9);
             this.tableLayoutPanel1.Controls.Add(this.cbCutsceneDetectionLog, 1, 9);
+            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // cbEndEncounterOutOfCombat
@@ -91,11 +91,6 @@
             // 
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
             // 
             // textEnmityInterval
             // 
@@ -172,6 +167,11 @@
             this.cbCutsceneDetectionLog.Name = "cbCutsceneDetectionLog";
             this.cbCutsceneDetectionLog.UseVisualStyleBackColor = true;
             this.cbCutsceneDetectionLog.CheckedChanged += new System.EventHandler(this.cbCutsceneDetectionLog_CheckedChanged);
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
             // 
             // BuiltinEventConfigPanel
             // 

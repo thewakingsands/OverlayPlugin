@@ -39,7 +39,7 @@ namespace AddonExample
             // Important Tip:
             //   ngld/OverlayPlugin can communicate between Javascript and EventSources.
             //   In many cases, it is sufficient to use MiniParse, and it is rarely necessary to create original Overlay.
-            Registry.RegisterOverlay<AddonExampleOverlay>();
+            // Registry.RegisterOverlay<AddonExampleOverlay>();
         }
     }
 }

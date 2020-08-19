@@ -58,8 +58,8 @@
             this.regionLabel = new System.Windows.Forms.Label();
             this.simpStatusLabel = new System.Windows.Forms.Label();
             this.settingsPage = new System.Windows.Forms.TabPage();
-            this.statusLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.statusLabel = new System.Windows.Forms.Label();
             this.urlGeneratorBox.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tunnelPage.SuspendLayout();
@@ -170,8 +170,8 @@
             // tabControl
             // 
             resources.ApplyResources(this.tabControl, "tabControl");
-            this.tabControl.Controls.Add(this.tunnelPage);
             this.tabControl.Controls.Add(this.settingsPage);
+            this.tabControl.Controls.Add(this.tunnelPage);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             // 
@@ -256,15 +256,15 @@
             this.settingsPage.Name = "settingsPage";
             this.settingsPage.UseVisualStyleBackColor = true;
             // 
-            // statusLabel
-            // 
-            resources.ApplyResources(this.statusLabel, "statusLabel");
-            this.statusLabel.Name = "statusLabel";
-            // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
+            // 
+            // statusLabel
+            // 
+            resources.ApplyResources(this.statusLabel, "statusLabel");
+            this.statusLabel.Name = "statusLabel";
             // 
             // WSConfigPanel
             // 

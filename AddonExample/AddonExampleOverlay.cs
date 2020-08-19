@@ -5,7 +5,7 @@ namespace AddonExample
 {
     public class AddonExampleOverlay : OverlayBase<AddonExampleOverlayConfig>
     {
-        public AddonExampleOverlay(AddonExampleOverlayConfig config, string name) : base(config, name)
+        public AddonExampleOverlay(AddonExampleOverlayConfig config, string name, TinyIoCContainer container) : base(config, name, container)
         {
 
         }

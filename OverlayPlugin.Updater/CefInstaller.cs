@@ -68,8 +68,28 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         public static async Task<bool> InstallCef(string cefPath, string archivePath = null)
         {
-            var result = await Installer.Run(archivePath == null ? GetUrl() : archivePath, cefPath, "OverlayPluginCef.tmp");
-            if (!result || !Directory.Exists(cefPath))
+            var tempNuget = Path.Combine(Path.GetTempPath(), "OverlayPlugin-cefredist");
+            Directory.CreateDirectory(cefPath);
+
+            var result = await Installer.Run(GetNupkgUrl("cef.redist.x64", "75.1.14"), tempNuget, "OverlayPluginCef.tmp1");
+            if (result)
+            {
+                CopyFiles(Path.Combine(tempNuget, "CEF"), cefPath);
+            }
+
+            var result2 = await Installer.Run(GetNupkgUrl("CefSharp.Common", "75.1.141"), tempNuget, "OverlayPluginCef.tmp2");
+            if (result2)
+            {
+                CopyFiles(Path.Combine(tempNuget, "CefSharp", "x64"), cefPath);
+            }
+
+            var result3 = await Installer.Run(GetNupkgUrl("CefSharp.OffScreen", "75.1.141"), tempNuget, "OverlayPluginCef.tmp3");
+            if (result3)
+            {
+                CopyFiles(Path.Combine(tempNuget, "CefSharp", "x64"), cefPath);
+            }
+
+            if (!result || !result2 || !result3 || !Directory.Exists(cefPath))
             {
                 MessageBox.Show(
                     Resources.UpdateCefDlFailed,
@@ -90,6 +110,24 @@ namespace RainbowMage.OverlayPlugin.Updater
             Process.Start("https://www.yuque.com/ffcafe/act/downloadvc");
 
             return false;
+        }
+
+        public static string GetNupkgUrl(string packageName, string version)
+        {
+            return $"https://repo.huaweicloud.com/repository/nuget/v3-flatcontainer/{packageName.ToLower()}/{version}/{packageName.ToLower()}.{version}.nupkg";
+        }
+
+        private static void CopyFiles(string SourcePath, string DestinationPath)
+        {
+            //Now Create all of the directories
+            foreach (string dirPath in Directory.GetDirectories(SourcePath, "*",
+                SearchOption.AllDirectories))
+                Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
+
+            //Copy all the files & Replaces any files with the same name
+            foreach (string newPath in Directory.GetFiles(SourcePath, "*",
+                SearchOption.AllDirectories))
+                File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
         }
     }
 }

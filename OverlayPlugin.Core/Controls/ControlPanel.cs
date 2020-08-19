@@ -254,10 +254,10 @@ namespace RainbowMage.OverlayPlugin
             parameters["config"] = null;
             parameters["name"] = name;
 
-            var overlay = (IOverlay)Registry.Container.Resolve(overlayType, parameters);
+            var overlay = (IOverlay)_container.Resolve(overlayType, parameters);
 
-            config.Overlays.Add(overlay.Config);
-            pluginMain.RegisterOverlay(overlay);
+            _config.Overlays.Add(overlay.Config);
+            _pluginMain.RegisterOverlay(overlay);
 
             AddConfigTab(overlay);
 

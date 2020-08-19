@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="tabGeneral.Text" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="tabHotkeys.Text" xml:space="preserve">
+    <value>快捷键</value>
+  </data>
+  <data name="tabAdvanced.Text" xml:space="preserve">
+    <value>高级</value>
+  </data>
+  <data name="tabACTWS.Text" xml:space="preserve">
+    <value>ACTWS</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="applyPresetCombo.Location" type="System.Drawing.Point, System.Drawing">
     <value>180, 228</value>
@@ -166,20 +178,17 @@
   <data name="label7.Text" xml:space="preserve">
     <value>启用悬浮窗</value>
   </data>
-  <data name="textMiniParseUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>370, 21</value>
-  </data>
-  <data name="buttonMiniParseSelectFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>370, 0</value>
-  </data>
-  <data name="buttonMiniParseSelectFile.Text" xml:space="preserve">
-    <value>浏览</value>
-  </data>
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>180, 200</value>
   </data>
   <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>407, 24</value>
+  </data>
+  <data name="textMiniParseUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 21</value>
+  </data>
+  <data name="buttonMiniParseSelectFile.Text" xml:space="preserve">
+    <value>浏览</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 203</value>
@@ -244,9 +253,6 @@
   <data name="label12.Text" xml:space="preserve">
     <value>如果您找不到悬浮窗或由于某种原因无法调整其大小时，请启用此选项。</value>
   </data>
-  <data name="tabGeneral.Text" xml:space="preserve">
-    <value>通用</value>
-  </data>
   <data name="btnApplyHotkeyChanges.Text" xml:space="preserve">
     <value>应用更改</value>
   </data>
@@ -266,17 +272,20 @@
   <data name="hotkeyColEnabled.Width" type="System.Int32, mscorlib">
     <value>50</value>
   </data>
-  <data name="hotkeyColHotkey.HeaderText" xml:space="preserve">
-    <value>快捷键</value>
-  </data>
   <data name="hotkeyColAction.HeaderText" xml:space="preserve">
     <value>行为</value>
   </data>
-  <data name="tabHotkeys.Text" xml:space="preserve">
-    <value>快捷键</value>
-  </data>
   <data name="label15.Text" xml:space="preserve">
     <value>缩放</value>
+  </data>
+  <data name="tbZoom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>14, 24</value>
+  </data>
+  <data name="btnResetZoom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 3</value>
+  </data>
+  <data name="btnResetZoom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>406, 24</value>
   </data>
   <data name="btnResetZoom.Text" xml:space="preserve">
     <value>重设</value>
@@ -292,9 +301,6 @@
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>最大帧速率</value>
-  </data>
-  <data name="tabAdvanced.Text" xml:space="preserve">
-    <value>高级</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 12</value>
