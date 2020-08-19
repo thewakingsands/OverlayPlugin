@@ -2,27 +2,29 @@
 using System.Runtime.InteropServices;
 using System.Reflection;
 
-namespace RainbowMage.OverlayPlugin
+namespace RainbowMage.OverlayPlugin.NetworkProcessors
 {
     class NetworkParser
     {
-        public static event EventHandler<OnlineStatusChangedArgs> OnOnlineStatusChanged;
+        public event EventHandler<OnlineStatusChangedArgs> OnOnlineStatusChanged;
 
-        private static Type MessageType = null;
-        private static int ActorControl142_Size = 0;
-        private static int MessageType_Offset = 0;
-        private static int ActorID_Offset = 0;
-        private static int Category_Offset = 0;
-        private static int Param1_Offset = 0;
-        private static ushort ActorControl142_Opcode = 0;
+        private Type MessageType = null;
+        private int ActorControl142_Size = 0;
+        private int MessageType_Offset = 0;
+        private int ActorID_Offset = 0;
+        private int Category_Offset = 0;
+        private int Param1_Offset = 0;
+        private ushort ActorControl142_Opcode = 0;
 
         /**
          * We use reflection to calculate the field offsets since there's no public Machina DLL we could link
          * against. I want to avoid copying the relevant structures so reflection is the last option left.
         */
 
-        public static void Init()
+        public NetworkParser(TinyIoCContainer container)
         {
+            var logger = container.Resolve<ILogger>();
+
             try
             {
                 var mach = Assembly.Load("Machina.FFXIV");
@@ -43,20 +45,20 @@ namespace RainbowMage.OverlayPlugin
                 ActorControl142_Opcode = GetOpcode("ActorControl142");
 
 #if DEBUG
-                Registry.Resolve<ILogger>().Log(LogLevel.Debug, $"ActorControl142 = {ActorControl142_Opcode.ToString("x")}");
+                logger.Log(LogLevel.Debug, $"ActorControl142 = {ActorControl142_Opcode.ToString("x")}");
 #endif
 
-                FFXIVRepository.RegisterNetworkParser(Parse);
+                container.Resolve<FFXIVRepository>().RegisterNetworkParser(Parse);
             } catch (System.IO.FileNotFoundException)
             {
-                Registry.Resolve<ILogger>().Log(LogLevel.Error, Resources.NetworkParserNoFfxiv);
+                logger.Log(LogLevel.Error, Resources.NetworkParserNoFfxiv);
             } catch (Exception e)
             {
-                Registry.Resolve<ILogger>().Log(LogLevel.Error, Resources.NetworkParserInitException, e);
+                logger.Log(LogLevel.Error, Resources.NetworkParserInitException, e);
             }
         }
 
-        private static int GetOffset(Type type, string property)
+        public int GetOffset(Type type, string property)
         {
             int offset = 0;
 
@@ -85,7 +87,7 @@ namespace RainbowMage.OverlayPlugin
             return offset;
         }
 
-        private static object GetEnumValue(Type type, string name)
+        public object GetEnumValue(Type type, string name)
         {
             foreach (var value in type.GetEnumValues())
             {
@@ -96,7 +98,7 @@ namespace RainbowMage.OverlayPlugin
             throw new Exception($"Enum value {name} not found in {type}!");
         }
 
-        private static ushort GetOpcode(string name)
+        public ushort GetOpcode(string name)
         {
             // FFXIV_ACT_Plugin 2.0.4.14 converted Server_MessageType from enum to struct. Deal with each type appropriately.
             if (MessageType.IsEnum)
@@ -109,7 +111,7 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        public unsafe static void Parse(string id, long epoch, byte[] message)
+        public unsafe void Parse(string id, long epoch, byte[] message)
         {
             if (message.Length >= ActorControl142_Size)
             {

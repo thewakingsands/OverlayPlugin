@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 let noTarget = {
   Name: '- none -',
@@ -46,6 +46,7 @@ let enmity = new Vue({
         this.strings = localeStrings[msg.language];
       else
         this.strings = localeStrings['English'];
+      this.language = msg.language;
 
       window.addOverlayListener('EnmityTargetData', this.update);
       document.addEventListener('onExampleShowcase', this.showExample);
@@ -69,7 +70,7 @@ let enmity = new Vue({
             Name: 'Tank',
             Job: 'PLD',
             MaxHP: 100,
-            CurrentHP: 3
+            CurrentHP: 3,
           },
           {
             isMe: false,
@@ -78,7 +79,7 @@ let enmity = new Vue({
             Name: 'Off-Tank',
             Job: 'WAR',
             MaxHP: 5000,
-            CurrentHP: 4980
+            CurrentHP: 4980,
           },
           {
             isMe: true,
@@ -87,8 +88,8 @@ let enmity = new Vue({
             Name: 'Player',
             Job: 'BLM',
             MaxHP: 2000,
-            CurrentHP: 2000
-          }
+            CurrentHP: 2000,
+          },
         ],
         Target: {
           Type: 2,
@@ -98,34 +99,15 @@ let enmity = new Vue({
           CurrentHP: 45300,
           MaxHP: 50000,
           Distance: 1,
-        }
+        },
       });
     },
     update: function(enmity) {
-      if (enmity.Entries === null)
-        enmity.Entries = [];
-
-      // Entries sorted by enmity, and keys are integers.
-      // If only one, show absolute value (otherwise confusingly 0 for !isMe).
-      let max = 0;
-      if (Object.keys(enmity.Entries).length > 1)
-        max = enmity.Entries[0].isMe ? enmity.Entries[1].Enmity : enmity.Entries[0].Enmity;
-
-      let foundMe = false;
-      for (let i = 0; i < enmity.Entries.length; ++i) {
-        let e = enmity.Entries[i];
-        e.RelativeEnmity = e.Enmity - max;
-        if (e.isMe) {
-          foundMe = true;
-          this.myEntry = e;
-        }
-      }
-      if (!foundMe)
-        this.myEntry = noEntry;
+      let player = updateRelativeEnmity(enmity);
+      this.myEntry = player === null ? noEntry : player;
 
       if (enmity.Target)
         this.processTarget(enmity.Target);
-
 
       this.updated = true;
       this.entries = enmity.Entries;
@@ -141,60 +123,16 @@ let enmity = new Vue({
     toggleCollapse: function() {
       this.collapsed = !this.collapsed;
     },
-    toTimeString: function(time) {
-      let totalSeconds = Math.floor(time);
-      let minutes = Math.floor(totalSeconds / 60);
-      let seconds = totalSeconds % 60;
-      let str = '';
-      if (minutes > 0)
-        str = minutes + 'm';
-
-      str += seconds + 's';
-      return str;
-    },
     processTarget: function(target) {
-      target.TimeToDeath = '';
-
-      // Throw away entries older than this.
-      let keepHistoryMs = 30 * 1000;
-      // Sample period between recorded entries.
-      let samplePeriodMs = 60;
-
-      let now = +new Date();
       if (!this.targetHistory)
-        this.targetHistory = {};
+        this.targetHistory = new TargetHistory();
 
-      if (!this.targetHistory[target.ID]) {
-        this.targetHistory[target.ID] = {
-          hist: [],
-          lastUpdated: now,
-        };
-      }
-      let h = this.targetHistory[target.ID];
-      if (now - h.lastUpdated > samplePeriodMs) {
-        h.lastUpdated = now;
-        // Don't update if hp is unchanged to keep estimate more stable.
-        if (h.hist.length == 0 || h.hist[h.hist.length - 1].hp != target.CurrentHP)
-          h.hist.push({ time: now, hp: target.CurrentHP });
-      }
-
-      while (h.hist.length > 0 && now - h.hist[0].time > keepHistoryMs)
-        h.hist.shift();
-
-
-      if (h.hist.length < 2)
-        return;
-
-
-      let first = h.hist[0];
-      let last = h.hist[h.hist.length - 1];
-      let totalSeconds = (last.time - first.time) / 1000;
-      if (first.hp <= last.hp || totalSeconds == 0)
-        return;
-
-
-      let dps = (first.hp - last.hp) / totalSeconds;
-      target.TimeToDeath = this.toTimeString(last.hp / dps);
+      this.targetHistory.processTarget(target);
+      let secondsRemaining = this.targetHistory.secondsUntilDeath(target);
+      if (secondsRemaining === null)
+        target.TimeToDeath = '';
+      else
+        target.TimeToDeath = toTimeString(secondsRemaining, this.language);
     },
   },
 });

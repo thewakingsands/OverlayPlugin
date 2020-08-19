@@ -11,8 +11,8 @@ namespace RainbowMage.OverlayPlugin.Overlays
     [Serializable]
     public class LabelOverlay : OverlayBase<LabelOverlayConfig>
     {
-        public LabelOverlay(LabelOverlayConfig config, string name)
-            : base(config, name)
+        public LabelOverlay(LabelOverlayConfig config, string name, TinyIoCContainer container)
+            : base(config, name, container)
         {
             timer.Stop();
 
@@ -32,7 +32,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         public override System.Windows.Forms.Control CreateConfigControl()
         {
-            return new LabelOverlayConfigPanel(this);
+            return new LabelOverlayConfigPanel(container, this);
         }
 
         private void UpdateOverlayText()

@@ -277,12 +277,30 @@
             "zh-CN": "如果此悬浮窗不支持ACTWebSocket，则此链接可能不会生效。"
         },
         "logDisplay.Text": {
-            "de-DE": "SSL kann nur aktiviert werden, wenn ein SSL-Zertifikat vorhanden ist. Klicke auf die Schaltfläche oben, um es automatisch zu generieren, oder platzieren eine PKCS#12 Datei mit dem Kennwort \"changeit\" in %AppData%\\Advanced Combat Tracker\\Config\\OverlayPluginSSL.p12 und starte ACT neu.\n\nDanach sollte SSL aktiviert werden können.",
-            "en": "SSL can only be enabled if you have a SSL certificate. You can either click the button above to automatically generate one or place a PKCS#12 file with the password changeit in %AppData%\\Advanced Combat Tracker\\Config\\OverlayPluginSSL.p12 and restart ACT.\n\nAfterwards, you should be able to enable SSL.",
+            "de-DE": "SSL kann nur aktiviert werden, wenn ein SSL-Zertifikat vorhanden ist. Klicke auf die Schaltfläche oben, um es automatisch zu generieren, oder platzieren eine PKCS#12 Datei mit dem Kennwort in %AppData%\\Advanced Combat Tracker\\Config\\OverlayPluginSSL.p12 und starte ACT neu.\n\nDanach sollte SSL aktiviert werden können.",
+            "en": "Only enable SSL if you *know* that you need it. It's usally only necessary if you want to share your overlay with other people or devices. Please use the other tab for that. It's easier to setup, allows you to share your overlay with others (just give them the generated URL) and still works with OBS and other tools.\n\n\nSSL can only be enabled if you have a SSL certificate. You can either click the button above to automatically generate one or place a PKCS#12 file with the password changeit in %AppData%\\Advanced Combat Tracker\\Config\\OverlayPluginSSL.p12 and restart ACT.\n\nAfterwards, you should be able to enable SSL.",
             "fr-FR": "SSL ne peut être activé que si vous avez un certificat SSL. Vous pouvez soit cliquer sur le bouton ci-dessus pour en générer automatiquement un, soit placer un fichier PKCS#12 avec le mot de passe dans %AppData%\\Advanced Combat Tracker\\Config\\OverlayPluginSSL.p12 et relancer ACT.\n\nAprès, vous devriez pouvoir activer SSL.",
             "ja-JP": "SSLを有効にするにはSSL証明書が必要です。上のボタンを押して証明書を作成するか、 証明書がある場合はパスワードを changeit に設定した PKCS#12 ファイルを %AppData%\\Advanced Combat Tracker\\Config\\OverlayPluginSSL.p12 に保存して下さい。設定後はACTを再起動して下さい。\n\nSSL証明書の準備が完了したら、SSLを有効にすることが出来ます。",
             "ko-KR": "SSL를 허용하려면 SSL 인증서가 필요합니다.\n\n위의 버튼을 눌러 인증서를 새로 발급하거나, 인증서가 있는 경우 비밀번호를 changeit으로 설정한 OverlayPluginSSL.p12 파일을 %Appdata%\\Advanced Combat Tracker\\Config 폴더에 보관하세요.\n\n설정이 끝나면 ACT를 다시 시작하시고, 인증서 준비가 완료되면 SSL을 활성화할 수 있습니다.",
             "zh-CN": "只有拥有SSL证书，才能启用SSL。您可以单击上方的按钮自动生成一个，或将PKCS#12文件放置在%AppData%\\Advanced Combat Tracker\\Config\\OverlayPluginSSL.p12中并重新启动ACT。\n\n然后，您将可以启用SSL。"
+        },
+        "regionLabel.Text": {
+            "en": "Region:"
+        },
+        "settingsPage.Text": {
+            "en": "Stream/Local Overlay"
+        },
+        "simpStartBtn.Text": {
+            "en": "Start"
+        },
+        "simpStatusLabel.Text": {
+            "en": "Status:"
+        },
+        "simpStatusLbl.Text": {
+            "en": "Unknown"
+        },
+        "simpStopBtn.Text": {
+            "en": "Stop"
         },
         "sslBox.Text": {
             "de-DE": "Aktiviere SSL",
@@ -314,9 +332,18 @@
             "ja-JP": "ストップ",
             "ko-KR": "중지",
             "zh-CN": "停止"
+        },
+        "tunnelPage.Text": {
+            "en": "Shared Overlay"
+        },
+        "urlGeneratorBox.Text": {
+            "en": "URL Generator"
         }
     },
     "OverlayPlugin.Core/EventSources/BuiltinEventConfigPanel": {
+        "experimentalWarning.Text": {
+            "en": "WARNING: Experimental options below - If you touch these, you confirm that you can troubleshoot any issues you encounter yourself and won't ask for help."
+        },
         "label1.Text": {
             "de-DE": "Sortieren nach",
             "en": "Sort By",
@@ -356,6 +383,17 @@
             "ja-JP": "敵視情報の更新間隔 (ミリ秒)",
             "ko-KR": "전투 중 정보 업데이트 간격 (ms)",
             "zh-CN": "仇恨更新间隔（毫秒）"
+        },
+        "label6.Text": {
+            "en": "End ACT encounter after wipe",
+            "zh-CN": "团灭自动重置战斗记录"
+        },
+        "label7.Text": {
+            "en": "End ACT encounter out of combat",
+            "zh-CN": "脱战自动重置战斗记录"
+        },
+        "lblCutsceneDetectionLog.Text": {
+            "en": "Write cutscene detection log lines"
         }
     },
     "OverlayPlugin.Core/Overlays/LabelOverlayConfigPanel": {
@@ -1317,6 +1355,14 @@
             "fr-FR": "Si cela ne fonctionne pas, regardez dans l'autre onglet",
             "ko-KR": "만약 다운로드 문제가 해결되지 않는다면 수동 설치를 시도합니다.",
             "zh-CN": "如果这对您不起作用，请查看另一个选项卡。"
+        },
+        "label6.Text": {
+            "en": "End ACT encounter after wipe",
+            "zh-CN": "团灭自动重置战斗记录"
+        },
+        "label7.Text": {
+            "en": "End ACT encounter out of combat",
+            "zh-CN": "脱战自动重置战斗记录"
         },
         "lnkManual.Text": {
             "de-DE": "Bitte warten...",

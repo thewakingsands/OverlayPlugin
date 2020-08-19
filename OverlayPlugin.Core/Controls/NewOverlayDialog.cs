@@ -2,15 +2,11 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -22,6 +18,9 @@ namespace RainbowMage.OverlayPlugin
         public IOverlay SelectedOverlay { get; private set; }
 
         private PluginMain pluginMain;
+        private Registry registry;
+        private ILogger logger;
+        private TinyIoCContainer container;
         private IOverlay preview;
 
         static Dictionary<string, string> overlayNames = new Dictionary<string, string>
@@ -33,16 +32,19 @@ namespace RainbowMage.OverlayPlugin
 
         Dictionary<string, OverlayPreset> presets = null;
 
-        public NewOverlayDialog(PluginMain pluginMain)
+        public NewOverlayDialog(TinyIoCContainer container)
         {
             InitializeComponent();
 
-            this.pluginMain = pluginMain;
+            pluginMain = container.Resolve<PluginMain>();
+            registry = container.Resolve<Registry>();
+            logger = container.Resolve<ILogger>();
+            this.container = container;
 
             // Default validator
             NameValidator = (name) => { return name != null; };
 
-            foreach (var overlayType in Registry.Overlays)
+            foreach (var overlayType in registry.Overlays)
             {
                 var name = overlayType.Name;
                 if (name.EndsWith("Overlay"))
@@ -58,7 +60,11 @@ namespace RainbowMage.OverlayPlugin
             }
 
             cbType.DisplayMember = "Key";
-            cbType.SelectedIndex = 0;
+            // Workaround for the special case where no overlay type has been registered.
+            // That still indicates a bug but showing an empty combo box is better than crashing.
+            if (cbType.Items.Count > 0)
+                cbType.SelectedIndex = 0;
+
             presets = PreparePresetCombo(cbPreset);
 
             lblType.Visible = false;
@@ -68,32 +74,11 @@ namespace RainbowMage.OverlayPlugin
             textBox1.Focus();
         }
 
-        public static Dictionary<string, OverlayPreset> PreparePresetCombo(ComboBox cbPreset)
+        private Dictionary<string, OverlayPreset> PreparePresetCombo(ComboBox cbPreset)
         {
-            
-#if DEBUG
-            var presetFile = Path.Combine(PluginMain.PluginDirectory, "libs", "resources", "presets.json");
-#else
-            var presetFile = Path.Combine(PluginMain.PluginDirectory, "resources", "presets.json");
-#endif
-            var presetData = "{}";
+            cbPreset.Items.Clear();
 
-            try
-            {
-                presetData = File.ReadAllText(presetFile);
-            } catch(Exception ex)
-            {
-                Registry.Resolve<ILogger>().Log(LogLevel.Error, string.Format(Resources.ErrorCouldNotLoadPresets, ex));
-            }
-            
-            var presets = JsonConvert.DeserializeObject<Dictionary<string, OverlayPreset>>(presetData);
-            foreach (var pair in presets)
-            {
-                pair.Value.Name = pair.Key;
-                cbPreset.Items.Add(pair.Value);
-            }
-
-            foreach (var item in Registry.OverlayPresets)
+            foreach (var item in registry.OverlayPresets)
             {
                 cbPreset.Items.Add(item);
             }
@@ -151,7 +136,7 @@ namespace RainbowMage.OverlayPlugin
                     parameters["config"] = null;
                     parameters["name"] = name;
 
-                    SelectedOverlay = (IOverlay)Registry.Container.Resolve(overlayType, parameters);
+                    SelectedOverlay = (IOverlay)container.Resolve(overlayType, parameters);
                 } else
                 {
                     // Store the current preview position and size in the config object...
@@ -168,7 +153,17 @@ namespace RainbowMage.OverlayPlugin
                         var config = JsonConvert.DeserializeObject<Overlays.MiniParseOverlayConfig>(JsonConvert.SerializeObject(preview.Config));
 
                         // Reconstruct the overlay to reset the preview state.
-                        SelectedOverlay = new Overlays.MiniParseOverlay(config, name);
+                        SelectedOverlay = new Overlays.MiniParseOverlay(config, name, container);
+                        if (config.Url == "")
+                        {
+                            // If the preview didn't load, we try again here to avoid ending up with an empty overlay.
+#if DEBUG
+                            var resourcesPath = "file:///" + pluginMain.PluginDirectory.Replace('\\', '/') + "/libs/resources";
+#else
+                            var resourcesPath = "file:///" + pluginMain.PluginDirectory.Replace('\\', '/') + "/resources";
+#endif
+                            SelectedOverlay.Navigate(preset.Url.Replace("%%", resourcesPath));
+                        }
                     }
                     else
                     {
@@ -210,9 +205,9 @@ namespace RainbowMage.OverlayPlugin
                 {
                     case "MiniParse":
 #if DEBUG
-                        var resourcesPath = "file:///" + PluginMain.PluginDirectory.Replace('\\', '/') + "/libs/resources";
+                        var resourcesPath = "file:///" + pluginMain.PluginDirectory.Replace('\\', '/') + "/libs/resources";
 #else
-                        var resourcesPath = "file:///" + PluginMain.PluginDirectory.Replace('\\', '/') + "/resources";
+                        var resourcesPath = "file:///" + pluginMain.PluginDirectory.Replace('\\', '/') + "/resources";
 #endif
                         var config = new Overlays.MiniParseOverlayConfig(Resources.OverlayPreviewName)
                         {
@@ -221,15 +216,28 @@ namespace RainbowMage.OverlayPlugin
                             IsLocked = preset.Locked,
                         };
 
-                        var overlay = new Overlays.MiniParseOverlay(config, config.Name);
+                        var presetUrl = preset.Url.Replace("%%", resourcesPath);
+                        var overlay = new Overlays.MiniParseOverlay(config, config.Name, container);
                         overlay.Preview = true;
-                        overlay.Navigate(preset.Url.Replace("%%", resourcesPath));
+                        
+                        var first = true;
+                        overlay.Overlay.Renderer.BrowserLoad += (o, ev) =>
+                        {
+                            // Once the placeholder is ready, we load the actual overlay.
+                            if (first)
+                            {
+                                first = false;
+                                overlay.Navigate(presetUrl);
+                            }
+                        };
+                        // Show a placeholder while the actual overlay is loading.
+                        overlay.Navigate(resourcesPath + "/loading.html");
 
                         preview = overlay;
                         break;
 
                     default:
-                        Registry.Resolve<ILogger>().Log(LogLevel.Error, string.Format(Resources.PresetUsesUnsupportedType, preset.Name, preset.Type));
+                        logger.Log(LogLevel.Error, string.Format(Resources.PresetUsesUnsupportedType, preset.Name, preset.Type));
                         break;
                 }
             }
@@ -246,57 +254,58 @@ namespace RainbowMage.OverlayPlugin
                 FriendlyName = friendlyName;
             }
         }
+    }
 
-        [JsonObject(NamingStrategyType = typeof(Newtonsoft.Json.Serialization.SnakeCaseNamingStrategy))]
-        public class OverlayPreset : IOverlayPreset
+    [JsonObject(NamingStrategyType = typeof(Newtonsoft.Json.Serialization.SnakeCaseNamingStrategy))]
+    class OverlayPreset : IOverlayPreset
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Url { get; set; }
+        [JsonIgnore]
+        public int[] Size { get; set; }
+        public bool Locked { get; set; }
+        public List<string> Supports { get; set; }
+
+        [JsonExtensionData]
+        [SuppressMessage("Style", "IDE0044:Add readonly modifier", Justification = "JsonExtensionData modifies this variable")]
+        private IDictionary<string, JToken> _others;
+
+        [OnDeserialized]
+        public void ParseOthers(StreamingContext ctx)
         {
-            public string Name { get; set; }
-            public string Type { get; set; }
-            public string Url { get; set; }
-            [JsonIgnore]
-            public int[] Size { get; set; }
-            public bool Locked { get; set; }
-            public List<string> Supports { get; set; }
+            var size = _others["size"];
+            Size = new int[2];
 
-            [JsonExtensionData]
-            private IDictionary<string, JToken> _others;
-
-            [OnDeserialized]
-            public void ParseOthers(StreamingContext ctx)
+            for(int i = 0; i < 2; i++)
             {
-                var size = _others["size"];
-                Size = new int[2];
+                switch (size[i].Type) {
+                    case JTokenType.Integer:
+                        Size[i] = size[i].ToObject<int>();
+                        break;
+                    case JTokenType.String:
+                        var part = size[i].ToString();
+                        if (part.EndsWith("%"))
+                        {
+                            var percent = float.Parse(part.Substring(0, part.Length - 1)) / 100;
+                            var screenSize = Screen.PrimaryScreen.WorkingArea;
 
-                for(int i = 0; i < 2; i++)
-                {
-                    switch (size[i].Type) {
-                        case JTokenType.Integer:
-                            Size[i] = size[i].ToObject<int>();
-                            break;
-                        case JTokenType.String:
-                            var part = size[i].ToString();
-                            if (part.EndsWith("%"))
-                            {
-                                var percent = float.Parse(part.Substring(0, part.Length - 1)) / 100;
-                                var screenSize = Screen.PrimaryScreen.WorkingArea;
-
-                                Size[i] = (int) Math.Round(percent * (i == 0 ? screenSize.Width : screenSize.Height));
-                            } else
-                            {
-                                Size[i] = int.Parse(part);
-                            }
-                            break;
-                        default:
-                            Size[i] = 300;
-                            break;
-                    }
+                            Size[i] = (int) Math.Round(percent * (i == 0 ? screenSize.Width : screenSize.Height));
+                        } else
+                        {
+                            Size[i] = int.Parse(part);
+                        }
+                        break;
+                    default:
+                        Size[i] = 300;
+                        break;
                 }
             }
+        }
 
-            public override string ToString()
-            {
-                return Name;
-            }
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

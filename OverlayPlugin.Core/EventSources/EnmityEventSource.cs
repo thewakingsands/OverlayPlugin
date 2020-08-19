@@ -1,10 +1,13 @@
+using Advanced_Combat_Tracker;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using RainbowMage.OverlayPlugin.MemoryProcessors;
 
 namespace RainbowMage.OverlayPlugin.EventSources
 {
@@ -20,37 +23,54 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private const string EnmityTargetDataEvent = "EnmityTargetData";
         // All of the mobs with aggro on the player.  Equivalent of the sidebar aggro list in game.
         private const string EnmityAggroListEvent = "EnmityAggroList";
+        // State of combat, both act and game.
+        private const string InCombatEvent = "InCombat";
+
+        [Serializable]
+        internal class InCombatDataObject {
+            public string type = InCombatEvent;
+            public bool inACTCombat = false;
+            public bool inGameCombat = false;
+        };
+        InCombatDataObject sentCombatData;
+
+        // Unlike "sentCombatData" which caches sent data, this variable caches each update.
+        private bool lastInGameCombat = false;
+        private const int endEncounterOutOfCombatDelayMs = 5000;
+        CancellationTokenSource endEncounterToken;
 
         public BuiltinEventConfig Config { get; set; }
 
-        public EnmityEventSource(ILogger logger) : base(logger)
+        public EnmityEventSource(TinyIoCContainer container) : base(container)
         {
-            // this.memory = new EnmityMemory(logger);
-            if(FFXIVRepository.GetLanguage() == FFXIV_ACT_Plugin.Common.Language.Chinese)
+            var repository = container.Resolve<FFXIVRepository>();
+
+            if (repository.GetLanguage() == FFXIV_ACT_Plugin.Common.Language.Chinese)
             {
                 memoryCandidates = new List<EnmityMemory>()
                 {
-                    new EnmityMemory52(logger)
+                    new EnmityMemory52(container)
                 };
             }
-            else if (FFXIVRepository.GetLanguage() == FFXIV_ACT_Plugin.Common.Language.Korean)
+            else if (repository.GetLanguage() == FFXIV_ACT_Plugin.Common.Language.Korean)
             {
                 memoryCandidates = new List<EnmityMemory>()
                 {
-                    new EnmityMemory50(logger)
+                    new EnmityMemory50(container)
                 };
             }
             else
             {
                 memoryCandidates = new List<EnmityMemory>()
                 {
-                    new EnmityMemory52(logger), new EnmityMemory50(logger)
+                    new EnmityMemory53(container)
                 };
             }
 
             RegisterEventTypes(new List<string> {
                 EnmityTargetDataEvent, EnmityAggroListEvent,
             });
+            RegisterCachedEventType(InCombatEvent);
         }
 
         public override Control CreateConfigControl()
@@ -60,7 +80,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         public override void LoadConfig(IPluginConfig cfg)
         {
-            this.Config = Registry.Resolve<BuiltinEventConfig>();
+            this.Config = container.Resolve<BuiltinEventConfig>();
 
             this.Config.EnmityIntervalChanged += (o, e) =>
             {
@@ -115,6 +135,43 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     // Increase the update interval now that we found our memory
                     timer.Change(this.Config.EnmityIntervalMs, this.Config.EnmityIntervalMs);
                     memoryValid = true;
+                }
+
+                // Handle optional "end encounter of combat" logic.
+                bool inGameCombat = memory.GetInCombat();
+                // If we've transitioned to being out of combat, start a delayed task to end the ACT encounter.
+                if (Config.EndEncounterOutOfCombat && lastInGameCombat && !inGameCombat)
+                {
+                    endEncounterToken = new CancellationTokenSource();
+                    Task.Run(async delegate
+                    {
+                        await Task.Delay(endEncounterOutOfCombatDelayMs, endEncounterToken.Token);
+                        ActGlobals.oFormActMain.Invoke((Action)(() =>
+                        {
+                            ActGlobals.oFormActMain.EndCombat(true);
+                        }));
+                    });
+                }
+                // If combat starts again, cancel any outstanding tasks to stop the ACT encounter.
+                // If the task has already run, this will not do anything.
+                if (inGameCombat && endEncounterToken != null)
+                {
+                    endEncounterToken.Cancel();
+                    endEncounterToken = null;
+                }
+                lastInGameCombat = inGameCombat;
+
+                if (HasSubscriber(InCombatEvent))
+                {
+                    bool inACTCombat = Advanced_Combat_Tracker.ActGlobals.oFormActMain.InCombat;
+                    if (sentCombatData == null || sentCombatData.inACTCombat != inACTCombat || sentCombatData.inGameCombat != inGameCombat)
+                    {
+                        if (sentCombatData == null)
+                            sentCombatData = new InCombatDataObject();
+                        sentCombatData.inACTCombat = inACTCombat;
+                        sentCombatData.inGameCombat = inGameCombat;
+                        this.DispatchAndCacheEvent(JObject.FromObject(sentCombatData));
+                    }
                 }
 
                 bool targetData = HasSubscriber(EnmityTargetDataEvent);

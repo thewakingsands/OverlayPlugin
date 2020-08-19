@@ -819,7 +819,7 @@ namespace RainbowMage.OverlayPlugin
         {
             get
             {
-                return _Default;
+                return _FailUnregisteredAndNameNotFound;
             }
         }
 

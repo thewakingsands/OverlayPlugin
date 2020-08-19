@@ -74,7 +74,7 @@ namespace RainbowMage.OverlayPlugin.Updater
             });
         }
 
-        public bool Download(string url, string dest)
+        public bool Download(string url, string dest, bool useHttpClient = false)
         {
             try
             {
@@ -109,7 +109,13 @@ namespace RainbowMage.OverlayPlugin.Updater
                 {
                     try
                     {
-                        CurlWrapper.Get(url, new Dictionary<string, string>(), dest, DlProgressCallback, true);
+                        if (useHttpClient)
+                        {
+                            HttpClientWrapper.Get(url, new Dictionary<string, string>(), dest, DlProgressCallback, true);
+                        } else { 
+                            CurlWrapper.Get(url, new Dictionary<string, string>(), dest, DlProgressCallback, true);
+                        }
+
                         success = true;
                         break;
                     }
@@ -122,7 +128,16 @@ namespace RainbowMage.OverlayPlugin.Updater
                             // If this is a curl exception, it's most likely network related. Wait a second
                             // before trying again. We don't want to spam the other side with download requests.
                             if (ex.GetType() == typeof(CurlException))
+                            {
+                                if (!((CurlException) ex).Retry)
+                                {
+                                    // Retrying won't fix this kind of error. Abort.
+                                    success = false;
+                                    break;
+                                }
+
                                 Thread.Sleep(1000);
+                            }
 
                             _display.Log(Resources.LogResumingDownload);
                             success = false;

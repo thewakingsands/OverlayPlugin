@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using Advanced_Combat_Tracker;
 using RainbowMage.HtmlRenderer;
 using System.IO;
@@ -17,10 +13,14 @@ namespace RainbowMage.OverlayPlugin
         public static event EventHandler<SendMessageEventArgs> SendMessage;
         public static event EventHandler<SendMessageEventArgs> OverlayMessage;
 
-        IApiBase receiver;
+        private readonly TinyIoCContainer container;
+        private readonly EventDispatcher dispatcher;
+        private readonly IApiBase receiver;
 
-        public OverlayApi(IApiBase receiver)
+        public OverlayApi(TinyIoCContainer container, IApiBase receiver)
         {
+            this.container = container;
+            this.dispatcher = container.Resolve<EventDispatcher>();
             this.receiver = receiver;
         }
 
@@ -59,7 +59,7 @@ namespace RainbowMage.OverlayPlugin
             var actDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var screenshotDir = Path.Combine(actDir, "Screenshot");
             var i = 0;
-            var filename = "";
+            string filename;
 
             Directory.CreateDirectory(screenshotDir);
 
@@ -85,7 +85,7 @@ namespace RainbowMage.OverlayPlugin
             receiver.InitModernAPI();
 
             Task.Run(() => {
-                var result = EventDispatcher.ProcessHandlerMessage(receiver, data);
+                var result = dispatcher.ProcessHandlerMessage(receiver, data);
                 if (callback != null)
                 {
                     Renderer.ExecuteCallback(callback, result?.ToString(Newtonsoft.Json.Formatting.None));

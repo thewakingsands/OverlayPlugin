@@ -10,6 +10,8 @@ namespace RainbowMage.OverlayPlugin
     {
         void Log(LogLevel level, string message);
         void Log(LogLevel level, string format, params object[] args);
+        void RegisterListener(Action<LogEntry> listener);
+        void ClearListener();
     }
 
     public class LogEntry

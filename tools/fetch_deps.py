@@ -71,7 +71,7 @@ def main(update_hashes=False):
     for key, meta in deps.items():
         if not os.path.isdir(os.path.join(base, meta['dest'])):
             missing.add(key)
-        elif 'hash' in meta and key in old and cache[key].get('hash', (None, None))[1] != meta['hash'][1]:
+        elif 'hash' in meta and key in old and cache[key].get('hash', (None, None))[1] != meta['hash'][1] or update_hashes:
             outdated.add(key)
 
     if os.path.isdir(dl_path):
@@ -193,4 +193,8 @@ def main(update_hashes=False):
 
 
 if __name__ == '__main__':
-    main(update_hashes='--update-hashes' in sys.argv)
+    if '-h' in sys.argv or '--help' in sys.argv:
+        print('Usage: python fetch_deps.py [--update-hashes|-u]')
+        sys.exit(0)
+
+    main(update_hashes=('--update-hashes' in sys.argv or '-u' in sys.argv))

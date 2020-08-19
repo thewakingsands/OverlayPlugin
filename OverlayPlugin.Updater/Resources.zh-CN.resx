@@ -159,7 +159,7 @@
     <value>下载失败！没有下载文件大小（Content-Length标头缺失）。</value>
   </data>
   <data name="UpdateParseVersionError" xml:space="preserve">
-    <value>解析版本失败:
+    <value>解析版本失败（国服玩家无须在意，直接关闭）:
 {0}</value>
   </data>
   <data name="LogInstallerFailed" xml:space="preserve">

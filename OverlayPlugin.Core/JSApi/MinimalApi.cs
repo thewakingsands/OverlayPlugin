@@ -13,25 +13,35 @@ namespace RainbowMage.OverlayPlugin
     {
         public string Name => "";
         private readonly Renderer renderer;
+        private readonly ILogger logger;
+        private readonly EventDispatcher dispatcher;
 
-        public MinimalApi(Renderer r)
+        public MinimalApi(Renderer r, TinyIoCContainer container)
         {
             renderer = r;
+            logger = container.Resolve<ILogger>();
+            dispatcher = container.Resolve<EventDispatcher>();
 
             r.BrowserStartLoading += (o, e) =>
             {
-                EventDispatcher.UnsubscribeAll(this);
+                dispatcher.UnsubscribeAll(this);
             };
 
             r.BrowserConsoleLog += (o, e) =>
             {
-                Registry.Resolve<ILogger>().Log(LogLevel.Info, $"OverlayControl: {e.Message} ({e.Source})");
+                logger.Log(LogLevel.Info, $"OverlayControl: {e.Message} ({e.Source})");
             };
         }
 
+        public static void AttachTo(Renderer r, TinyIoCContainer container)
+        {
+            r.SetApi(new MinimalApi(r, container));
+        }
+
+        [Obsolete("Please pass your IoC container to AttachTo().")]
         public static void AttachTo(Renderer r)
         {
-            r.SetApi(new MinimalApi(r));
+            r.SetApi(new MinimalApi(r, Registry.GetContainer()));
         }
 
         public void HandleEvent(JObject e)
@@ -43,7 +53,7 @@ namespace RainbowMage.OverlayPlugin
         public void callHandler(string data, object callback)
         {
             Task.Run(() => {
-                var result = EventDispatcher.ProcessHandlerMessage(this, data);
+                var result = dispatcher.ProcessHandlerMessage(this, data);
                 if (callback != null)
                 {
                     Renderer.ExecuteCallback(callback, result?.ToString(Formatting.None));

@@ -16,6 +16,13 @@ namespace RainbowMage.OverlayPlugin
     public class OverlayConfigList<T> : Collection<T>, IXmlSerializable
     {
         public int MissingTypes { get; private set; }
+        [NonSerialized]
+        private ILogger _logger;
+
+        public OverlayConfigList(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public System.Xml.Schema.XmlSchema GetSchema()
         {
@@ -50,7 +57,7 @@ namespace RainbowMage.OverlayPlugin
                     } catch (Exception e)
                     {
                         System.Diagnostics.Trace.WriteLine(e);
-                        Registry.Resolve<ILogger>().Log(LogLevel.Error, e.ToString());
+                        _logger.Log(LogLevel.Error, e.ToString());
                     }
                 } else
                 {

@@ -10,30 +10,32 @@ namespace RainbowMage.OverlayPlugin
 {
     class OverlayZCorrector
     {
-        private static PluginMain main = null;
-        private static ILogger logger = null;
-        private static Timer timer = null;
+        private PluginMain main;
+        private ILogger logger;
+        private Timer timer;
+        private FFXIVRepository repository;
 
-        public static void Init()
+        public OverlayZCorrector(TinyIoCContainer container)
         {
-            main = Registry.Resolve<PluginMain>();
-            logger = Registry.Resolve<ILogger>();
+            main = container.Resolve<PluginMain>();
+            logger = container.Resolve<ILogger>();
+            repository = container.Resolve<FFXIVRepository>();
 
             var span = TimeSpan.FromSeconds(3);
             timer = new Timer(EnsureOverlaysAreOverGame, null, span, span);
         }
 
-        public static void DeInit()
+        public void DeInit()
         {
             timer.Change(0, -1);
         }
 
-        private static void EnsureOverlaysAreOverGame(object _)
+        private void EnsureOverlaysAreOverGame(object _)
         {
             var watch = new Stopwatch();
             watch.Start();
 
-            var xivProc = FFXIVRepository.GetCurrentFFXIVProcess();
+            var xivProc = repository.GetCurrentFFXIVProcess();
             if (xivProc == null || xivProc.HasExited)
                 return;
 

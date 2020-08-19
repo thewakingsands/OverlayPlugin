@@ -14,7 +14,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
     {
         private MiniParseOverlayConfig config;
         private MiniParseOverlay overlay;
-        private Dictionary<string, NewOverlayDialog.OverlayPreset> presets;
+        private readonly KeyboardHook keyboardHook;
 
         static readonly List<KeyValuePair<string, GlobalHotkeyType>> hotkeyTypeDict = new List<KeyValuePair<string, GlobalHotkeyType>>()
         {
@@ -24,10 +24,11 @@ namespace RainbowMage.OverlayPlugin.Overlays
             new KeyValuePair<string, GlobalHotkeyType>(Resources.HotkeyActionToggleEnabled, GlobalHotkeyType.ToogleEnabled),
         };
 
-        public MiniParseConfigPanel(MiniParseOverlay overlay)
+        public MiniParseConfigPanel(TinyIoCContainer container, MiniParseOverlay overlay)
         {
             InitializeComponent();
 
+            this.keyboardHook = container.Resolve<KeyboardHook>();
             this.overlay = overlay;
             this.config = overlay.Config;
 
@@ -327,8 +328,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
             switch (hotkeyGridView.CurrentCell.ColumnIndex)
             {
                 case 1:
-                    var manager = Registry.Resolve<KeyboardHook>();
-                    manager.DisableHotKeys();
+                    keyboardHook.DisableHotKeys();
 
                     KeyEventHandler keyHandler = (o, e) =>
                     {
@@ -347,7 +347,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
                     ce.Control.Disposed += (o, e) =>
                     {
-                        manager.EnableHotKeys();
+                        keyboardHook.EnableHotKeys();
                     };
 
                     ce.Control.BackColor = SystemColors.ControlLightLight;

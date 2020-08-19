@@ -17,6 +17,7 @@ namespace RainbowMage.OverlayPlugin
         private static int WM_HOTKEY = 0x0312;
 
         private Dictionary<int, HotKeyInfo> _hotkeys = new Dictionary<int, HotKeyInfo>();
+        private ILogger _logger;
 
         /// <summary>
         /// Overridden to get the notifications.
@@ -36,10 +37,12 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        public KeyboardHook()
+        public KeyboardHook(TinyIoCContainer container)
         {
             // create the handle for the window.
             this.CreateHandle(new CreateParams());
+
+            _logger = container.Resolve<ILogger>();
         }
 
         /// <summary>
@@ -113,7 +116,7 @@ namespace RainbowMage.OverlayPlugin
             {
                 if (!UnregisterHotKey(Handle, pair.Value.Id))
                 {
-                    Registry.Resolve<ILogger>().Log(LogLevel.Error, Resources.UnregisterHotkeyError, pair.Key);
+                    _logger.Log(LogLevel.Error, Resources.UnregisterHotkeyError, pair.Key);
                 }
             }
         }
@@ -127,7 +130,7 @@ namespace RainbowMage.OverlayPlugin
 
                 if (!RegisterHotKey(Handle, pair.Value.Id, modifier, key))
                 {
-                    Registry.Resolve<ILogger>().Log(LogLevel.Error, Resources.RegisterHotkeyError, modifier, key);
+                    _logger.Log(LogLevel.Error, Resources.RegisterHotkeyError, modifier, key);
                 }
             }
         }

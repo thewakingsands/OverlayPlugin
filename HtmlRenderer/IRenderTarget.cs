@@ -27,6 +27,10 @@ namespace RainbowMage.HtmlRenderer
 
     public interface IWinFormsTarget : IRenderTarget
     {
+        IntPtr Handle { get; }
+
+        event EventHandler HandleCreated;
+        event EventHandler HandleDestroyed;
         event MouseEventHandler MouseWheel;
         event MouseEventHandler MouseDown;
         event MouseEventHandler MouseUp;

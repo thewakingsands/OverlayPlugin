@@ -23,6 +23,6 @@ layout: article
 * Kagerou: https://idyllshi.re/kagerou/overlay/?HOST_PORT=ws://127.0.0.1:10501/<br>
   也可以使用官方URL，但对于某些人来说会显示404。此URL应适用于所有人。
 * MopiMopi: https://haeruhaeru.github.io/mopimopi/?HOST_PORT=ws://127.0.0.1:10501/
-* Ember: https://goldenchrysus.github.io/ffxiv/ember-overlay/?HOST_PORT=ws://10.10.23.51:10501/
+* Ember: https://goldenchrysus.github.io/ffxiv/ember-overlay/?HOST_PORT=ws://127.0.0.1:10501/
 * Horizoverlay: https://bsides.github.io/horizoverlay/?HOST_PORT=ws://127.0.0.1:10501/
 * Ikegami: https://idyllshi.re/ikegami/?HOST_PORT=ws://127.0.0.1:10501/

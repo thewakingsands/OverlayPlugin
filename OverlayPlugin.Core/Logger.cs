@@ -17,7 +17,6 @@ namespace RainbowMage.OverlayPlugin
         public Logger()
         {
             this.Logs = new BindingList<LogEntry>();
-            Registry.Register<ILogger>(this);
         }
 
         /// <summary>

@@ -14,9 +14,12 @@ namespace RainbowMage.OverlayPlugin
 {
     public partial class ControlPanel : UserControl
     {
-        PluginMain pluginMain;
-        PluginConfig config;
-        TabPage generalTab, eventTab;
+        TinyIoCContainer _container;
+        ILogger _logger;
+        PluginMain _pluginMain;
+        IPluginConfig _config;
+        Registry _registry;
+        TabPage _generalTab, _eventTab;
 
         static Dictionary<string, string> esNames = new Dictionary<string, string>
         {
@@ -29,33 +32,36 @@ namespace RainbowMage.OverlayPlugin
             { "SpellTimerOverlay", Resources.MapOverlaySpellTimer },
         };
 
-        public ControlPanel(PluginMain pluginMain, PluginConfig config)
+        public ControlPanel(TinyIoCContainer container)
         {
             InitializeComponent();
             tableLayoutPanel0.PerformLayout();
             splitContainer1.SplitterDistance = splitContainer1.Height - 180;
 
-            this.pluginMain = pluginMain;
-            this.config = config;
+            _container = container;
+            _logger = container.Resolve<ILogger>();
+            _pluginMain = container.Resolve<PluginMain>();
+            _config = container.Resolve<IPluginConfig>();
+            _registry = container.Resolve<Registry>();
 
-            this.checkBoxFollowLog.Checked = this.config.FollowLatestLog;
+            this.checkBoxFollowLog.Checked = _config.FollowLatestLog;
 
-            generalTab = new ConfigTabPage
+            _generalTab = new ConfigTabPage
             {
                 Name = Resources.GeneralTab,
                 Text = "",
             };
-            generalTab.Controls.Add(new GeneralConfigTab());
+            _generalTab.Controls.Add(new GeneralConfigTab(container));
 
-            eventTab = new ConfigTabPage
+            _eventTab = new ConfigTabPage
             {
                 Name = Resources.EventConfigTab,
                 Text = "",
             };
-            eventTab.Controls.Add(new EventSources.BuiltinEventConfigPanel());
+            _eventTab.Controls.Add(new EventSources.BuiltinEventConfigPanel(container));
 
-            PluginMain.Logger.RegisterListener(AddLogEntry);
-            Registry.EventSourceRegistered += (o, e) => Invoke((Action)(() => AddEventSourceTab(o, e)));
+            _logger.RegisterListener(AddLogEntry);
+            _registry.EventSourceRegistered += (o, e) => Invoke((Action)(() => AddEventSourceTab(o, e)));
         }
 
         protected override void Dispose(bool disposing)
@@ -63,8 +69,8 @@ namespace RainbowMage.OverlayPlugin
             if (disposing)
             {
                 if (components != null) components.Dispose();
-                Registry.EventSourceRegistered -= AddEventSourceTab;
-                PluginMain.Logger.ClearListener();
+                _registry.EventSourceRegistered -= AddEventSourceTab;
+                _logger.ClearListener();
             }
 
             base.Dispose(disposing);
@@ -114,25 +120,25 @@ namespace RainbowMage.OverlayPlugin
         public void InitializeOverlayConfigTabs()
         {
             tabControl.TabPages.Clear();
-            tabControl.TabPages.Add(generalTab);
-            tabControl.TabPages.Add(eventTab);
+            tabControl.TabPages.Add(_generalTab);
+            tabControl.TabPages.Add(_eventTab);
 
-            foreach (var source in Registry.EventSources)
+            foreach (var source in _registry.EventSources)
             {
                 AddConfigTab(source);
             }
 
-            foreach (var overlay in this.pluginMain.Overlays)
+            foreach (var overlay in _pluginMain.Overlays)
             {
                 AddConfigTab(overlay);
             }
 
-            if (this.pluginMain.Overlays.Count == 0)
+            if (_pluginMain.Overlays.Count == 0)
             {
-                ((GeneralConfigTab) generalTab.Controls[0]).SetReadmeVisible(true);
+                ((GeneralConfigTab) _generalTab.Controls[0]).SetReadmeVisible(true);
             } else
             {
-                ((GeneralConfigTab) generalTab.Controls[0]).SetReadmeVisible(false);
+                ((GeneralConfigTab) _generalTab.Controls[0]).SetReadmeVisible(false);
             }
         }
 
@@ -157,7 +163,7 @@ namespace RainbowMage.OverlayPlugin
                 tabPage.Controls.Add(control);
 
                 this.tabControl.TabPages.Add(tabPage);
-                ((GeneralConfigTab) generalTab.Controls[0]).SetReadmeVisible(false);
+                ((GeneralConfigTab) _generalTab.Controls[0]).SetReadmeVisible(false);
             }
         }
 
@@ -199,7 +205,7 @@ namespace RainbowMage.OverlayPlugin
 
         private void buttonNewOverlay_Click(object sender, EventArgs e)
         {
-            var newOverlayDialog = new NewOverlayDialog(pluginMain);
+            var newOverlayDialog = new NewOverlayDialog(_container);
             newOverlayDialog.NameValidator = (name) =>
                 {
                     // 空もしくは空白文字のみの名前は許容しない
@@ -209,7 +215,7 @@ namespace RainbowMage.OverlayPlugin
                         return false;
                     }
                     // 名前の重複も許容しない
-                    else if (config.Overlays.Where(x => x.Name == name).Any())
+                    else if (_config.Overlays.Where(x => x.Name == name).Any())
                     {
                         MessageBox.Show(Resources.ErrorOverlayNameNotUnique);
                         return false;
@@ -234,8 +240,8 @@ namespace RainbowMage.OverlayPlugin
 
         public IOverlay CreateAndRegisterOverlay(IOverlay overlay)
         {
-            config.Overlays.Add(overlay.Config);
-            pluginMain.RegisterOverlay(overlay);
+            _config.Overlays.Add(overlay.Config);
+            _pluginMain.RegisterOverlay(overlay);
 
             AddConfigTab(overlay);
 
@@ -273,21 +279,21 @@ namespace RainbowMage.OverlayPlugin
             int selectedOverlayIndex = tabControl.TabPages.IndexOf(tabControl.SelectedTab);
 
             // コンフィグ削除
-            var configs = this.config.Overlays.Where(x => x.Name == selectedOverlayName);
+            var configs = _config.Overlays.Where(x => x.Name == selectedOverlayName);
             foreach (var config in configs.ToArray())
             {
-                this.config.Overlays.Remove(config);
+                _config.Overlays.Remove(config);
             }
 
             // 動作中のオーバーレイを停止して削除
-            var overlays = this.pluginMain.Overlays.Where(x => x.Name == selectedOverlayName);
+            var overlays = _pluginMain.Overlays.Where(x => x.Name == selectedOverlayName);
             foreach (var overlay in overlays)
             {
                 overlay.Dispose();
             }
             foreach (var overlay in overlays.ToArray())
             {
-                this.pluginMain.Overlays.Remove(overlay);
+                _pluginMain.Overlays.Remove(overlay);
             }
 
             // タブページを削除
@@ -306,9 +312,9 @@ namespace RainbowMage.OverlayPlugin
 
             // タープを更新
             this.tabControl.Update();
-            if (this.pluginMain.Overlays.Count == 0)
+            if (_pluginMain.Overlays.Count == 0)
             {
-                ((GeneralConfigTab) generalTab.Controls[0]).SetReadmeVisible(true);
+                ((GeneralConfigTab) _generalTab.Controls[0]).SetReadmeVisible(true);
             }
         }
 
@@ -323,7 +329,7 @@ namespace RainbowMage.OverlayPlugin
             string selectedOverlayName = tabControl.SelectedTab.Name;
             int selectedOverlayIndex = tabControl.TabPages.IndexOf(tabControl.SelectedTab);
 
-            var config = this.config.Overlays.Where(x => x.Name == selectedOverlayName).FirstOrDefault();
+            var config = _config.Overlays.Where(x => x.Name == selectedOverlayName).FirstOrDefault();
             if (config == null)
                 return;
 
@@ -339,7 +345,7 @@ namespace RainbowMage.OverlayPlugin
 
         private void CheckBoxFollowLog_CheckedChanged(object sender, EventArgs e)
         {
-            config.FollowLatestLog = checkBoxFollowLog.Checked;
+            _config.FollowLatestLog = checkBoxFollowLog.Checked;
         }
 
         private void ButtonClearLog_Click(object sender, EventArgs e)

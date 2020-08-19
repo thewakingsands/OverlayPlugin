@@ -9,14 +9,29 @@ namespace RainbowMage.OverlayPlugin
     public abstract class EventSourceBase : IEventSource
     {
         public string Name { get; protected set; }
+        protected TinyIoCContainer container;
+        private EventDispatcher dispatcher;
 
         protected Timer timer;
         protected ILogger logger;
         protected Dictionary<string, JObject> eventCache = new Dictionary<string, JObject>();
 
-        public EventSourceBase(ILogger logger)
+        // Backwards compat
+        public EventSourceBase(ILogger _)
         {
-            this.logger = logger;
+            Init(Registry.GetContainer());
+        }
+
+        public EventSourceBase(TinyIoCContainer c)
+        {
+            Init(c);
+        }
+
+        private void Init(TinyIoCContainer c)
+        {
+            container = c;
+            logger = container.Resolve<ILogger>();
+            dispatcher = container.Resolve<EventDispatcher>();
 
             timer = new Timer(UpdateWrapper, null, Timeout.Infinite, 1000);
         }
@@ -63,15 +78,15 @@ namespace RainbowMage.OverlayPlugin
 
         protected void RegisterEventTypes(List<string> types)
         {
-            EventDispatcher.RegisterEventTypes(types);
+            dispatcher.RegisterEventTypes(types);
         }
         protected void RegisterEventType(string type)
         {
-            EventDispatcher.RegisterEventType(type);
+            dispatcher.RegisterEventType(type);
         }
         protected void RegisterEventType(string type, Func<JObject> initCallback)
         {
-            EventDispatcher.RegisterEventType(type, initCallback);
+            dispatcher.RegisterEventType(type, initCallback);
         }
 
         protected void RegisterCachedEventTypes(List<string> types)
@@ -85,28 +100,28 @@ namespace RainbowMage.OverlayPlugin
         protected void RegisterCachedEventType(string type)
         {
             eventCache[type] = null;
-            EventDispatcher.RegisterEventType(type, () => eventCache[type]);
+            dispatcher.RegisterEventType(type, () => eventCache[type]);
         }
 
         protected void RegisterEventHandler(string name, Func<JObject, JToken> handler)
         {
-            EventDispatcher.RegisterHandler(name, handler);
+            dispatcher.RegisterHandler(name, handler);
         }
 
         protected void DispatchEvent(JObject e)
         {
-            EventDispatcher.DispatchEvent(e);
+            dispatcher.DispatchEvent(e);
         }
 
         protected void DispatchAndCacheEvent(JObject e)
         {
             eventCache[e["type"].ToString()] = e;
-            EventDispatcher.DispatchEvent(e);
+            dispatcher.DispatchEvent(e);
         }
 
         protected bool HasSubscriber(string eventName)
         {
-            return EventDispatcher.HasSubscriber(eventName);
+            return dispatcher.HasSubscriber(eventName);
         }
     }
 }

@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace RainbowMage.OverlayPlugin.EventSources
+namespace RainbowMage.OverlayPlugin.MemoryProcessors
 {
-    public class EnmityMemory52 : EnmityMemory
+    public class EnmityMemory53 : EnmityMemory
     {
         private FFXIVMemory memory;
         private ILogger logger;
@@ -16,17 +16,21 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private IntPtr targetAddress = IntPtr.Zero;
         private IntPtr enmityAddress = IntPtr.Zero;
         private IntPtr aggroAddress = IntPtr.Zero;
+        private IntPtr inCombatAddress = IntPtr.Zero;
 
         private const string charmapSignature = "48c1ea0381faa7010000????8bc2488d0d";
         private const string targetSignatureH0 = "83E901740832C04883C4205BC3488D0D"; // pre hotfix
         private const string targetSignatureH1 = "e8f2652f0084c00f8591010000488d0d"; // post hotfix 1
         private const string enmitySignature = "83f9ff7412448b048e8bd3488d0d";
+        private const string inCombatSignature = "84c07425450fb6c7488d0d";
 
         // Offsets from the signature to find the correct address.
         private const int charmapSignatureOffset = 0;
         private const int targetSignatureOffset = 0;
         private const int enmitySignatureOffset = -2608;
         private const int aggroEnmityOffset = -2336;
+        private const int inCombatSignatureBaseOffset = 0;
+        private const int inCombatSignatureOffsetOffset = 5;
 
         // Offsets from the targetAddress to find the correct target type.
         private const int targetTargetOffset = 176;
@@ -37,11 +41,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private const uint emptyID = 0xE0000000;
         private const int numMemoryCombatants = 421;
 
-        public EnmityMemory52(ILogger logger)
+        public EnmityMemory53(TinyIoCContainer container)
         {
-            this.memory = new FFXIVMemory(logger);
+            this.memory = new FFXIVMemory(container);
             this.memory.OnProcessChange += ResetPointers;
-            this.logger = logger;
+            this.logger = container.Resolve<ILogger>();
             GetPointerAddress();
         }
 
@@ -51,6 +55,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             targetAddress = IntPtr.Zero;
             enmityAddress = IntPtr.Zero;
             aggroAddress = IntPtr.Zero;
+            inCombatAddress = IntPtr.Zero;
         }
 
         private bool HasValidPointers()
@@ -62,6 +67,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
             if (enmityAddress == IntPtr.Zero)
                 return false;
             if (aggroAddress == IntPtr.Zero)
+                return false;
+            if (inCombatAddress == IntPtr.Zero)
                 return false;
             return true;
         }
@@ -125,7 +132,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
 
             /// TARGET
-            list = memory.SigScan(targetSignatureH0, 0, bRIP);
+            list = memory.SigScan(targetSignatureH1, 0, bRIP);
+            if (list == null || list.Count == 0)
+                list = memory.SigScan(targetSignatureH0, 0, bRIP);
 
             if (list != null && list.Count > 0)
             {
@@ -138,10 +147,30 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 success = false;
             }
 
+            /// IN COMBAT
+            // The in combat address is set from a combination of two values, a base address and an offset.
+            // They are found adjacent to the same signature, but at different offsets.
+            var baseList = memory.SigScan(inCombatSignature, inCombatSignatureBaseOffset, bRIP);
+            // SigScan returns pointers, but the offset is a 32-bit immediate value.  Do not use RIP.
+            var offsetList = memory.SigScan(inCombatSignature, inCombatSignatureOffsetOffset, false);
+            if (baseList != null && baseList.Count > 0 && offsetList != null && offsetList.Count > 0)
+            {
+                var baseAddress = baseList[0];
+                var offset = (int)(((UInt64)offsetList[0]) & 0xFFFFFFFF);
+                inCombatAddress = IntPtr.Add(baseAddress, offset);
+            }
+            else
+            {
+                inCombatAddress = IntPtr.Zero;
+                fail.Add(nameof(inCombatAddress));
+                success = false;
+            }
+
             logger.Log(LogLevel.Debug, "charmapAddress: 0x{0:X}", charmapAddress.ToInt64());
             logger.Log(LogLevel.Debug, "enmityAddress: 0x{0:X}", enmityAddress.ToInt64());
             logger.Log(LogLevel.Debug, "aggroAddress: 0x{0:X}", aggroAddress.ToInt64());
             logger.Log(LogLevel.Debug, "targetAddress: 0x{0:X}", targetAddress.ToInt64());
+            logger.Log(LogLevel.Debug, "inCombatAddress: 0x{0:X}", inCombatAddress.ToInt64());
             Combatant c = GetSelfCombatant();
             if (c != null)
             {
@@ -150,10 +179,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             if (!success)
             {
-                logger.Log(LogLevel.Error, "Failed to memory scan 5.2: {0}.", String.Join(",", fail));
-            } else
+                logger.Log(LogLevel.Error, "Failed to memory scan 5.3: {0}.", String.Join(",", fail));
+            }
+            else
             {
-                logger.Log(LogLevel.Info, "Found enmity memory for 5.2.");
+                logger.Log(LogLevel.Info, "Found enmity memory for 5.3.");
             }
 
             return success;
@@ -288,7 +318,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             [FieldOffset(0x189C)]
             public int MaxHP;
 
-            [FieldOffset(0x18D6)]
+            [FieldOffset(0x18DA)]
             public byte Job;
 
             [FieldOffset(0x1958)]
@@ -353,7 +383,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
         }
 
-        [StructLayout(LayoutKind.Explicit, Size=8)]
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
         struct EnmityListEntry
         {
             public static int Size => Marshal.SizeOf(typeof(EnmityListEntry));
@@ -588,6 +618,14 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
                 return effectEntry;
             }
+        }
+
+        public override bool GetInCombat()
+        {
+            if (inCombatAddress == IntPtr.Zero)
+                return false;
+            byte[] bytes = memory.Read8(inCombatAddress, 1);
+            return bytes[0] != 0;
         }
     }
 }

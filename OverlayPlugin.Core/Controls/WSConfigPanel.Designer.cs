@@ -16,6 +16,10 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                if (_ngrok != null && !_ngrok.HasExited)
+                {
+                    _ngrok.Kill();
+                }
             }
             base.Dispose(disposing);
         }
@@ -38,13 +42,28 @@
             this.logDisplay = new System.Windows.Forms.TextBox();
             this.startBtn = new System.Windows.Forms.Button();
             this.stopBtn = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.statusLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.cbOverlay = new System.Windows.Forms.ComboBox();
             this.lblUrlConfidentWarning = new System.Windows.Forms.Label();
             this.txtOverlayUrl = new System.Windows.Forms.TextBox();
+            this.urlGeneratorBox = new System.Windows.Forms.GroupBox();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tunnelPage = new System.Windows.Forms.TabPage();
+            this.simpStopBtn = new System.Windows.Forms.Button();
+            this.simpStartBtn = new System.Windows.Forms.Button();
+            this.simpLogBox = new System.Windows.Forms.TextBox();
+            this.simpStatusLbl = new System.Windows.Forms.Label();
+            this.regionCb = new System.Windows.Forms.ComboBox();
+            this.regionLabel = new System.Windows.Forms.Label();
+            this.simpStatusLabel = new System.Windows.Forms.Label();
+            this.settingsPage = new System.Windows.Forms.TabPage();
+            this.statusLabel = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.urlGeneratorBox.SuspendLayout();
+            this.tabControl.SuspendLayout();
+            this.tunnelPage.SuspendLayout();
+            this.settingsPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // ipTxt
@@ -105,16 +124,6 @@
             this.stopBtn.UseVisualStyleBackColor = true;
             this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
             // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // statusLabel
-            // 
-            resources.ApplyResources(this.statusLabel, "statusLabel");
-            this.statusLabel.Name = "statusLabel";
-            // 
             // label4
             // 
             resources.ApplyResources(this.label4, "label4");
@@ -147,29 +156,131 @@
             this.txtOverlayUrl.ReadOnly = true;
             this.txtOverlayUrl.Click += new System.EventHandler(this.txtOverlayUrl_Click);
             // 
+            // urlGeneratorBox
+            // 
+            resources.ApplyResources(this.urlGeneratorBox, "urlGeneratorBox");
+            this.urlGeneratorBox.Controls.Add(this.lblUrlConfidentWarning);
+            this.urlGeneratorBox.Controls.Add(this.txtOverlayUrl);
+            this.urlGeneratorBox.Controls.Add(this.label5);
+            this.urlGeneratorBox.Controls.Add(this.label4);
+            this.urlGeneratorBox.Controls.Add(this.cbOverlay);
+            this.urlGeneratorBox.Name = "urlGeneratorBox";
+            this.urlGeneratorBox.TabStop = false;
+            // 
+            // tabControl
+            // 
+            resources.ApplyResources(this.tabControl, "tabControl");
+            this.tabControl.Controls.Add(this.tunnelPage);
+            this.tabControl.Controls.Add(this.settingsPage);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            // 
+            // tunnelPage
+            // 
+            this.tunnelPage.Controls.Add(this.simpStopBtn);
+            this.tunnelPage.Controls.Add(this.simpStartBtn);
+            this.tunnelPage.Controls.Add(this.simpLogBox);
+            this.tunnelPage.Controls.Add(this.simpStatusLbl);
+            this.tunnelPage.Controls.Add(this.regionCb);
+            this.tunnelPage.Controls.Add(this.regionLabel);
+            this.tunnelPage.Controls.Add(this.simpStatusLabel);
+            resources.ApplyResources(this.tunnelPage, "tunnelPage");
+            this.tunnelPage.Name = "tunnelPage";
+            this.tunnelPage.UseVisualStyleBackColor = true;
+            // 
+            // simpStopBtn
+            // 
+            resources.ApplyResources(this.simpStopBtn, "simpStopBtn");
+            this.simpStopBtn.Name = "simpStopBtn";
+            this.simpStopBtn.UseVisualStyleBackColor = true;
+            this.simpStopBtn.Click += new System.EventHandler(this.simpStopBtn_Click);
+            // 
+            // simpStartBtn
+            // 
+            resources.ApplyResources(this.simpStartBtn, "simpStartBtn");
+            this.simpStartBtn.Name = "simpStartBtn";
+            this.simpStartBtn.UseVisualStyleBackColor = true;
+            this.simpStartBtn.Click += new System.EventHandler(this.simpStartBtn_Click);
+            // 
+            // simpLogBox
+            // 
+            resources.ApplyResources(this.simpLogBox, "simpLogBox");
+            this.simpLogBox.Name = "simpLogBox";
+            this.simpLogBox.ReadOnly = true;
+            // 
+            // simpStatusLbl
+            // 
+            resources.ApplyResources(this.simpStatusLbl, "simpStatusLbl");
+            this.simpStatusLbl.Name = "simpStatusLbl";
+            // 
+            // regionCb
+            // 
+            this.regionCb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.regionCb.FormattingEnabled = true;
+            this.regionCb.Items.AddRange(new object[] {
+            resources.GetString("regionCb.Items"),
+            resources.GetString("regionCb.Items1"),
+            resources.GetString("regionCb.Items2"),
+            resources.GetString("regionCb.Items3"),
+            resources.GetString("regionCb.Items4"),
+            resources.GetString("regionCb.Items5"),
+            resources.GetString("regionCb.Items6")});
+            resources.ApplyResources(this.regionCb, "regionCb");
+            this.regionCb.Name = "regionCb";
+            this.regionCb.SelectedIndexChanged += new System.EventHandler(this.regionCb_SelectedIndexChanged);
+            // 
+            // regionLabel
+            // 
+            resources.ApplyResources(this.regionLabel, "regionLabel");
+            this.regionLabel.Name = "regionLabel";
+            // 
+            // simpStatusLabel
+            // 
+            resources.ApplyResources(this.simpStatusLabel, "simpStatusLabel");
+            this.simpStatusLabel.Name = "simpStatusLabel";
+            // 
+            // settingsPage
+            // 
+            this.settingsPage.Controls.Add(this.logDisplay);
+            this.settingsPage.Controls.Add(this.label1);
+            this.settingsPage.Controls.Add(this.label3);
+            this.settingsPage.Controls.Add(this.ipTxt);
+            this.settingsPage.Controls.Add(this.portTxt);
+            this.settingsPage.Controls.Add(this.genSslBtn);
+            this.settingsPage.Controls.Add(this.sslBox);
+            this.settingsPage.Controls.Add(this.statusLabel);
+            this.settingsPage.Controls.Add(this.label2);
+            this.settingsPage.Controls.Add(this.startBtn);
+            this.settingsPage.Controls.Add(this.stopBtn);
+            resources.ApplyResources(this.settingsPage, "settingsPage");
+            this.settingsPage.Name = "settingsPage";
+            this.settingsPage.UseVisualStyleBackColor = true;
+            // 
+            // statusLabel
+            // 
+            resources.ApplyResources(this.statusLabel, "statusLabel");
+            this.statusLabel.Name = "statusLabel";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
             // WSConfigPanel
             // 
             resources.ApplyResources(this, "$this");
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Controls.Add(this.txtOverlayUrl);
-            this.Controls.Add(this.lblUrlConfidentWarning);
-            this.Controls.Add(this.cbOverlay);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.statusLabel);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.stopBtn);
-            this.Controls.Add(this.startBtn);
-            this.Controls.Add(this.logDisplay);
-            this.Controls.Add(this.sslBox);
-            this.Controls.Add(this.genSslBtn);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.portTxt);
-            this.Controls.Add(this.ipTxt);
+            this.Controls.Add(this.urlGeneratorBox);
+            this.Controls.Add(this.tabControl);
             this.Name = "WSConfigPanel";
+            this.urlGeneratorBox.ResumeLayout(false);
+            this.urlGeneratorBox.PerformLayout();
+            this.tabControl.ResumeLayout(false);
+            this.tunnelPage.ResumeLayout(false);
+            this.tunnelPage.PerformLayout();
+            this.settingsPage.ResumeLayout(false);
+            this.settingsPage.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -184,12 +295,23 @@
         private System.Windows.Forms.TextBox logDisplay;
         private System.Windows.Forms.Button startBtn;
         private System.Windows.Forms.Button stopBtn;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cbOverlay;
         private System.Windows.Forms.Label lblUrlConfidentWarning;
         private System.Windows.Forms.TextBox txtOverlayUrl;
+        private System.Windows.Forms.GroupBox urlGeneratorBox;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage settingsPage;
+        private System.Windows.Forms.TabPage tunnelPage;
+        private System.Windows.Forms.Button simpStopBtn;
+        private System.Windows.Forms.Button simpStartBtn;
+        private System.Windows.Forms.TextBox simpLogBox;
+        private System.Windows.Forms.Label simpStatusLbl;
+        private System.Windows.Forms.ComboBox regionCb;
+        private System.Windows.Forms.Label regionLabel;
+        private System.Windows.Forms.Label simpStatusLabel;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label statusLabel;
     }
 }

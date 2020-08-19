@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RainbowMage.OverlayPlugin.EventSources
+namespace RainbowMage.OverlayPlugin.MemoryProcessors
 {
     public enum ObjectType : byte
     {
@@ -102,5 +102,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
         abstract public List<Combatant> GetCombatantList();
         abstract public List<EnmityEntry> GetEnmityEntryList(List<Combatant> combatantList);
         abstract public unsafe List<AggroEntry> GetAggroList(List<Combatant> combatantList);
+        abstract public bool GetInCombat();
     }
 }

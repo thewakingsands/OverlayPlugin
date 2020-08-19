@@ -19,8 +19,10 @@ namespace RainbowMage.OverlayPlugin.Updater
         const string CHECK_URL = "https://api.github.com/repos/{REPO}/releases/latest";
         const string ALL_RELEASES_URL = "https://api.github.com/repos/{REPO}/releases";
 
-        public static Task<(bool, Version, string, string)> CheckForGitHubUpdate(UpdaterOptions options)
+        public static Task<(bool, Version, string, string)> CheckForGitHubUpdate(UpdaterOptions options, TinyIoCContainer container)
         {
+            var logger = container.Resolve<ILogger>();
+
             return Task.Run(() =>
             {
                 Version remoteVersion = null;
@@ -33,11 +35,11 @@ namespace RainbowMage.OverlayPlugin.Updater
                         response = ActGlobals.oFormActMain.PluginGetRemoteVersion(options.actPluginId);
                         if (!response.StartsWith("v") || !Version.TryParse(response.Substring(1), out remoteVersion))
                         {
-                            Registry.Resolve<ILogger>().Log(LogLevel.Warning, string.Format(Resources.ActUpdateCheckFailed, options.project));
+                            logger.Log(LogLevel.Warning, string.Format(Resources.ActUpdateCheckFailed, options.project));
                         }
                     } catch (Exception ex)
                     {
-                        Registry.Resolve<ILogger>().Log(LogLevel.Error, string.Format(Resources.ActUpdateException, options.project, ex));
+                        logger.Log(LogLevel.Error, string.Format(Resources.ActUpdateException, options.project, ex));
                     }
                 }
 
@@ -112,7 +114,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                 }
                 catch (Exception ex)
                 {
-                    Registry.Resolve<ILogger>().Log(LogLevel.Error, $"Failed to remove trailers from release notes: {ex}");
+                    logger.Log(LogLevel.Error, $"Failed to remove trailers from release notes: {ex}");
                 }
 
                 releaseNotes = RenderMarkdown(releaseNotes);
@@ -241,7 +243,34 @@ namespace RainbowMage.OverlayPlugin.Updater
             return true;
         }
 
-        public static async Task RunAutoUpdater(UpdaterOptions options, bool manualCheck = false)
+        public static Task RunAutoUpdater(UpdaterOptions options, bool manualCheck = false)
+        {
+            // Backwards compatibility for old plugins. Try to get the container from our global plugin instance.
+            TinyIoCContainer container = null;
+            foreach (var entry in ActGlobals.oFormActMain.ActPlugins)
+            {
+                if (entry.pluginObj != null && entry.pluginObj.GetType().FullName == "RainbowMage.OverlayPlugin.PluginLoader")
+                {
+                    try { 
+                        container = (TinyIoCContainer) entry.pluginObj.GetType().GetProperty("Container").GetValue(entry.pluginObj);
+                    } catch(Exception e)
+                    {
+                        MessageBox.Show("Unexpected error while looking for OverlayPlugin:\n" + e.Message);
+                    }
+
+                    break;
+                }
+            }
+
+            if (container == null)
+            {
+                throw new Exception("OverlayPlugin not found!!");
+            }
+
+            return RunAutoUpdater(options, container, manualCheck);
+        }
+
+        public static async Task RunAutoUpdater(UpdaterOptions options, TinyIoCContainer container, bool manualCheck = false)
         {
             return;
             // Only check once per day.
@@ -257,7 +286,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
             if (options.repo != null)
             {
-                (newVersion, remoteVersion, releaseNotes, downloadUrl) = await CheckForGitHubUpdate(options);
+                (newVersion, remoteVersion, releaseNotes, downloadUrl) = await CheckForGitHubUpdate(options, container);
             } else
             {
                 (newVersion, remoteVersion, releaseNotes, downloadUrl) = await CheckForManifestUpdate(options);
@@ -296,9 +325,9 @@ namespace RainbowMage.OverlayPlugin.Updater
             }
         }
 
-        public static async void PerformUpdateIfNecessary(string pluginDirectory, bool manualCheck = false)
+        public static async void PerformUpdateIfNecessary(string pluginDirectory, TinyIoCContainer container, bool manualCheck = false)
         {
-            var config = Registry.Resolve<IPluginConfig>();
+            var config = container.Resolve<IPluginConfig>();
             var options = new UpdaterOptions
             {
                 project = "OverlayPlugin",

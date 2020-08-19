@@ -51,6 +51,7 @@
     <Compile Include="DragHandler.cs" />
     <Compile Include="IRenderTarget.cs" />
     <Compile Include="WinFormsRenderer.cs" />
+    <Compile Include="WinFormsOffScreenRenderer.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="OverlayControl.cs">
       <SubType>Component</SubType>

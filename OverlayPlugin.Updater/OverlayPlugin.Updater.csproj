@@ -68,6 +68,7 @@
       <DependentUpon>CefMissingTab.cs</DependentUpon>
     </Compile>
     <Compile Include="CurlWrapper.cs" />
+    <Compile Include="HttpClientWrapper.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ProgressDisplay.cs">

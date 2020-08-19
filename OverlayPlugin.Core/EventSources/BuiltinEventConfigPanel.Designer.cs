@@ -16,7 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
-                Registry.EventSourcesStarted -= LoadConfig;
+                registry.EventSourcesStarted -= LoadConfig;
             }
             base.Dispose(disposing);
         }
@@ -31,6 +31,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuiltinEventConfigPanel));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbEndEncounterOutOfCombat = new System.Windows.Forms.CheckBox();
+            this.cbEndEncounterAfterWipe = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.textEnmityInterval = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.comboSortKey = new System.Windows.Forms.ComboBox();
@@ -41,12 +45,19 @@
             this.checkSortDesc = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cbUpdateDuringImport = new System.Windows.Forms.CheckBox();
+            this.experimentalWarning = new System.Windows.Forms.Label();
+            this.lblCutsceneDetectionLog = new System.Windows.Forms.Label();
+            this.cbCutsceneDetectionLog = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.cbEndEncounterOutOfCombat, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.cbEndEncounterAfterWipe, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.textEnmityInterval, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.comboSortKey, 1, 1);
@@ -57,7 +68,34 @@
             this.tableLayoutPanel1.Controls.Add(this.checkSortDesc, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.cbUpdateDuringImport, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.experimentalWarning, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.lblCutsceneDetectionLog, 0, 9);
+            this.tableLayoutPanel1.Controls.Add(this.cbCutsceneDetectionLog, 1, 9);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // cbEndEncounterOutOfCombat
+            // 
+            resources.ApplyResources(this.cbEndEncounterOutOfCombat, "cbEndEncounterOutOfCombat");
+            this.cbEndEncounterOutOfCombat.Name = "cbEndEncounterOutOfCombat";
+            this.cbEndEncounterOutOfCombat.UseVisualStyleBackColor = true;
+            this.cbEndEncounterOutOfCombat.CheckedChanged += new System.EventHandler(this.cbEndEncounterOutOfCombat_CheckedChanged);
+            // 
+            // cbEndEncounterAfterWipe
+            // 
+            resources.ApplyResources(this.cbEndEncounterAfterWipe, "cbEndEncounterAfterWipe");
+            this.cbEndEncounterAfterWipe.Name = "cbEndEncounterAfterWipe";
+            this.cbEndEncounterAfterWipe.UseVisualStyleBackColor = true;
+            this.cbEndEncounterAfterWipe.CheckedChanged += new System.EventHandler(this.cbEndEncounterAfterWipe_CheckedChanged);
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
             // 
             // textEnmityInterval
             // 
@@ -117,6 +155,24 @@
             this.cbUpdateDuringImport.UseVisualStyleBackColor = true;
             this.cbUpdateDuringImport.CheckedChanged += new System.EventHandler(this.cbUpdateDuringImport_CheckedChanged);
             // 
+            // experimentalWarning
+            // 
+            resources.ApplyResources(this.experimentalWarning, "experimentalWarning");
+            this.tableLayoutPanel1.SetColumnSpan(this.experimentalWarning, 2);
+            this.experimentalWarning.Name = "experimentalWarning";
+            // 
+            // lblCutsceneDetectionLog
+            // 
+            resources.ApplyResources(this.lblCutsceneDetectionLog, "lblCutsceneDetectionLog");
+            this.lblCutsceneDetectionLog.Name = "lblCutsceneDetectionLog";
+            // 
+            // cbCutsceneDetectionLog
+            // 
+            resources.ApplyResources(this.cbCutsceneDetectionLog, "cbCutsceneDetectionLog");
+            this.cbCutsceneDetectionLog.Name = "cbCutsceneDetectionLog";
+            this.cbCutsceneDetectionLog.UseVisualStyleBackColor = true;
+            this.cbCutsceneDetectionLog.CheckedChanged += new System.EventHandler(this.cbCutsceneDetectionLog_CheckedChanged);
+            // 
             // BuiltinEventConfigPanel
             // 
             resources.ApplyResources(this, "$this");
@@ -143,5 +199,12 @@
         private System.Windows.Forms.CheckBox cbUpdateDuringImport;
         private System.Windows.Forms.TextBox textEnmityInterval;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox cbEndEncounterOutOfCombat;
+        private System.Windows.Forms.CheckBox cbEndEncounterAfterWipe;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label experimentalWarning;
+        private System.Windows.Forms.Label lblCutsceneDetectionLog;
+        private System.Windows.Forms.CheckBox cbCutsceneDetectionLog;
     }
 }

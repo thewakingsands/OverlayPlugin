@@ -10,6 +10,7 @@ using Advanced_Combat_Tracker;
 using System.Diagnostics;
 using System.Windows.Forms;
 using FFXIV_ACT_Plugin.Common.Models;
+using RainbowMage.OverlayPlugin.NetworkProcessors;
 
 namespace RainbowMage.OverlayPlugin.EventSources
 {
@@ -20,6 +21,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private bool prevEncounterActive { get; set; }
 
         private List<string> importedLogs = new List<string>();
+        private Dictionary<uint, PartyMember> cachedPartyMembers = new Dictionary<uint, PartyMember>();
         private static Dictionary<uint, string> StatusMap = new Dictionary<uint, string>
         {
             { 0, "Online" },
@@ -67,13 +69,16 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private const string OnlineStatusChangedEvent = "OnlineStatusChanged";
         private const string PartyChangedEvent = "PartyChanged";
 
+        private FFXIVRepository repository;
+
         // Event Source
 
         public BuiltinEventConfig Config { get; set; }
 
-        public MiniParseEventSource(ILogger logger) : base(logger)
+        public MiniParseEventSource(TinyIoCContainer container) : base(container)
         {
             this.Name = "MiniParse";
+            this.repository = container.Resolve<FFXIVRepository>();
 
             // FileChanged isn't actually raised by this event source. That event is generated in MiniParseOverlay directly.
             RegisterEventTypes(new List<string> {
@@ -92,7 +97,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             });
 
             RegisterEventHandler("getLanguage", (msg) => {
-                var lang = FFXIVRepository.GetLanguage();
+                var lang = repository.GetLanguage();
                 return JObject.FromObject(new
                 {
                     language = lang.ToString("g"),
@@ -172,12 +177,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             foreach (var propName in DefaultCombatantFields)
             {
-                CachedCombatantPropertyInfos.Add(propName, 
-                    typeof(FFXIV_ACT_Plugin.Common.Models.Combatant).GetProperty(propName));
+                CachedCombatantPropertyInfos.Add(propName, typeof(Combatant).GetProperty(propName));
             }
 
             ActGlobals.oFormActMain.BeforeLogLineRead += LogLineHandler;
-            NetworkParser.OnOnlineStatusChanged += (o, e) =>
+            container.Resolve<NetworkParser>().OnOnlineStatusChanged += (o, e) =>
             {
                 var obj = new JObject();
                 obj["type"] = OnlineStatusChangedEvent;
@@ -188,14 +192,14 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 DispatchAndCacheEvent(obj);
             };
 
-            FFXIVRepository.RegisterPartyChangeDelegate((partyList, partySize) => DispatchPartyChangeEvent());
+            repository.RegisterPartyChangeDelegate((partyList, partySize) => DispatchPartyChangeEvent(partyList, partySize));
         }
 
         private List<Dictionary<string, object>> GetCombatants(List<uint> ids, List<string> names, List<string> props)
         {
             List<Dictionary<string, object>> filteredCombatants = new List<Dictionary<string, object>>();
 
-            var combatants = FFXIVRepository.GetCombatants();
+            var combatants = repository.GetCombatants();
 
             foreach (var combatant in combatants)
             {
@@ -296,11 +300,13 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     if (line.Length < 3) return;
 
                     var zoneID = Convert.ToUInt32(line[2], 16);
+                    var zoneName = line[3];
 
                     DispatchAndCacheEvent(JObject.FromObject(new
                     {
                         type = ChangeZoneEvent,
                         zoneID,
+                        zoneName,
                     }));
                     break;
 
@@ -316,6 +322,19 @@ namespace RainbowMage.OverlayPlugin.EventSources
                         charID,
                         charName,
                     }));
+                    break;
+
+                case LogMessageType.Network6D:
+                    if (!Config.EndEncounterAfterWipe) break;
+                    if (line.Length < 4) break;
+
+                    if (line[3] == "40000010")
+                    {
+                        ActGlobals.oFormActMain.Invoke((Action)(() =>
+                        {
+                           ActGlobals.oFormActMain.EndCombat(true);
+                        }));
+                    }
                     break;
             }
 
@@ -339,27 +358,73 @@ namespace RainbowMage.OverlayPlugin.EventSources
             public bool inParty;
         }
 
-        private void DispatchPartyChangeEvent()
+        private void DispatchPartyChangeEvent(ReadOnlyCollection<uint> partyList, int partySize)
         {
-            var combatants = FFXIVRepository.GetCombatants();
+            // To prevent the cached party member list from growing
+            // indefinitely, reset whenever you are no longer in a party.
+            if (partySize == 0)
+                this.cachedPartyMembers.Clear();
+
+            var combatants = repository.GetCombatants();
             if (combatants == null)
                 return;
 
-            List<PartyMember> result = new List<PartyMember>(24);
+            // This is a bit of a hack.  The goal is to return a set of party
+            // and alliance players, along with their jobs, ids, and names.
+            //
+            // |partySize| is only the size of your party, but the list of ids
+            // contains ids from both party and alliance members.
+            //
+            // Additionally, there is a race where |combatants| is not updated
+            // by the time this function is called.  However, this only seems
+            // to happen in the case of disconnects and never when zoning in.
+            // As a workaround, cache the last state of each party member, so
+            // that we can always send info for everybody in your immediate
+            // party.
+            //
+            // Alternatives:
+            // * poll GetCombatants until all party members exist (infinitely?)
+            // * find better memory location of party list
+            // * make this function only return the values from the delegate
+            // * make callers handle this via calling GetCombatants explicitly
 
-            // The partyList contents from the PartyListChangedDelegate
-            // are equivalent to the set of ids enumerated by |query|
+            // Update cached member info.
             var query = combatants.Where(c => c.PartyType != PartyTypeEnum.None);
             foreach (var c in query)
             {
-                result.Add(new PartyMember()
+                var member = new PartyMember()
                 {
                     id = $"{c.ID:X}",
                     name = c.Name,
                     worldId = c.WorldID,
                     job = c.Job,
                     inParty = c.PartyType == PartyTypeEnum.Party,
-                });
+                };
+
+                this.cachedPartyMembers[c.ID] = member;
+            }
+
+            // Accumulate party members from cached info.  If they don't exist,
+            // still send *something*, since it's better than nothing.
+            List<PartyMember> result = new List<PartyMember>(24);
+            foreach (var id in partyList)
+            {
+                PartyMember member;
+                if (this.cachedPartyMembers.TryGetValue(id, out member))
+                {
+                    result.Add(member);
+                }
+                else
+                {
+                    result.Add(new PartyMember()
+                    {
+                        id = $"{id:X}",
+                        name = "",
+                        worldId = 0,
+                        job = 0,
+                        inParty = true,
+                    });
+                }
             }
 
             DispatchAndCacheEvent(JObject.FromObject(new
@@ -376,7 +441,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         public override void LoadConfig(IPluginConfig config)
         {
-            this.Config = Registry.Resolve<BuiltinEventConfig>();
+            this.Config = container.Resolve<BuiltinEventConfig>();
 
             this.Config.UpdateIntervalChanged += (o, e) =>
             {

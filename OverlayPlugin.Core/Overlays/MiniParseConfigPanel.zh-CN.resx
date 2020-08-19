@@ -119,10 +119,13 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="applyPresetCombo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 208</value>
+    <value>180, 228</value>
   </data>
   <data name="cbMuteHidden.Location" type="System.Drawing.Point, System.Drawing">
-    <value>178, 290</value>
+    <value>177, 303</value>
+  </data>
+  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 305</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 12</value>
@@ -154,6 +157,9 @@
   <data name="cbEnableOverlay.Location" type="System.Drawing.Point, System.Drawing">
     <value>178, 25</value>
   </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 27</value>
+  </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
   </data>
@@ -170,13 +176,13 @@
     <value>浏览</value>
   </data>
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>178, 184</value>
+    <value>180, 200</value>
   </data>
   <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>407, 24</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 187</value>
+    <value>6, 203</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
@@ -196,11 +202,17 @@
   <data name="checkMiniParseVisible.Location" type="System.Drawing.Point, System.Drawing">
     <value>178, 3</value>
   </data>
+  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 128</value>
+  </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
     <value>锁定悬浮窗</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 106</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
@@ -211,6 +223,9 @@
   <data name="checkMiniParseClickthru.Location" type="System.Drawing.Point, System.Drawing">
     <value>178, 104</value>
   </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 260</value>
+  </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 12</value>
   </data>
@@ -218,10 +233,10 @@
     <value>在悬浮窗下强制启用白色背景</value>
   </data>
   <data name="cbWhiteBg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>178, 233</value>
+    <value>180, 260</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 256</value>
+    <value>175, 277</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>389, 12</value>

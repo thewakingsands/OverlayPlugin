@@ -23,6 +23,6 @@ If you change the WSServer settings, you'll have to change the `HOST_PORT` param
 * Kagerou: https://idyllshi.re/kagerou/overlay/?HOST_PORT=ws://127.0.0.1:10501/<br>
   The official URL can be used as well but results in a 404 for some people. This URL should work for everyone.
 * MopiMopi: https://haeruhaeru.github.io/mopimopi/?HOST_PORT=ws://127.0.0.1:10501/
-* Ember: https://goldenchrysus.github.io/ffxiv/ember-overlay/?HOST_PORT=ws://10.10.23.51:10501/
+* Ember: https://goldenchrysus.github.io/ffxiv/ember-overlay/?HOST_PORT=ws://127.0.0.1:10501/
 * Horizoverlay: https://bsides.github.io/horizoverlay/?HOST_PORT=ws://127.0.0.1:10501/
 * Ikegami: https://idyllshi.re/ikegami/?HOST_PORT=ws://127.0.0.1:10501/

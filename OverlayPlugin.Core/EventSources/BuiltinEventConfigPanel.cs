@@ -12,6 +12,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
 {
     partial class BuiltinEventConfigPanel : UserControl, IDisposable
     {
+        private readonly TinyIoCContainer container;
+        private readonly Registry registry;
         private BuiltinEventConfig config;
 
         static readonly List<KeyValuePair<string, string>> sortKeyDict = new List<KeyValuePair<string, string>>()
@@ -21,16 +23,18 @@ namespace RainbowMage.OverlayPlugin.EventSources
             new KeyValuePair<string, string>("HPS", "enchps"),
         };
 
-        public BuiltinEventConfigPanel()
+        public BuiltinEventConfigPanel(TinyIoCContainer container)
         {
             InitializeComponent();
 
-            Registry.EventSourcesStarted += LoadConfig;
+            this.container = container;
+            registry = container.Resolve<Registry>();
+            registry.EventSourcesStarted += LoadConfig;
         }
 
         private void LoadConfig(object sender, EventArgs args)
         {
-            this.config = Registry.Resolve<BuiltinEventConfig>();
+            config = container.Resolve<BuiltinEventConfig>();
 
             SetupControlProperties();
             SetupConfigEventHandlers();
@@ -49,6 +53,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             this.checkSortDesc.Checked = config.SortDesc;
             this.cbUpdateDuringImport.Checked = config.UpdateDpsDuringImport;
+
+            this.cbEndEncounterAfterWipe.Checked = config.EndEncounterAfterWipe;
+            this.cbEndEncounterOutOfCombat.Checked = config.EndEncounterOutOfCombat;
         }
 
         private void SetupConfigEventHandlers()
@@ -92,6 +99,22 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     this.cbUpdateDuringImport.Checked = config.UpdateDpsDuringImport;
                 });
             };
+
+            this.config.EndEncounterAfterWipeChanged += (o, e) =>
+            {
+                this.InvokeIfRequired(() =>
+                {
+                    this.cbEndEncounterAfterWipe.Checked = config.EndEncounterAfterWipe;
+                });
+            };
+
+            this.config.EndEncounterOutOfCombatChanged += (o, e) =>
+            {
+                this.InvokeIfRequired(() =>
+                {
+                    this.cbEndEncounterOutOfCombat.Checked = config.EndEncounterOutOfCombat;
+                });
+            };
         }
 
         private void InvokeIfRequired(Action action)
@@ -133,6 +156,16 @@ namespace RainbowMage.OverlayPlugin.EventSources
             this.config.UpdateDpsDuringImport = this.cbUpdateDuringImport.Checked;
         }
 
+        private void cbEndEncounterAfterWipe_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.EndEncounterAfterWipe = this.cbEndEncounterAfterWipe.Checked;
+        }
+
+        private void cbEndEncounterOutOfCombat_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.EndEncounterOutOfCombat = this.cbEndEncounterOutOfCombat.Checked;
+        }
+
         private void TextEnmityInterval_Leave(object sender, EventArgs e)
         {
             if (int.TryParse(this.textEnmityInterval.Text, out int value))
@@ -143,6 +176,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
             {
                 this.textEnmityInterval.Text = "" + this.config.EnmityIntervalMs;
             }
+        }
+
+        private void cbCutsceneDetectionLog_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.CutsceneDetectionLog = this.cbCutsceneDetectionLog.Checked;
         }
     }
 }

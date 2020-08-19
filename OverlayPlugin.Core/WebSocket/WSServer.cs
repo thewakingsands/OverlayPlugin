@@ -16,70 +16,73 @@ using RainbowMage.OverlayPlugin.Overlays;
 
 namespace RainbowMage.OverlayPlugin
 {
-    class WSServer
+    public class WSServer
     {
+        TinyIoCContainer _container;
+        ILogger _logger;
         HttpServer _server;
-        static bool _failed = false;
-        static WSServer _inst = null;
+        IPluginConfig _cfg;
+        PluginMain _plugin;
+        bool _failed = false;
 
-        public static EventHandler<StateChangedArgs> OnStateChanged;
+        public EventHandler<StateChangedArgs> OnStateChanged;
 
-        public static void Init()
+        public void Stop()
         {
-            _inst = new WSServer();
-        }
-
-        public static void Stop()
-        {
-            if (_inst != null)
+            try
             {
-                try
+                if (_server != null)
                 {
-                    _inst._server.Stop();
+                    _server.Stop();
                 }
-                catch (Exception e)
-                {
-                    Log(LogLevel.Error, Resources.WSShutdownError, e);
-                }
-                _inst = null;
-                _failed = false;
-
-                OnStateChanged(null, new StateChangedArgs(false, false));
             }
+            catch (Exception e)
+            {
+                Log(LogLevel.Error, Resources.WSShutdownError, e);
+            }
+            _failed = false;
+
+            OnStateChanged(null, new StateChangedArgs(false, false));
         }
 
-        public static bool IsRunning()
+        public bool IsRunning()
         {
-            return _inst != null && _inst._server != null && _inst._server.IsListening;
+            return _server != null && _server.IsListening;
         }
 
-        public static bool IsFailed()
+        public bool IsFailed()
         {
             return _failed;
         }
 
-        public static bool IsSSLPossible()
+        public bool IsSSLPossible()
         {
             return File.Exists(GetCertPath());
         }
 
-        private WSServer()
+        public WSServer(TinyIoCContainer container)
         {
-            var plugin = Registry.Resolve<PluginMain>();
-            var cfg = plugin.Config;
+            _container = container;
+            _logger = container.Resolve<ILogger>();
+            _cfg = container.Resolve<IPluginConfig>();
+            _plugin = container.Resolve<PluginMain>();
+        }
+
+        public void Start()
+        {
             _failed = false;
 
             try
             {
                 var sslPath = GetCertPath();
-                var secure = cfg.WSServerSSL && File.Exists(sslPath);
+                var secure = _cfg.WSServerSSL && File.Exists(sslPath);
 
-                if (cfg.WSServerIP == "*")
+                if (_cfg.WSServerIP == "*")
                 {
-                    _server = new HttpServer(cfg.WSServerPort, secure);
+                    _server = new HttpServer(_cfg.WSServerPort, secure);
                 } else
                 {
-                    _server = new HttpServer(IPAddress.Parse(cfg.WSServerIP), cfg.WSServerPort, secure);
+                    _server = new HttpServer(IPAddress.Parse(_cfg.WSServerIP), _cfg.WSServerPort, secure);
                 }
                 
                 _server.ReuseAddress = true;
@@ -99,9 +102,9 @@ namespace RainbowMage.OverlayPlugin
                     _server.SslConfiguration.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls11 | System.Security.Authentication.SslProtocols.Tls12;
                 }
 
-                _server.AddWebSocketService<SocketHandler>("/ws");
-                _server.AddWebSocketService<LegacyHandler>("/MiniParse");
-                _server.AddWebSocketService<LegacyHandler>("/BeforeLogLineRead");
+                _server.AddWebSocketService<SocketHandler>("/ws", () => new SocketHandler(_container));
+                _server.AddWebSocketService<LegacyHandler>("/MiniParse", () => new LegacyHandler(_container));
+                _server.AddWebSocketService<LegacyHandler>("/BeforeLogLineRead", () => new LegacyHandler(_container));
 
                 _server.OnGet += (object sender, HttpRequestEventArgs e) =>
                 {
@@ -117,7 +120,7 @@ namespace RainbowMage.OverlayPlugin
         " + Resources.WSIndexPage + @"
         <ul>");
 
-                        foreach (var overlay in plugin.Overlays)
+                        foreach (var overlay in _plugin.Overlays)
                         {
                             if (overlay.GetType() != typeof(MiniParseOverlay)) continue;
 
@@ -162,9 +165,8 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        public static (bool, string) GetUrl(MiniParseOverlay overlay)
+        public (bool, string) GetUrl(MiniParseOverlay overlay)
         {
-            var cfg = Registry.Resolve<IPluginConfig>();
             string argName = "HOST_PORT";
 
             if (overlay.ModernApi)
@@ -182,21 +184,21 @@ namespace RainbowMage.OverlayPlugin
             }
 
             url += argName + "=ws";
-            if (cfg.WSServerSSL) url += "s";
+            if (_cfg.WSServerSSL) url += "s";
             url += "://";
-            if (cfg.WSServerIP == "*" || cfg.WSServerIP == "0.0.0.0")
+            if (_cfg.WSServerIP == "*" || _cfg.WSServerIP == "0.0.0.0")
                 url += "127.0.0.1";
             else
-                url += cfg.WSServerIP;
+                url += _cfg.WSServerIP;
 
-            url += ":" + cfg.WSServerPort + "/";
+            url += ":" + _cfg.WSServerPort + "/";
 
             if (argName == "OVERLAY_WS") url += "ws";
 
             return (argName != "HOST_PORT" || overlay.Config.ActwsCompatibility, url);
         }
 
-        public static string GetCertPath()
+        public string GetCertPath()
         {
             var path = Path.Combine(
                 ActGlobals.oFormActMain.AppDataFolder.FullName,
@@ -206,14 +208,22 @@ namespace RainbowMage.OverlayPlugin
             return path;
         }
 
-        private static void Log(LogLevel level, string msg, params object[] args)
+        private void Log(LogLevel level, string msg, params object[] args)
         {
-            PluginMain.Logger.Log(level, msg, args);
+            _logger.Log(level, msg, args);
         }
 
         public class SocketHandler : WebSocketBehavior, IEventReceiver
         {
             public string Name => "WSHandler";
+            private ILogger _logger;
+            private EventDispatcher _dispatcher;
+
+            public SocketHandler(TinyIoCContainer container) : base()
+            {
+                _logger = container.Resolve<ILogger>();
+                _dispatcher = container.Resolve<EventDispatcher>();
+            }
 
             public void HandleEvent(JObject e)
             {
@@ -221,7 +231,7 @@ namespace RainbowMage.OverlayPlugin
                 {
                     if (!success)
                     {
-                        Log(LogLevel.Error, Resources.WSMessageSendFailed, e);
+                        _logger.Log(LogLevel.Error, Resources.WSMessageSendFailed, e);
                     }
                 });
             }
@@ -241,7 +251,7 @@ namespace RainbowMage.OverlayPlugin
                 }
                 catch(JsonException ex)
                 {
-                    Log(LogLevel.Error, Resources.WSInvalidDataRecv, ex, e.Data);
+                    _logger.Log(LogLevel.Error, Resources.WSInvalidDataRecv, ex, e.Data);
                     return;
                 }
 
@@ -254,11 +264,11 @@ namespace RainbowMage.OverlayPlugin
                     {
                         foreach (var item in data["events"].ToList())
                         {
-                            EventDispatcher.Subscribe(item.ToString(), this);
+                            _dispatcher.Subscribe(item.ToString(), this);
                         }
                     } catch(Exception ex)
                     {
-                        Log(LogLevel.Error, Resources.WSNewSubFail, ex);
+                        _logger.Log(LogLevel.Error, Resources.WSNewSubFail, ex);
                     }
 
                     return;
@@ -268,11 +278,11 @@ namespace RainbowMage.OverlayPlugin
                     {
                         foreach (var item in data["events"].ToList())
                         {
-                            EventDispatcher.Unsubscribe(item.ToString(), this);
+                            _dispatcher.Unsubscribe(item.ToString(), this);
                         }
                     } catch (Exception ex)
                     {
-                        Log(LogLevel.Error, Resources.WSUnsubFail, ex);
+                        _logger.Log(LogLevel.Error, Resources.WSUnsubFail, ex);
                     }
                     return;
                 }
@@ -280,7 +290,7 @@ namespace RainbowMage.OverlayPlugin
                 Task.Run(() => {
                     try
                     {
-                        var response = EventDispatcher.CallHandler(data);
+                        var response = _dispatcher.CallHandler(data);
 
                         if (response != null && response.Type != JTokenType.Object) {
                             throw new Exception("Handler response must be an object or null");
@@ -298,7 +308,7 @@ namespace RainbowMage.OverlayPlugin
                         Send(response.ToString(Formatting.None));
                     } catch(Exception ex)
                     {
-                        Log(LogLevel.Error, Resources.WSHandlerException, ex);
+                        _logger.Log(LogLevel.Error, Resources.WSHandlerException, ex);
                     }
                 });
             }
@@ -306,21 +316,32 @@ namespace RainbowMage.OverlayPlugin
 
             protected override void OnClose(CloseEventArgs e)
             {
-                EventDispatcher.UnsubscribeAll(this);
+                _dispatcher.UnsubscribeAll(this);
             }
         }
 
         private class LegacyHandler : WebSocketBehavior, IEventReceiver
         {
             public string Name => "WSLegacyHandler";
+            private ILogger _logger;
+            private EventDispatcher _dispatcher;
+            private FFXIVRepository _repository;
+
+            public LegacyHandler(TinyIoCContainer container) : base()
+            {
+                _logger = container.Resolve<ILogger>();
+                _dispatcher = container.Resolve<EventDispatcher>();
+                _repository = container.Resolve<FFXIVRepository>();
+            }
+
             protected override void OnOpen()
             {
                 base.OnOpen();
 
-                EventDispatcher.Subscribe("CombatData", this);
-                EventDispatcher.Subscribe("LogLine", this);
-                EventDispatcher.Subscribe("ChangeZone", this);
-                EventDispatcher.Subscribe("ChangePrimaryPlayer", this);
+                _dispatcher.Subscribe("CombatData", this);
+                _dispatcher.Subscribe("LogLine", this);
+                _dispatcher.Subscribe("ChangeZone", this);
+                _dispatcher.Subscribe("ChangePrimaryPlayer", this);
 
                 Send(JsonConvert.SerializeObject(new
                 {
@@ -328,8 +349,8 @@ namespace RainbowMage.OverlayPlugin
                     msgtype = "SendCharName",
                     msg = new
                     {
-                        charName = FFXIVRepository.GetPlayerName() ?? "YOU",
-                        charID = FFXIVRepository.GetPlayerID()
+                        charName = _repository.GetPlayerName() ?? "YOU",
+                        charID = _repository.GetPlayerID()
                     }
                 }));
             }
@@ -338,7 +359,7 @@ namespace RainbowMage.OverlayPlugin
             {
                 base.OnClose(e);
 
-                EventDispatcher.UnsubscribeAll(this);
+                _dispatcher.UnsubscribeAll(this);
             }
 
             public void HandleEvent(JObject e)
@@ -370,7 +391,7 @@ namespace RainbowMage.OverlayPlugin
                 }
                 catch (JsonException ex)
                 {
-                    Log(LogLevel.Error, Resources.WSInvalidDataRecv, ex, e.Data);
+                    _logger.Log(LogLevel.Error, Resources.WSInvalidDataRecv, ex, e.Data);
                     return;
                 }
 
@@ -379,7 +400,7 @@ namespace RainbowMage.OverlayPlugin
                 switch (data["msgtype"].ToString())
                 {
                     case "Capture":
-                        Log(LogLevel.Warning, "ACTWS Capture is not supported outside of overlays.");
+                        _logger.Log(LogLevel.Warning, "ACTWS Capture is not supported outside of overlays.");
                         break;
                     case "RequestEnd":
                         ActGlobals.oFormActMain.EndCombat(true);

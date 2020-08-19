@@ -10,22 +10,22 @@ namespace RainbowMage.OverlayPlugin
     /// <summary>
     /// ネイティブ関数を提供します。
     /// </summary>
-    static class NativeMethods
+    class NativeMethods
     {
-        static WinEventDelegate dele = null;
+        private WinEventDelegate dele = null;
 
-        public static void Init()
+        public NativeMethods(TinyIoCContainer container)
         {
             ActiveWindowHandle = GetForegroundWindow();
 
             dele = new WinEventDelegate(WinEventProc);
             var result = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
             if (result == IntPtr.Zero)
-                Registry.Resolve<ILogger>().Log(LogLevel.Error, "Failed to register window foreground hook!");
+                container.Resolve<ILogger>().Log(LogLevel.Error, "Failed to register window foreground hook!");
 
             result = SetWinEventHook(EVENT_SYSTEM_MINIMIZEEND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
             if (result == IntPtr.Zero)
-                Registry.Resolve<ILogger>().Log(LogLevel.Error, "Failed to register window minimized hook!");
+                container.Resolve<ILogger>().Log(LogLevel.Error, "Failed to register window minimized hook!");
         }
 
         delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
@@ -37,15 +37,17 @@ namespace RainbowMage.OverlayPlugin
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
         private const uint EVENT_SYSTEM_MINIMIZEEND = 0x0017;
 
-        public static event EventHandler<IntPtr> ActiveWindowChanged;
-        public static IntPtr ActiveWindowHandle;
-        private static void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+        public event EventHandler<IntPtr> ActiveWindowChanged;
+        public IntPtr ActiveWindowHandle;
+        private void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
             ActiveWindowHandle = hwnd;
             ActiveWindowChanged?.Invoke(null, hwnd);
         }
 
-
+        // C# compiler can't track assignments in unmanaged code and thus complains about variables that
+        // are never assigned to. Disable the warning here since it's pointless.
+        #pragma warning disable 0649
         public struct BlendFunction
         {
             public byte BlendOp;
@@ -197,14 +199,14 @@ namespace RainbowMage.OverlayPlugin
 
         public static IntPtr SetWindowLongA(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
         {
-            int error = 0;
-            IntPtr result = IntPtr.Zero;
+            int error;
+            IntPtr result;
 
             SetLastError(0);
 
             if (IntPtr.Size == 4)
             {
-                Int32 result32 = SetWindowLong(hWnd, nIndex, ToIntPtr32(dwNewLong));
+                var result32 = SetWindowLong(hWnd, nIndex, ToIntPtr32(dwNewLong));
                 error = Marshal.GetLastWin32Error();
                 result = new IntPtr(result32);
             }
@@ -254,12 +256,6 @@ namespace RainbowMage.OverlayPlugin
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern int GetModuleFileName(IntPtr hModule, StringBuilder lpFilename, int nSize); 
-
-        [DllImport("user32.dll")]
-        public static extern short GetKeyState(int nVirtKey);
-
         public const int WM_KEYDOWN = 0x0100;
         public const int WM_KEYUP = 0x0101;
         public const int WM_CHAR = 0x0102;
@@ -290,6 +286,8 @@ namespace RainbowMage.OverlayPlugin
         public static extern int CloseHandle(IntPtr hObject);
         [DllImport("kernel32.dll")]
         public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, IntPtr nSize, ref IntPtr lpNumberOfBytesRead);
+
+        #pragma warning restore 0649
     }
 
     [Flags]

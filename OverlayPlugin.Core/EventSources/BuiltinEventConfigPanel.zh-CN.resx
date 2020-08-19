@@ -131,5 +131,11 @@
   <data name="label5.Text" xml:space="preserve">
     <value>仇恨更新间隔（毫秒）</value>
   </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>团灭自动重置战斗记录</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>脱战自动重置战斗记录</value>
+  </data>
 
 </root>

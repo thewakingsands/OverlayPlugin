@@ -16,7 +16,7 @@ namespace RainbowMage.OverlayPlugin.Updater
         private string _cefPath;
         private object _pluginLoader;
 
-        public CefMissingTab(string cefPath, object pluginLoader)
+        public CefMissingTab(string cefPath, object pluginLoader, TinyIoCContainer container)
         {
             InitializeComponent();
 

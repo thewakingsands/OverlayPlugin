@@ -1303,7 +1303,8 @@ namespace RainbowMage.OverlayPlugin.Updater
             CurlWrapper.pluginDirectory = pluginDirectory;
         }
 
-        private static void _init() {
+        private static void _init()
+        {
             USER_AGENT = "ngld/OverlayPlugin v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             var libPath = Path.Combine(pluginDirectory, "libs", Environment.Is64BitProcess ? "x64" : "x86", "libcurl.dll");
@@ -1324,7 +1325,7 @@ namespace RainbowMage.OverlayPlugin.Updater
             {
                 var msg = $"libcurl.dll load failed: {Marshal.GetLastWin32Error()}";
                 initError = msg;
-                throw new CurlException(msg);
+                throw new CurlException(false, msg);
             }
 
             lock (_global_lock)
@@ -1332,7 +1333,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                 if (curl_global_init(CURL_GLOBAL_NOTHING) != 0)
                 {
                     initError = "Init failed!";
-                    throw new CurlException("Init failed!");
+                    throw new CurlException(false, "Init failed!");
                 }
 
                 initialized = true;
@@ -1387,7 +1388,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
             var handle = curl_easy_init();
             if (handle == IntPtr.Zero || handle == null)
-                throw new CurlException("curl_easy_init() failed!");
+                throw new CurlException(false, "curl_easy_init() failed!");
 
             // Pin the delegates we pass to cURL to make sure the GC doesn't remove them.
             var writeDele = new write_callback(dlInfo.DataCallback);
@@ -1452,13 +1453,13 @@ namespace RainbowMage.OverlayPlugin.Updater
 
                     if (result != CURLcode.CURLE_OK)
                     {
-                        throw new CurlException($"Request to \"{url}\" failed: {result}; {Encoding.UTF8.GetString(error).Trim('\0')}");
+                        throw new CurlException(true, $"Request to \"{url}\" failed: {result}; {Encoding.UTF8.GetString(error).Trim('\0')}");
                     }
 
                     curl_easy_getinfo(handle, CURLINFO.RESPONSE_CODE, out long code);
                     if (code != 200 && code != 206)
                     {
-                        throw new CurlException($"Request to \"{url}\" failed with code: {code}!");
+                        throw new CurlException(true, $"Request to \"{url}\" failed with code: {code}!");
                     }
                 }
 
@@ -1514,7 +1515,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     }
                     else
                     {
-                        throw new CurlException("Missing handle or builder!");
+                        throw new CurlException(true, "Missing handle or builder!");
                     }
                 }
                 catch (Exception ex)
@@ -1543,12 +1544,16 @@ namespace RainbowMage.OverlayPlugin.Updater
     [Serializable]
     public class CurlException : Exception
     {
-        public CurlException(string message) : base(message)
+        public readonly bool Retry;
+
+        public CurlException(bool retry, string message) : base(message)
         {
+            this.Retry = retry;
         }
 
-        public CurlException(string message, Exception innerException) : base(message, innerException)
+        public CurlException(bool retry, string message, Exception innerException) : base(message, innerException)
         {
+            this.Retry = retry;
         }
     }
 }

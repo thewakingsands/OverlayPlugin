@@ -17,8 +17,8 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         IList<SerializableTimerFrameEntry> activatedTimers;
 
-        public SpellTimerOverlay(SpellTimerOverlayConfig config, string name)
-            : base(config, name)
+        public SpellTimerOverlay(SpellTimerOverlayConfig config, string name, TinyIoCContainer container)
+            : base(config, name, container)
         {
             this.activatedTimers = new List<SerializableTimerFrameEntry>();
 

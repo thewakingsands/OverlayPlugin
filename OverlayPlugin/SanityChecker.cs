@@ -66,9 +66,8 @@ namespace RainbowMage.OverlayPlugin
             return true;
         }
 
-        public static void CheckDependencyVersions()
+        public static void CheckDependencyVersions(ILogger logger)
         {
-            var logger = Registry.Resolve<ILogger>();
             var expectedVersions = new Dictionary<string, string>
             {
                 { "Newtonsoft.Json", "12.0.0" },

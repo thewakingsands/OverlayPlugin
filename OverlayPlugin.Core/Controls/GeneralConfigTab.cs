@@ -14,16 +14,20 @@ namespace RainbowMage.OverlayPlugin
 {
     public partial class GeneralConfigTab : UserControl
     {
-        PluginConfig config;
-        ILogger logger;
+        readonly TinyIoCContainer container;
+        readonly string pluginDirectory;
+        readonly PluginConfig config;
+        readonly ILogger logger;
 
-        public GeneralConfigTab()
+        public GeneralConfigTab(TinyIoCContainer container)
         {
             InitializeComponent();
             Dock = DockStyle.Fill;
 
-            config = Registry.Resolve<PluginConfig>();
-            logger = Registry.Resolve<ILogger>();
+            this.container = container;
+            pluginDirectory = container.Resolve<PluginMain>().PluginDirectory;
+            config = container.Resolve<PluginConfig>();
+            logger = container.Resolve<ILogger>();
 
             cbErrorReports.Checked = config.ErrorReports;
             cbUpdateCheck.Checked = config.UpdateCheck;
@@ -45,7 +49,7 @@ namespace RainbowMage.OverlayPlugin
 
         private void BtnUpdateCheck_Click(object sender, EventArgs e)
         {
-            Updater.Updater.PerformUpdateIfNecessary(PluginMain.PluginDirectory, true);
+            Updater.Updater.PerformUpdateIfNecessary(pluginDirectory, container, true);
         }
 
         private void CbErrorReports_CheckedChanged(object sender, EventArgs e)
@@ -81,13 +85,13 @@ namespace RainbowMage.OverlayPlugin
         private void cbHideOverlaysWhenNotActive_CheckedChanged(object sender, EventArgs e)
         {
             config.HideOverlaysWhenNotActive = cbHideOverlaysWhenNotActive.Checked;
-            OverlayHider.UpdateOverlays();
+            container.Resolve<OverlayHider>().UpdateOverlays();
         }
 
         private void cbHideOverlaysDuringCutscene_CheckedChanged(object sender, EventArgs e)
         {
             config.HideOverlayDuringCutscene = cbHideOverlaysDuringCutscene.Checked;
-            OverlayHider.UpdateOverlays();
+            container.Resolve<OverlayHider>().UpdateOverlays();
         }
 
         private void lnkGithubRepo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

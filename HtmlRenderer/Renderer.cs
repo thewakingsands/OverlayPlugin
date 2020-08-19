@@ -27,6 +27,7 @@ namespace RainbowMage.HtmlRenderer
         public event EventHandler<BrowserConsoleLogEventArgs> BrowserConsoleLog;
 
         private BrowserWrapper _browser;
+        private bool _isWindowless;
         protected IRenderTarget _target;
         private object _api;
         private Func<int, int, bool> _ctxMenuCallback = null;
@@ -168,14 +169,22 @@ namespace RainbowMage.HtmlRenderer
             }
         }
 
-        public void BeginRender()
+        protected virtual WindowInfo CreateWindowInfo()
         {
-            EndRender();
-
             var cefWindowInfo = new WindowInfo();
             cefWindowInfo.SetAsWindowless(IntPtr.Zero);
             cefWindowInfo.Width = _target.Width;
             cefWindowInfo.Height = _target.Height;
+
+            return cefWindowInfo;
+        }
+
+        public void BeginRender()
+        {
+            EndRender();
+
+            var cefWindowInfo = CreateWindowInfo();
+            _isWindowless = cefWindowInfo.WindowlessRenderingEnabled;
 
             var cefBrowserSettings = new BrowserSettings();
             cefBrowserSettings.WindowlessFrameRate = _target.MaxFrameRate;
@@ -215,9 +224,14 @@ namespace RainbowMage.HtmlRenderer
 
         public void Resize(int width, int height)
         {
-            if (this._browser != null)  // && _browser.IsBrowserInitialized)
+            if (this._browser != null)
             {
                 this._browser.Size = new System.Drawing.Size(width, height);
+
+                if (!this._isWindowless && this._browser.IsBrowserInitialized)
+                {
+                     this._browser.Resize(width, height);
+                }
             }
         }
 
@@ -615,6 +629,11 @@ MaxUploadsPerDay=0
             this.target = target;
         }
 
+        public void Resize(int width, int height)
+        {
+            ((IWebBrowserInternal) this).BrowserAdapter.Resize(width, height);
+        }
+
         public Bitmap Screenshot()
         {
             lock (screenshotLock)
@@ -669,8 +688,8 @@ MaxUploadsPerDay=0
 
         bool IRenderWebBrowser.GetScreenPoint(int contentX, int contentY, out int screenX, out int screenY)
         {
-            screenX = (int) (contentX + target.Location.X);
-            screenY = (int) (contentY + target.Location.Y);
+            screenX = (contentX + target.Location.X);
+            screenY = (contentY + target.Location.Y);
 
             return true;
         }

@@ -71,18 +71,28 @@
     <Compile Include="Controls\RenameOverlayDialog.Designer.cs">
       <DependentUpon>RenameOverlayDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventSources\CactbotEventSource.cs" />
+    <Compile Include="EventSources\CactbotEventSourceConfig.cs" />
+    <Compile Include="EventSources\CactbotJSEvents.cs" />
     <Compile Include="EventSources\EnmityEventSource.cs" />
-    <Compile Include="EventSources\EnmityMemory50.cs" />
-    <Compile Include="EventSources\EnmityMemory52.cs" />
-    <Compile Include="EventSources\EnmityMemoryCommon.cs" />
-    <Compile Include="FFXIVMemory.cs" />
-    <Compile Include="FFXIVExportVariables.cs" />
-    <Compile Include="FFXIVRepository.cs" />
-    <Compile Include="IApiBase.cs" />
+    <Compile Include="Integration\UnstableNewLogLines.cs" />
+    <Compile Include="MemoryProcessors\EnmityMemory50.cs" />
+    <Compile Include="MemoryProcessors\EnmityMemory52.cs" />
+    <Compile Include="MemoryProcessors\EnmityMemory53.cs" />
+    <Compile Include="MemoryProcessors\EnmityMemoryCommon.cs" />
+    <Compile Include="NetworkProcessors\FateWatcher.cs" />
+    <Compile Include="MemoryProcessors\FFXIVProcess.cs" />
+    <Compile Include="MemoryProcessors\FFXIVProcessCn.cs" />
+    <Compile Include="MemoryProcessors\FFXIVProcessIntl.cs" />
+    <Compile Include="MemoryProcessors\FFXIVProcessKo.cs" />
+    <Compile Include="MemoryProcessors\FFXIVMemory.cs" />
+    <Compile Include="Integration\FFXIVExportVariables.cs" />
+    <Compile Include="Integration\FFXIVRepository.cs" />
+    <Compile Include="JSApi\IApiBase.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="MinimalApi.cs" />
-    <Compile Include="NetworkParser.cs" />
-    <Compile Include="OverlayApi.cs" />
+    <Compile Include="JSApi\MinimalApi.cs" />
+    <Compile Include="NetworkProcessors\NetworkParser.cs" />
+    <Compile Include="JSApi\OverlayApi.cs" />
     <Compile Include="EventDispatcher.cs" />
     <Compile Include="IEventReceiver.cs" />
     <Compile Include="EventSourceBase.cs" />
@@ -148,7 +158,6 @@
     <Compile Include="Overlays\SerializableTimerFrameEntry.cs" />
     <Compile Include="Overlays\SpellTimerOverlayConfig.cs" />
     <Compile Include="Overlays\SpellTimerOverlay.cs" />
-    <Compile Include="Localization.cs" />
     <Compile Include="Overlays\SpellTimerConfigPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -160,7 +169,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TriggIntegration.cs" />
+    <Compile Include="Integration\TriggIntegration.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Controls\WSConfigPanel.cs">
       <SubType>UserControl</SubType>
@@ -168,7 +177,7 @@
     <Compile Include="Controls\WSConfigPanel.Designer.cs">
       <DependentUpon>WSConfigPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="WSServer.cs" />
+    <Compile Include="WebSocket\WSServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\enmity\aggrolist.html">
@@ -219,7 +228,13 @@
     <Content Include="resources\enmity\targetinfo_mini.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\enmity_target_funcs.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\label.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\loading.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\miniparse.html">
@@ -229,6 +244,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\spelltimer.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\targetbars\focus_target.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\targetbars\hover_target.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\targetbars\target.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\targetbars\targetbars.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\targetbars\targetbars.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\targetbars\target_of_target.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -451,6 +484,7 @@
       <Version>1.0.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

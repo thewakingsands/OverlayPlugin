@@ -8,12 +8,16 @@ using Newtonsoft.Json.Linq;
 
 namespace RainbowMage.OverlayPlugin
 {
-    static class TriggIntegration
+    class TriggIntegration
     {
+        private PluginMain _plugin;
         public delegate void CustomCallbackDelegate(object o, string param);
 
-        public static void Init()
+        public TriggIntegration(TinyIoCContainer container)
         {
+            var logger = container.Resolve<ILogger>();
+            _plugin = container.Resolve<PluginMain>();
+
             try
             {
                 var trigg = ActGlobals.oFormActMain.ActPlugins.FirstOrDefault(x => x.lblPluginTitle.Text == "Triggernometry.dll");
@@ -25,15 +29,15 @@ namespace RainbowMage.OverlayPlugin
                 if (deleType == null)
                     return;
 
-                var dele = Delegate.CreateDelegate(deleType, typeof(TriggIntegration).GetMethod("SendOverlayMessage"));
+                var dele = Delegate.CreateDelegate(deleType, this, typeof(TriggIntegration).GetMethod("SendOverlayMessage"));
                 triggType.GetMethod("RegisterNamedCallback")?.Invoke(trigg.pluginObj, new object[] { "OverlayPluginMessage", dele, null });
             } catch (Exception ex)
             {
-                Registry.Resolve<ILogger>().Log(LogLevel.Error, $"Failed to register Triggernometry callback: {ex}");
+                logger.Log(LogLevel.Error, $"Failed to register Triggernometry callback: {ex}");
             }
         }
 
-        public static void SendOverlayMessage(object _, string msg)
+        public void SendOverlayMessage(object _, string msg)
         {
             var pos = msg.IndexOf('|');
             if (pos < 1) return;
@@ -41,8 +45,7 @@ namespace RainbowMage.OverlayPlugin
             var overlayName = msg.Substring(0, pos);
             msg = msg.Substring(pos + 1);
 
-            var plugin = Registry.Resolve<PluginMain>();
-            foreach (var overlay in plugin.Overlays)
+            foreach (var overlay in _plugin.Overlays)
             {
                 if (overlay.Name == overlayName)
                 {

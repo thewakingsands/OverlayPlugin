@@ -14,11 +14,13 @@ namespace RainbowMage.OverlayPlugin.Overlays
     {
         private LabelOverlayConfig config;
         private LabelOverlay overlay;
+        private readonly KeyboardHook keyboardHook;
 
-        public LabelOverlayConfigPanel(LabelOverlay overlay)
+        public LabelOverlayConfigPanel(TinyIoCContainer container, LabelOverlay overlay)
         {
             InitializeComponent();
 
+            this.keyboardHook = container.Resolve<KeyboardHook>();
             this.overlay = overlay;
             this.config = overlay.Config;
 
@@ -188,12 +190,12 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         private void textGlobalHotkey_Enter(object sender, EventArgs e)
         {
-            Registry.Resolve<KeyboardHook>().DisableHotKeys();
+            keyboardHook.DisableHotKeys();
         }
 
         private void textGlobalHotkey_Leave(object sender, EventArgs e)
         {
-            Registry.Resolve<KeyboardHook>().EnableHotKeys();
+            keyboardHook.EnableHotKeys();
         }
 
         private void textGlobalHotkey_KeyDown(object sender, KeyEventArgs e)

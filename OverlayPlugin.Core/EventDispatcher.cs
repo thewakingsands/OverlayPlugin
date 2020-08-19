@@ -10,23 +10,26 @@ namespace RainbowMage.OverlayPlugin
 {
     class EventDispatcher
     {
-        static Dictionary<string, Func<JObject, JToken>> handlers;
-        static Dictionary<string, List<IEventReceiver>> eventFilter;
-        static Dictionary<string, Func<JObject>> stateCallbacks;
+        ILogger _logger;
+        Dictionary<string, Func<JObject, JToken>> handlers;
+        Dictionary<string, List<IEventReceiver>> eventFilter;
+        Dictionary<string, Func<JObject>> stateCallbacks;
 
-        public static void Init()
+        public EventDispatcher(TinyIoCContainer container)
         {
+            _logger = container.Resolve<ILogger>();
+
             handlers = new Dictionary<string, Func<JObject, JToken>>();
             eventFilter = new Dictionary<string, List<IEventReceiver>>();
             stateCallbacks = new Dictionary<string, Func<JObject>>();
         }
 
-        private static void Log(LogLevel level, string message, params object[] args)
+        private void Log(LogLevel level, string message, params object[] args)
         {
-            PluginMain.Logger.Log(level, string.Format(message, args));
+            _logger.Log(level, string.Format(message, args));
         }
 
-        public static void RegisterHandler(string name, Func<JObject, JToken> handler)
+        public void RegisterHandler(string name, Func<JObject, JToken> handler)
         {
             if (handlers.ContainsKey(name))
             {
@@ -36,7 +39,7 @@ namespace RainbowMage.OverlayPlugin
             handlers[name] = handler;
         }
 
-        public static void RegisterEventTypes(List<string> names)
+        public void RegisterEventTypes(List<string> names)
         {
             foreach (var name in names)
             {
@@ -44,12 +47,12 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        public static void RegisterEventType(string name)
+        public void RegisterEventType(string name)
         {
             RegisterEventType(name, null);
         }
 
-        public static void RegisterEventType(string name, Func<JObject> initCallback)
+        public void RegisterEventType(string name, Func<JObject> initCallback)
         {
             eventFilter[name] = new List<IEventReceiver>();
 
@@ -57,7 +60,7 @@ namespace RainbowMage.OverlayPlugin
                 stateCallbacks[name] = initCallback;
         }
 
-        public static void Subscribe(string eventName, IEventReceiver receiver)
+        public void Subscribe(string eventName, IEventReceiver receiver)
         {
             if (!eventFilter.ContainsKey(eventName))
             {
@@ -77,7 +80,7 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        public static void Unsubscribe(string eventName, IEventReceiver receiver)
+        public void Unsubscribe(string eventName, IEventReceiver receiver)
         {
             if (eventFilter.ContainsKey(eventName))
             {
@@ -88,7 +91,7 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        public static void UnsubscribeAll(IEventReceiver receiver)
+        public void UnsubscribeAll(IEventReceiver receiver)
         {
             foreach (var item in eventFilter.Values)
             {
@@ -101,7 +104,7 @@ namespace RainbowMage.OverlayPlugin
 
         // Can be used to check that an event will be delivered before building
         // an expensive JObject that would otherwise be thrown away.
-        public static bool HasSubscriber(string eventName)
+        public bool HasSubscriber(string eventName)
         {
             if (!eventFilter.ContainsKey(eventName))
                 return false;
@@ -111,7 +114,7 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        public static void DispatchEvent(JObject e)
+        public void DispatchEvent(JObject e)
         {
             var eventType = e["type"].ToString();
             if (!eventFilter.ContainsKey(eventType))
@@ -135,7 +138,7 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        public static JToken CallHandler(JObject e)
+        public JToken CallHandler(JObject e)
         {
             var handlerName = e["call"].ToString();
             if (!handlers.ContainsKey(handlerName))
@@ -151,14 +154,14 @@ namespace RainbowMage.OverlayPlugin
             return result;
         }
 
-        public static JToken ProcessHandlerMessage(IEventReceiver receiver, string data)
+        public JToken ProcessHandlerMessage(IEventReceiver receiver, string data)
         {
             try
             {
                 var message = JObject.Parse(data);
                 if (!message.ContainsKey("call"))
                 {
-                    PluginMain.Logger.Log(LogLevel.Error, Resources.OverlayApiInvalidHandlerCall, receiver.Name + ": " + data);
+                    _logger.Log(LogLevel.Error, Resources.OverlayApiInvalidHandlerCall, receiver.Name + ": " + data);
                     return null;
                 }
 
@@ -167,14 +170,14 @@ namespace RainbowMage.OverlayPlugin
                 {
                     if (!message.ContainsKey("events"))
                     {
-                        PluginMain.Logger.Log(LogLevel.Error, Resources.OverlayApiMissingEventsField, receiver.Name + ": " + data);
+                        _logger.Log(LogLevel.Error, Resources.OverlayApiMissingEventsField, receiver.Name + ": " + data);
                         return null;
                     }
 
                     foreach (var name in message["events"].ToList())
                     {
                         Subscribe(name.ToString(), receiver);
-                        PluginMain.Logger.Log(LogLevel.Debug, Resources.OverlayApiSubscribed, receiver.Name, name.ToString());
+                        _logger.Log(LogLevel.Debug, Resources.OverlayApiSubscribed, receiver.Name, name.ToString());
                     }
                     return null;
                 }
@@ -182,7 +185,7 @@ namespace RainbowMage.OverlayPlugin
                 {
                     if (!message.ContainsKey("events"))
                     {
-                        PluginMain.Logger.Log(LogLevel.Error, Resources.OverlayApiMissingEventsFieldUnsub, receiver.Name + ": " + data);
+                        _logger.Log(LogLevel.Error, Resources.OverlayApiMissingEventsFieldUnsub, receiver.Name + ": " + data);
                         return null;
                     }
 
@@ -197,7 +200,7 @@ namespace RainbowMage.OverlayPlugin
             }
             catch (Exception e)
             {
-                PluginMain.Logger.Log(LogLevel.Error, Resources.JsHandlerCallException, e);
+                _logger.Log(LogLevel.Error, Resources.JsHandlerCallException, e);
                 return null;
             }
         }

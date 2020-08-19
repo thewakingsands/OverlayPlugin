@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
+using System.Windows.Forms; 
 using CefSharp;
 using CefSharp.Structs;
 using CefSharp.Enums;
@@ -75,7 +75,6 @@ namespace RainbowMage.HtmlRenderer
             }
 
             this.Renderer = new WinFormsRenderer("", url, this, api);
-            this.Renderer.Locked = true;
             this.Renderer.BeginRender();
 
             this.MaxFrameRate = maxFrameRate;
@@ -96,13 +95,13 @@ namespace RainbowMage.HtmlRenderer
         {
             switch (keyData) {
                 // Override the default behavior for these keys to avoid focus loss.
-                case Keys.Up:
+                /*case Keys.Up:
                 case Keys.Down:
                 case Keys.Left:
                 case Keys.Right:
                 case Keys.Tab:
                     Renderer.OnKeyEvent(ref msg);
-                    return true;
+                    return true;*/
                 default:
                     return base.ProcessCmdKey(ref msg, keyData);
             }
@@ -117,7 +116,7 @@ namespace RainbowMage.HtmlRenderer
                 m.Msg == NativeMethods.WM_SYSKEYUP ||
                 m.Msg == NativeMethods.WM_SYSCHAR)
             {
-                Renderer.OnKeyEvent(ref m);
+                // Renderer.OnKeyEvent(ref m);
             } else
             {
                 base.WndProc(ref m);
@@ -129,101 +128,12 @@ namespace RainbowMage.HtmlRenderer
             this.Renderer.Reload();
         }
 
-        public void MovePopup(Rect rect)
-        {
-            popupPosition = new Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
-            Invalidate();
-        }
-
-        public void SetPopupVisible(bool visible)
-        {
-            popupVisible = visible;
-            Invalidate();
-        }
-
-        #region Render logic
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            if (this.surfaceBuffer != null)
-            {
-                lock (surfaceLock)
-                {
-                    e.Graphics.DrawImage(surfaceBuffer, 0, 0);
-
-                    if (popupVisible && popupBuffer != null)
-                    {
-                        e.Graphics.DrawImage(popupBuffer, popupPosition);
-                    }
-                }
-            }
-            else
-            {
-                e.Graphics.DrawString("No buffer!", new Font(FontFamily.GenericSansSerif, 8), new SolidBrush(Color.Black), 10, 10);
-            }
-        }
-
-        public void RenderFrame(PaintElementType type, Rect dirtyRect, IntPtr buffer, int width, int height)
-        {
-            if (!this.terminated)
-            {
-                try
-                {
-                    lock (surfaceLock)
-                    {
-                        Bitmap surface = type == PaintElementType.View ? surfaceBuffer : popupBuffer;
-                        if (surface != null && (surface.Width != width || surface.Height != height))
-                        {
-                            surface.Dispose();
-                            surface = null;
-                        }
-
-                        if (surface == null)
-                        {
-                            surface = new Bitmap(width, height);
-                            if (type == PaintElementType.View)
-                            {
-                                surfaceBuffer = surface;
-                            }
-                            else
-                            {
-                                popupBuffer = surface;
-                            }
-                        }
-
-                        var data = surface.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppRgb);
-                        NativeMethods.CopyMemory(data.Scan0, buffer, (uint)(width * height * 4));
-                        surface.UnlockBits(data);
-                    }
-
-                    var dnDirtyRect = new Rectangle(dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height);
-
-                    if (type == PaintElementType.View)
-                    {
-                        Invalidate(new Region(dnDirtyRect), true);
-                    } else
-                    {
-                        Invalidate(true);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine(ex.ToString());
-                }
-            }
-        }
-        #endregion
-
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (this.surfaceBuffer != null)
-            {
-                this.surfaceBuffer.Dispose();
-            }
-
             if (this.Renderer != null)
             {
                 this.Renderer.Dispose();
@@ -234,6 +144,21 @@ namespace RainbowMage.HtmlRenderer
                 components.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public void RenderFrame(PaintElementType type, Rect dirtyRect, IntPtr buffer, int width, int height)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MovePopup(Rect rect)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPopupVisible(bool visible)
+        {
+            throw new NotImplementedException();
         }
     }
 }

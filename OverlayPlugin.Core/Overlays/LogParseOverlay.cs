@@ -23,8 +23,8 @@ namespace RainbowMage.OverlayPlugin.Overlays
         private static DateTime updateStringCacheLastUpdate;
         private static readonly TimeSpan updateStringCacheExpireInterval = new TimeSpan(0, 0, 0, 0, 500); // 500 msec
 
-        public LogParseOverlay(LogParseOverlayConfig config)
-            : base(config, config.Name)
+        public LogParseOverlay(LogParseOverlayConfig config, TinyIoCContainer container)
+            : base(config, config.Name, container)
         {
             // Part of ACT.SpecialSpellTimer: https://github.com/anoyetta/ACT.SpecialSpellTimer/blob/master/ACT.SpecialSpellTimer/LogBuffer.cs
             // Copyright (c) 2014 anoyetta; Licensed under BSD-3-Clause license.

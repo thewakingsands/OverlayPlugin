@@ -20,6 +20,9 @@ try {
     }
 
     $ENV:PATH = "$VS_PATH\MSBuild\Current\Bin;${ENV:PATH}";
+    if (Test-Path "C:\Program Files\7-Zip\7z.exe") {
+        $ENV:PATH = "C:\Program Files\7-Zip;${ENV:PATH}";
+    }
 
     if ( -not (Test-Path .\OverlayPlugin.Updater\Resources\libcurl.dll)) {
         echo "==> Building cURL..."

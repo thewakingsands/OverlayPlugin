@@ -18,15 +18,17 @@ namespace RainbowMage.OverlayPlugin.Overlays
         protected DateTime lastUrlChange;
         protected string lastLoadedUrl;
         protected System.Threading.Timer previewTimer;
+        private readonly FFXIVRepository repository;
 
         public bool Preview = false;
 
         public bool ModernApi { get; protected set; }
 
-        public MiniParseOverlay(MiniParseOverlayConfig config, string name)
-            : base(config, name)
+        public MiniParseOverlay(MiniParseOverlayConfig config, string name, TinyIoCContainer container)
+            : base(config, name, container)
         {
             if (Overlay == null) return;
+            repository = container.Resolve<FFXIVRepository>();
 
             Config.ActwsCompatibilityChanged += (o, e) =>
             {
@@ -68,6 +70,11 @@ namespace RainbowMage.OverlayPlugin.Overlays
                 Overlay.Renderer.SetMuted(Config.MuteWhenHidden ? !Config.IsVisible : false);
             };
 
+            if (Config.MuteWhenHidden && !Config.IsVisible)
+            {
+                Overlay.Renderer.SetMuted(true);
+            }
+
             Overlay.Renderer.BrowserStartLoading += PrepareWebsite;
             Overlay.Renderer.BrowserLoad += FinishLoading;
             Overlay.Renderer.BrowserConsoleLog += Renderer_BrowserConsoleLog;
@@ -81,7 +88,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         public override Control CreateConfigControl()
         {
-            return new MiniParseConfigPanel(this);
+            return new MiniParseConfigPanel(container, this);
         }
 
         private void Renderer_BrowserConsoleLog(object sender, BrowserConsoleLogEventArgs e)
@@ -96,8 +103,8 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             if (Config.ActwsCompatibility)
             {
-                var charName = JsonConvert.SerializeObject(FFXIVRepository.GetPlayerName() ?? "YOU");
-                var charID = JsonConvert.SerializeObject(FFXIVRepository.GetPlayerID());
+                var charName = JsonConvert.SerializeObject(repository.GetPlayerName() ?? "YOU");
+                var charID = JsonConvert.SerializeObject(repository.GetPlayerID());
 
                 ExecuteScript(@"var msg = { charName: " + charName + ", charID: " + charID + @" };
                 if (window.__OverlayPlugin_ws_faker) {
@@ -111,10 +118,11 @@ namespace RainbowMage.OverlayPlugin.Overlays
             {
                 try
                 {
+                    var pluginPath = container.Resolve<PluginMain>().PluginDirectory;
 #if DEBUG
-                    var previewPath = Path.Combine(PluginMain.PluginDirectory, "libs", "resources", "preview.json");
+                    var previewPath = Path.Combine(pluginPath, "libs", "resources", "preview.json");
 #else
-                    var previewPath = Path.Combine(PluginMain.PluginDirectory, "resources", "preview.json");
+                    var previewPath = Path.Combine(pluginPath, "resources", "preview.json");
 #endif
                     var eventData = JObject.Parse(File.ReadAllText(previewPath));
 
@@ -128,7 +136,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
                     }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
                 } catch (Exception ex)
                 {
-                    Registry.Resolve<ILogger>().Log(LogLevel.Error, $"{Name}: Failed to load preview data: {ex}");
+                    logger.Log(LogLevel.Error, $"{Name}: Failed to load preview data: {ex}");
                 }
             }
         }
