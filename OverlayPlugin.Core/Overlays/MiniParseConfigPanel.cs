@@ -63,6 +63,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
             hotkeyGridView.DataSource = new BindingList<GlobalHotkey>(config.GlobalHotkeys);
 
             presets = NewOverlayDialog.PreparePresetCombo(container, applyPresetCombo, "MiniParse");
+            applyPresetCombo.SelectedIndex = presets.Count;
             applyPresetCombo.SelectedValueChanged += ApplyPresetCombo_SelectedValueChanged;
         }
 
@@ -70,10 +71,15 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             var item = (IOverlayPreset)applyPresetCombo.SelectedItem;
             var url = item.Url;
+            if (url == "special:custom")
+            {
+                return;
+            }
             if (url.StartsWith("%%"))
             {
                 url = url.Replace("%%", container.Resolve<PluginMain>().ResourceUri);
             }
+            this.config.Url = "about:blank";
             this.config.Url = url;
             this.config.ActwsCompatibility = (item.Supports != null && item.Supports.Contains("actws"));
         }
