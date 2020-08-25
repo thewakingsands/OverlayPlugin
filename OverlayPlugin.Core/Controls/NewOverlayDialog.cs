@@ -76,20 +76,7 @@ namespace RainbowMage.OverlayPlugin
 
         private Dictionary<string, OverlayPreset> PreparePresetCombo(ComboBox cbPreset)
         {
-            cbPreset.Items.Clear();
-
-            foreach (var item in registry.OverlayPresets)
-            {
-                cbPreset.Items.Add(item);
-            }
-
-            cbPreset.Items.Add(new OverlayPreset
-            {
-                Name = Resources.CustomPresetLabel,
-                Url = "special:custom",
-            });
-
-            cbPreset.DisplayMember = "Name";
+            PreparePresetCombo(container, cbPreset);
             return presets;
         }
         
@@ -157,12 +144,7 @@ namespace RainbowMage.OverlayPlugin
                         if (config.Url == "")
                         {
                             // If the preview didn't load, we try again here to avoid ending up with an empty overlay.
-#if DEBUG
-                            var resourcesPath = "file:///" + pluginMain.PluginDirectory.Replace('\\', '/') + "/libs/resources";
-#else
-                            var resourcesPath = "file:///" + pluginMain.PluginDirectory.Replace('\\', '/') + "/resources";
-#endif
-                            SelectedOverlay.Navigate(preset.Url.Replace("%%", resourcesPath));
+                            SelectedOverlay.Navigate(preset.Url.Replace("%%", pluginMain.ResourceUri));
                         }
                     }
                     else
@@ -254,10 +236,37 @@ namespace RainbowMage.OverlayPlugin
                 FriendlyName = friendlyName;
             }
         }
+
+        public static IReadOnlyList<IOverlayPreset> PreparePresetCombo(TinyIoCContainer container, ComboBox cbPreset, string allowType = null)
+        {
+            cbPreset.Items.Clear();
+
+            var registry = container.Resolve<Registry>();
+            foreach (var item in registry.OverlayPresets)
+            {
+                if (!string.IsNullOrEmpty(allowType))
+                {
+                    if (item.Type != allowType)
+                    {
+                        continue;
+                    }
+                }
+                cbPreset.Items.Add(item);
+            }
+
+            cbPreset.Items.Add(new OverlayPreset
+            {
+                Name = Resources.CustomPresetLabel,
+                Url = "special:custom",
+            });
+
+            cbPreset.DisplayMember = "Name";
+            return registry.OverlayPresets;
+        }
     }
 
     [JsonObject(NamingStrategyType = typeof(Newtonsoft.Json.Serialization.SnakeCaseNamingStrategy))]
-    class OverlayPreset : IOverlayPreset
+    public class OverlayPreset : IOverlayPreset
     {
         public string Name { get; set; }
         public string Type { get; set; }

@@ -35,6 +35,20 @@ namespace RainbowMage.OverlayPlugin
 
         internal string PluginDirectory { get; private set; }
 
+        internal string ResourceUri
+        {
+            get
+            {
+#if DEBUG
+                var resourcesPath = "file:///" + PluginDirectory.Replace('\\', '/') + "/libs/resources";
+#else
+                var resourcesPath = "file:///" + PluginDirectory.Replace('\\', '/') + "/resources";
+#endif
+
+                return resourcesPath;
+            }
+        }
+
         public PluginMain(string pluginDirectory, Logger logger, TinyIoCContainer container)
         {
             _container = container;
@@ -143,7 +157,7 @@ namespace RainbowMage.OverlayPlugin
 #if DEBUG
                 watch.Reset();
 #endif
-                
+
                 // Setup the UI
                 this.controlPanel = new ControlPanel(_container);
                 this.controlPanel.Dock = DockStyle.Fill;
@@ -156,7 +170,7 @@ namespace RainbowMage.OverlayPlugin
                 this.wsTabPage = new TabPage("悬浮窗WS服务");
                 this.wsTabPage.Controls.Add(wsConfigPanel);
                 ((TabControl)this.tabPage.Parent).TabPages.Add(this.wsTabPage);
-                
+
                 _logger.Log(LogLevel.Info, "InitPlugin: Initialized.");
                 this.label.Text = "Initialized.";
 
@@ -166,22 +180,24 @@ namespace RainbowMage.OverlayPlugin
                 }
 
                 // Load our presets
-                try {
+                try
+                {
 #if DEBUG
                     var presetFile = Path.Combine(PluginDirectory, "libs", "resources", "presets.json");
-    #else
+#else
                     var presetFile = Path.Combine(PluginDirectory, "resources", "presets.json");
-    #endif
+#endif
                     var presetData = "{}";
-                
+
                     try
                     {
                         presetData = File.ReadAllText(presetFile);
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         _logger.Log(LogLevel.Error, string.Format(Resources.ErrorCouldNotLoadPresets, ex));
                     }
-            
+
                     var presets = JsonConvert.DeserializeObject<Dictionary<string, OverlayPreset>>(presetData);
                     var registry = _container.Resolve<Registry>();
                     foreach (var pair in presets)
@@ -189,7 +205,8 @@ namespace RainbowMage.OverlayPlugin
                         pair.Value.Name = pair.Key;
                         registry.RegisterOverlayPreset2(pair.Value);
                     }
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     _logger.Log(LogLevel.Error, string.Format("Failed to load presets: {0}", ex));
                 }
@@ -202,7 +219,8 @@ namespace RainbowMage.OverlayPlugin
                     {
                         // Something went really wrong.
                         initTimer.Stop();
-                    } else if (ActGlobals.oFormActMain.InitActDone && ActGlobals.oFormActMain.Handle != IntPtr.Zero)
+                    }
+                    else if (ActGlobals.oFormActMain.InitActDone && ActGlobals.oFormActMain.Handle != IntPtr.Zero)
                     {
                         try
                         {
@@ -237,7 +255,7 @@ namespace RainbowMage.OverlayPlugin
                                     // Now that addons have been loaded, we can finish the overlay setup.
                                     InitializeOverlays();
                                     controlPanel.InitializeOverlayConfigTabs();
-                                
+
                                     _container.Register(new OverlayHider(_container));
                                     _container.Register(new OverlayZCorrector(_container));
 
@@ -249,7 +267,8 @@ namespace RainbowMage.OverlayPlugin
                                     }
 
                                     configSaveTimer.Start();
-                                } catch (Exception ex)
+                                }
+                                catch (Exception ex)
                                 {
                                     _logger.Log(LogLevel.Error, "InitPlugin: {0}", ex);
                                 }
@@ -285,7 +304,7 @@ namespace RainbowMage.OverlayPlugin
                 parameters["config"] = overlayConfig;
                 parameters["name"] = overlayConfig.Name;
 
-                var overlay = (IOverlay) _container.Resolve(overlayConfig.OverlayType, parameters);
+                var overlay = (IOverlay)_container.Resolve(overlayConfig.OverlayType, parameters);
                 if (overlay != null)
                 {
                     RegisterOverlay(overlay);

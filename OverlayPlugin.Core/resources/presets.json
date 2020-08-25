@@ -53,31 +53,31 @@
     "size": [700, 300],
     "supports": ["modern"]
   },
-  "Klondike": {
+  "Klondike 简版悬浮窗": {
     "type": "MiniParse",
     "url": "https://kalilistic.github.io/klondike/",
     "size": [200, 290],
     "supports": ["modern"]
   },
-  "Target Bar": {
+  "目标血条": {
     "type": "MiniParse",
     "url": "%%/targetbars/target.html",
     "size": [500, 600],
     "supports": ["modern"]
   },
-  "Focus Target Bar": {
+  "焦点血条": {
     "type": "MiniParse",
     "url": "%%/targetbars/focus_target.html",
     "size": [500, 600],
     "supports": ["modern"]
   },
-  "Hover Target Bar": {
+  "鼠标悬浮对象血条": {
     "type": "MiniParse",
     "url": "%%/targetbars/hover_target.html",
     "size": [500, 600],
     "supports": ["modern"]
   },
-  "Target of Target Bar": {
+  "目标的目标血条": {
     "type": "MiniParse",
     "url": "%%/targetbars/target_of_target.html",
     "size": [500, 600],

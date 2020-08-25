@@ -641,10 +641,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     // First try a user directory relative to the html.
                     try
                     {
-                        // TODO: this is wrong for ui/dps/overlays
-                        // TODO: maybe replace this with the version checker get cactbot root
-                        var url_dir = Path.GetDirectoryName(new Uri(source).LocalPath);
-                        config_dir = Path.GetFullPath(url_dir + "\\..\\..\\user\\");
+                        config_dir = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline", "user");
                         local_files = GetLocalUserFiles(config_dir);
                     }
                     catch (Exception e)

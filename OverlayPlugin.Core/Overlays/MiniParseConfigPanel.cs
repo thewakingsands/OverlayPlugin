@@ -14,7 +14,9 @@ namespace RainbowMage.OverlayPlugin.Overlays
     {
         private MiniParseOverlayConfig config;
         private MiniParseOverlay overlay;
+        private IReadOnlyList<IOverlayPreset> presets;
         private readonly KeyboardHook keyboardHook;
+        private readonly TinyIoCContainer container;
 
         static readonly List<KeyValuePair<string, GlobalHotkeyType>> hotkeyTypeDict = new List<KeyValuePair<string, GlobalHotkeyType>>()
         {
@@ -31,6 +33,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
             this.keyboardHook = container.Resolve<KeyboardHook>();
             this.overlay = overlay;
             this.config = overlay.Config;
+            this.container = container;
 
             SetupControlProperties();
             SetupConfigEventHandlers();
@@ -59,9 +62,20 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
             hotkeyGridView.DataSource = new BindingList<GlobalHotkey>(config.GlobalHotkeys);
 
-            // TODO
-            applyPresetCombo.Visible = false;
-            //presets = NewOverlayDialog.PreparePresetCombo(applyPresetCombo);
+            presets = NewOverlayDialog.PreparePresetCombo(container, applyPresetCombo, "MiniParse");
+            applyPresetCombo.SelectedValueChanged += ApplyPresetCombo_SelectedValueChanged;
+        }
+
+        private void ApplyPresetCombo_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var item = (IOverlayPreset)applyPresetCombo.SelectedItem;
+            var url = item.Url;
+            if (url.StartsWith("%%"))
+            {
+                url = url.Replace("%%", container.Resolve<PluginMain>().ResourceUri);
+            }
+            this.config.Url = url;
+            this.config.ActwsCompatibility = (item.Supports != null && item.Supports.Contains("actws"));
         }
 
         private void SetupConfigEventHandlers()
