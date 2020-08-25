@@ -80,8 +80,12 @@ namespace RainbowMage.OverlayPlugin.Overlays
                 url = url.Replace("%%", container.Resolve<PluginMain>().ResourceUri);
             }
             this.config.Url = "about:blank";
+            this.config.ActwsCompatibility = item.Supports.Count == 1 && item.Supports.Contains("actws");
+            if (this.config.ActwsCompatibility)
+            {
+                url += "?HOST_PORT=ws://127.0.0.1/fake/";
+            }
             this.config.Url = url;
-            this.config.ActwsCompatibility = (item.Supports != null && item.Supports.Contains("actws"));
         }
 
         private void SetupConfigEventHandlers()

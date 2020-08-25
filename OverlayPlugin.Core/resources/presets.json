@@ -20,7 +20,7 @@
   "Horizoverlay 横版悬浮窗": {
     "type": "MiniParse",
     "url": "https://ainou.plus/horizoverlay",
-    "size": [ "90%", 300 ],
+    "size": [ 1000, 300 ],
     "supports": [ "legacy", "actws" ]
   },
   "仇恨显示(相对值)": {
