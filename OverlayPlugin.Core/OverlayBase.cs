@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RainbowMage.HtmlRenderer;
+using RainbowMage.OverlayPlugin.Overlays;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -433,8 +434,14 @@ namespace RainbowMage.OverlayPlugin
             this.Config.IsLocked = locked;
         }
 
-        public void SetOverlayUrl(string url)
+        public void SetOverlayUrl(string url, bool actws)
         {
+            this.Config.Url = "about:blank";
+            var a = Config as MiniParseOverlayConfig;
+            if (a != null)
+            {
+                a.ActwsCompatibility = actws;
+            }
             this.Config.Url = url;
         }
     }

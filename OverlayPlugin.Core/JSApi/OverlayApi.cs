@@ -40,9 +40,9 @@ namespace RainbowMage.OverlayPlugin
             receiver.SetLocked(isLocked);
         }
 
-        public void setOverlayUrl(string url)
+        public void setOverlayUrl(string url, bool actws)
         {
-            receiver.SetOverlayUrl(url);
+            receiver.SetOverlayUrl(url, actws);
         }
 
         public void openUrlInBrowser(string url)

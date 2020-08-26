@@ -19,6 +19,6 @@ namespace RainbowMage.OverlayPlugin
 
         void SetLocked(bool locked);
 
-        void SetOverlayUrl(string url);
+        void SetOverlayUrl(string url, bool actws);
     }
 }

@@ -1,86 +1,110 @@
 ﻿{
   "Kagerou 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://ainou.plus/kagerou",
+    "url": "https://act.qianqu.me/overlay/kagerou/overlay/",
     "size": [ 500, 300 ],
     "supports": [ "legacy", "actws" ]
   },
-  "MopiMopi 悬浮窗": {
-    "type": "MiniParse",
-    "url": "https://ainou.plus/mopimopi",
-    "size": [ 600, 500 ],
-    "supports": [ "actws" ]
-  },
   "faceroll 精简悬浮窗": {
     "type": "MiniParse",
-    "url": "https://ainou.plus/faceroll",
+    "url": "https://act.qianqu.me/overlay/faceroll/",
     "size": [ 600, 400 ],
     "supports": [ "legacy", "actws" ]
   },
   "Horizoverlay 横版悬浮窗": {
     "type": "MiniParse",
-    "url": "https://ainou.plus/horizoverlay",
+    "url": "https://act.qianqu.me/overlay/horizoverlay/",
     "size": [ 1000, 300 ],
     "supports": [ "legacy", "actws" ]
   },
-  "仇恨显示(相对值)": {
+  "CMSkin 悬浮窗": {
     "type": "MiniParse",
-    "url": "%%/enmity/enmity_relative.html",
-    "size": [300, 400],
-    "supports": ["modern"]
+    "url": "https://act.qianqu.me/overlay/canisminor/",
+    "size": [ 1000, 300 ],
+    "supports": [ "legacy", "actws" ]
   },
-  "仇恨显示(绝对值)": {
+  "MopiMopi2 悬浮窗": {
     "type": "MiniParse",
-    "url": "%%/enmity/enmity_absolute.html",
-    "size": [300, 400],
-    "supports": ["modern"]
-  },
-  "仇恨显示(聚合)": {
-    "type": "MiniParse",
-    "url": "%%/enmity/aggrolist.html",
-    "size": [300, 400],
-    "supports": ["modern"]
-  },
-  "输出循环显示": {
-    "type": "MiniParse",
-    "url": "https://ainou.plus/skilldisplay",
-    "size": [ 800, 300 ],
+    "url": "https://act.qianqu.me/overlay/mopimopi2/",
+    "size": [ 600, 500 ],
     "supports": [ "actws" ]
+  },
+  "MopiMopi 悬浮窗": {
+    "type": "MiniParse",
+    "url": "https://act.qianqu.me/overlay/mopimopi/",
+    "size": [ 600, 500 ],
+    "supports": [ "actws" ]
+  },
+  "ikegami 横版悬浮窗": {
+    "type": "MiniParse",
+    "url": "https://act.qianqu.me/overlay/ikegami/",
+    "size": [ 1000, 300 ],
+    "supports": [ "legacy", "actws" ]
+  },
+  "ember 悬浮窗": {
+    "type": "MiniParse",
+    "url": "https://act.qianqu.me/overlay/ember/",
+    "size": [ 600, 500 ],
+    "supports": [ "modern" ]
+  },
+  "amethyst 悬浮窗": {
+    "type": "MiniParse",
+    "url": "https://act.qianqu.me/overlay/ember/",
+    "size": [ 600, 500 ],
+    "supports": [ "legacy", "actws" ]
   },
   "本地精简悬浮窗": {
     "type": "MiniParse",
     "url": "%%/miniparse.html",
-    "size": [700, 300],
-    "supports": ["modern"]
+    "size": [ 700, 300 ],
+    "supports": [ "modern" ]
   },
-  "Klondike 简版悬浮窗": {
+  "悬浮窗向导": {
     "type": "MiniParse",
-    "url": "https://kalilistic.github.io/klondike/",
-    "size": [200, 290],
-    "supports": ["modern"]
+    "url": "%%/guide.html",
+    "size": [ 700, 300 ],
+    "supports": [ "modern" ]
+  },
+  "仇恨显示(相对值)": {
+    "type": "MiniParse",
+    "url": "%%/enmity/enmity_relative.html",
+    "size": [ 300, 400 ],
+    "supports": [ "modern" ]
+  },
+  "仇恨显示(绝对值)": {
+    "type": "MiniParse",
+    "url": "%%/enmity/enmity_absolute.html",
+    "size": [ 300, 400 ],
+    "supports": [ "modern" ]
+  },
+  "仇恨显示(聚合)": {
+    "type": "MiniParse",
+    "url": "%%/enmity/aggrolist.html",
+    "size": [ 300, 400 ],
+    "supports": [ "modern" ]
   },
   "目标血条": {
     "type": "MiniParse",
     "url": "%%/targetbars/target.html",
-    "size": [500, 600],
-    "supports": ["modern"]
+    "size": [ 500, 600 ],
+    "supports": [ "modern" ]
   },
   "焦点血条": {
     "type": "MiniParse",
     "url": "%%/targetbars/focus_target.html",
-    "size": [500, 600],
-    "supports": ["modern"]
+    "size": [ 500, 600 ],
+    "supports": [ "modern" ]
   },
   "鼠标悬浮对象血条": {
     "type": "MiniParse",
     "url": "%%/targetbars/hover_target.html",
-    "size": [500, 600],
-    "supports": ["modern"]
+    "size": [ 500, 600 ],
+    "supports": [ "modern" ]
   },
   "目标的目标血条": {
     "type": "MiniParse",
     "url": "%%/targetbars/target_of_target.html",
-    "size": [500, 600],
-    "supports": ["modern"]
-  },
+    "size": [ 500, 600 ],
+    "supports": [ "modern" ]
+  }
 }

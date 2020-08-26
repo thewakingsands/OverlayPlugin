@@ -32,7 +32,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
             Config.ActwsCompatibilityChanged += (o, e) =>
             {
-                if (lastLoadedUrl != null && lastLoadedUrl != "about:blank") Navigate(lastLoadedUrl);
+                if (lastLoadedUrl != null && lastLoadedUrl != "about:blank") Navigate(config.Url);
             };
             Config.NoFocusChanged += (o, e) =>
             {
@@ -95,7 +95,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             if (Config.ActwsCompatibility && e.Message.Contains("ws://127.0.0.1/") && (e.Message.Contains("SecurityError:") || e.Message.Contains("ERR_CONNECTION_")))
             {
-                Overlay.Reload();
+                // Overlay.Reload();
             }
         }
 
@@ -138,6 +138,11 @@ namespace RainbowMage.OverlayPlugin.Overlays
                 {
                     logger.Log(LogLevel.Error, $"{Name}: Failed to load preview data: {ex}");
                 }
+            }
+
+            if (e.Url.StartsWith("about:blank") && e.Url != Config.Url)
+            {
+                base.Navigate(Config.Url);
             }
         }
 
@@ -226,6 +231,8 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         public override void Navigate(string url)
         {
+            if (url == lastLoadedUrl) return;
+
             if (Config.ActwsCompatibility)
             {
                 if (!url.Contains("HOST_PORT=") && url != "about:blank")
@@ -269,7 +276,13 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
             if (DateTime.Now - lastUrlChange > new TimeSpan(0, 0, 1))
             {
-                base.Reload();
+                if (lastLoadedUrl != this.Config.Url)
+                {
+                    base.Navigate(Config.Url);
+                } else
+                {
+                    base.Reload();
+                }
             }
         }
 
