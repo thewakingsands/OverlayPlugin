@@ -16,5 +16,9 @@ namespace RainbowMage.OverlayPlugin
         void InitModernAPI();
 
         Bitmap Screenshot();
+
+        void SetLocked(bool locked);
+
+        void SetOverlayUrl(string url);
     }
 }

@@ -92,11 +92,11 @@
             // 
             // tabControl1
             // 
+            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tabGeneral);
             this.tabControl1.Controls.Add(this.tabHotkeys);
             this.tabControl1.Controls.Add(this.tabAdvanced);
             this.tabControl1.Controls.Add(this.tabACTWS);
-            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
@@ -245,11 +245,11 @@
             // 
             // tabHotkeys
             // 
+            resources.ApplyResources(this.tabHotkeys, "tabHotkeys");
             this.tabHotkeys.Controls.Add(this.btnApplyHotkeyChanges);
             this.tabHotkeys.Controls.Add(this.btnRemoveHotkey);
             this.tabHotkeys.Controls.Add(this.btnAddHotkey);
             this.tabHotkeys.Controls.Add(this.hotkeyGridView);
-            resources.ApplyResources(this.tabHotkeys, "tabHotkeys");
             this.tabHotkeys.Name = "tabHotkeys";
             this.tabHotkeys.UseVisualStyleBackColor = true;
             // 
@@ -276,9 +276,9 @@
             // 
             // hotkeyGridView
             // 
+            resources.ApplyResources(this.hotkeyGridView, "hotkeyGridView");
             this.hotkeyGridView.AllowUserToAddRows = false;
             this.hotkeyGridView.AllowUserToResizeRows = false;
-            resources.ApplyResources(this.hotkeyGridView, "hotkeyGridView");
             this.hotkeyGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.hotkeyGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.hotkeyGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {

@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta charset="utf-8" />
+    <title>悬浮窗向导</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI=" crossorigin="anonymous">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 16px;
+            padding: 12px;
+            text-shadow: 0px 0px 1px rgba(0, 0, 0, 1), 0px 0px 2px rgba(0, 0, 0, 1);
+            cursor: auto;
+            user-select: none;
+        }
+        h3 {
+            margin: 0;
+        }
+        a {
+            color: white;
+            text-decoration: underline;
+        }
+        #loading {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="guide">
+        <h3>请选择你喜欢的悬浮窗模板</h3>
+        <ul>
+            <li>
+                <button name="url" value="https://act.qianqu.me/overlay/kagerou/overlay/">Kagerou 模板</button>
+                <span> - 最常见，高定制，细节多，漂亮的模板</span>
+            </li>
+            <li>
+                <button name="url" value="https://act.qianqu.me/overlay/faceroll/">faceroll 模板</button>
+                <span> - 仅有文本，超级精简的模板</span>
+            </li>
+            <li>
+                <button name="url" value="https://act.qianqu.me/overlay/horizoverlay/">Horizoverlay 模板</button>
+                <span> - 横板，菱形亮色设计，素素直播同款模板</span>
+            </li>
+            <li>
+                <button name="url" value="https://act.qianqu.me/overlay/canisminor/">CMSkin 模板</button>
+                <span> - 酷炫，FF14 风格的实体模板，带统计图标</span>
+            </li>
+            <li>
+                <button name="url" value="https://act.qianqu.me/overlay/mopimopi2/">MopiMopi2 模板</button>
+                <span> - 高定制，大额头的精美模板(v2)</span>
+            </li>
+            <li>
+                <button name="url" value="https://act.qianqu.me/overlay/mopimopi/">MopiMopi 模板</button>
+                <span> - 高定制，大额头的精美模板(v1)</span>
+            </li>
+            <li>
+                <button name="url" value="https://act.qianqu.me/overlay/ikegami/">ikegami 模板</button>
+                <span> - 方形横条，扁平暗色调，可手动点人显示详情</span>
+            </li>
+            <li>
+                <button name="url" value="https://act.qianqu.me/overlay/ember/">ember 模板</button>
+                <span> - FF14 风格，带大量自定义功能的实体模板</span>
+            </li>
+            <li>
+                <button name="url" value="https://act.qianqu.me/overlay/amethyst/">amethyst 模板</button>
+                <span> - 紫色韩风，细节多的模板</span>
+            </li>
+        </ul>
+        <p>查找更多模板或者更详细的使用教程请<a href="https://ainou.plus/actdps" target="_blank">点我</a>。</p>
+        <p>选过之后想换怎么办？在 ACT 的 “插件” - “ngld 悬浮窗设置”，左侧找 “DPS 统计”，然后右边“悬浮窗路径”下拉即可修改。</p>
+    </div>
+    <div id="loading">
+        <h2>正在加载你选择的模板，请稍候。</h2>
+    </div>
+    <script>
+        function openExternalLink(url) {
+            if (window.OverlayPluginApi && window.OverlayPluginApi.openUrlInBrowser) {
+                window.OverlayPluginApi.openUrlInBrowser(url);
+            } else {
+                window.open(url);
+            }
+        }
+
+        function hookAllExternal() {
+            document.addEventListener('click', e => {
+                const el = e.target;
+                if (el.tagName === 'A') {
+                    if (el.target === '_blank') {
+                        openExternalLink(el.href);
+                        e.preventDefault();
+                    }
+                }
+            });
+        }
+
+        function showLoading() {
+            document.getElementById('guide').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        hookAllExternal();
+
+        document.body.addEventListener('click', function (e) {
+            if (e.target.tagName !== 'BUTTON') {
+                return;
+            }
+            if (e.target.name === 'url' && e.target.value) {
+                showLoading();
+                if (window.OverlayPluginApi && window.OverlayPluginApi.setOverlayUrl) {
+                    window.OverlayPluginApi.setOverlayUrl(e.target.value);
+                    e.preventDefault();
+                } else {
+                    window.location = e.target.value;
+                    e.preventDefault();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

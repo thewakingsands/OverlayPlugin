@@ -427,5 +427,15 @@ namespace RainbowMage.OverlayPlugin
         {
             return Overlay.Renderer.Screenshot();
         }
+
+        public void SetLocked(bool locked)
+        {
+            this.Config.IsLocked = locked;
+        }
+
+        public void SetOverlayUrl(string url)
+        {
+            this.Config.Url = url;
+        }
     }
 }

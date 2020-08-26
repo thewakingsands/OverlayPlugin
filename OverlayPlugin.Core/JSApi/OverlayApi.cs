@@ -4,6 +4,7 @@ using Advanced_Combat_Tracker;
 using RainbowMage.HtmlRenderer;
 using System.IO;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -34,6 +35,30 @@ namespace RainbowMage.OverlayPlugin
             SendMessage(this, new SendMessageEventArgs(target, msg));
         }
 
+        public void setLocked(bool isLocked)
+        {
+            receiver.SetLocked(isLocked);
+        }
+
+        public void setOverlayUrl(string url)
+        {
+            receiver.SetOverlayUrl(url);
+        }
+
+        public void openUrlInBrowser(string url)
+        {
+            Uri.TryCreate(url, UriKind.Absolute, out var uri);
+            if (uri == null)
+            {
+                return;
+            }
+
+            if (uri.Scheme == "http" || uri.Scheme == "https")
+            {
+                Process.Start(uri.AbsoluteUri);
+            }
+        }
+
         public void overlayMessage(string target, string msg)
         {
             if (target == receiver.Name)
@@ -50,7 +75,7 @@ namespace RainbowMage.OverlayPlugin
         {
             ActGlobals.oFormActMain.Invoke((Action)(() =>
             {
-               ActGlobals.oFormActMain.EndCombat(true);
+                ActGlobals.oFormActMain.EndCombat(true);
             }));
         }
 
@@ -84,7 +109,8 @@ namespace RainbowMage.OverlayPlugin
             // Tell the overlay that the page is using the modern API.
             receiver.InitModernAPI();
 
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 var result = dispatcher.ProcessHandlerMessage(receiver, data);
                 if (callback != null)
                 {
