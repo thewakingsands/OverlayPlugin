@@ -177,9 +177,6 @@
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>157, 210</value>
   </data>
-  <data name="&gt;&gt;btnApplyHotkeyChanges.Name" xml:space="preserve">
-    <value>btnApplyHotkeyChanges</value>
-  </data>
   <data name="lblNoFocus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -210,14 +207,14 @@
   <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="btnAddHotkey.Text" xml:space="preserve">
-    <value>Add New Hotkey</value>
+  <data name="tabGeneral.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="&gt;&gt;tabHotkeys.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
+  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
+    <value>tabGeneral</value>
   </data>
   <data name="hotkeyColHotkey.Width" type="System.Int32, mscorlib">
     <value>150</value>
@@ -237,9 +234,6 @@
   <data name="checkMiniParseVisible.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;textMiniParseUrl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="btnRemoveHotkey.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
@@ -255,8 +249,8 @@
   <data name="&gt;&gt;applyPresetCombo.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 3</value>
+  <data name="btnAddHotkey.Text" xml:space="preserve">
+    <value>Add New Hotkey</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>435, 34</value>
@@ -288,9 +282,6 @@
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>tabGeneral</value>
   </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
-  </data>
   <data name="&gt;&gt;tbZoom.Parent" xml:space="preserve">
     <value>tableLayoutPanel4</value>
   </data>
@@ -305,9 +296,6 @@
   </data>
   <data name="applyPresetCombo.Size" type="System.Drawing.Size, System.Drawing">
     <value>398, 20</value>
-  </data>
-  <data name="textMiniParseUrl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
     <value>tabACTWS</value>
@@ -333,6 +321,9 @@
   <data name="&gt;&gt;cbWhiteBg.Parent" xml:space="preserve">
     <value>tabGeneral</value>
   </data>
+  <data name="buttonMiniParseReloadBrowser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="&gt;&gt;checkLock.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
@@ -354,11 +345,11 @@
   <data name="&gt;&gt;label11.Name" xml:space="preserve">
     <value>label11</value>
   </data>
-  <data name="tableLayoutPanel3.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
   <data name="checkMiniParseClickthru.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>tabGeneral</value>
   </data>
   <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 3</value>
@@ -387,8 +378,8 @@
   <data name="&gt;&gt;buttonMiniParseSelectFile.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="btnApplyHotkeyChanges.Location" type="System.Drawing.Point, System.Drawing">
-    <value>363, 6</value>
+  <data name="&gt;&gt;textMiniParseUrl.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;checkLogConsoleMessages.Name" xml:space="preserve">
     <value>checkLogConsoleMessages</value>
@@ -402,17 +393,11 @@
   <data name="buttonMiniParseSelectFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;lblNoFocus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="&gt;&gt;label10.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;textMiniParseUrl.Name" xml:space="preserve">
-    <value>textMiniParseUrl</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel4.Name" xml:space="preserve">
     <value>tableLayoutPanel4</value>
@@ -423,11 +408,11 @@
   <data name="&gt;&gt;label6.Parent" xml:space="preserve">
     <value>tabAdvanced</value>
   </data>
+  <data name="buttonResetOverlayPosition.Location" type="System.Drawing.Point, System.Drawing">
+    <value>379, 3</value>
+  </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 12</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;btnResetZoom.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -447,8 +432,8 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 12</value>
   </data>
-  <data name="buttonMiniParseReloadBrowser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;lblNoFocus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label11.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -483,6 +468,9 @@
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;checkMiniParseVisible.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
@@ -498,6 +486,9 @@
   <data name="buttonMiniParseReloadBrowser.Size" type="System.Drawing.Size, System.Drawing">
     <value>182, 34</value>
   </data>
+  <data name="hotkeyGridView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 38</value>
+  </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>137, 12</value>
   </data>
@@ -506,9 +497,6 @@
   </data>
   <data name="btnResetZoom.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 24</value>
-  </data>
-  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 135</value>
   </data>
   <data name="tabGeneral.Text" xml:space="preserve">
     <value>General</value>
@@ -531,8 +519,8 @@
   <data name="hotkeyGridView.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="buttonMiniParseOpenDevTools.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 34</value>
+  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 115</value>
   </data>
   <data name="checkActwsCompatbility.Location" type="System.Drawing.Point, System.Drawing">
     <value>155, 9</value>
@@ -543,8 +531,14 @@
   <data name="label15.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
   </data>
+  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>435, 22</value>
+  </data>
   <data name="tbZoom.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;checkLock.Name" xml:space="preserve">
+    <value>checkLock</value>
   </data>
   <data name="buttonResetOverlayPosition.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -567,14 +561,11 @@
   <data name="&gt;&gt;checkNoFocus.Name" xml:space="preserve">
     <value>checkNoFocus</value>
   </data>
-  <data name="label4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
   <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="tabGeneral.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
+  <data name="checkMiniParseClickthru.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Force white background</value>
@@ -582,8 +573,8 @@
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
     <value>154, 251</value>
   </data>
-  <data name="tbZoom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Use this if you can't find the overlay or for some reason can't resize it.</value>
   </data>
   <data name="buttonMiniParseSelectFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>370, 0</value>
@@ -599,9 +590,6 @@
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>Max. framerate</value>
-  </data>
-  <data name="checkMiniParseClickthru.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 95</value>
   </data>
   <data name="&gt;&gt;tbZoom.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -624,6 +612,9 @@
   <data name="tbZoom.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="&gt;&gt;nudMaxFrameRate.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="&gt;&gt;label8.Name" xml:space="preserve">
     <value>label8</value>
   </data>
@@ -636,26 +627,14 @@
   <data name="checkNoFocus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 115</value>
-  </data>
   <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="checkLogConsoleMessages.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;buttonMiniParseReloadBrowser.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="buttonMiniParseSelectFile.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
   <data name="label9.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
   </data>
   <data name="&gt;&gt;label9.Name" xml:space="preserve">
     <value>label9</value>
@@ -693,9 +672,6 @@
   <data name="&gt;&gt;label12.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="hotkeyGridView.Size" type="System.Drawing.Size, System.Drawing">
     <value>595, 472</value>
   </data>
@@ -711,9 +687,6 @@
   <data name="&gt;&gt;tabAdvanced.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;buttonResetOverlayPosition.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="&gt;&gt;buttonMiniParseReloadBrowser.Name" xml:space="preserve">
     <value>buttonMiniParseReloadBrowser</value>
   </data>
@@ -726,8 +699,8 @@
   <data name="&gt;&gt;cbEnableOverlay.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="lblNoFocus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
+  <data name="cbWhiteBg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 235</value>
   </data>
   <data name="&gt;&gt;label13.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -738,17 +711,14 @@
   <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="tabGeneral.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="cbEnableOverlay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 22</value>
-  </data>
   <data name="nudMaxFrameRate.Location" type="System.Drawing.Point, System.Drawing">
     <value>160, 11</value>
+  </data>
+  <data name="&gt;&gt;tabAdvanced.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;buttonMiniParseReloadBrowser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label11.Parent" xml:space="preserve">
     <value>tabACTWS</value>
@@ -759,14 +729,14 @@
   <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;nudMaxFrameRate.Parent" xml:space="preserve">
-    <value>tabAdvanced</value>
+  <data name="cbEnableOverlay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 22</value>
   </data>
-  <data name="&gt;&gt;textMiniParseUrl.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="checkLogConsoleMessages.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
+  </data>
+  <data name="btnRemoveHotkey.Text" xml:space="preserve">
+    <value>Remove Selected Hotkey</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel3.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -774,8 +744,8 @@
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 12</value>
   </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 9</value>
+  <data name="tbZoom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="hotkeyColAction.HeaderText" xml:space="preserve">
     <value>Action</value>
@@ -785,6 +755,9 @@
   </data>
   <data name="&gt;&gt;btnRemoveHotkey.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="btnApplyHotkeyChanges.Location" type="System.Drawing.Point, System.Drawing">
+    <value>363, 6</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -800,9 +773,6 @@
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>438, 53</value>
-  </data>
-  <data name="hotkeyColEnabled.MinimumWidth" type="System.Int32, mscorlib">
-    <value>55</value>
   </data>
   <data name="hotkeyColHotkey.MinimumWidth" type="System.Int32, mscorlib">
     <value>150</value>
@@ -834,14 +804,17 @@
   <data name="&gt;&gt;nudMaxFrameRate.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="btnRemoveHotkey.Text" xml:space="preserve">
-    <value>Remove Selected Hotkey</value>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>tabGeneral</value>
   </data>
   <data name="&gt;&gt;tabACTWS.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="checkMiniParseClickthru.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -896,26 +869,26 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="checkLock.Location" type="System.Drawing.Point, System.Drawing">
     <value>157, 115</value>
   </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
   <data name="cbEnableOverlay.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
   </data>
   <data name="tabGeneral.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label8.TabIndex" type="System.Int32, mscorlib">
-    <value>37</value>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 12</value>
   </data>
-  <data name="checkActwsCompatbility.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="&gt;&gt;btnResetZoom.Name" xml:space="preserve">
     <value>btnResetZoom</value>
   </data>
-  <data name="&gt;&gt;nudMaxFrameRate.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="textMiniParseUrl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="btnResetZoom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -938,17 +911,20 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;checkLock.Parent" xml:space="preserve">
     <value>tabGeneral</value>
   </data>
   <data name="label13.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
   </data>
-  <data name="tabHotkeys.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="label8.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="buttonMiniParseOpenDevTools.Size" type="System.Drawing.Size, System.Drawing">
+    <value>182, 34</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 212</value>
@@ -957,6 +933,9 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
     <value>42</value>
   </data>
   <data name="applyPresetCombo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="label10.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="&gt;&gt;hotkeyGridView.ZOrder" xml:space="preserve">
@@ -974,17 +953,17 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;label12.Parent" xml:space="preserve">
     <value>tabGeneral</value>
   </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 3</value>
+  </data>
   <data name="&gt;&gt;hotkeyGridView.Name" xml:space="preserve">
     <value>hotkeyGridView</value>
   </data>
   <data name="&gt;&gt;hotkeyColHotkey.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>tabGeneral</value>
-  </data>
-  <data name="&gt;&gt;buttonMiniParseOpenDevTools.Name" xml:space="preserve">
-    <value>buttonMiniParseOpenDevTools</value>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="applyPresetCombo.Location" type="System.Drawing.Point, System.Drawing">
     <value>157, 172</value>
@@ -1001,9 +980,6 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;label13.Parent" xml:space="preserve">
     <value>tabGeneral</value>
   </data>
-  <data name="label8.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <data name="hotkeyColAction.Width" type="System.Int32, mscorlib">
     <value>150</value>
   </data>
@@ -1015,9 +991,6 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   </data>
   <data name="&gt;&gt;label12.Name" xml:space="preserve">
     <value>label12</value>
-  </data>
-  <data name="buttonResetOverlayPosition.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -1043,11 +1016,14 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;label9.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;buttonMiniParseReloadBrowser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="checkMiniParseClickthru.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 95</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
+  </data>
+  <data name="&gt;&gt;nudMaxFrameRate.Parent" xml:space="preserve">
+    <value>tabAdvanced</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
     <value>Mute overlay when hidden</value>
@@ -1091,8 +1067,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="checkMiniParseClickthru.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;textMiniParseUrl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cbWhiteBg.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1100,8 +1076,11 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;label7.Name" xml:space="preserve">
     <value>label7</value>
   </data>
-  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>435, 22</value>
+  <data name="&gt;&gt;buttonResetOverlayPosition.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tabHotkeys.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="buttonResetOverlayPosition.Text" xml:space="preserve">
     <value>Reset Overlay Position</value>
@@ -1109,8 +1088,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="tableLayoutPanel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
   </data>
-  <data name="buttonMiniParseSelectFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 19</value>
+  <data name="&gt;&gt;btnApplyHotkeyChanges.Name" xml:space="preserve">
+    <value>btnApplyHotkeyChanges</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -1133,20 +1112,23 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
   </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="buttonResetOverlayPosition.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="tabGeneral.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
   </data>
-  <data name="&gt;&gt;checkLock.Name" xml:space="preserve">
-    <value>checkLock</value>
+  <data name="&gt;&gt;btnApplyHotkeyChanges.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>Show overlay</value>
   </data>
-  <data name="&gt;&gt;textMiniParseUrl.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
+  <data name="tabAdvanced.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="checkLock.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1166,6 +1148,9 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;cbWhiteBg.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="buttonMiniParseOpenDevTools.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1175,11 +1160,14 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;checkMiniParseVisible.Name" xml:space="preserve">
     <value>checkMiniParseVisible</value>
   </data>
+  <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
   <data name="&gt;&gt;tableLayoutPanel3.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="buttonResetOverlayPosition.Location" type="System.Drawing.Point, System.Drawing">
-    <value>379, 3</value>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 12</value>
@@ -1187,8 +1175,11 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="tabGeneral.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="&gt;&gt;buttonResetOverlayPosition.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="nudMaxFrameRate.TabIndex" type="System.Int32, mscorlib">
     <value>44</value>
@@ -1202,8 +1193,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="btnRemoveHotkey.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 26</value>
   </data>
-  <data name="cbWhiteBg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 235</value>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 9</value>
   </data>
   <data name="&gt;&gt;label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1220,8 +1211,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="tabAdvanced.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 135</value>
   </data>
   <data name="&gt;&gt;tabACTWS.Name" xml:space="preserve">
     <value>tabACTWS</value>
@@ -1234,6 +1225,9 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   </data>
   <data name="&gt;&gt;buttonMiniParseReloadBrowser.Parent" xml:space="preserve">
     <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;checkNoFocus.Parent" xml:space="preserve">
+    <value>tabACTWS</value>
   </data>
   <data name="&gt;&gt;checkMiniParseClickthru.Name" xml:space="preserve">
     <value>checkMiniParseClickthru</value>
@@ -1250,17 +1244,20 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;lblNoFocus.Name" xml:space="preserve">
     <value>lblNoFocus</value>
   </data>
-  <data name="checkNoFocus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="label9.Text" xml:space="preserve">
     <value>Lock overlay</value>
   </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="checkNoFocus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;tabAdvanced.Parent" xml:space="preserve">
-    <value>tabControl1</value>
+  <data name="hotkeyColEnabled.MinimumWidth" type="System.Int32, mscorlib">
+    <value>55</value>
+  </data>
+  <data name="label4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
   </data>
   <data name="&gt;&gt;cbWhiteBg.ZOrder" xml:space="preserve">
     <value>16</value>
@@ -1298,11 +1295,11 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="cbWhiteBg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>tabGeneral</value>
+  <data name="tabGeneral.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;buttonResetOverlayPosition.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;tableLayoutPanel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="checkMiniParseVisible.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1313,8 +1310,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;hotkeyGridView.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
+  <data name="checkActwsCompatbility.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="textMiniParseUrl.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1322,8 +1319,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
   </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>tabGeneral</value>
+  <data name="&gt;&gt;textMiniParseUrl.Name" xml:space="preserve">
+    <value>textMiniParseUrl</value>
   </data>
   <data name="tabHotkeys.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
@@ -1334,14 +1331,14 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 235</value>
   </data>
-  <data name="hotkeyGridView.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 38</value>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="lblNoFocus.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
   </data>
-  <data name="&gt;&gt;btnApplyHotkeyChanges.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="lblNoFocus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1361,8 +1358,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="tabACTWS.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>Use this if you can't find the overlay or for some reason can't resize it.</value>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel4.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -1376,11 +1373,11 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="tabACTWS.Size" type="System.Drawing.Size, System.Drawing">
     <value>610, 513</value>
   </data>
-  <data name="&gt;&gt;checkNoFocus.Parent" xml:space="preserve">
-    <value>tabACTWS</value>
+  <data name="label8.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="buttonMiniParseOpenDevTools.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;buttonMiniParseOpenDevTools.Name" xml:space="preserve">
+    <value>buttonMiniParseOpenDevTools</value>
   </data>
   <data name="&gt;&gt;btnAddHotkey.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -1391,8 +1388,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="buttonMiniParseOpenDevTools.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="label10.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="&gt;&gt;textMiniParseUrl.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
   </data>
   <data name="&gt;&gt;btnAddHotkey.Parent" xml:space="preserve">
     <value>tabHotkeys</value>
@@ -1406,8 +1403,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="tabGeneral.Size" type="System.Drawing.Size, System.Drawing">
     <value>610, 513</value>
   </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="buttonMiniParseSelectFile.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="btnResetZoom.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1415,8 +1412,8 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="checkNoFocus.Size" type="System.Drawing.Size, System.Drawing">
     <value>15, 14</value>
   </data>
-  <data name="btnResetZoom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>370, 3</value>
+  <data name="buttonMiniParseSelectFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 19</value>
   </data>
   <data name="&gt;&gt;label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1430,14 +1427,17 @@ Hiding an overlay only turns it invisible. It still runs in the background and c
   <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+  <data name="tableLayoutPanel3.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;buttonMiniParseSelectFile.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbMuteHidden.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnResetZoom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>370, 3</value>
   </data>
   <data name="tableLayoutPanel3.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 547</value>

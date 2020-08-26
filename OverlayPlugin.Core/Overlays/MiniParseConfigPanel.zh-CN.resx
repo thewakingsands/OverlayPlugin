@@ -172,11 +172,18 @@
   <data name="textMiniParseUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>416, 21</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="buttonMiniParseSelectFile.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="buttonMiniParseSelectFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>416, 0</value>
   </data>
+  <data name="buttonMiniParseSelectFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 23</value>
+  </data>
   <data name="buttonMiniParseSelectFile.Text" xml:space="preserve">
-    <value>浏览</value>
+    <value>浏览...</value>
   </data>
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>180, 200</value>
