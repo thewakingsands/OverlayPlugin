@@ -24,28 +24,6 @@ try {
         $ENV:PATH = "C:\Program Files\7-Zip;${ENV:PATH}";
     }
 
-    if ( -not (Test-Path .\OverlayPlugin.Updater\Resources\libcurl.dll)) {
-        echo "==> Building cURL..."
-
-        mkdir .\OverlayPlugin.Updater\Resources
-        cd Thirdparty\curl\winbuild
-
-        echo "@call `"$VS_PATH\VC\Auxiliary\Build\vcvarsall.bat`" amd64"           | Out-File -Encoding ascii tmp_build.bat
-        echo "nmake /f Makefile.vc mode=dll VC=16 GEN_PDB=no DEBUG=no MACHINE=x64" | Out-File -Encoding ascii -Append tmp_build.bat
-        echo "@call `"$VS_PATH\VC\Auxiliary\Build\vcvarsall.bat`" x86"             | Out-File -Encoding ascii -Append tmp_build.bat
-        echo "nmake /f Makefile.vc mode=dll VC=16 GEN_PDB=no DEBUG=no MACHINE=x86" | Out-File -Encoding ascii -Append tmp_build.bat
-
-        cmd "/c" "tmp_build.bat"
-        sleep 3
-        del tmp_build.bat
-
-        cd ..\builds
-        copy .\libcurl-vc16-x64-release-dll-ipv6-sspi-winssl\bin\libcurl.dll ..\..\..\OverlayPlugin.Updater\Resources\libcurl-x64.dll
-        copy .\libcurl-vc16-x86-release-dll-ipv6-sspi-winssl\bin\libcurl.dll ..\..\..\OverlayPlugin.Updater\Resources\libcurl.dll
-
-        cd ..\..\..
-    }
-
     echo "==> Building..."
 
     msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln" -t:Restore
