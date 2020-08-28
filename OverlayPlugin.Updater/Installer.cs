@@ -74,7 +74,7 @@ namespace RainbowMage.OverlayPlugin.Updater
             });
         }
 
-        public bool Download(string url, string dest, bool useHttpClient = false)
+        public bool Download(string url, string dest, bool useHttpClient = true)
         {
             try
             {

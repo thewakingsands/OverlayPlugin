@@ -1305,6 +1305,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         private static void _init()
         {
+            throw new Exception("curl is not supported");
             USER_AGENT = "ngld/OverlayPlugin v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             var libPath = Path.Combine(pluginDirectory, "libs", Environment.Is64BitProcess ? "x64" : "x86", "libcurl.dll");
@@ -1314,8 +1315,8 @@ namespace RainbowMage.OverlayPlugin.Updater
 
                 using (var stream = File.OpenWrite(libPath))
                 {
-                    var data = Environment.Is64BitProcess ? Resources.libcurl_x64 : Resources.libcurl;
-                    stream.Write(data, 0, data.Length);
+                    //var data = Environment.Is64BitProcess ? Resources.libcurl_x64 : Resources.libcurl;
+                    //stream.Write(data, 0, data.Length);
                 }
             }
 

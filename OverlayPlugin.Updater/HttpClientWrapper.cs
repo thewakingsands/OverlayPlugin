@@ -4,6 +4,9 @@ using System.Threading;
 using System.Net.Http;
 using System.Reflection;
 using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace RainbowMage.OverlayPlugin.Updater
 {
@@ -24,12 +27,13 @@ namespace RainbowMage.OverlayPlugin.Updater
         public static string Get(string url, Dictionary<string, string> headers, string downloadDest,
             ProgressInfoCallback infoCb, bool resume)
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "ngld/OverlayPlugin v" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            var client = new WebClient();
+            client.Headers.Add("user-agent", "NuGet Client V3/3.4.2");
+            client.Headers.Add("X-NuGet-Client-Version", "3.4.2");
             
             foreach (var key in headers.Keys)
             {
-                client.DefaultRequestHeaders.Add(key, headers[key]);
+                client.Headers.Add(key, headers[key]);
             }
 
             var completionLock = new object();
@@ -38,39 +42,47 @@ namespace RainbowMage.OverlayPlugin.Updater
             var retry = false;
 
             Action action = (async () => {
-                try { 
-                    var response = await client.GetAsync(url);
-
+                try {
                     if (downloadDest == null)
                     {
-                        result = await response.Content.ReadAsStringAsync();
-                    } else
+                        result = await client.DownloadStringTaskAsync(url);
+                    }
+                    else
                     {
-                        var buffer = new byte[40 * 1024];
-                        var length = 0;
+                        var tcs = new TaskCompletionSource<object>(url);
 
-                        IEnumerable<string> lengthValues;
-                        if (response.Headers.TryGetValues("Content-Length", out lengthValues))
+                        AsyncCompletedEventHandler completedHandler = (cs, ce) =>
                         {
-                            int.TryParse(lengthValues.GetEnumerator().Current, out length);
-                        }
-
-                        using (var writer = File.Open(downloadDest, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
-                        // FIXME: ReadAsStreamAsync() waits until the download finishes before returning.
-                        //        This breaks progress reporting and makes it impossible to abort running downloads.
-                        using (var body = await response.Content.ReadAsStreamAsync())
-                        {
-                            var stop = false;
-                            while (!stop)
+                            if (ce.UserState == tcs)
                             {
-                                var read = body.Read(buffer, 0, buffer.Length);
-                                if (read == 0)
-                                    break;
-                                
-                                writer.Write(buffer, 0, read);
-                                if (infoCb(0, length, body.Position, 0, 0))
-                                    break;
+                                if (ce.Error != null)
+                                {
+                                    tcs.TrySetException(ce.Error);
+                                }
+                                else if (ce.Cancelled) tcs.TrySetCanceled();
+                                else tcs.TrySetResult(null);
                             }
+                        };
+
+                        DownloadProgressChangedEventHandler progressChangedHandler = (ps, pe) =>
+                        {
+                            if (pe.UserState == tcs)
+                                infoCb(0, pe.TotalBytesToReceive, pe.BytesReceived, 0, 0);
+                        };
+
+                        client.DownloadFileCompleted += completedHandler;
+                        client.DownloadProgressChanged += progressChangedHandler;
+
+                        try
+                        {
+                            client.DownloadFileAsync(new Uri(url), downloadDest, tcs);
+
+                            await tcs.Task;
+                        }
+                        finally
+                        {
+                            client.DownloadFileCompleted -= completedHandler;
+                            client.DownloadProgressChanged -= progressChangedHandler;
                         }
                     }
                 } catch (IOException e)
