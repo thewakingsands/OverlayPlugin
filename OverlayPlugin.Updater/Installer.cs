@@ -38,6 +38,8 @@ namespace RainbowMage.OverlayPlugin.Updater
 
             return await Task.Run(() =>
             {
+                inst._display.Log("正在准备下载【悬浮窗插件】的组件，此窗口会出现3次，请等待下载窗口全部消失后再重启 ACT。");
+                inst._display.Log("本【悬浮窗插件】是 cactbot 的必备组件。");
                 var scVersion = Assembly.Load("SharpCompress").GetName().Version;
                 if (scVersion < Version.Parse("0.24.0"))
                 {
