@@ -49,6 +49,22 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
+        internal string OfflineCactbotDirectory
+        {
+            get
+            {
+                return Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline");
+            }
+        }
+
+        internal string OfflineCactbotConfigHtmlFile
+        {
+            get
+            {
+                return Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline", "ui", "config", "config.html");
+            }
+        }
+
         public PluginMain(string pluginDirectory, Logger logger, TinyIoCContainer container)
         {
             _container = container;
@@ -424,8 +440,15 @@ namespace RainbowMage.OverlayPlugin
 
                 if (!foundCactbot)
                 {
-                    _logger.Log(LogLevel.Info, "LoadAddons: Enabling builtin Cactbot event source.");
-                    registry.StartEventSource(new CactbotEventSource(_container));
+                    if (File.Exists(OfflineCactbotConfigHtmlFile))
+                    {
+                        _logger.Log(LogLevel.Info, "LoadAddons: Enabling builtin Cactbot event source.");
+                        registry.StartEventSource(new CactbotEventSource(_container));
+                    }
+                    else
+                    {
+                        _logger.Log(LogLevel.Info, "Cactbot offline config files not found, don't enable cactbot event source");
+                    }
                 }
 
                 registry.StartEventSources();

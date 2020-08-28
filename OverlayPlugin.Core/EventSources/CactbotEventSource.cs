@@ -42,6 +42,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private string pc_locale_ = null;
         private List<FileSystemWatcher> watchers;
 
+        private PluginMain pluginMain;
+
         public const string ForceReloadEvent = "onForceReload";
         public const string GameExistsEvent = "onGameExistsEvent";
         public const string GameActiveChangedEvent = "onGameActiveChangedEvent";
@@ -66,6 +68,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
         public CactbotEventSource(TinyIoCContainer container)
             : base(container)
         {
+            pluginMain = container.Resolve<PluginMain>();
+
             Name = "Cactbot";
 
             RegisterPresets();
@@ -159,7 +163,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             var control = new OverlayControl();
             var initDone = false;
 
-            var url = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline", "ui", "config", "config.html");
+            var url = pluginMain.OfflineCactbotConfigHtmlFile;
             control.VisibleChanged += (o, e) =>
             {
                 if (initDone)
@@ -641,7 +645,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     // First try a user directory relative to the html.
                     try
                     {
-                        config_dir = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline", "user");
+                        config_dir = Path.Combine(pluginMain.OfflineCactbotDirectory, "user");
                         local_files = GetLocalUserFiles(config_dir);
                     }
                     catch (Exception e)
@@ -755,7 +759,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             Registry.RegisterOverlayPreset(new OverlayPreset
             {
                 Name = $"Cactbot {name}",
-                Url = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline", "ui", lc, $"{filename}.html"), // Path.Combine("https://quisquous.github.io/cactbot", "ui", lc, $"{filename}.html"),
+                Url = Path.Combine(pluginMain.OfflineCactbotDirectory, "ui", lc, $"{filename}.html"), // Path.Combine("https://quisquous.github.io/cactbot", "ui", lc, $"{filename}.html"),
                 Size = new int[] { width, height },
                 Locked = false,
             });
@@ -767,7 +771,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             Registry.RegisterOverlayPreset(new OverlayPreset
             {
                 Name = $"Cactbot {displayName}",
-                Url = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "cactbot-offline", "ui", "dps", lc, $"{file}.html"), // Path.Combine("https://quisquous.github.io/cactbot", "ui", "dps", lc, $"{file}.html"),
+                Url = Path.Combine(pluginMain.OfflineCactbotDirectory, "ui", "dps", lc, $"{file}.html"), // Path.Combine("https://quisquous.github.io/cactbot", "ui", "dps", lc, $"{file}.html"),
                 Size = new int[] { width, height },
                 Locked = false,
             });
