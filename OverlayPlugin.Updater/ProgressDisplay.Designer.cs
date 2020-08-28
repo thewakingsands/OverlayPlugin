@@ -42,10 +42,10 @@
             // 
             // panel1
             // 
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.cancelBtn);
             this.panel1.Controls.Add(this.label);
             this.panel1.Controls.Add(this.progressBar);
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
             // cancelBtn
