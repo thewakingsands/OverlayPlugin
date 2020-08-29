@@ -35,34 +35,43 @@ namespace RainbowMage.OverlayPlugin
             var watch = new Stopwatch();
             watch.Start();
 
-            var xivProc = repository.GetCurrentFFXIVProcess();
-            if (xivProc == null || xivProc.HasExited)
-                return;
-
-            var xivHandle = xivProc.MainWindowHandle;
-            var overlayWindows = new List<IntPtr>();
-
-            var handle = xivHandle;
-            while (handle != IntPtr.Zero)
+            try
             {
-                handle = NativeMethods.GetWindow(handle, NativeMethods.GW_HWNDPREV);
-                overlayWindows.Add(handle);
-            }
+                var xivProc = repository.GetCurrentFFXIVProcess();
+                if (xivProc == null || xivProc.HasExited)
+                    return;
 
-            foreach (var overlay in main.Overlays)
-            {
-                if (!overlayWindows.Contains(overlay.Handle))
+                var xivHandle = xivProc.MainWindowHandle;
+                var overlayWindows = new List<IntPtr>();
+
+                var handle = xivHandle;
+                while (handle != IntPtr.Zero)
                 {
-                    // The overlay is behind the game. Let's fix that.
-                    NativeMethods.SetWindowPos(
-                        overlay.Handle,
-                        NativeMethods.HWND_TOPMOST,
-                        0, 0, 0, 0,
-                        NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOACTIVATE);
+                    handle = NativeMethods.GetWindow(handle, NativeMethods.GW_HWNDPREV);
+                    overlayWindows.Add(handle);
+                }
 
-                    logger.Log(LogLevel.Info, $"ZReorder: Fixed {overlay.Name}.");
+                foreach (var overlay in main.Overlays)
+                {
+                    if (!overlayWindows.Contains(overlay.Handle))
+                    {
+                        // The overlay is behind the game. Let's fix that.
+                        NativeMethods.SetWindowPos(
+                            overlay.Handle,
+                            NativeMethods.HWND_TOPMOST,
+                            0, 0, 0, 0,
+                            NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOACTIVATE);
+
+                        logger.Log(LogLevel.Info, $"ZReorder: Fixed {overlay.Name}.");
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Debugger.Break();
+            }
+
+            watch.Stop();
 
             // logger.Log(LogLevel.Debug, $"ZReorder: Took {watch.Elapsed.TotalSeconds}s.");
         }
