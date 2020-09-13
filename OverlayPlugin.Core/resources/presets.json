@@ -1,4 +1,10 @@
 ﻿{
+  "【悬浮窗向导】": {
+    "type": "MiniParse",
+    "url": "%%/guide.html",
+    "size": [ 700, 300 ],
+    "supports": [ "modern" ]
+  },
   "Kagerou 悬浮窗": {
     "type": "MiniParse",
     "url": "https://overlays.ffcafe.cn/kagerou/overlay/",
@@ -56,12 +62,6 @@
   "本地精简悬浮窗": {
     "type": "MiniParse",
     "url": "%%/miniparse.html",
-    "size": [ 700, 300 ],
-    "supports": [ "modern" ]
-  },
-  "悬浮窗向导": {
-    "type": "MiniParse",
-    "url": "%%/guide.html",
     "size": [ 700, 300 ],
     "supports": [ "modern" ]
   },
