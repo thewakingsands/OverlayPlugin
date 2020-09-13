@@ -156,7 +156,8 @@ namespace RainbowMage.OverlayPlugin
 
         private string GetGameVersionImpl()
         {
-            return GetRepository()?.GetGameVersion();
+            //return GetRepository()?.GetGameVersion();
+            return null;
         }
 
         public string GetGameVersion()
