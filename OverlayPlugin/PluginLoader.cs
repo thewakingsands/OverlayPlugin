@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RainbowMage.HtmlRenderer;
 using RainbowMage.OverlayPlugin.Updater;
+using System.Threading;
+using System.Globalization;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -36,11 +38,8 @@ namespace RainbowMage.OverlayPlugin
                 {
                     Path.Combine(pluginDirectory, "libs"),
                     Path.Combine(pluginDirectory, "addons"),
-#if DEBUG
                     Path.Combine(pluginDirectory, "libs", Environment.Is64BitProcess ? "x64" : "x86"),
-#else
                     GetCefPath()
-#endif
                 });
             }
 

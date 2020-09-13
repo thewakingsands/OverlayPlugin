@@ -12,12 +12,11 @@ namespace RainbowMage.OverlayPlugin.Updater
 {
     public class CefInstaller
     {
-        const string CEF_DL = "https://github.com/ngld/OverlayPlugin/releases/download/v0.7.0/CefSharp-{CEF_VERSION}-{ARCH}.DO_NOT_DOWNLOAD";
-        const string CEF_VERSION = "75.1.14";
+        const string CEF_VERSION = "84.4.10";
 
         public static string GetUrl()
         {
-            return CEF_DL.Replace("{CEF_VERSION}", CEF_VERSION).Replace("{ARCH}", Environment.Is64BitProcess ? "x64" : "x86");
+            return "https://ffcafe.org/";
         }
 
         public static async Task<bool> EnsureCef(string cefPath)
@@ -83,19 +82,19 @@ namespace RainbowMage.OverlayPlugin.Updater
             var tempNuget = Path.Combine(Path.GetTempPath(), "OverlayPlugin-cefredist");
             Directory.CreateDirectory(cefPath);
 
-            var result = await Installer.Run(GetNupkgUrl("cef.redist.x64", "75.1.14"), tempNuget, "OverlayPluginCef.tmp1");
+            var result = await Installer.Run(GetNupkgUrl("cef.redist.x64", "84.4.1"), tempNuget, "OverlayPluginCef.tmp1");
             if (result)
             {
                 CopyFiles(Path.Combine(tempNuget, "CEF"), cefPath);
             }
 
-            var result2 = await Installer.Run(GetNupkgUrl("CefSharp.Common", "75.1.141"), tempNuget, "OverlayPluginCef.tmp2");
+            var result2 = await Installer.Run(GetNupkgUrl("CefSharp.Common", "84.4.10"), tempNuget, "OverlayPluginCef.tmp2");
             if (result2)
             {
                 CopyFiles(Path.Combine(tempNuget, "CefSharp", "x64"), cefPath);
             }
 
-            var result3 = await Installer.Run(GetNupkgUrl("CefSharp.OffScreen", "75.1.141"), tempNuget, "OverlayPluginCef.tmp3");
+            var result3 = await Installer.Run(GetNupkgUrl("CefSharp.OffScreen", "84.4.10"), tempNuget, "OverlayPluginCef.tmp3");
             if (result3)
             {
                 CopyFiles(Path.Combine(tempNuget, "CefSharp", "x64"), cefPath);

@@ -137,6 +137,10 @@ namespace RainbowMage.HtmlRenderer
         {
             BrowserConsoleLog?.Invoke(sender, new BrowserConsoleLogEventArgs(e.Message, e.Source, e.Line));
         }
+        public void Browser_ConsoleMessage(object sender, BrowserConsoleLogEventArgs e)
+        {
+            BrowserConsoleLog?.Invoke(sender, e);
+        }
 
         private void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
@@ -417,11 +421,23 @@ namespace RainbowMage.HtmlRenderer
                     }
                 }
 
-                #if DEBUG
-                var cefPath = Path.Combine(pluginDirectory, "libs", Environment.Is64BitProcess ? "x64" : "x86");
-                #else
-                var cefPath = Path.Combine(appDataDirectory, "OverlayPluginCef", Environment.Is64BitProcess ? "x64" : "x86");
-                #endif
+                var cefPath1 = Path.Combine(pluginDirectory, "libs", Environment.Is64BitProcess ? "x64" : "x86");
+                var cefPath2 = Path.Combine(appDataDirectory, "OverlayPluginCef", Environment.Is64BitProcess ? "x64" : "x86");
+
+                var cefPath = "";
+
+                if (File.Exists(Path.Combine(cefPath1, "CefSharp.BrowserSubprocess.exe")))
+                {
+                    cefPath = cefPath1;
+                }
+                else if (File.Exists(Path.Combine(cefPath2, "CefSharp.BrowserSubprocess.exe")))
+                {
+                    cefPath = cefPath2;
+                }
+                else
+                {
+                    throw new Exception("CEF Not Found");
+                }
 
                 var lang = System.Globalization.CultureInfo.CurrentCulture.Name;
                 var langPak = Path.Combine(cefPath, "locales", lang + ".pak");
@@ -465,6 +481,11 @@ namespace RainbowMage.HtmlRenderer
 
                 initialized = true;
             }
+        }
+
+        private static string GetUserAgentString(Assembly ass)
+        {
+            return $"{ass.GetName().Name}/{ass.GetName().Version}";
         }
 
         public static void Shutdown()
