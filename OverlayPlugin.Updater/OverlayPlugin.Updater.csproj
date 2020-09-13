@@ -60,6 +60,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="CefInstaller.cs" />
     <Compile Include="CefMissingTab.cs">
       <SubType>UserControl</SubType>

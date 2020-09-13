@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{84CCF15D
 		build.bat = build.bat
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddonExample", "AddonExample\AddonExample.csproj", "{B9BBE478-8FD7-43D9-BD50-C806B1EC672F}"

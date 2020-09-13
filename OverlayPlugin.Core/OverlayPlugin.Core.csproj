@@ -177,6 +177,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Integration\TriggIntegration.cs" />
+    <Compile Include="SharedAssemblyInfo.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Controls\WSConfigPanel.cs">
       <SubType>UserControl</SubType>
