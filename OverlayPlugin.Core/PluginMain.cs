@@ -12,6 +12,7 @@ using RainbowMage.OverlayPlugin.Overlays;
 using RainbowMage.OverlayPlugin.EventSources;
 using RainbowMage.OverlayPlugin.NetworkProcessors;
 using RainbowMage.OverlayPlugin.Integration;
+using RainbowMage.OverlayPlugin.Controls;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -89,6 +90,7 @@ namespace RainbowMage.OverlayPlugin
             {
                 this.tabPage = pluginScreenSpace;
                 this.label = pluginStatusText;
+                this.label.Text = "Init Phase 1: Infrastructure";
 
 #if DEBUG
                 _logger.Log(LogLevel.Warning, "##################################");
@@ -114,7 +116,19 @@ namespace RainbowMage.OverlayPlugin
                 _container.Register(new EventDispatcher(_container));
                 _container.Register(new Registry(_container));
                 _container.Register(new KeyboardHook(_container));
-                LoadConfig();
+
+                this.label.Text = "Init Phase 1: Config";
+                if (!LoadConfig())
+                {
+                    _logger.Log(LogLevel.Error, "Failed to load the plugin config. Please report this error on the GitHub repo or on the ACT Discord.");
+                    _logger.Log(LogLevel.Error, "");
+                    _logger.Log(LogLevel.Error, "  ACT Discord: https://discord.gg/ahFKcmx");
+                    _logger.Log(LogLevel.Error, "  GitHub repo: https://github.com/ngld/OverlayPlugin");
+                    FailWithLog();
+                    return;
+                }
+
+                this.label.Text = "Init Phase 1: WSServer";
                 _container.Register(new WSServer(_container));
 
 #if DEBUG
@@ -122,6 +136,7 @@ namespace RainbowMage.OverlayPlugin
                 watch.Reset();
 #endif
 
+                this.label.Text = "Init Phase 1: CEF";
                 try
                 {
                     Renderer.Initialize(PluginDirectory, ActGlobals.oFormActMain.AppDataFolder.FullName, Config.ErrorReports);
@@ -136,6 +151,7 @@ namespace RainbowMage.OverlayPlugin
                 watch.Reset();
 #endif
 
+                this.label.Text = "Init Phase 1: Legacy message bus";
                 // プラグイン間のメッセージ関連
                 OverlayApi.BroadcastMessage += (o, e) =>
                 {
@@ -173,6 +189,8 @@ namespace RainbowMage.OverlayPlugin
 #if DEBUG
                 watch.Reset();
 #endif
+      
+                this.label.Text = "Init Phase 1: UI";
 
                 // Setup the UI
                 this.controlPanel = new ControlPanel(_container);
@@ -186,15 +204,15 @@ namespace RainbowMage.OverlayPlugin
                 this.wsTabPage = new TabPage("悬浮窗WS服务");
                 this.wsTabPage.Controls.Add(wsConfigPanel);
                 ((TabControl)this.tabPage.Parent).TabPages.Add(this.wsTabPage);
-
-                _logger.Log(LogLevel.Info, "InitPlugin: Initialized.");
-                this.label.Text = "Initialized.";
+                
+                _logger.Log(LogLevel.Info, "InitPlugin: Initialised.");
 
                 if (false) //if (Config.UpdateCheck)
                 {
                     Updater.Updater.PerformUpdateIfNecessary(PluginDirectory, _container);
                 }
 
+                this.label.Text = "Init Phase 1: Presets";
                 // Load our presets
                 try
                 {
@@ -227,6 +245,7 @@ namespace RainbowMage.OverlayPlugin
                     _logger.Log(LogLevel.Error, string.Format("Failed to load presets: {0}", ex));
                 }
 
+                this.label.Text = "Init Phase 1: Waiting for plugins to load";
                 initTimer = new Timer();
                 initTimer.Interval = 300;
                 initTimer.Tick += async (o, e) =>
@@ -243,6 +262,7 @@ namespace RainbowMage.OverlayPlugin
                             initTimer.Stop();
 
                             // ** Init phase 2
+                            this.label.Text = "Init Phase 2: Integrations";
 
                             // Initialize the parser in the second phase since it needs the FFXIV plugin.
                             // If OverlayPlugin is placed above the FFXIV plugin, it won't be available in the first
@@ -257,21 +277,27 @@ namespace RainbowMage.OverlayPlugin
                             // addons. Plugins below OverlayPlugin wouldn't have been loaded in the first init phase.
                             // However, in the second phase all plugins have been loaded which means we can look for addons
                             // in that list.
+                            this.label.Text = "Init Phase 2: Addons";
                             await Task.Run(LoadAddons);
 
 #if DEBUG
+                            this.label.Text = "Init Phase 2: Unstable new stuff";
                             _container.Register(new UnstableNewLogLines(_container));
 #endif
 
 
+                            this.label.Text = "Init Phase 2: UI";
                             ActGlobals.oFormActMain.Invoke((Action)(() =>
                             {
                                 try
                                 {
                                     // Now that addons have been loaded, we can finish the overlay setup.
+                                    this.label.Text = "Init Phase 2: Overlays";
+
                                     InitializeOverlays();
                                     controlPanel.InitializeOverlayConfigTabs();
 
+                                    this.label.Text = "Init Phase 2: Overlay tasks";                                
                                     _container.Register(new OverlayHider(_container));
                                     _container.Register(new OverlayZCorrector(_container));
 
@@ -279,12 +305,15 @@ namespace RainbowMage.OverlayPlugin
                                     // after it's initialized and that requires the event sources to be initialized.
                                     if (Config.WSServerRunning)
                                     {
-                                        _container.Register(new WSServer(_container));
+                                        this.label.Text = "Init Phase 2: WSServer";
+                                        _container.Resolve<WSServer>().Start();
                                     }
 
+                                    this.label.Text = "Init Phase 2: Save timer";
                                     configSaveTimer.Start();
-                                }
-                                catch (Exception ex)
+
+                                    this.label.Text = "Initialised";
+                                } catch (Exception ex)
                                 {
                                     _logger.Log(LogLevel.Error, "InitPlugin: {0}", ex);
                                 }
@@ -302,8 +331,19 @@ namespace RainbowMage.OverlayPlugin
             {
                 _logger.Log(LogLevel.Error, "InitPlugin: {0}", e.ToString());
                 MessageBox.Show(e.ToString());
-
+                FailWithLog();
                 throw;
+            }
+        }
+
+        private void FailWithLog()
+        {
+            // If the tab hasn't been initialized, yet, make sure we show at least the log.
+            if (controlPanel == null)
+            {
+                var logPanel = new LogPanel(_container);
+                logPanel.Dock = DockStyle.Fill;
+                tabPage.Controls.Add(logPanel);
             }
         }
 
@@ -363,7 +403,11 @@ namespace RainbowMage.OverlayPlugin
         public void DeInitPlugin()
         {
             SaveConfig(true);
-            _container.Resolve<OverlayZCorrector>().DeInit();
+
+            if (_container.TryResolve(out OverlayZCorrector corrector))
+            {
+                corrector.DeInit();
+            }
 
             if (controlPanel != null) controlPanel.Dispose();
 
@@ -379,6 +423,11 @@ namespace RainbowMage.OverlayPlugin
 
             try { _container.Resolve<WSServer>().Stop(); }
             catch { }
+
+            if (this.wsConfigPanel != null)
+            {
+                this.wsConfigPanel.Stop();
+            }
 
             if (this.wsTabPage != null && this.wsTabPage.Parent != null)
                 ((TabControl)this.wsTabPage.Parent).TabPages.Remove(this.wsTabPage);
@@ -438,6 +487,9 @@ namespace RainbowMage.OverlayPlugin
                     }
                 }
 
+                // Only enable embedded Cactbot in debug / dev builds until I'm sure it's stable enough
+                // for most users.
+                #if DEBUG
                 if (!foundCactbot)
                 {
                     if (File.Exists(OfflineCactbotConfigHtmlFile))
@@ -450,6 +502,7 @@ namespace RainbowMage.OverlayPlugin
                         _logger.Log(LogLevel.Info, "Cactbot offline config files not found, don't enable cactbot event source");
                     }
                 }
+                #endif
 
                 registry.StartEventSources();
             }
@@ -460,10 +513,10 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        private void LoadConfig()
+        private bool LoadConfig()
         {
             if (Config != null)
-                return;
+                return true;
 
             try
             {
@@ -473,11 +526,12 @@ namespace RainbowMage.OverlayPlugin
             {
                 Config = null;
                 _logger.Log(LogLevel.Error, "LoadConfig: {0}", e);
-                return;
+                return false;
             }
 
             _container.Register(Config);
             _container.Register<IPluginConfig>(Config);
+            return true;
         }
 
         /// <summary>
@@ -485,7 +539,8 @@ namespace RainbowMage.OverlayPlugin
         /// </summary>
         private void SaveConfig(bool force = false)
         {
-            var registry = _container.Resolve<Registry>();
+            Registry registry;
+            if (!_container.TryResolve(out registry)) return;
             if (Config == null || Overlays == null || registry.EventSources == null) return;
 
             try

@@ -128,9 +128,20 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
-        public bool IsFFXIVPluginPresent()
+        private bool IsFFXIVPluginPresentImpl()
         {
             return GetRepository() != null;
+        }
+
+        public bool IsFFXIVPluginPresent()
+        {
+            try
+            {
+                return IsFFXIVPluginPresentImpl();
+            } catch (FileNotFoundException)
+            {
+                return false;
+            }
         }
 
         public Version GetPluginVersion()
@@ -141,6 +152,23 @@ namespace RainbowMage.OverlayPlugin
         public string GetPluginPath()
         {
             return typeof(IDataRepository).Assembly.Location;
+        }
+
+        private string GetGameVersionImpl()
+        {
+            return GetRepository()?.GetGameVersion();
+        }
+
+        public string GetGameVersion()
+        {
+            try
+            {
+                return GetGameVersionImpl();
+            } catch (FileNotFoundException)
+            {
+                // The FFXIV plugin isn't loaded
+                return null;
+            }
         }
 
         public uint GetPlayerIDImpl()
@@ -263,13 +291,13 @@ namespace RainbowMage.OverlayPlugin
             if (sub != null)
             {
                 sub.ProcessChanged += new ProcessChangedDelegate(handler);
-
+                /*
                 var repo = GetRepository();
                 if (repo != null)
                 {
                     var process = repo.GetCurrentFFXIVProcess();
                     if (process != null) handler(process);
-                }
+                }*/
             }
         }
     }

@@ -61,7 +61,11 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
             this.Text = "";
             this.HtmlModeEnabled = false;
+#if DEBUG
+            this.Url = "file:///" + Path.Combine(pluginPath, "libs", "resources", "label.html").Replace("\\", "/");
+#else
             this.Url = "file:///" + Path.Combine(pluginPath, "resources", "label.html").Replace("\\", "/");
+#endif
         }
 
         // XmlSerializer用

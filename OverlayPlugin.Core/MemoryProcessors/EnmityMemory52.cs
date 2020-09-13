@@ -11,6 +11,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         private FFXIVMemory memory;
         private ILogger logger;
         private DateTime lastSigScan = DateTime.MinValue;
+        private uint loggedScanErrors = 0;
 
         private IntPtr charmapAddress = IntPtr.Zero;
         private IntPtr targetAddress = IntPtr.Zero;
@@ -177,10 +178,20 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
             if (!success)
             {
-                logger.Log(LogLevel.Error, "Failed to memory scan 5.2: {0}.", String.Join(",", fail));
+                if (loggedScanErrors < 10)
+                {
+                    logger.Log(LogLevel.Error, "Failed to find enmity memory for 5.2: {0}.", String.Join(",", fail));
+                    loggedScanErrors++;
+
+                    if (loggedScanErrors == 10)
+                    {
+                        logger.Log(LogLevel.Error, "Further enmity errors won't be logged.");
+                    }
+                }
             } else
             {
                 logger.Log(LogLevel.Info, "Found enmity memory for 5.2.");
+                loggedScanErrors = 0;
             }
 
             return success;

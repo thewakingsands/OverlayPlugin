@@ -5,6 +5,7 @@ using RainbowMage.HtmlRenderer;
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
+using RainbowMage.OverlayPlugin.EventSources;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -14,24 +15,26 @@ namespace RainbowMage.OverlayPlugin
         public static event EventHandler<SendMessageEventArgs> SendMessage;
         public static event EventHandler<SendMessageEventArgs> OverlayMessage;
 
-        private readonly TinyIoCContainer container;
         private readonly EventDispatcher dispatcher;
         private readonly IApiBase receiver;
+        private readonly ILogger logger;
 
         public OverlayApi(TinyIoCContainer container, IApiBase receiver)
         {
-            this.container = container;
             this.dispatcher = container.Resolve<EventDispatcher>();
             this.receiver = receiver;
+            this.logger = container.Resolve<ILogger>();
         }
 
         public void broadcastMessage(string msg)
         {
+            logger.Log(LogLevel.Error, $"{receiver.Name}: OverlayPluginApi.broadcastMessage() is deprecated and will be removed in future OverlayPlugin versions!");
             BroadcastMessage(this, new BroadcastMessageEventArgs(msg));
         }
 
         public void sendMessage(string target, string msg)
         {
+            logger.Log(LogLevel.Error, $"{receiver.Name}: OverlayPluginApi.sendMessage() is deprecated and will be removed in future OverlayPlugin versions!");
             SendMessage(this, new SendMessageEventArgs(target, msg));
         }
 
@@ -61,6 +64,7 @@ namespace RainbowMage.OverlayPlugin
 
         public void overlayMessage(string target, string msg)
         {
+            logger.Log(LogLevel.Error, $"{receiver.Name}: OverlayPluginApi.overlayMessage() is deprecated and will be removed in future OverlayPlugin versions!");
             if (target == receiver.Name)
             {
                 receiver.OverlayMessage(msg);

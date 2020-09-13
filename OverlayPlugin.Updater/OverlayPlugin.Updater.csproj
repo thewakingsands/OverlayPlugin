@@ -167,10 +167,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Markdig.Signed">
-      <Version>0.17.1</Version>
+      <Version>0.18.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="SharpCompress">
       <Version>0.24.0</Version>

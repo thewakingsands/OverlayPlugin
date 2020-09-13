@@ -60,10 +60,13 @@
             this.settingsPage = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.lblWsserverIntro = new System.Windows.Forms.Label();
+            this.introPage = new System.Windows.Forms.TabPage();
             this.urlGeneratorBox.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tunnelPage.SuspendLayout();
             this.settingsPage.SuspendLayout();
+            this.introPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // ipTxt
@@ -170,6 +173,7 @@
             // tabControl
             // 
             resources.ApplyResources(this.tabControl, "tabControl");
+            this.tabControl.Controls.Add(this.introPage);
             this.tabControl.Controls.Add(this.settingsPage);
             this.tabControl.Controls.Add(this.tunnelPage);
             this.tabControl.Name = "tabControl";
@@ -266,6 +270,23 @@
             resources.ApplyResources(this.statusLabel, "statusLabel");
             this.statusLabel.Name = "statusLabel";
             // 
+            // lblWsserverIntro
+            // 
+            resources.ApplyResources(this.lblWsserverIntro, "lblWsserverIntro");
+            this.lblWsserverIntro.Name = "lblWsserverIntro";
+            // 
+            // introPage
+            // 
+            this.introPage.Controls.Add(this.lblWsserverIntro);
+            resources.ApplyResources(this.introPage, "introPage");
+            this.introPage.Name = "introPage";
+            this.introPage.UseVisualStyleBackColor = true;
+            // 
+            // statusLabel
+            // 
+            resources.ApplyResources(this.statusLabel, "statusLabel");
+            this.statusLabel.Name = "statusLabel";
+            // 
             // WSConfigPanel
             // 
             resources.ApplyResources(this, "$this");
@@ -280,6 +301,7 @@
             this.tunnelPage.PerformLayout();
             this.settingsPage.ResumeLayout(false);
             this.settingsPage.PerformLayout();
+            this.introPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -313,5 +335,7 @@
         private System.Windows.Forms.Label simpStatusLabel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.TabPage introPage;
+        private System.Windows.Forms.Label lblWsserverIntro;
     }
 }

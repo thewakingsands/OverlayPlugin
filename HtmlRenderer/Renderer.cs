@@ -417,9 +417,14 @@ namespace RainbowMage.HtmlRenderer
                     }
                 }
 
+                #if DEBUG
+                var cefPath = Path.Combine(pluginDirectory, "libs", Environment.Is64BitProcess ? "x64" : "x86");
+                #else
+                var cefPath = Path.Combine(appDataDirectory, "OverlayPluginCef", Environment.Is64BitProcess ? "x64" : "x86");
+                #endif
+
                 var lang = System.Globalization.CultureInfo.CurrentCulture.Name;
-                var langPak = Path.Combine(appDataDirectory, "OverlayPluginCef", Environment.Is64BitProcess ? "x64" : "x86",
-                    "locales", lang + ".pak");
+                var langPak = Path.Combine(cefPath, "locales", lang + ".pak");
 
                 // Fall back to en-US if we can't find the current locale.
                 if (!File.Exists(langPak))
@@ -439,10 +444,7 @@ namespace RainbowMage.HtmlRenderer
 #else
                     LogSeverity = LogSeverity.Error,
 #endif
-                    BrowserSubprocessPath = Path.Combine(appDataDirectory,
-                                           "OverlayPluginCef",
-                                           Environment.Is64BitProcess ? "x64" : "x86",
-                                           "CefSharp.BrowserSubprocess.exe"),
+                    BrowserSubprocessPath = Path.Combine(cefPath, "CefSharp.BrowserSubprocess.exe"),
                 };
 
                 // Necessary to avoid input lag with a framerate limit below 60.

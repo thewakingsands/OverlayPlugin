@@ -59,11 +59,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigCreationConverter.cs" />
     <Compile Include="Controls\GeneralConfigTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\GeneralConfigTab.Designer.cs">
       <DependentUpon>GeneralConfigTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LogPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LogPanel.Designer.cs">
+      <DependentUpon>LogPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\RenameOverlayDialog.cs">
       <SubType>Form</SubType>
@@ -305,6 +312,9 @@
     <EmbeddedResource Include="Controls\GeneralConfigTab.zh-CN.resx">
       <DependentUpon>GeneralConfigTab.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LogPanel.resx">
+      <DependentUpon>LogPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\NewOverlayDialog.de-DE.resx">
       <DependentUpon>NewOverlayDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -481,7 +491,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="WebSocketSharp-NonPreRelease">
       <Version>1.0.0</Version>

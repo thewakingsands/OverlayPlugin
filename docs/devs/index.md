@@ -55,6 +55,7 @@ As you might expect, this function removes an event listener.
 This function allows you to call an overlay handler. These handlers are declared by Event Sources (either built into OverlayPlugin or loaded through addons like Cactbot).
 
 The only handler currently implemented in OverlayPlugin is `getLanguage` which allows you to retrieve the game language set in ACT's FFXIV Settings.
+*TODO*: A lot more handlers have been implemented but aren't documented, yet. (`getCombatants`, `saveData`, `loadData`, `say`, `broadcast` and a bunch of Cactbot-specific handlers)
 
 **Example:**
 ```javascript

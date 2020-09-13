@@ -67,3 +67,24 @@ Field | Description
 `job`|job ID
 `inParty`|`true` if this character is in the player's party.
 
+### BroadcastMessage
+
+Emitted whenever any overlay calls the `broadcast` handler.
+
+Field | Description
+------|--------------
+`source`|A string specified by the sender.
+`msg`|The actual message
+
+Example:
+```js
+callOverlayHandler({
+	call: 'broadcast',
+	source: 'testOverlay',
+	msg: {
+		oneKey: 'test',
+		someOther: 'key',
+		anyValid: ['json', 'value', 123],
+	},
+});
+````

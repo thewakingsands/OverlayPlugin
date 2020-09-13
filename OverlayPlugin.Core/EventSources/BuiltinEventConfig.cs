@@ -226,7 +226,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
         public void SaveConfig(IPluginConfig Config)
         {
             var newObj = JObject.FromObject(this);
-            if (!Config.EventSourceConfigs.ContainsKey("MiniParse") || !JObject.DeepEquals(Config.EventSourceConfigs["MiniParse"], newObj))
+            if (!Config.EventSourceConfigs.ContainsKey("MiniParse")
+                || !JObject.DeepEquals(Config.EventSourceConfigs["MiniParse"], newObj))
             {
                 Config.EventSourceConfigs["MiniParse"] = newObj;
                 Config.MarkDirty();

@@ -46,6 +46,7 @@ namespace RainbowMage.OverlayPlugin
             _plugin = container.Resolve<PluginMain>();
             _registry = container.Resolve<Registry>();
 
+
             ipTxt.Text = _config.WSServerIP;
             portTxt.Text = "" + _config.WSServerPort;
             sslBox.Checked = _config.WSServerSSL;
@@ -70,6 +71,12 @@ namespace RainbowMage.OverlayPlugin
             {
                 RebuildOverlayOptions();
             };
+        }
+
+        public void Stop()
+        {
+            if (_ngrok != null && !_ngrok.HasExited)
+                _ngrok.Kill();
         }
 
         private void UpdateStatus(object sender, WSServer.StateChangedArgs e)
@@ -323,6 +330,8 @@ namespace RainbowMage.OverlayPlugin
 
         private void cbOverlay_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cbOverlay.SelectedIndex == -1) return;
+
             var item = cbOverlay.Items[cbOverlay.SelectedIndex];
             var preset = (IOverlayPreset) item.GetType().GetProperty("preset").GetValue(item);
             if (preset == null) return;
@@ -351,7 +360,13 @@ namespace RainbowMage.OverlayPlugin
                 hostUrl += ":" + _config.WSServerPort;
             }
 
-            var url = preset.Url;
+#if DEBUG
+            var resourcesPath = "file:///" + _plugin.PluginDirectory.Replace('\\', '/') + "/libs/resources";
+#else
+            var resourcesPath = "file:///" + _plugin.PluginDirectory.Replace('\\', '/') + "/resources";
+#endif
+
+            var url = preset.Url.Replace("\\", "/").Replace("%%", resourcesPath);
             if (preset.Supports.Contains("modern"))
             {
                 url += "?OVERLAY_WS=" + hostUrl + "/ws";
@@ -418,6 +433,7 @@ namespace RainbowMage.OverlayPlugin
                     }
 
                     simpLogBox.AppendText("Launching WSServer...\r\n");
+                    _config.WSServerRunning = true;
                     _server.Start();
 
                     simpLogBox.AppendText("Launching ngrok...\r\n");
@@ -451,7 +467,7 @@ tunnels:
                     p.StartInfo.FileName = ngrokPath;
                     p.StartInfo.Arguments = "start -config=\"" + ngrokConfigPath + "\" wsserver";
                     p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.CreateNoWindow = false;
+                    p.StartInfo.CreateNoWindow = true;
                     p.StartInfo.RedirectStandardError = true;
                     p.StartInfo.RedirectStandardOutput = true;
 
@@ -515,6 +531,9 @@ tunnels:
                         if (tun["name"] != null && tun["name"].ToString() == "wsserver" && tun["public_url"] != null)
                         {
                             _ngrokPrefix = tun["public_url"].ToString().Replace("https://", "wss://");
+                            
+                            // Update the generated URL box
+                            cbOverlay_SelectedIndexChanged(null, null);
                             done = true;
                             break;
                         }
@@ -524,11 +543,16 @@ tunnels:
                     {
                         simpLogBox.AppendText("Done!\r\n");
                         simpLogBox.AppendText("\r\n#############################################\r\nUse the URL Generator below to generate URLs for you.\r\n\r\n");
-                        simpLogBox.AppendText("\r\nIf you know what you're using an overlay that isn't listed, here are some URLs for you:\r\n");
+                        simpLogBox.AppendText("\r\nIf you know what you're doing or you're using an overlay that isn't listed, here are some query strings for you:\r\n");
                         simpLogBox.AppendText("\r\n    ?HOST_PORT=" + _ngrokPrefix + "\r\n    ?OVERLAY_WS=" + _ngrokPrefix + "/ws\r\n");
                         simpLogBox.AppendText("#############################################\r\n");
 
                         UpdateTunnelStatus(TunnelStatus.Active);
+
+                        p.Exited += (_, ev) =>
+                        {
+                            UpdateTunnelStatus(TunnelStatus.Error);
+                        };
                     } else
                     {
                         simpLogBox.AppendText("Failed!\r\n");
@@ -547,6 +571,9 @@ tunnels:
             var percent = ((float)resumed + dlnow) / ((float)resumed + dltotal);
             var dlMib = ((resumed + dlnow) / 1024 / 1024);
             var totalMib = ((resumed + dltotal) / 1024 / 1024);
+
+            // Avoid NaN%
+            if (dlMib == 0) percent = 0;
 
             var lines = simpLogBox.Lines;
             lines[lines.Length - 1] = Math.Round(percent * 100, 2) + "% (" + dlMib + " MiB / " + totalMib + " MiB)";

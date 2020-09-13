@@ -73,7 +73,20 @@ namespace RainbowMage.OverlayPlugin
 
             if (this.Config == null)
             {
-                this.Config = (TConfig) typeof(TConfig).GetConstructor(new Type[] { typeof(string) }).Invoke(new object[] { name });
+                var construct = typeof(TConfig).GetConstructor(new Type[] { typeof(TinyIoCContainer),  typeof(string) });
+                if (construct == null)
+                {
+                    construct = typeof(TConfig).GetConstructor(new Type[] { typeof(string) });
+                    if (construct == null)
+                    {
+                        throw new Exception("No usable constructor for config type found (" + typeof(TConfig).ToString() + ")!");
+                    }
+
+                    this.Config = (TConfig) construct.Invoke(new object[] { name });
+                } else
+                {
+                    this.Config = (TConfig) construct.Invoke(new object[] { container, name });
+                }
             }
 
             InitializeOverlay();

@@ -42,7 +42,7 @@ namespace RainbowMage.OverlayPlugin
             }
             _failed = false;
 
-            OnStateChanged(null, new StateChangedArgs(false, false));
+            OnStateChanged?.Invoke(null, new StateChangedArgs(false, false));
         }
 
         public bool IsRunning()
@@ -232,6 +232,7 @@ namespace RainbowMage.OverlayPlugin
                     if (!success)
                     {
                         _logger.Log(LogLevel.Error, Resources.WSMessageSendFailed, e);
+                        _dispatcher.UnsubscribeAll(this);
                     }
                 });
             }
@@ -364,20 +365,26 @@ namespace RainbowMage.OverlayPlugin
 
             public void HandleEvent(JObject e)
             {
-                switch (e["type"].ToString())
+                try {
+                    switch (e["type"].ToString())
+                    {
+                        case "CombatData":
+                            Send("{\"type\":\"broadcast\",\"msgtype\":\"CombatData\",\"msg\":" + e.ToString(Formatting.None) + "}");
+                            break;
+                        case "LogLine":
+                            Send("{\"type\":\"broadcast\",\"msgtype\":\"Chat\",\"msg\":" + JsonConvert.SerializeObject(e["rawLine"].ToString()) + "}");
+                            break;
+                        case "ChangeZone":
+                            Send("{\"type\":\"broadcast\",\"msgtype\":\"ChangeZone\",\"msg\":" + e.ToString(Formatting.None) + "}");
+                            break;
+                        case "ChangePrimaryPlayer":
+                            Send("{\"type\":\"broadcast\",\"msgtype\":\"SendCharName\",\"msg\":" + e.ToString(Formatting.None) + "}");
+                            break;
+                    }
+                } catch (InvalidOperationException ex)
                 {
-                    case "CombatData":
-                        Send("{\"type\":\"broadcast\",\"msgtype\":\"CombatData\",\"msg\":" + e.ToString(Formatting.None) + "}");
-                        break;
-                    case "LogLine":
-                        Send("{\"type\":\"broadcast\",\"msgtype\":\"Chat\",\"msg\":" + JsonConvert.SerializeObject(e["rawLine"].ToString()) + "}");
-                        break;
-                    case "ChangeZone":
-                        Send("{\"type\":\"broadcast\",\"msgtype\":\"ChangeZone\",\"msg\":" + e.ToString(Formatting.None) + "}");
-                        break;
-                    case "ChangePrimaryPlayer":
-                        Send("{\"type\":\"broadcast\",\"msgtype\":\"SendCharName\",\"msg\":" + e.ToString(Formatting.None) + "}");
-                        break;
+                    _logger.Log(LogLevel.Error, "Failed to send legacy WS message: {0}", ex);
+                    _dispatcher.UnsubscribeAll(this);
                 }
             }
 

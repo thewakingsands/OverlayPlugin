@@ -18,6 +18,7 @@ namespace RainbowMage.OverlayPlugin
     public class PluginConfig : IPluginConfig
     {
         const string BACKUP_SUFFIX = ".backup";
+        private TinyIoCContainer _container;
 
         [JsonIgnore]
         private bool isDirty = false;
@@ -251,6 +252,7 @@ namespace RainbowMage.OverlayPlugin
         {
             if (configPath == null) throw new Exception("Invalid config path passed to PluginConfig!");
 
+            this._container = container;
             this.filePath = configPath;
             this.logger = container.Resolve<ILogger>();
             this.Overlays = new OverlayConfigList<IOverlayConfig>(logger);
@@ -382,7 +384,11 @@ namespace RainbowMage.OverlayPlugin
                         throw new Exception($"Type {typeName} not found!");
                     }
 
-                    this.Overlays.Add((IOverlayConfig)JsonConvert.DeserializeObject(item.ToString(Formatting.None), type));
+                    this.Overlays.Add((IOverlayConfig) JsonConvert.DeserializeObject(
+                        item.ToString(Formatting.None),
+                        type,
+                        new ConfigCreationConverter(_container)
+                    ));
                 }
                 catch (Exception e)
                 {

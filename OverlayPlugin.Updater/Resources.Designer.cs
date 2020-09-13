@@ -277,6 +277,25 @@ namespace RainbowMage.OverlayPlugin.Updater {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No retries left, update failed..
+        /// </summary>
+        public static string LogOverwriteFailed {
+            get {
+                return ResourceManager.GetString("LogOverwriteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to overwrite {0}, retrying...
+        ///{1}.
+        /// </summary>
+        public static string LogOverwriteRetry {
+            get {
+                return ResourceManager.GetString("LogOverwriteRetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overwriting old files....
         /// </summary>
         public static string LogOverwritingOldFiles {

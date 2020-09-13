@@ -53,13 +53,25 @@ namespace RainbowMage.OverlayPlugin.Updater
             }
 
             var manifest = Path.Combine(cefPath, "version.txt");
+            var importantFiles = new List<string>() { "CefSharp.dll", "CefSharp.Core.dll", "CefSharp.OffScreen.dll", "CefSharp.BrowserSubprocess.exe", "CefSharp.BrowserSubprocess.Core.dll", "libcef.dll", "libEGL.dll", "libGLESv2.dll" };
 
             if (File.Exists(manifest))
             {
                 var installed = File.ReadAllText(manifest).Trim();
                 if (installed == CEF_VERSION)
                 {
-                    return true;
+                    // Verify all important files exist
+                    var itsFine = true;
+                    foreach (var name in importantFiles)
+                    {
+                        if (!File.Exists(Path.Combine(cefPath, name)))
+                        {
+                            itsFine = false;
+                            break;
+                        }
+                    }
+
+                    if (itsFine) return true;
                 }
             }
 
