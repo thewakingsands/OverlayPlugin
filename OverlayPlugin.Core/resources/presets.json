@@ -1,55 +1,55 @@
 ﻿{
   "Kagerou 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://act.qianqu.me/overlay/kagerou/overlay/",
+    "url": "https://overlays.ffcafe.cn/kagerou/overlay/",
     "size": [ 500, 300 ],
     "supports": [ "legacy", "actws" ]
   },
   "faceroll 精简悬浮窗": {
     "type": "MiniParse",
-    "url": "https://act.qianqu.me/overlay/faceroll/",
+    "url": "https://overlays.ffcafe.cn/faceroll/",
     "size": [ 600, 400 ],
     "supports": [ "legacy", "actws" ]
   },
   "Horizoverlay 横版悬浮窗": {
     "type": "MiniParse",
-    "url": "https://act.qianqu.me/overlay/horizoverlay/",
+    "url": "https://overlays.ffcafe.cn/horizoverlay/",
     "size": [ 1000, 300 ],
     "supports": [ "legacy", "actws" ]
   },
   "CMSkin 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://act.qianqu.me/overlay/canisminor/",
+    "url": "https://overlays.ffcafe.cn/canisminor/",
     "size": [ 1000, 300 ],
     "supports": [ "legacy", "actws" ]
   },
   "MopiMopi2 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://act.qianqu.me/overlay/mopimopi2/",
+    "url": "https://overlays.ffcafe.cn/mopimopi2/",
     "size": [ 600, 500 ],
     "supports": [ "actws" ]
   },
   "MopiMopi 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://act.qianqu.me/overlay/mopimopi/",
+    "url": "https://overlays.ffcafe.cn/mopimopi/",
     "size": [ 600, 500 ],
     "supports": [ "actws" ]
   },
   "ikegami 横版悬浮窗": {
     "type": "MiniParse",
-    "url": "https://act.qianqu.me/overlay/ikegami/",
+    "url": "https://overlays.ffcafe.cn/ikegami/",
     "size": [ 1000, 300 ],
     "supports": [ "legacy", "actws" ]
   },
   "ember 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://act.qianqu.me/overlay/ember/",
+    "url": "https://overlays.ffcafe.cn/ember/",
     "size": [ 600, 500 ],
     "supports": [ "modern" ]
   },
   "amethyst 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://act.qianqu.me/overlay/ember/",
+    "url": "https://overlays.ffcafe.cn/ember/",
     "size": [ 600, 500 ],
     "supports": [ "legacy", "actws" ]
   },
