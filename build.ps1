@@ -46,7 +46,7 @@ try {
     cp -Recurse @("libs\de-DE", "libs\fr-FR", "libs\ja-JP", "libs\ko-KR", "libs\zh-CN") OverlayPlugin\libs
 
 
-    $text = [System.IO.File]::ReadAllText("$PWD\..\..\OverlayPlugin\Properties\AssemblyInfo.cs");
+    $text = [System.IO.File]::ReadAllText("$PWD\..\..\SharedAssemblyInfo.cs");
     $regex = [regex]::New('\[assembly: AssemblyVersion\("([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+"\)');
     $m = $regex.Match($text);
 
