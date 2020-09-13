@@ -49,7 +49,7 @@
   },
   "amethyst 悬浮窗": {
     "type": "MiniParse",
-    "url": "https://overlays.ffcafe.cn/ember/",
+    "url": "https://overlays.ffcafe.cn/amethyst/",
     "size": [ 600, 500 ],
     "supports": [ "legacy", "actws" ]
   },
