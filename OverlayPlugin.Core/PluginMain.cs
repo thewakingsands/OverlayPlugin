@@ -487,9 +487,6 @@ namespace RainbowMage.OverlayPlugin
                     }
                 }
 
-                // Only enable embedded Cactbot in debug / dev builds until I'm sure it's stable enough
-                // for most users.
-                #if DEBUG
                 if (!foundCactbot)
                 {
                     if (File.Exists(OfflineCactbotConfigHtmlFile))
@@ -502,7 +499,6 @@ namespace RainbowMage.OverlayPlugin
                         _logger.Log(LogLevel.Info, "Cactbot offline config files not found, don't enable cactbot event source");
                     }
                 }
-                #endif
 
                 registry.StartEventSources();
             }
