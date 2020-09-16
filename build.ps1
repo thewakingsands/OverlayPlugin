@@ -27,6 +27,7 @@ try {
     echo "==> Building..."
 
     msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln" -t:Restore
+    msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln" -t:Clean
     msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln"
     if (-not $?) { exit 1 }
 

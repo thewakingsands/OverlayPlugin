@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ConfigCreationConverter.cs" />
     <Compile Include="Controls\GeneralConfigTab.cs">
       <SubType>UserControl</SubType>
@@ -177,7 +180,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Integration\TriggIntegration.cs" />
-    <Compile Include="SharedAssemblyInfo.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Controls\WSConfigPanel.cs">
       <SubType>UserControl</SubType>
