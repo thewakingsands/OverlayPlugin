@@ -30,14 +30,7 @@ namespace RainbowMage.OverlayPlugin
 
             try
             {
-                if (CheckEntryAssembly)
-                {
-                    asm = Assembly.Load(name);
-                }
-                else
-                {
-                    asm = Assembly.Load("CefSharp.OffScreen.ChromeWebBrowser.Initialize");
-                }
+                asm = Assembly.Load(name);
                 asmVersion = asm.GetName().Version;
             }
             catch (Exception ex)

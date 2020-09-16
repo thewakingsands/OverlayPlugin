@@ -37,9 +37,7 @@ namespace RainbowMage.OverlayPlugin
         {
             InitializeComponent();
             tableLayoutPanel0.PerformLayout();
-            // Make the log box big until we load the overlays since the log is going to be *very*
-            // important if we never make it that far.
-            splitContainer1.SplitterDistance = 5;
+            splitContainer1.SplitterDistance = (int)Math.Round(Height * 0.75);
 
             _container = container;
             _logger = container.Resolve<ILogger>();
@@ -65,16 +63,6 @@ namespace RainbowMage.OverlayPlugin
 
             _logger.RegisterListener(AddLogEntry);
             _registry.EventSourceRegistered += (o, e) => Invoke((Action)(() => AddEventSourceTab(o, e)));
-
-            Resize += (o, e) =>
-            {
-                if (!logResized && Height > 500 && tabControl.TabCount > 0)
-                {
-                    logResized = true;
-                    // Overlay tabs have been initialised, everything is fine; make the log small again.
-                    splitContainer1.SplitterDistance = (int) Math.Round(Height * 0.75);
-                }
-            };
         }
 
         protected override void Dispose(bool disposing)

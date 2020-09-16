@@ -65,7 +65,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         private void FindProcess()
         {
-            return;
             if (processHandle != IntPtr.Zero)
             {
                 if (process != null && !process.HasExited)
