@@ -19,7 +19,7 @@ namespace RainbowMage.OverlayPlugin.Updater
         const int FILE_OVERWRITE_WAIT = 300;
 
         ProgressDisplay _display;
-        public string TempDir {  get; private set; }
+        public string TempDir { get; private set; }
         string _destDir = null;
         CancellationToken _token = CancellationToken.None;
 
@@ -43,6 +43,7 @@ namespace RainbowMage.OverlayPlugin.Updater
             {
                 inst._display.Log("正在准备下载【悬浮窗插件】的组件，此窗口会出现3次，请等待下载窗口全部消失后再重启 ACT。");
                 inst._display.Log("本【悬浮窗插件】是 cactbot 的必备组件。");
+                inst._display.Log("--------------");
                 var scVersion = Assembly.Load("SharpCompress").GetName().Version;
                 if (scVersion < Version.Parse("0.24.0"))
                 {
@@ -59,7 +60,8 @@ namespace RainbowMage.OverlayPlugin.Updater
                 if (File.Exists(url))
                 {
                     archivePath = url;
-                } else
+                }
+                else
                 {
                     dlResult = inst.Download(url, archivePath);
                 }
@@ -79,6 +81,66 @@ namespace RainbowMage.OverlayPlugin.Updater
             });
         }
 
+
+        public static async Task<bool> DownloadAndExtractTo(string url, string tmpName, string destDir, string archiveDir, string message)
+        {
+            var inst = new Installer(destDir, tmpName);
+
+            return await Task.Run(() =>
+            {
+                inst._display.Log($"正在准备下载【悬浮窗插件】的组件，{message}，请等待下载窗口全部消失后再重启 ACT。");
+                inst._display.Log("本【悬浮窗插件】是 cactbot 的必备组件。");
+                inst._display.Log("如果遇到问题，请尝试【重启ACT】或者【重启电脑】并【关闭杀毒软件】再试。");
+                inst._display.Log("--------------");
+                var scVersion = Assembly.Load("SharpCompress").GetName().Version;
+                if (scVersion < Version.Parse("0.24.0"))
+                {
+                    inst._display.Log(Resources.SharpCompressOutdatedError);
+                    inst._display.UpdateStatus(0, Resources.StatusError);
+                    return false;
+                }
+
+                var temp = Path.Combine(inst.TempDir, "archive.tmp");
+                inst.Download(url, temp, true);
+                inst._display.Log("正在解压文件，请稍候……");
+
+                using (var archive = ArchiveFactory.Open(temp))
+                {
+                    var options = new SharpCompress.Common.ExtractionOptions() { Overwrite = true };
+                    var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir) && !x.IsDirectory);
+                    foreach (var entry in entries)
+                    {
+                        var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir.Length));
+                        var fileInfo = new FileInfo(filename);
+                        fileInfo.Directory.Create();
+                        try
+                        {
+                            entry.WriteToFile(fileInfo.FullName, options);
+                        }
+                        catch (Exception e)
+                        {
+                            entry.WriteToFile(fileInfo.FullName + ".cafestoreupdate", options);
+                        }
+                    }
+                }
+
+                inst._display.Log("正在删除临时文件，请稍候……");
+                try
+                {
+                    File.Delete(tmpName);
+                }
+                catch (Exception e)
+                {
+                    // do nothing
+                }
+
+                inst._display.Log("处理完成。");
+                inst._display.Close();
+
+                return true;
+            });
+        }
+
         public bool Download(string url, string dest, bool useHttpClient = true)
         {
             try
@@ -89,7 +151,8 @@ namespace RainbowMage.OverlayPlugin.Updater
                 }
 
                 Directory.CreateDirectory(TempDir);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 _display.Log(string.Format(Resources.CreatingTempDirFailed, TempDir, ex));
                 return false;
@@ -117,7 +180,9 @@ namespace RainbowMage.OverlayPlugin.Updater
                         if (useHttpClient)
                         {
                             HttpClientWrapper.Get(url, new Dictionary<string, string>(), dest, DlProgressCallback, true);
-                        } else { 
+                        }
+                        else
+                        {
                             CurlWrapper.Get(url, new Dictionary<string, string>(), dest, DlProgressCallback, true);
                         }
 
@@ -134,7 +199,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                             // before trying again. We don't want to spam the other side with download requests.
                             if (ex.GetType() == typeof(CurlException))
                             {
-                                if (!((CurlException) ex).Retry)
+                                if (!((CurlException)ex).Retry)
                                 {
                                     // Retrying won't fix this kind of error. Abort.
                                     success = false;
@@ -290,7 +355,8 @@ namespace RainbowMage.OverlayPlugin.Updater
                 }
 
                 success = true;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 if (cancel.IsCancellationRequested)
                 {
@@ -413,7 +479,8 @@ namespace RainbowMage.OverlayPlugin.Updater
                                     File.Move(item.FullName, Path.Combine(sub_destDir, item.Name));
                                     done = true;
                                     break;
-                                } catch (Exception e)
+                                }
+                                catch (Exception e)
                                 {
                                     _display.Log(string.Format(Resources.LogOverwriteRetry, item.Name, e));
                                     Thread.Sleep(FILE_OVERWRITE_WAIT);

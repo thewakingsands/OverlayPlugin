@@ -117,7 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-
   <data name="UpdateCheckException" xml:space="preserve">
     <value>检查更新失败：
 {0}</value>
@@ -184,7 +183,7 @@
     <value>{0}检查更新</value>
   </data>
   <data name="UpdateCefDlFailed" xml:space="preserve">
-    <value>下载CEF失败！检查OverlayPlugin.dll选项卡以获取详细信息。</value>
+    <value>下载CEF失败！请截图初始化窗口反馈报错。</value>
   </data>
   <data name="Exception" xml:space="preserve">
     <value>失败：{0}</value>
@@ -266,9 +265,9 @@ OverlayPlugin的运行需要它。现在安装？</value>
     <value>无法覆写旧文件：{0}
 警告：插件可能处于无法使用的状态！！
 再次运行更新检查或重新安装插件，否则它可能无法在下次ACT重新启动时正常工作。</value>
-  </data>  <data name="SharpCompressOutdatedError" xml:space="preserve">
-    <value>当前加载的SharpCompress版本过旧！
-请确保先加载OverlayPlugin，再加载其他也使用SharpCompress的插件（例如ACTWebSocket）。</value>
+  </data>
+  <data name="SharpCompressOutdatedError" xml:space="preserve">
+    <value>【提醒】检测到插件冲突，请先禁用或卸载 “WebSocket 悬浮窗” 插件后再重启 ACT 进行操作。</value>
   </data>
   <data name="ActUpdateException" xml:space="preserve">
     <value>{0}的ACT检查更新失败，正在回退至GitHub API: {1}</value>

@@ -81,39 +81,31 @@ namespace RainbowMage.OverlayPlugin.Updater
         {
             var tempNuget = Path.Combine(Path.GetTempPath(), "OverlayPlugin-cefredist");
             Directory.CreateDirectory(cefPath);
-
-            var result = await Installer.Run(GetNupkgUrl("cef.redist.x64", "84.4.1"), tempNuget, "OverlayPluginCef.tmp1");
-            if (result)
+            try
             {
-                CopyFiles(Path.Combine(tempNuget, "CEF"), cefPath);
-            }
+                var result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.Common", "84.4.10"), "OverlayPluginCef.tmp2", cefPath, "CefSharp/x64/", "第1个，共3个");
+                if (!result) throw new Exception("下载失败1");
 
-            var result2 = await Installer.Run(GetNupkgUrl("CefSharp.Common", "84.4.10"), tempNuget, "OverlayPluginCef.tmp2");
-            if (result2)
-            {
-                CopyFiles(Path.Combine(tempNuget, "CefSharp", "x64"), cefPath);
-            }
+                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.OffScreen", "84.4.10"), "OverlayPluginCef.tmp3", cefPath, "CefSharp/x64/", "第2个，共3个");
+                if (!result) throw new Exception("下载失败2");
 
-            var result3 = await Installer.Run(GetNupkgUrl("CefSharp.OffScreen", "84.4.10"), tempNuget, "OverlayPluginCef.tmp3");
-            if (result3)
-            {
-                CopyFiles(Path.Combine(tempNuget, "CefSharp", "x64"), cefPath);
-            }
+                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("cef.redist.x64", "84.4.1"), "OverlayPluginCef.tmp1", cefPath, "CEF/", "第3个，共3个");
+                if (!result) throw new Exception("下载失败3");
 
-            if (!result || !result2 || !result3 || !Directory.Exists(cefPath))
+                File.WriteAllText(Path.Combine(cefPath, "version.txt"), CEF_VERSION);
+            }
+            catch (Exception)
             {
                 MessageBox.Show(
-                    Resources.UpdateCefDlFailed,
+                    "安装悬浮窗浏览器组件失败，请尝试：\r\n1.重启ACT\r\n2. 关闭360/腾讯电脑管家等安全软件\r\n3. 重启电脑",
                     Resources.ErrorTitle,
-                    MessageBoxButtons.OK
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
                 );
-                
+
                 return false;
-            } else
-            {
-                File.WriteAllText(Path.Combine(cefPath, "version.txt"), CEF_VERSION);
-                return true;
             }
+            return true;
         }
 
         public static async Task<bool> InstallMsvcrt()
