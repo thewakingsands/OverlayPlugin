@@ -84,6 +84,17 @@ namespace RainbowMage.OverlayPlugin.EventSources {
       public int progress;
     }
 
+   public class CEEvent : JSEvent {
+      public CEEvent(string eventType, object data)
+        {
+            this.eventType = eventType;
+            this.data = data;
+        }
+        public string EventName() { return "onCEEvent"; }
+        public string eventType;
+        public object data;
+    }
+
     public class PlayerChangedEvent : JSEvent {
       public PlayerChangedEvent(FFXIVProcess.EntityData e) {
         id = e.id;

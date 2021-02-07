@@ -39,7 +39,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 if (!hasLoggedDx9)
                 {
                     hasLoggedDx9 = true;
-                    logger.Log(LogLevel.Error, "{0}", "DX9 is not supported.");
+                    logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
                 }
                 return;
             }
@@ -52,6 +52,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             try {
                 process = proc;
                 processHandle = NativeMethods.OpenProcess(ProcessAccessFlags.VirtualMemoryRead, false, proc.Id);
+                logger.Log(LogLevel.Info, "游戏进程：{0}，来源：解析插件订阅", proc.Id);
             } catch (Exception e)
             {
                 logger.Log(LogLevel.Error, "Failed to open FFXIV process: {0}", e);
@@ -86,7 +87,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 if (!hasLoggedDx9)
                 {
                     hasLoggedDx9 = true;
-                    logger.Log(LogLevel.Error, "{0}", "DX9 is not supported.");
+                    logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
                 }
                 return;
             }
@@ -98,6 +99,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
             process = proc;
             processHandle = NativeMethods.OpenProcess(ProcessAccessFlags.VirtualMemoryRead, false, proc.Id);
+            logger.Log(LogLevel.Info, "游戏进程：{0}，来源：解析插件轮询", proc.Id);
         }
 
         private void CloseProcessHandle()

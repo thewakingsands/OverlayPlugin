@@ -54,6 +54,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         public const string PlayerDiedEvent = "onPlayerDied";
         public const string PartyWipeEvent = "onPartyWipe";
         public const string FateEvent = "onFateEvent";
+        public const string CEEvent = "onCEEvent";
         public const string PlayerChangedEvent = "onPlayerChangedEvent";
         public const string SendSaveDataEvent = "onSendSaveData";
         public const string DataFilesReadEvent = "onDataFilesRead";
@@ -84,6 +85,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 "onInCombatChangedEvent",
                 "onZoneChangedEvent",
                 "onFateEvent",
+                "onCEEvent",
                 "onPlayerDied",
                 "onPartyWipe",
                 "onPlayerChangedEvent",
@@ -270,6 +272,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             fate_watcher_ = new FateWatcher(container);
             fate_watcher_.OnFateChanged += (o, e) => DispatchToJS(new JSEvents.FateEvent(e.eventType, e.fateID, e.progress));
+            fate_watcher_.OnCEChanged += (o, e) => DispatchToJS(new JSEvents.CEEvent(e.eventType, JObject.FromObject(e.data)));
 
             // Incoming events.
             ActGlobals.oFormActMain.OnLogLineRead += OnLogLineRead;
@@ -312,6 +315,12 @@ namespace RainbowMage.OverlayPlugin.EventSources
         protected override void Update()
         {
             // Nothing to do since this is handled in SendFastRateEvents.
+        }
+
+        public void ClearFateWatcherDictionaries()
+        {
+            fate_watcher_.RemoveAndClearCEs();
+            fate_watcher_.RemoveAndClearFates();
         }
 
         private void OnLogLineRead(bool isImport, LogLineEventArgs args)
@@ -378,6 +387,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             {
                 notify_state_.zone_name = zone_name;
                 DispatchToJS(new JSEvents.ZoneChangedEvent(zone_name));
+                ClearFateWatcherDictionaries();
             }
 
             DateTime now = DateTime.Now;
@@ -406,7 +416,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     // Clear the FATE dictionary if we switched characters
                     if (notify_state_.player != null && !player.name.Equals(notify_state_.player.name))
                     {
-                        fate_watcher_.RemoveAndClearFates();
+                        ClearFateWatcherDictionaries();
                     }
                     notify_state_.player = player;
                     send = true;

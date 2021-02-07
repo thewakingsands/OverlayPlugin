@@ -177,7 +177,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
                     window.overlayWindowId = 'ACTWS_shim';
 
                     window.WebSocket = function(url) {
-                        if (url.indexOf('ws://127.0.0.1/fake/') > -1)
+                        if (url.indexOf('ws://127.0.0.1/') > -1)
                         {
                             window.__OverlayPlugin_ws_faker = (msg) => {
                                 if (this.onmessage) this.onmessage({ data: JSON.stringify(msg) });

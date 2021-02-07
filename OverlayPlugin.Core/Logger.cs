@@ -63,6 +63,11 @@ namespace RainbowMage.OverlayPlugin
             Log(level, string.Format(format, args));
         }
 
+        public void LogError(string message)
+        {
+            Log(LogLevel.Error, message);
+        }
+
         public void RegisterListener(Action<LogEntry> listener)
         {
             lock (Logs)
