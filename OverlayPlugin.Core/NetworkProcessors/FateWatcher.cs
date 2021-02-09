@@ -44,9 +44,9 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             public int opcode;
         }
 
-        private static readonly CEDirectorOPCodes cedirector_v5_35 = new CEDirectorOPCodes(
+        private static readonly CEDirectorOPCodes cedirector_v5_35_cn = new CEDirectorOPCodes(
           0x30,
-          0x299
+          0x144
         );
 
         private static readonly CEDirectorOPCodes cedirector_v5_35_hotfix = new CEDirectorOPCodes(
@@ -143,6 +143,7 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
 
             cedirectoropcodes = new Dictionary<string, CEDirectorOPCodes>();
             cedirectoropcodes.Add("intl", cedirector_v5_35_hotfix);
+            cedirectoropcodes.Add("cn", cedirector_v5_35_cn);
 
             fates = new Dictionary<int, int>();
             ces = new Dictionary<int, CEDirectorData>();
