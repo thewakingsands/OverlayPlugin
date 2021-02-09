@@ -92,13 +92,6 @@ namespace RainbowMage.OverlayPlugin.Updater
                 inst._display.Log("本【悬浮窗插件】是 cactbot 的必备组件。");
                 inst._display.Log("如果遇到问题，请尝试【重启ACT】或者【重启电脑】并【关闭杀毒软件】再试。");
                 inst._display.Log("--------------");
-                var scVersion = Assembly.Load("SharpCompress").GetName().Version;
-                if (scVersion < Version.Parse("0.24.0"))
-                {
-                    inst._display.Log(Resources.SharpCompressOutdatedError);
-                    inst._display.UpdateStatus(0, Resources.StatusError);
-                    return false;
-                }
 
                 var temp = Path.Combine(inst.TempDir, "archive.tmp");
                 inst.Download(url, temp, true);

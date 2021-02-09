@@ -628,6 +628,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     user_files[Path.GetFileName(filename)] = File.ReadAllText(filename) +
                       $"\n//# sourceURL={filename}";
                 }
+                var textFilenames = Directory.EnumerateFiles(path, "*.txt");
+                foreach (string filename in textFilenames)
+                {
+                    user_files[Path.GetFileName(filename)] = File.ReadAllText(filename);
+                }
             }
             catch (Exception e)
             {

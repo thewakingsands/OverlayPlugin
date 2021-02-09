@@ -49,6 +49,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
     public abstract class FFXIVProcess
     {
         internal ILogger logger_ = null;
+        internal FFXIVRepository ffxiv_ = null;
         bool showed_dx9_error_ = false;
         private LimitedProcess process_ = null;
 
@@ -227,13 +228,20 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         public FFXIVProcess(TinyIoCContainer container)
         {
             logger_ = container.Resolve<ILogger>();
+            ffxiv_ = container.Resolve<FFXIVRepository>();
+            ffxiv_.RegisterProcessChangedHandler((process) =>
+            {
+                processChanged_ = true;
+            });
         }
+
+        bool processChanged_ = false;
 
         public bool HasProcess()
         {
             // If FindProcess failed, return false. But also return false if
             // FindProcess succeeded but the process has since exited.
-            return process_ != null && !process_.HasExited;
+            return !processChanged_ && process_ != null && !process_.HasExited;
         }
 
         public bool FindProcess()
@@ -241,9 +249,11 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             if (HasProcess())
                 return true;
 
+            if (processChanged_) processChanged_ = false;
+
             // Only support the DirectX 11 binary. The DirectX 9 one has different addresses.
-            Process found_process = (from x in Process.GetProcessesByName("ffxiv_dx11")
-                                     where !x.HasExited && x.MainModule != null && x.MainModule.ModuleName == "ffxiv_dx11.exe"
+            Process found_process = (from x in new Process[] { ffxiv_.GetCurrentFFXIVProcess() }
+                                     where x != null && !x.HasExited && x.MainModule != null && x.MainModule.ModuleName == "ffxiv_dx11.exe"
                                      select x).FirstOrDefault<Process>();
             if (found_process != null && found_process.HasExited)
                 found_process = null;

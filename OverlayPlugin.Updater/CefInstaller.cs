@@ -97,7 +97,7 @@ namespace RainbowMage.OverlayPlugin.Updater
             catch (Exception)
             {
                 MessageBox.Show(
-                    "安装悬浮窗浏览器组件失败，请尝试：\r\n1.重启ACT\r\n2. 关闭360/腾讯电脑管家等安全软件\r\n3. 重启电脑",
+                    "安装悬浮窗浏览器组件失败，请尝试：\r\n1. 禁用 WebSocket 悬浮窗插件后重启 ACT\r\n2. 关闭360/腾讯电脑管家等安全软件\r\n3. 重启电脑",
                     Resources.ErrorTitle,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
