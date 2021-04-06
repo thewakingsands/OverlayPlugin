@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace RainbowMage.OverlayPlugin.MemoryProcessors
 {
@@ -40,6 +41,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 {
                     hasLoggedDx9 = true;
                     logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
+                    MessageBox.Show("现在 ACT 不支持 DX9 启动的游戏。请在启动器设置里选择以 dx11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return;
             }

@@ -7,10 +7,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 {
     public class FFXIVProcessCn : FFXIVProcess
     {
-        // Last updated for FFXIV 5.3
-        //
-        // Latest CN version can be found at:
-        // http://ff.sdo.com/web8/index.html#/patchnote
+        // Last updated for FFXIV 5.4
 
         [StructLayout(LayoutKind.Explicit)]
         public unsafe struct EntityMemory
@@ -44,8 +41,11 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             [FieldOffset(0xB0)]
             public Single rotation;
 
-            [FieldOffset(0x1898)]
+            [FieldOffset(0x1C4)]
             public CharacterDetails charDetails;
+
+            [FieldOffset(0x1977)]
+            public byte shieldPercentage;
         }
 
         [StructLayout(LayoutKind.Explicit)]
@@ -59,28 +59,25 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             public int max_hp;
 
             [FieldOffset(0x08)]
-            public int mp;
+            public short mp;
 
-            [FieldOffset(0x12)]
+            [FieldOffset(0x10)]
             public short gp;
 
-            [FieldOffset(0x14)]
+            [FieldOffset(0x12)]
             public short max_gp;
 
-            [FieldOffset(0x16)]
+            [FieldOffset(0x14)]
             public short cp;
 
-            [FieldOffset(0x18)]
+            [FieldOffset(0x16)]
             public short max_cp;
 
-            [FieldOffset(0x42)]
+            [FieldOffset(0x1E)]
             public EntityJob job;
 
-            [FieldOffset(0x44)]
+            [FieldOffset(0x1F)]
             public byte level;
-
-            [FieldOffset(0x65)]
-            public short shieldPercentage;
         }
         public FFXIVProcessCn(TinyIoCContainer container) : base(container) { }
 
@@ -134,7 +131,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             p = SigScan(kCharmapSignature, kCharmapSignatureOffset, kCharmapSignatureRIP);
             if (p.Count == 0)
             {
-                logger_.LogError("Charmap signature found " + p.Count + " matches");
+                logger_.Log(LogLevel.Error, "Charmap signature found " + p.Count + " matches");
             }
             else
             {
@@ -150,7 +147,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     }
                     else
                     {
-                        logger_.LogError("Charmap signature found, but conflicting match");
+                        logger_.Log(LogLevel.Error, "Charmap signature found, but conflicting match");
                     }
                 }
             }
@@ -158,7 +155,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             p = SigScan(kJobDataSignature, kJobDataSignatureOffset, kJobDataSignatureRIP);
             if (p.Count != 1)
             {
-                logger_.LogError("Job signature found " + p.Count + " matches");
+                logger_.Log(LogLevel.Error, "Job signature found " + p.Count + " matches");
             }
             else
             {
@@ -168,7 +165,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             p = SigScan(kInCombatSignature, kInCombatBaseOffset, kInCombatBaseRIP);
             if (p.Count != 1)
             {
-                logger_.LogError("In combat signature found " + p.Count + " matches");
+                logger_.Log(LogLevel.Error, "In combat signature found " + p.Count + " matches");
             }
             else
             {
@@ -176,7 +173,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 p = SigScan(kInCombatSignature, kInCombatOffsetOffset, kInCombatOffsetRIP);
                 if (p.Count != 1)
                 {
-                    logger_.LogError("In combat offset signature found " + p.Count + " matches");
+                    logger_.Log(LogLevel.Error, "In combat offset signature found " + p.Count + " matches");
                 }
                 else
                 {
@@ -190,7 +187,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             p = SigScan(kBaitSignature, kBaitBaseOffset, kBaitBaseRIP);
             if (p.Count != 1)
             {
-                logger_.LogError("Bait signature found " + p.Count + " matches");
+                logger_.Log(LogLevel.Error, "Bait signature found " + p.Count + " matches");
             }
             else
             {
@@ -229,7 +226,8 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     // This doesn't exist in memory, so just send the right value.
                     // As there are other versions that still have it, don't change the event.
                     entity.max_mp = 10000;
-                    entity.shield_value = mem.charDetails.shieldPercentage * entity.max_hp / 100;
+
+                    entity.shield_value = mem.shieldPercentage * entity.max_hp / 100;
 
                     if (IsGatherer(entity.job))
                     {
