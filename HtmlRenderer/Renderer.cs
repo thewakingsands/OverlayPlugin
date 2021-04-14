@@ -472,6 +472,13 @@ namespace RainbowMage.HtmlRenderer
                 // Disable Flash. We don't need it and it can cause issues.
                 cefSettings.CefCommandLineArgs.Remove("enable-system-flash");
 
+                // Workaround for CVE-2021-21220
+                // TODO: remove this after CefSharp includes 89.0.4389.128 as theirs chrome version.
+                // ref: https://chromereleases.googleblog.com/2021/04/stable-channel-update-for-desktop.html
+                cefSettings.CefCommandLineArgs["disable-features"] = "WebAssembly,AsmJsToWebAssembly,WebAssemblyStreaming";
+                cefSettings.CefCommandLineArgs["js-flags"] = "--noexpose_wasm";
+                // End of workaround for CVE-2021-21220
+
                 cefSettings.EnableAudio();
 
                 // Enables software compositing instead of GPU compositing -> less CPU load but no WebGL
