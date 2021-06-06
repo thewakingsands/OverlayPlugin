@@ -12,7 +12,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 {
     public class CefInstaller
     {
-        const string CEF_VERSION = "84.4.10";
+        const string CEF_VERSION = "90.6.70";
 
         public static string GetUrl()
         {
@@ -83,13 +83,13 @@ namespace RainbowMage.OverlayPlugin.Updater
             Directory.CreateDirectory(cefPath);
             try
             {
-                var result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.Common", "84.4.10"), "OverlayPluginCef.tmp2", cefPath, "CefSharp/x64/", "第1个，共3个");
+                var result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.Common", "90.6.70"), "OverlayPluginCef.tmp2", cefPath, "CefSharp/x64/", "第1个，共3个", "lib/net452/");
                 if (!result) throw new Exception("下载失败1");
 
-                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.OffScreen", "84.4.10"), "OverlayPluginCef.tmp3", cefPath, "CefSharp/x64/", "第2个，共3个");
+                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.OffScreen", "90.6.70"), "OverlayPluginCef.tmp3", cefPath, "lib/net452/", "第2个，共3个");
                 if (!result) throw new Exception("下载失败2");
 
-                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("cef.redist.x64", "84.4.1"), "OverlayPluginCef.tmp1", cefPath, "CEF/", "第3个，共3个");
+                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("cef.redist.x64", "90.6.7"), "OverlayPluginCef.tmp1", cefPath, "CEF/", "第3个，共3个");
                 if (!result) throw new Exception("下载失败3");
 
                 File.WriteAllText(Path.Combine(cefPath, "version.txt"), CEF_VERSION);

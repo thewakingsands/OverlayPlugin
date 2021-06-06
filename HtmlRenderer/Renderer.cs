@@ -414,15 +414,16 @@ namespace RainbowMage.HtmlRenderer
                     try
                     {
                         // Enable the Crashpad reporter. This *HAS* to happen before libcef.dll is loaded.
-                        EnableErrorReports(appDataDirectory);
+                        //EnableErrorReports(appDataDirectory);
+                        DisableErrorReports(appDataDirectory);
                     } catch (Exception)
                     {
                         // TODO: Log this exception.
                     }
                 }
 
-                var cefPath1 = Path.Combine(pluginDirectory, "libs", Environment.Is64BitProcess ? "x64" : "x86");
-                var cefPath2 = Path.Combine(appDataDirectory, "OverlayPluginCef", Environment.Is64BitProcess ? "x64" : "x86");
+                var cefPath1 = Path.Combine(appDataDirectory, "OverlayPluginCef", Environment.Is64BitProcess ? "x64" : "x86");
+                var cefPath2 = Path.Combine(pluginDirectory, "libs", Environment.Is64BitProcess ? "x64" : "x86");
 
                 var cefPath = "";
 
@@ -439,8 +440,8 @@ namespace RainbowMage.HtmlRenderer
                     throw new Exception("CEF Not Found");
                 }
 
-                var lang = System.Globalization.CultureInfo.CurrentCulture.Name;
-                var langPak = Path.Combine(cefPath, "locales", lang + ".pak");
+                var lang = "zh-CN";
+                var langPak = Path.Combine(cefPath, "locales", "zh-CN.pak");
 
                 // Fall back to en-US if we can't find the current locale.
                 if (!File.Exists(langPak))
@@ -460,8 +461,11 @@ namespace RainbowMage.HtmlRenderer
 #else
                     LogSeverity = LogSeverity.Error,
 #endif
-                    BrowserSubprocessPath = Path.Combine(cefPath, "CefSharp.BrowserSubprocess.exe"),
+                    BrowserSubprocessPath = Path.Combine(cefPath, "CefSharp.BrowserSubprocess.exe")
                 };
+
+
+                cefSettings.EnableAudio();
 
                 // Necessary to avoid input lag with a framerate limit below 60.
                 cefSettings.CefCommandLineArgs["enable-begin-frame-scheduling"] = "1";
@@ -471,15 +475,6 @@ namespace RainbowMage.HtmlRenderer
 
                 // Disable Flash. We don't need it and it can cause issues.
                 cefSettings.CefCommandLineArgs.Remove("enable-system-flash");
-
-                // Workaround for CVE-2021-21220
-                // TODO: remove this after CefSharp includes 89.0.4389.128 as theirs chrome version.
-                // ref: https://chromereleases.googleblog.com/2021/04/stable-channel-update-for-desktop.html
-                cefSettings.CefCommandLineArgs["disable-features"] = "WebAssembly,AsmJsToWebAssembly,WebAssemblyStreaming";
-                cefSettings.CefCommandLineArgs["js-flags"] = "--noexpose_wasm";
-                // End of workaround for CVE-2021-21220
-
-                cefSettings.EnableAudio();
 
                 // Enables software compositing instead of GPU compositing -> less CPU load but no WebGL
                 cefSettings.SetOffScreenRenderingBestPerformanceArgs();

@@ -58,7 +58,8 @@ namespace RainbowMage.OverlayPlugin
             {
                 if (cbErrorReports.Checked)
                 {
-                    Renderer.EnableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
+                    //Renderer.EnableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
+                    Renderer.DisableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
                 } else
                 {
                     Renderer.DisableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);

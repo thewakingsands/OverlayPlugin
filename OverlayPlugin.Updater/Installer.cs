@@ -47,7 +47,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                 var scVersion = Assembly.Load("SharpCompress").GetName().Version;
                 if (scVersion < Version.Parse("0.24.0"))
                 {
-                    inst._display.Log(Resources.SharpCompressOutdatedError);
+                    inst._display.Log("请先卸载 WS 悬浮窗插件！本插件可完全取代 WS 悬浮窗插件。");
                     inst._display.UpdateStatus(0, Resources.StatusError);
                     return false;
                 }
@@ -82,7 +82,7 @@ namespace RainbowMage.OverlayPlugin.Updater
         }
 
 
-        public static async Task<bool> DownloadAndExtractTo(string url, string tmpName, string destDir, string archiveDir, string message)
+        public static async Task<bool> DownloadAndExtractTo(string url, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
         {
             var inst = new Installer(destDir, tmpName);
 
@@ -113,6 +113,29 @@ namespace RainbowMage.OverlayPlugin.Updater
                         catch (Exception e)
                         {
                             entry.WriteToFile(fileInfo.FullName + ".cafestoreupdate", options);
+                        }
+                    }
+                }
+
+                if (archiveDir2 != null)
+                {
+                    using (var archive = ArchiveFactory.Open(temp))
+                    {
+                        var options = new SharpCompress.Common.ExtractionOptions() { Overwrite = true };
+                        var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir2) && !x.IsDirectory);
+                        foreach (var entry in entries)
+                        {
+                            var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir2.Length));
+                            var fileInfo = new FileInfo(filename);
+                            fileInfo.Directory.Create();
+                            try
+                            {
+                                entry.WriteToFile(fileInfo.FullName, options);
+                            }
+                            catch (Exception e)
+                            {
+                                entry.WriteToFile(fileInfo.FullName + ".cafestoreupdate", options);
+                            }
                         }
                     }
                 }
