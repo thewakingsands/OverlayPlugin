@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using System.Reflection;
 
 namespace RainbowMage.OverlayPlugin.Updater
 {
@@ -71,24 +72,6 @@ namespace RainbowMage.OverlayPlugin.Updater
                     }
 
                     if (itsFine) return true;
-                }
-                else
-                {
-                    try
-                    {
-                        Directory.Delete(cefPath, true);
-                    }
-                    catch
-                    {
-                        MessageBox.Show(
-                            $"悬浮窗更新失败，请退出 ACT 并删除如下目录：\r\n{cefPath}\r\n删除后重新启动 ACT。",
-                            Resources.ErrorTitle,
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error
-                        );
-
-                        return false;
-                    }
                 }
             }
 

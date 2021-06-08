@@ -41,6 +41,9 @@ try {
     cp @("OverlayPlugin.dll", "OverlayPlugin.dll.config", "README.md", "LICENSE.txt") OverlayPlugin
     cp -Recurse libs\resources OverlayPlugin
     cp -Recurse libs\*.dll OverlayPlugin\libs
+    rm OverlayPlugin\libs\CefSharp.dll
+    rm OverlayPlugin\libs\CefSharp.Core.dll
+    rm OverlayPlugin\libs\CefSharp.OffScreen.dll
 
     # Translations
     cp -Recurse @("de-DE", "fr-FR", "ja-JP", "ko-KR", "zh-CN") OverlayPlugin
