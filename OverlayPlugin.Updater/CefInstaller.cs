@@ -72,6 +72,24 @@ namespace RainbowMage.OverlayPlugin.Updater
 
                     if (itsFine) return true;
                 }
+                else
+                {
+                    try
+                    {
+                        Directory.Delete(cefPath, true);
+                    }
+                    catch
+                    {
+                        MessageBox.Show(
+                            $"悬浮窗更新失败，请退出 ACT 并删除如下目录：\r\n{cefPath}\r\n删除后重新启动 ACT。",
+                            Resources.ErrorTitle,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+
+                        return false;
+                    }
+                }
             }
 
             return await InstallCef(cefPath);
@@ -97,7 +115,7 @@ namespace RainbowMage.OverlayPlugin.Updater
             catch (Exception)
             {
                 MessageBox.Show(
-                    "安装悬浮窗浏览器组件失败，请尝试：\r\n1. 禁用 WebSocket 悬浮窗插件后重启 ACT\r\n2. 关闭360/腾讯电脑管家等安全软件\r\n3. 重启电脑",
+                    "安装悬浮窗浏览器组件失败，请尝试：\r\n1. 禁用 WebSocket 悬浮窗插件后重启 ACT\r\n2. 关闭360/腾讯电脑管家等安全软件\r\n3. 重启电脑\r\n如果还不能成功，请加群 163386335",
                     Resources.ErrorTitle,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
