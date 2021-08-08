@@ -90,6 +90,7 @@
     <Compile Include="MemoryProcessors\EnmityMemory52.cs" />
     <Compile Include="MemoryProcessors\EnmityMemory53.cs" />
     <Compile Include="MemoryProcessors\EnmityMemory54.cs" />
+    <Compile Include="MemoryProcessors\EnmityMemory55.cs" />
     <Compile Include="MemoryProcessors\EnmityMemoryCommon.cs" />
     <Compile Include="NetworkProcessors\FateWatcher.cs" />
     <Compile Include="MemoryProcessors\FFXIVProcess.cs" />

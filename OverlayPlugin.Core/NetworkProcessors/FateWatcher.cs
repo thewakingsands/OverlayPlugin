@@ -44,14 +44,9 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             public int opcode;
         }
 
-        private static readonly CEDirectorOPCodes cedirector_v5_45_cn = new CEDirectorOPCodes(
-          48,
-          0x9e
-        );
-
-        private static readonly CEDirectorOPCodes cedirector_v5_35_hotfix = new CEDirectorOPCodes(
+        private static readonly CEDirectorOPCodes cedirector_cn = new CEDirectorOPCodes(
           0x30,
-          0x143
+          0x03be
         );
 
         private struct ActorControl143
@@ -143,7 +138,7 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
 
             cedirectoropcodes = new Dictionary<string, CEDirectorOPCodes>();
             cedirectoropcodes.Add("intl", cedirector_v5_35_hotfix);
-            cedirectoropcodes.Add("cn", cedirector_v5_45_cn);
+            cedirectoropcodes.Add("cn", cedirector_cn);
 
             fates = new Dictionary<int, int>();
             ces = new Dictionary<int, CEDirectorData>();
