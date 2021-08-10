@@ -62,7 +62,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         private void PickMemoryCandidates(FFXIVRepository repository)
         {
-            memoryCandidates = new List<EnmityMemory>() { new EnmityMemory54(container) };
+            memoryCandidates = new List<EnmityMemory>() { new EnmityMemory55(container) };
         }
 
         public override Control CreateConfigControl()
