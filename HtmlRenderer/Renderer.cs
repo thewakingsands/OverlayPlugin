@@ -28,7 +28,7 @@ namespace RainbowMage.HtmlRenderer
 
         private BrowserWrapper _browser;
         private bool _isWindowless;
-        private bool isStopRender = false;
+        private bool isStopRender = true;
         protected IRenderTarget _target;
         private object _api;
         private Func<int, int, bool> _ctxMenuCallback = null;
