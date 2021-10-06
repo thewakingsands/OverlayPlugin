@@ -186,11 +186,8 @@ namespace RainbowMage.HtmlRenderer
 
         public void BeginRender()
         {
-            if (!isStopRender)
-            {
-                EndRender();
-                InitBrowser();
-            }
+
+            EndRender();
             var cefWindowInfo = CreateWindowInfo();
             _isWindowless = cefWindowInfo.WindowlessRenderingEnabled;
 
@@ -210,7 +207,7 @@ namespace RainbowMage.HtmlRenderer
                 _browser.GetBrowser().CloseBrowser(true);
                 _browser.GetBrowserHost().CloseBrowser(true);
                 _browser.Dispose();
-
+                InitBrowser();
                 isStopRender = true;
             }
         }
@@ -558,13 +555,13 @@ MaxUploadsPerDay=0
 
         public void ExecuteScript(string script)
         {
-            if (_browser != null && _browser.IsBrowserInitialized)
+            if (!isStopRender)
             {
-                _browser.GetMainFrame().ExecuteJavaScriptAsync(script, "injected");
-            }
-            else
-            {
-                if (!isStopRender)
+                if (_browser != null && _browser.IsBrowserInitialized)
+                {
+                    _browser.GetMainFrame().ExecuteJavaScriptAsync(script, "injected");
+                }
+                else
                 {
                     this.scriptQueue.Add(script);
                 }
