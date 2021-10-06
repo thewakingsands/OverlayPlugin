@@ -317,9 +317,12 @@ namespace RainbowMage.OverlayPlugin.EventSources
         {
             if (isImport)
             {
-                lock (importedLogs)
+                if (HasSubscriber(ImportedLogLinesEvent))
                 {
-                    importedLogs.Add(args.originalLogLine);
+                    lock (importedLogs)
+                    {
+                        importedLogs.Add(args.originalLogLine);
+                    }
                 }
                 return;
             }
@@ -458,34 +461,34 @@ namespace RainbowMage.OverlayPlugin.EventSources
             // still send *something*, since it's better than nothing.
             List<PartyMember> result = new List<PartyMember>(24);
             lock (missingPartyMembers) lock (partyList)
-            {
-                missingPartyMembers.Clear();
-
-                foreach (var id in partyList)
                 {
-                    Combatant c;
-                    if (lookupTable.TryGetValue(id, out c))
-                    {
-                        result.Add(new PartyMember
-                        {
-                            id = $"{id:X}",
-                            name = c.Name,
-                            worldId = c.WorldID,
-                            job = c.Job,
-                            inParty = c.PartyType == PartyTypeEnum.Party
-                        });
-                    }
-                    else
-                    {
-                        missingPartyMembers.Add(id);
-                    }
-                }
+                    missingPartyMembers.Clear();
 
-                if (missingPartyMembers.Count > 0) {
-                    Log(LogLevel.Debug, "Party changed event delayed until members are available");
-                    return;
+                    foreach (var id in partyList)
+                    {
+                        Combatant c;
+                        if (lookupTable.TryGetValue(id, out c))
+                        {
+                            result.Add(new PartyMember
+                            {
+                                id = $"{id:X}",
+                                name = c.Name,
+                                worldId = c.WorldID,
+                                job = c.Job,
+                                inParty = c.PartyType == PartyTypeEnum.Party
+                            });
+                        }
+                        else
+                        {
+                            missingPartyMembers.Add(id);
+                        }
+                    }
+
+                    if (missingPartyMembers.Count > 0) {
+                        Log(LogLevel.Debug, "Party changed event delayed until members are available");
+                        return;
+                    }
                 }
-            }
 
             Log(LogLevel.Debug, "party list: {0}", JObject.FromObject(new { party = result }).ToString());
 
@@ -546,27 +549,20 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
                 DispatchEvent(this.CreateCombatData());
             }
-
-            if (importing && HasSubscriber(ImportedLogLinesEvent))
+            if (HasSubscriber(ImportedLogLinesEvent) && !importing)
             {
-                List<string> logs = null;
 
                 lock (importedLogs)
                 {
                     if (importedLogs.Count > 0)
                     {
-                        logs = importedLogs;
+                        DispatchEvent(JObject.FromObject(new
+                        {
+                            type = ImportedLogLinesEvent,
+                            logLines = importedLogs
+                        }));
                         importedLogs = new List<string>();
                     }
-                }
-
-                if (logs != null)
-                {
-                    DispatchEvent(JObject.FromObject(new
-                    {
-                        type = ImportedLogLinesEvent,
-                        logLines = logs
-                    }));
                 }
             }
 
