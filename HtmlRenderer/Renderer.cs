@@ -186,7 +186,7 @@ namespace RainbowMage.HtmlRenderer
         public void BeginRender()
         {
             EndRender();
-
+            InitBrowser();
             var cefWindowInfo = CreateWindowInfo();
             _isWindowless = cefWindowInfo.WindowlessRenderingEnabled;
 
@@ -205,8 +205,6 @@ namespace RainbowMage.HtmlRenderer
                 _browser.GetBrowser().CloseBrowser(true);
                 _browser.GetBrowserHost().CloseBrowser(true);
                 _browser.Dispose();
-
-                InitBrowser();
             }
         }
 
