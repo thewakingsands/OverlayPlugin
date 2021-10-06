@@ -323,8 +323,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     {
                         importedLogs.Add(args.originalLogLine);
                     }
-                    return;
                 }
+                return;
             }
 
             try
