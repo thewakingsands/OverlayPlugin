@@ -552,19 +552,23 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             if (HasSubscriber(ImportedLogLinesEvent))
             {
+                List<string> logs = null;
                 lock (importedLogs)
                 {
                     if (importedLogs.Count > 0)
                     {
-                        DispatchEvent(JObject.FromObject(new
-                        {
-                            type = ImportedLogLinesEvent,
-                            logLines = importedLogs
-                        }));
+                        logs = importedLogs;
                         importedLogs = new List<string>();
                     }
                 }
-              
+                if (logs != null)
+                {
+                    DispatchEvent(JObject.FromObject(new
+                    {
+                        type = ImportedLogLinesEvent,
+                        logLines = logs
+                    }));
+                }
             }
 
             if (ffxivPluginPresent)
