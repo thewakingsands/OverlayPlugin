@@ -28,7 +28,7 @@ namespace RainbowMage.HtmlRenderer
 
         private BrowserWrapper _browser;
         private bool _isWindowless;
-        private bool isStopRender = true;
+        private bool _isRendering = false;
         protected IRenderTarget _target;
         private object _api;
         private Func<int, int, bool> _ctxMenuCallback = null;
@@ -186,8 +186,10 @@ namespace RainbowMage.HtmlRenderer
 
         public void BeginRender()
         {
-
-            EndRender();
+            if (_isRendering)
+            {
+                EndRender();
+            }
             var cefWindowInfo = CreateWindowInfo();
             _isWindowless = cefWindowInfo.WindowlessRenderingEnabled;
 
@@ -197,18 +199,19 @@ namespace RainbowMage.HtmlRenderer
 
             cefBrowserSettings.Dispose();
             cefWindowInfo.Dispose();
-            isStopRender = false;
+            _isRendering = true;
         }
 
         public void EndRender()
         {
+            _isRendering = false;
             if (_browser != null && _browser.IsBrowserInitialized)
             {
                 _browser.GetBrowser().CloseBrowser(true);
                 _browser.GetBrowserHost().CloseBrowser(true);
                 _browser.Dispose();
+
                 InitBrowser();
-                isStopRender = true;
             }
         }
 
@@ -555,7 +558,7 @@ MaxUploadsPerDay=0
 
         public void ExecuteScript(string script)
         {
-            if (!isStopRender)
+            if (_isRendering)
             {
                 if (_browser != null && _browser.IsBrowserInitialized)
                 {
