@@ -210,10 +210,10 @@ namespace RainbowMage.HtmlRenderer
                 _browser.GetBrowser().CloseBrowser(true);
                 _browser.GetBrowserHost().CloseBrowser(true);
                 _browser.Dispose();
-                scriptQueue.Clear();
 
                 InitBrowser();
             }
+            scriptQueue.Clear();
         }
 
         public void SetMaxFramerate(int fps)
