@@ -317,9 +317,12 @@ namespace RainbowMage.OverlayPlugin.EventSources
         {
             if (isImport)
             {
-                lock (importedLogs)
+                if (HasSubscriber(ImportedLogLinesEvent))
                 {
-                    importedLogs.Add(args.originalLogLine);
+                    lock (importedLogs)
+                    {
+                        importedLogs.Add(args.originalLogLine);
+                    }
                 }
                 return;
             }
@@ -547,10 +550,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 DispatchEvent(this.CreateCombatData());
             }
 
-            if (importing && HasSubscriber(ImportedLogLinesEvent))
+            if (HasSubscriber(ImportedLogLinesEvent))
             {
                 List<string> logs = null;
-
                 lock (importedLogs)
                 {
                     if (importedLogs.Count > 0)
@@ -559,7 +561,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
                         importedLogs = new List<string>();
                     }
                 }
-
                 if (logs != null)
                 {
                     DispatchEvent(JObject.FromObject(new
