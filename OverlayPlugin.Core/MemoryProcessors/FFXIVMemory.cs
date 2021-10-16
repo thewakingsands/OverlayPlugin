@@ -10,11 +10,11 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
     {
         public event EventHandler OnProcessChange;
 
-        private ILogger logger;
+        private readonly ILogger logger;
         private volatile Process process;
         private volatile IntPtr processHandle;
-        private FFXIVRepository repository;
-        private Object mutex = new Object();
+        private readonly FFXIVRepository repository;
+        private readonly Object _mutex = new Object();
 
         private bool hasLoggedDx9 = false;
 
@@ -28,7 +28,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         private void UpdateProcess(Process proc)
         {
-            lock (mutex)
+            lock (_mutex)
             {
                 if (processHandle != IntPtr.Zero)
                 {
@@ -120,7 +120,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         public bool IsValid()
         {
-            lock (mutex)
+            lock (_mutex)
             {
                 if (process != null && process.HasExited)
                 {
@@ -313,7 +313,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         /// <returns>A list of pointers read relative to the end of strings in the process memory matching the |pattern|.</returns>
         public List<IntPtr> SigScan(string pattern, int offset, bool rip_addressing)
         {
-            lock (mutex)
+            lock (_mutex)
             {
                 List<IntPtr> matches_list = new List<IntPtr>();
 
