@@ -33,20 +33,12 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         private void UpdateProcess(Process proc)
         {
             bool showDX9MsgBox = false;
-            _processLock.EnterUpgradeableReadLock();
+            _processLock.EnterWriteLock();
             try
             {
                 if (processHandle != IntPtr.Zero)
                 {
-                    _processLock.EnterWriteLock();
-                    try
-                    {
-                        CloseProcessHandle();
-                    }
-                    finally
-                    {
-                        _processLock.ExitWriteLock();
-                    }
+                    CloseProcessHandle();
                 }
 
                 if (proc == null || proc.HasExited)
@@ -67,8 +59,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     logger.Log(LogLevel.Error, "{0}", "Unknown ffxiv process.");
                     return;
                 }
-
-                _processLock.EnterWriteLock();
                 try
                 {
                     process = proc;
@@ -81,14 +71,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     process = null;
                     processHandle = IntPtr.Zero;
                 }
-                finally
-                {
-                    _processLock.ExitWriteLock();
-                }
             }
             finally
             {
-                _processLock.ExitUpgradeableReadLock();
+                _processLock.ExitWriteLock();
                 if (showDX9MsgBox)
                 {
                     MessageBox.Show("现在 ACT 的部分功能不支持 DX9 启动的游戏。\r\n请在游戏启动器器设置里选择以 DX11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -146,35 +132,20 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         public bool IsValid()
         {
             bool hasChangedProcess = false;
-            _processLock.EnterUpgradeableReadLock();
+            _processLock.EnterWriteLock();
             try
             {
                 if (process != null && process.HasExited)
                 {
-                    _processLock.EnterWriteLock();
-                    try
-                    {
-                        CloseProcessHandle();
-                    }
-                    finally
-                    {
-                        _processLock.ExitWriteLock();
-                    }
+                    CloseProcessHandle();
                     hasChangedProcess = true;
                 }
 
                 if (processHandle != IntPtr.Zero)
                     return true;
 
-                _processLock.EnterWriteLock();
-                try
-                {
-                    FindProcess();
-                }
-                finally
-                {
-                    _processLock.ExitWriteLock();
-                }
+                FindProcess();
+
                 if (processHandle == IntPtr.Zero || process == null || process.HasExited)
                 {
                     return false;
@@ -184,7 +155,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             }
             finally
             {
-                _processLock.ExitUpgradeableReadLock();
+                _processLock.ExitWriteLock();
                 if (hasChangedProcess)
                 {
                     OnProcessChange?.Invoke(this, null);
@@ -379,7 +350,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         /// <returns>A list of pointers read relative to the end of strings in the process memory matching the |pattern|.</returns>
         public List<IntPtr> SigScan(string pattern, int offset, bool rip_addressing)
         {
-            _processLock.EnterUpgradeableReadLock();
+            _processLock.EnterReadLock();
             try
             {
                 List<IntPtr> matches_list = new List<IntPtr>();
@@ -480,7 +451,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             }
             finally
             {
-                _processLock.ExitUpgradeableReadLock();
+                _processLock.ExitReadLock();
             }
         }
 
