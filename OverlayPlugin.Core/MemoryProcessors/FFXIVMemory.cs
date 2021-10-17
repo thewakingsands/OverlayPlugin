@@ -14,7 +14,9 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         private volatile Process process;
         private volatile IntPtr processHandle;
         private readonly FFXIVRepository repository;
-        private readonly Object _mutex = new Object();
+
+        //Handle the lock of process and processHandle
+        private readonly Object _processLock = new Object();
 
         private bool hasLoggedDx9 = false;
 
@@ -28,8 +30,11 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         private void UpdateProcess(Process proc)
         {
-            lock (_mutex)
+            bool showDx9MsgBox = false;
+            bool hasTakenLock = false;
+            try
             {
+                System.Threading.Monitor.Enter(_processLock, ref hasTakenLock);
                 if (processHandle != IntPtr.Zero)
                 {
                     CloseProcessHandle();
@@ -42,9 +47,9 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 {
                     if (!hasLoggedDx9)
                     {
+                        showDx9MsgBox = true;
                         hasLoggedDx9 = true;
                         logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
-                        MessageBox.Show("现在 ACT 的部分功能不支持 DX9 启动的游戏。\r\n请在游戏启动器器设置里选择以 DX11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     return;
                 }
@@ -66,6 +71,17 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
                     process = null;
                     processHandle = IntPtr.Zero;
+                }
+            }
+            finally
+            {
+                if (hasTakenLock)
+                {
+                    System.Threading.Monitor.Exit(_processLock);
+                }
+                if (showDx9MsgBox)
+                {
+                    MessageBox.Show("现在 ACT 的部分功能不支持 DX9 启动的游戏。\r\n请在游戏启动器器设置里选择以 DX11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
@@ -120,12 +136,15 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         public bool IsValid()
         {
-            lock (_mutex)
+            bool hasChangedProcess = false;
+            bool hasTakenLock = false;
+            try
             {
+                System.Threading.Monitor.Enter(_processLock, ref hasTakenLock);
                 if (process != null && process.HasExited)
                 {
                     CloseProcessHandle();
-                    OnProcessChange?.Invoke(this, null);
+                    hasChangedProcess = true;
                 }
 
                 if (processHandle != IntPtr.Zero)
@@ -136,9 +155,19 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 {
                     return false;
                 }
-
-                OnProcessChange?.Invoke(this, null);
+                hasChangedProcess = true;
                 return true;
+            }
+            finally
+            {
+                if (hasTakenLock)
+                {
+                    System.Threading.Monitor.Exit(_processLock);
+                }
+                if (hasChangedProcess)
+                {
+                    OnProcessChange?.Invoke(this, null);
+                }
             }
         }
 
@@ -313,7 +342,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         /// <returns>A list of pointers read relative to the end of strings in the process memory matching the |pattern|.</returns>
         public List<IntPtr> SigScan(string pattern, int offset, bool rip_addressing)
         {
-            lock (_mutex)
+            lock (_processLock)
             {
                 List<IntPtr> matches_list = new List<IntPtr>();
 
