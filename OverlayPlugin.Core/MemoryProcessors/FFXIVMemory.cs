@@ -32,6 +32,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         private void UpdateProcess(Process proc)
         {
+            bool showDX9MsgBox = false;
             _processLock.EnterUpgradeableReadLock();
             try
             {
@@ -47,47 +48,51 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                         _processLock.ExitWriteLock();
                     }
                 }
+
+                if (proc == null || proc.HasExited)
+                    return;
+
+                if (proc.ProcessName == "ffxiv")
+                {
+                    if (!hasLoggedDx9)
+                    {
+                        hasLoggedDx9 = true;
+                        showDX9MsgBox = true;
+                        logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
+                    }
+                    return;
+                }
+                else if (proc.ProcessName != "ffxiv_dx11")
+                {
+                    logger.Log(LogLevel.Error, "{0}", "Unknown ffxiv process.");
+                    return;
+                }
+
+                _processLock.EnterWriteLock();
+                try
+                {
+                    process = proc;
+                    processHandle = NativeMethods.OpenProcess(ProcessAccessFlags.VirtualMemoryRead, false, proc.Id);
+                    logger.Log(LogLevel.Info, "游戏进程：{0}，来源：解析插件订阅", proc.Id);
+                }
+                catch (Exception e)
+                {
+                    logger.Log(LogLevel.Error, "Failed to open FFXIV process: {0}", e);
+                    process = null;
+                    processHandle = IntPtr.Zero;
+                }
+                finally
+                {
+                    _processLock.ExitWriteLock();
+                }
             }
             finally
             {
                 _processLock.ExitUpgradeableReadLock();
-            }
-
-            if (proc == null || proc.HasExited)
-                return;
-
-            if (proc.ProcessName == "ffxiv")
-            {
-                if (!hasLoggedDx9)
+                if (showDX9MsgBox)
                 {
-                    hasLoggedDx9 = true;
-                    logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
                     MessageBox.Show("现在 ACT 的部分功能不支持 DX9 启动的游戏。\r\n请在游戏启动器器设置里选择以 DX11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                return;
-            }
-            else if (proc.ProcessName != "ffxiv_dx11")
-            {
-                logger.Log(LogLevel.Error, "{0}", "Unknown ffxiv process.");
-                return;
-            }
-
-            _processLock.EnterWriteLock();
-            try
-            {
-                process = proc;
-                processHandle = NativeMethods.OpenProcess(ProcessAccessFlags.VirtualMemoryRead, false, proc.Id);
-                logger.Log(LogLevel.Info, "游戏进程：{0}，来源：解析插件订阅", proc.Id);
-            }
-            catch (Exception e)
-            {
-                logger.Log(LogLevel.Error, "Failed to open FFXIV process: {0}", e);
-                process = null;
-                processHandle = IntPtr.Zero;
-            }
-            finally
-            {
-                _processLock.ExitWriteLock();
             }
             OnProcessChange?.Invoke(this, null);
         }
@@ -374,7 +379,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         /// <returns>A list of pointers read relative to the end of strings in the process memory matching the |pattern|.</returns>
         public List<IntPtr> SigScan(string pattern, int offset, bool rip_addressing)
         {
-            _processLock.EnterReadLock();
+            _processLock.EnterUpgradeableReadLock();
             try
             {
                 List<IntPtr> matches_list = new List<IntPtr>();
@@ -475,7 +480,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             }
             finally
             {
-                _processLock.ExitReadLock();
+                _processLock.ExitUpgradeableReadLock();
             }
         }
 
