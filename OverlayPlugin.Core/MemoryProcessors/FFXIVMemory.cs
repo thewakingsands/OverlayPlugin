@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace RainbowMage.OverlayPlugin.MemoryProcessors
 {
-    public class FFXIVMemory
+    public class FFXIVMemory : IDisposable
     {
         public event EventHandler OnProcessChange;
 
@@ -20,6 +20,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         private readonly ReaderWriterLockSlim _processLock = new ReaderWriterLockSlim();
 
         private bool hasLoggedDx9 = false;
+        private bool hasDisposed;
 
         public FFXIVMemory(TinyIoCContainer container)
         {
@@ -476,6 +477,26 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             {
                 _processLock.ExitReadLock();
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!hasDisposed)
+            {
+                if (disposing)
+                {
+                    _processLock.Dispose();
+                }
+
+                hasDisposed = true;
+            }
+        }
+
+        void IDisposable.Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
