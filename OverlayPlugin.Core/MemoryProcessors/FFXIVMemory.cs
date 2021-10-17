@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace RainbowMage.OverlayPlugin.MemoryProcessors
@@ -16,7 +17,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         private readonly FFXIVRepository repository;
 
         //Handle the lock of process and processHandle
-        private readonly Object _processLock = new Object();
+        private readonly ReaderWriterLockSlim _processLock = new ReaderWriterLockSlim();
 
         private bool hasLoggedDx9 = false;
 
@@ -30,61 +31,63 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         private void UpdateProcess(Process proc)
         {
-            bool showDx9MsgBox = false;
-            bool hasTakenLock = false;
+            _processLock.EnterUpgradeableReadLock();
             try
             {
-                System.Threading.Monitor.Enter(_processLock, ref hasTakenLock);
                 if (processHandle != IntPtr.Zero)
                 {
-                    CloseProcessHandle();
-                }
-
-                if (proc == null || proc.HasExited)
-                    return;
-
-                if (proc.ProcessName == "ffxiv")
-                {
-                    if (!hasLoggedDx9)
+                    _processLock.EnterWriteLock();
+                    try
                     {
-                        showDx9MsgBox = true;
-                        hasLoggedDx9 = true;
-                        logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
+                        CloseProcessHandle();
                     }
-                    return;
-                }
-                else if (proc.ProcessName != "ffxiv_dx11")
-                {
-                    logger.Log(LogLevel.Error, "{0}", "Unknown ffxiv process.");
-                    return;
-                }
-
-                try
-                {
-                    process = proc;
-                    processHandle = NativeMethods.OpenProcess(ProcessAccessFlags.VirtualMemoryRead, false, proc.Id);
-                    logger.Log(LogLevel.Info, "游戏进程：{0}，来源：解析插件订阅", proc.Id);
-                }
-                catch (Exception e)
-                {
-                    logger.Log(LogLevel.Error, "Failed to open FFXIV process: {0}", e);
-
-                    process = null;
-                    processHandle = IntPtr.Zero;
+                    finally
+                    {
+                        _processLock.ExitWriteLock();
+                    }
                 }
             }
             finally
             {
-                if (hasTakenLock)
-                {
-                    System.Threading.Monitor.Exit(_processLock);
-                }
-                if (showDx9MsgBox)
-                {
-                    MessageBox.Show("现在 ACT 的部分功能不支持 DX9 启动的游戏。\r\n请在游戏启动器器设置里选择以 DX11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                _processLock.ExitUpgradeableReadLock();
             }
 
+            if (proc == null || proc.HasExited)
+                return;
+
+            if (proc.ProcessName == "ffxiv")
+            {
+                if (!hasLoggedDx9)
+                {
+                    hasLoggedDx9 = true;
+                    logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
+                    MessageBox.Show("现在 ACT 的部分功能不支持 DX9 启动的游戏。\r\n请在游戏启动器器设置里选择以 DX11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return;
+            }
+            else if (proc.ProcessName != "ffxiv_dx11")
+            {
+                logger.Log(LogLevel.Error, "{0}", "Unknown ffxiv process.");
+                return;
+            }
+
+            _processLock.EnterWriteLock();
+            try
+            {
+                process = proc;
+                processHandle = NativeMethods.OpenProcess(ProcessAccessFlags.VirtualMemoryRead, false, proc.Id);
+                logger.Log(LogLevel.Info, "游戏进程：{0}，来源：解析插件订阅", proc.Id);
+            }
+            catch (Exception e)
+            {
+                logger.Log(LogLevel.Error, "Failed to open FFXIV process: {0}", e);
+                process = null;
+                processHandle = IntPtr.Zero;
+            }
+            finally
+            {
+                _processLock.ExitWriteLock();
+            }
             OnProcessChange?.Invoke(this, null);
         }
 
@@ -137,20 +140,35 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         public bool IsValid()
         {
             bool hasChangedProcess = false;
-            bool hasTakenLock = false;
+            _processLock.EnterUpgradeableReadLock();
             try
             {
-                System.Threading.Monitor.Enter(_processLock, ref hasTakenLock);
                 if (process != null && process.HasExited)
                 {
-                    CloseProcessHandle();
+                    _processLock.EnterWriteLock();
+                    try
+                    {
+                        CloseProcessHandle();
+                    }
+                    finally
+                    {
+                        _processLock.ExitWriteLock();
+                    }
                     hasChangedProcess = true;
                 }
 
                 if (processHandle != IntPtr.Zero)
                     return true;
 
-                FindProcess();
+                _processLock.EnterWriteLock();
+                try
+                {
+                    FindProcess();
+                }
+                finally
+                {
+                    _processLock.ExitWriteLock();
+                }
                 if (processHandle == IntPtr.Zero || process == null || process.HasExited)
                 {
                     return false;
@@ -160,10 +178,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             }
             finally
             {
-                if (hasTakenLock)
-                {
-                    System.Threading.Monitor.Exit(_processLock);
-                }
+                _processLock.ExitUpgradeableReadLock();
                 if (hasChangedProcess)
                 {
                     OnProcessChange?.Invoke(this, null);
@@ -212,9 +227,17 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         /// </summary>
         public bool Peek(IntPtr address, byte[] buffer)
         {
-            IntPtr zero = IntPtr.Zero;
-            IntPtr nSize = new IntPtr(buffer.Length);
-            return NativeMethods.ReadProcessMemory(processHandle, address, buffer, nSize, ref zero);
+            _processLock.EnterReadLock();
+            try
+            {
+                IntPtr zero = IntPtr.Zero;
+                IntPtr nSize = new IntPtr(buffer.Length);
+                return NativeMethods.ReadProcessMemory(processHandle, address, buffer, nSize, ref zero);
+            }
+            finally
+            {
+                _processLock.ExitReadLock();
+            }
         }
 
         /// <summary>
@@ -248,13 +271,20 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         /// Reads |count| bytes at |addr| in the |process|. Returns null on error.
         public byte[] Read8(IntPtr addr, int count)
         {
-            int buffer_len = 1 * count;
-            var buffer = new byte[buffer_len];
-            var bytes_read = IntPtr.Zero;
-            bool ok = NativeMethods.ReadProcessMemory(processHandle, addr, buffer, new IntPtr(buffer_len), ref bytes_read);
-            if (!ok || bytes_read.ToInt32() != buffer_len)
-                return null;
-            return buffer;
+            _processLock.EnterReadLock();
+            try{
+                int buffer_len = 1 * count;
+                var buffer = new byte[buffer_len];
+                var bytes_read = IntPtr.Zero;
+                bool ok = NativeMethods.ReadProcessMemory(processHandle, addr, buffer, new IntPtr(buffer_len), ref bytes_read);
+                if (!ok || bytes_read.ToInt32() != buffer_len)
+                    return null;
+                return buffer;
+            }
+            finally
+            {
+                _processLock.ExitReadLock();
+            }
         }
 
         /// Reads |addr| in the |process| and returns it as a 16bit ints. Returns null on error.
@@ -342,8 +372,8 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         /// <returns>A list of pointers read relative to the end of strings in the process memory matching the |pattern|.</returns>
         public List<IntPtr> SigScan(string pattern, int offset, bool rip_addressing)
         {
-            lock (_processLock)
-            {
+            _processLock.EnterReadLock();
+            try{
                 List<IntPtr> matches_list = new List<IntPtr>();
 
                 if (pattern == null || pattern.Length % 2 != 0)
@@ -439,6 +469,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 }
 
                 return matches_list;
+            }
+            finally
+            {
+                _processLock.EnterReadLock();
             }
         }
     }
