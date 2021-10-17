@@ -272,7 +272,8 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         public byte[] Read8(IntPtr addr, int count)
         {
             _processLock.EnterReadLock();
-            try{
+            try
+            {
                 int buffer_len = 1 * count;
                 var buffer = new byte[buffer_len];
                 var bytes_read = IntPtr.Zero;
@@ -373,7 +374,8 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         public List<IntPtr> SigScan(string pattern, int offset, bool rip_addressing)
         {
             _processLock.EnterReadLock();
-            try{
+            try
+            {
                 List<IntPtr> matches_list = new List<IntPtr>();
 
                 if (pattern == null || pattern.Length % 2 != 0)
@@ -472,7 +474,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             }
             finally
             {
-                _processLock.EnterReadLock();
+                _processLock.ExitReadLock();
             }
         }
     }
