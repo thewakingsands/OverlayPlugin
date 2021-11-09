@@ -28,6 +28,7 @@ namespace RainbowMage.HtmlRenderer
 
         private BrowserWrapper _browser;
         private bool _isWindowless;
+        private bool _isRendering = false;
         protected IRenderTarget _target;
         private object _api;
         private Func<int, int, bool> _ctxMenuCallback = null;
@@ -185,8 +186,10 @@ namespace RainbowMage.HtmlRenderer
 
         public void BeginRender()
         {
-            EndRender();
-
+            if (_isRendering)
+            {
+                EndRender();
+            }
             var cefWindowInfo = CreateWindowInfo();
             _isWindowless = cefWindowInfo.WindowlessRenderingEnabled;
 
@@ -196,10 +199,12 @@ namespace RainbowMage.HtmlRenderer
 
             cefBrowserSettings.Dispose();
             cefWindowInfo.Dispose();
+            _isRendering = true;
         }
 
         public void EndRender()
         {
+            _isRendering = false;
             if (_browser != null && _browser.IsBrowserInitialized)
             {
                 _browser.GetBrowser().CloseBrowser(true);
@@ -208,6 +213,7 @@ namespace RainbowMage.HtmlRenderer
 
                 InitBrowser();
             }
+            scriptQueue.Clear();
         }
 
         public void SetMaxFramerate(int fps)
@@ -553,13 +559,16 @@ MaxUploadsPerDay=0
 
         public void ExecuteScript(string script)
         {
-            if (_browser != null && _browser.IsBrowserInitialized)
+            if (_isRendering)
             {
-                _browser.GetMainFrame().ExecuteJavaScriptAsync(script, "injected");
-            }
-            else
-            {
-                this.scriptQueue.Add(script);
+                if (_browser != null && _browser.IsBrowserInitialized)
+                {
+                    _browser.GetMainFrame().ExecuteJavaScriptAsync(script, "injected");
+                }
+                else
+                {
+                    this.scriptQueue.Add(script);
+                }
             }
         }
 
