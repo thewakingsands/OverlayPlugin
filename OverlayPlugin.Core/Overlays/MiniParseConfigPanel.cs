@@ -55,6 +55,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
             this.cbWhiteBg.Checked = config.ForceWhiteBackground;
             this.cbEnableOverlay.Checked = !config.Disabled;
             this.cbMuteHidden.Checked = config.MuteWhenHidden;
+            this.cbHideOutOfCombat.Checked = config.HideOutOfCombat;
 
             hotkeyColAction.DisplayMember = "Key";
             hotkeyColAction.ValueMember = "Value";
@@ -274,12 +275,18 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
         private void tbZoom_ValueChanged(object sender, EventArgs e)
         {
+            if (this.config.Zoom == 0 && Math.Abs(this.config.Zoom - this.tbZoom.Value) < 10)
+            {
+                // Don't change the zoom level if we don't want any zoom (see #152 for details).
+                return;
+            }
+
             this.config.Zoom = this.tbZoom.Value;
         }
 
         private void btnResetZoom_Click(object sender, EventArgs e)
         {
-            this.config.Zoom = 1;
+            this.config.Zoom = 0;
         }
 
         private void btnAddHotkey_Click(object sender, EventArgs e)
@@ -417,6 +424,11 @@ namespace RainbowMage.OverlayPlugin.Overlays
         private void cbMuteHidden_CheckedChanged(object sender, EventArgs e)
         {
             config.MuteWhenHidden = cbMuteHidden.Checked;
+        }
+
+        private void cbHideOutOfCombat_CheckedChanged(object sender, EventArgs e)
+        {
+            config.HideOutOfCombat = cbHideOutOfCombat.Checked;
         }
     }
 }

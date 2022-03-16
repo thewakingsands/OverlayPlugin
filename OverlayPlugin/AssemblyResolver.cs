@@ -20,6 +20,7 @@ namespace RainbowMage.OverlayPlugin
         };
 
         public List<string> Directories { get; set; }
+        private Dictionary<string, Assembly> assemblyCache = new Dictionary<string, Assembly>();
 
         public AssemblyResolver(IEnumerable<string> directories)
         {
@@ -45,7 +46,18 @@ namespace RainbowMage.OverlayPlugin
 
         private Assembly CustomAssemblyResolve(object sender, ResolveEventArgs e)
         {
+            Assembly result;
+            if (assemblyCache.TryGetValue(e.Name, out result))
+            {
+                return result;
+            }
+
             var match = assemblyNameParser.Match(e.Name);
+
+            if (assemblyCache.TryGetValue(match.Groups["name"].Value, out result))
+            {
+                return result;
+            }
 
             // Directories プロパティで指定されたディレクトリを基準にアセンブリを検索する
             foreach (var directory in this.Directories)
@@ -84,6 +96,12 @@ namespace RainbowMage.OverlayPlugin
                     }
 #endif
                     OnAssemblyLoaded(asm);
+                    assemblyCache[e.Name] = asm;
+
+                    if (match.Success)
+                    {
+                        assemblyCache[match.Groups["name"].Value] = asm;
+                    }
                     return asm;
                 }
             }

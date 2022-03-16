@@ -22,8 +22,8 @@ namespace RainbowMage.HtmlRenderer
 
         public bool Locked = false;
 
-        public WinFormsOffScreenRenderer(string overlayName, string url, IWinFormsTarget target, object api) :
-            base(overlayName, url, target, api)
+        public WinFormsOffScreenRenderer(string overlayName, string overlayUuid, string url, IWinFormsTarget target, object api) :
+            base(overlayName, overlayUuid, url, target, api)
         {
             target.MouseWheel += OnMouseWheel;
             target.MouseDown += OnMouseDown;

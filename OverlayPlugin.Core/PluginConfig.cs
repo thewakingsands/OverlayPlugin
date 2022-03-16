@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Linq;
+using System.Windows.Forms;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -266,6 +267,7 @@ namespace RainbowMage.OverlayPlugin
             this.IsFirstLaunch = true;
 
             var useBackup = true;
+            var initEmpty = false;
 
             if (File.Exists(configPath))
             {
@@ -287,17 +289,38 @@ namespace RainbowMage.OverlayPlugin
                 if (File.Exists(configPath + BACKUP_SUFFIX))
                 {
                     logger.Log(LogLevel.Info, "LoadConfig: Loading backup config...");
-                    LoadJson(configPath + BACKUP_SUFFIX);
+
+                    try
+                    {
+                        LoadJson(configPath + BACKUP_SUFFIX);
+                    } catch (Exception ex)
+                    {
+                        logger.Log(LogLevel.Error, "LoadConfig: Failed to load backup: {0}", ex);
+
+                        var dialog = new Controls.ConfigErrorPrompt();
+                        if (dialog.ShowDialog() == DialogResult.Yes)
+                        {
+                            initEmpty = true;
+                        } else
+                        {
+                            throw ex;
+                        }
+                    }
                 }
                 else
                 {
-                    this.Overlays = new OverlayConfigList<IOverlayConfig>(logger);
-
-                    this.WSServerIP = "127.0.0.1";
-                    this.WSServerPort = 10501;
-                    this.WSServerRunning = false;
-                    this.WSServerSSL = false;
+                    initEmpty = true;
                 }
+            }
+
+            if (initEmpty)
+            {
+                this.Overlays = new OverlayConfigList<IOverlayConfig>(logger);
+
+                this.WSServerIP = "127.0.0.1";
+                this.WSServerPort = 10501;
+                this.WSServerRunning = false;
+                this.WSServerSSL = false;
             }
 
             this.isDirty = false;

@@ -99,7 +99,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
         public MiniParseOverlayConfig(string name) : base(name)
         {
             this.noFocus = true;
-            this.zoom = 1;
+            this.zoom = 0;
         }
 
         public MiniParseOverlayConfig() : base(null) { }

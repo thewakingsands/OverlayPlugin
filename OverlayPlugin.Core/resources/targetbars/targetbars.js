@@ -39,15 +39,25 @@ const configTitles = {
 };
 
 const helpText = {
-  English: '(🔒lock overlay to hide settings)',
-  Chinese: '(🔒锁定悬浮窗以隐藏设置)',
-  German: '(🔒Sperre das Overlay um die Einstellungen zu verstecken)',
+  English: `(🔒lock overlay to hide settings)<br>
+<a href="https://mdn.github.io/css-examples/tools/color-picker/" target="_blank">
+  Color picker
+</a>`,
+  Chinese: `(🔒锁定悬浮窗以隐藏设置)
+<a href="https://mdn.github.io/css-examples/tools/color-picker/" target="_blank">
+  色彩选择工具
+</a>`,
+  German: `(🔒Sperre das Overlay um die Einstellungen zu verstecken)
+<a href="https://mdn.github.io/css-examples/tools/color-picker/" target="_blank">
+  Farbauswahl
+</a>`,
 };
 
 // language -> displayed option text -> text key
 const textOptionsAll = {
   English: {
     'None': 'None',
+    'Name': 'Name',
     'Current HP': 'CurrentHP',
     'Max HP': 'MaxHP',
     'Current / Max HP': 'CurrentAndMaxHP',
@@ -60,6 +70,7 @@ const textOptionsAll = {
   },
   Chinese: {
     '不显示': 'None',
+    '名称': 'Name',
     '当前体力值': 'CurrentHP',
     '最大体力值': 'MaxHP',
     '当前体力值/最大体力值': 'CurrentAndMaxHP',
@@ -72,6 +83,7 @@ const textOptionsAll = {
   },
   German: {
     'None': 'None',
+    'Name': 'Name',
     'Aktuelle HP': 'CurrentHP',
     'Maximale HP': 'MaxHP',
     'Aktuelle / Maximale HP': 'CurrentAndMaxHP',
@@ -85,17 +97,18 @@ const textOptionsAll = {
 };
 
 
-const overlayDataKey = 'targetbars';
+let overlayDataKey;
 const targets = ['Target', 'Focus', 'Hover', 'TargetOfTarget'];
 
 // Values that come directly from a target object.
-const rawKeys = ['CurrentHP', 'MaxHP', 'Distance', 'EffectiveDistance'];
+const rawStringKeys = ['Name'];
+const rawNumberKeys = ['CurrentHP', 'MaxHP', 'Distance', 'EffectiveDistance'];
 // Values that need to be calculated.
 const otherKeys = ['PercentHP', 'CurrentAndMaxHP', 'TimeToDeath'];
 // Values that only exist for the current Target.
 const targetOnlyKeys = ['AbsoluteEnmity', 'RelativeEnmity'];
 
-const validKeys = ['None', ...rawKeys, ...otherKeys, ...targetOnlyKeys];
+const validKeys = ['None', ...rawStringKeys, ...rawNumberKeys, ...otherKeys, ...targetOnlyKeys];
 
 // Remove enmity from non-target keys.
 const textOptionsNonTarget = (() => {
@@ -128,6 +141,7 @@ const FormatType = {
 };
 
 const formatOptionsByKey = {
+  Name: {},
   CurrentHP: {
     maximumFractionDigits: 0,
   },
@@ -302,6 +316,46 @@ const configStructure = [
     type: 'text',
     default: 'white',
   },
+  /*{
+    id: 'fontShadowColor',
+    name: {
+      English: 'Color of the font shadow',
+      Chinese: '字体阴影的颜色',
+      German: 'Farbe des Schriftschattens',
+    },
+    type: 'text',
+    default: 'black',
+  },
+  {
+    id: 'fontShadowSize',
+    name: {
+      English: 'Size of the font shadow',
+      Chinese: '字体阴影的大小',
+      German: 'Größe des Schriftschattens',
+    },
+    type: 'text',
+    default: 0,
+  },
+  {
+    id: 'fontOutlineColor',
+    name: {
+      English: 'Color of the font outline',
+      Chinese: '字体轮廓的颜色',
+      German: 'Farbe der Schriftumrandung',
+    },
+    type: 'text',
+    default: 'black',
+  },
+  {
+    id: 'fontOutlineSize',
+    name: {
+      English: 'Size of the font outline',
+      Chinese: '字体轮廓的大小',
+      German: 'Dicke der Schriftumrandung',
+    },
+    type: 'text',
+    default: 0,
+  },*/
   {
     id: 'bgColor',
     name: {
@@ -514,6 +568,10 @@ class BarUI {
     this.div.style.fontSize = defaultAsPx(this.options.fontSize);
     this.div.style.fontFamily = this.options.fontFamily;
     this.div.style.color = this.options.fontColor;
+    /*this.div.style.webkitTextStroke = defaultAsPx(this.options.fontOutlineSize) + ' ' + this.options.fontOutlineColor;
+    if (this.options.fontShadowSize !== '0') {
+      this.div.style.textShadow = '1px 1px ' + defaultAsPx(this.options.fontShadowSize) + ' ' + this.options.fontShadowColor;
+    }*/
 
     // Alignment hack:
     // align-self:center doesn't work when children are taller than parents.
@@ -555,7 +613,14 @@ class BarUI {
       return;
     }
 
-    for (const key of rawKeys) {
+    for (const key of rawStringKeys) {
+      if (data[key] === this.lastData[key])
+        continue;
+      this.setValue(key, data[key]);
+    }
+
+
+    for (const key of rawNumberKeys) {
       if (data[key] === this.lastData[key])
         continue;
 
@@ -936,6 +1001,9 @@ window.addEventListener('DOMContentLoaded', async (e) => {
   if (langResult && langResult.language)
     lang = langResult.language;
 
+  // Retrieve the overlay UUID
+  overlayDataKey = 'overlay#' + (window.OverlayPluginApi ? OverlayPluginApi.overlayUuid : 'web') + '#targetbars';
+
   // Determine the type of target bar by a specially named container.
   let containerDiv;
   let targetType;
@@ -965,8 +1033,21 @@ window.addEventListener('DOMContentLoaded', async (e) => {
   // Overwrite options from loaded values.  Options are stored once per target type,
   // so that different targets can be configured differently.
   const loadResult = await window.callOverlayHandler({ call: 'loadData', key: overlayDataKey });
-  if (loadResult && loadResult.data)
+  if (loadResult && loadResult.data) {
     options = Object.assign(options, loadResult.data);
+  } else if (!window.OverlayPluginApi || !window.OverlayPluginApi.preview) {
+    // Load settings from the old key but only if we're not creating a new overlay.
+    const oldSettings = await window.callOverlayHandler({ call: 'loadData', key: 'targetbars' });
+    if (oldSettings && oldSettings.data) {
+      options = Object.assign(options, oldSettings.data);
+      await callOverlayHandler({
+        call: 'saveData',
+        key: overlayDataKey,
+        data: options,
+      });
+    }
+  }
+
 
   // Creating settings will build the initial bars UI.
   // Changes to settings rebuild the bars.

@@ -86,11 +86,11 @@ namespace RainbowMage.HtmlRenderer
             }
         }
 
-        public OverlayForm(string overlayName, string url, int maxFrameRate = 30, object api = null)
+        public OverlayForm(string overlayName, string overlayUuid, string url, int maxFrameRate = 30, object api = null)
         {
             InitializeComponent();
 
-            this.Renderer = new WinFormsOffScreenRenderer(overlayName, url, this, api);
+            this.Renderer = new WinFormsOffScreenRenderer(overlayName, overlayUuid, url, this, api);
             this.maxFrameRate = maxFrameRate;
             this.url = url;
 

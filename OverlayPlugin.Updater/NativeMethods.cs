@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RainbowMage.OverlayPlugin.Updater
 {
@@ -15,6 +11,10 @@ namespace RainbowMage.OverlayPlugin.Updater
         [DllImport("kernel32.dll")]
         public static extern void FreeLibrary(IntPtr handle);
 
-        
+        [DllImport("user32.dll")]
+        public static extern short GetKeyState(int nVirtKey);
+
+        public const int VK_SHIFT = 0x10;
+
     }
 }

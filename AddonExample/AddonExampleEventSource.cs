@@ -14,7 +14,7 @@ namespace AddonExample
         // Original Timer
         System.Timers.Timer originalTimer;
 
-        public AddonExampleEventSource(RainbowMage.OverlayPlugin.ILogger logger) : base(logger)
+        public AddonExampleEventSource(TinyIoCContainer container) : base(container)
         {
             Name = "AddonExampleES";
 

@@ -516,82 +516,61 @@
   <data name="&gt;&gt;experimentalWarning.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="lblCutsceneDetectionLog.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblLogLines.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblCutsceneDetectionLog.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="lblLogLines.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="lblCutsceneDetectionLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 198</value>
+  <data name="lblLogLines.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 239</value>
   </data>
-  <data name="lblCutsceneDetectionLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 160</value>
+  <data name="lblLogLines.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 19</value>
   </data>
-  <data name="lblCutsceneDetectionLog.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+  <data name="lblLogLines.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
   </data>
-  <data name="lblCutsceneDetectionLog.Text" xml:space="preserve">
-    <value>Log custsence detection</value>
+  <data name="lblLogLines.Text" xml:space="preserve">
+    <value>Write additional log lines</value>
   </data>
-  <data name="&gt;&gt;lblCutsceneDetectionLog.Name" xml:space="preserve">
-    <value>lblCutsceneDetectionLog</value>
+  <data name="lblLogLines.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;lblCutsceneDetectionLog.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblLogLines.Name" xml:space="preserve">
+    <value>lblLogLines</value>
+  </data>
+  <data name="&gt;&gt;lblLogLines.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblCutsceneDetectionLog.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblLogLines.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;lblCutsceneDetectionLog.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="cbCutsceneDetectionLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 201</value>
-  </data>
-  <data name="cbCutsceneDetectionLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 24</value>
-  </data>
-  <data name="cbCutsceneDetectionLog.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;cbCutsceneDetectionLog.Name" xml:space="preserve">
-    <value>cbCutsceneDetectionLog</value>
-  </data>
-  <data name="&gt;&gt;cbCutsceneDetectionLog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbCutsceneDetectionLog.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;cbCutsceneDetectionLog.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblLogLines.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbLogLines.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="cbLogLines.Location" type="System.Drawing.Point, System.Drawing">
+    <value>208, 242</value>
   </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 120</value>
+  <data name="cbLogLines.Size" type="System.Drawing.Size, System.Drawing">
+    <value>15, 13</value>
   </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 18</value>
+  <data name="cbLogLines.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
   </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;cbLogLines.Name" xml:space="preserve">
+    <value>cbLogLines</value>
   </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
+  <data name="&gt;&gt;cbLogLines.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbLogLines.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbLogLines.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
   <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -622,7 +601,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cbEndEncounterOutOfCombat" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbEndEncounterAfterWipe" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label7" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="textEnmityInterval" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="comboSortKey" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="textUpdateInterval" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkSortDesc" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbUpdateDuringImport" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="experimentalWarning" Row="8" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="lblCutsceneDetectionLog" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbCutsceneDetectionLog" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,155,Percent,100" /&gt;&lt;Rows Styles="Absolute,24,Absolute,24,Absolute,24,Absolute,24,Absolute,24,Absolute,18,Absolute,20,Absolute,20,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="cbEndEncounterOutOfCombat" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbEndEncounterAfterWipe" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label7" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="textEnmityInterval" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="comboSortKey" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="textUpdateInterval" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkSortDesc" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbUpdateDuringImport" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="experimentalWarning" Row="8" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="lblLogLines" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbLogLines" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,205,Percent,100" /&gt;&lt;Rows Styles="Absolute,26,Absolute,26,Absolute,26,Absolute,26,Absolute,26,Absolute,20,Absolute,20,Absolute,20,Absolute,49,Absolute,19,Absolute,8" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -638,5 +617,8 @@
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lblCutsceneDetectionLog.Text" xml:space="preserve">
+    <value>Write cutscene detection log lines</value>
   </data>
 </root>

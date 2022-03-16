@@ -42,11 +42,13 @@ namespace RainbowMage.HtmlRenderer
         private int lastClickPosX;
         private int lastClickPosY;
         private string overlayName;
+        private string overlayUuid;
         public Region DraggableRegion;
 
-        public Renderer(string overlayName, string url, IRenderTarget target, object api)
+        public Renderer(string overlayName, string overlayUuid, string url, IRenderTarget target, object api)
         {
             this.overlayName = overlayName;
+            this.overlayUuid = overlayUuid;
             this._target = target;
             this.lastUrl = url;
             this._api = api;
@@ -103,6 +105,7 @@ namespace RainbowMage.HtmlRenderer
                 var initScript = @"(async () => {
                     await CefSharp.BindObjectAsync('OverlayPluginApi');
                     OverlayPluginApi.overlayName = " + JsonConvert.SerializeObject(this.overlayName) + @";
+                    OverlayPluginApi.overlayUuid = " + JsonConvert.SerializeObject(this.overlayUuid) + @";
                     OverlayPluginApi.ready = true;
                 })();";
                 e.Frame.ExecuteJavaScriptAsync(initScript, "init");
@@ -136,7 +139,10 @@ namespace RainbowMage.HtmlRenderer
 
         public void Browser_ConsoleMessage(object sender, ConsoleMessageEventArgs e)
         {
-            BrowserConsoleLog?.Invoke(sender, new BrowserConsoleLogEventArgs(e.Message, e.Source, e.Line));
+            // Ignore FLoC exception errors. CEF doesn't include FLoC code which means that it doesn't understand
+            // the FLoC exception rule. However, since it can't use FLoC to begin with, that's not an issue either way.
+            if (!e.Message.StartsWith("Error with Permissions-Policy header:"))
+                BrowserConsoleLog?.Invoke(sender, new BrowserConsoleLogEventArgs(e.Message, e.Source, e.Line));
         }
         public void Browser_ConsoleMessage(object sender, BrowserConsoleLogEventArgs e)
         {
@@ -470,6 +476,13 @@ namespace RainbowMage.HtmlRenderer
                     BrowserSubprocessPath = Path.Combine(cefPath, "CefSharp.BrowserSubprocess.exe")
                 };
 
+                try
+                {
+                    File.WriteAllText(cefSettings.LogFile, "");
+                } catch(Exception)
+                {
+                    // Ignore; if we can't open the log, CEF can't do it either which means that we don't have to worry about log size.
+                }
 
                 cefSettings.EnableAudio();
 

@@ -46,7 +46,7 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
 
         private static readonly CEDirectorOPCodes cedirector_cn = new CEDirectorOPCodes(
           0x30,
-          0x024E
+          0x025D
         );
 
         private struct ActorControl143
@@ -54,12 +54,12 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             public ActorControl143(TinyIoCContainer container, Assembly assembly_)
             {
                 var netHelper = container.Resolve<NetworkParser>();
-                packetType = assembly_.GetType("Machina.FFXIV.Headers.Server_ActorControl143");
+                packetType = assembly_.GetType("Machina.FFXIV.Headers.Server_ActorControlSelf");
                 size = Marshal.SizeOf(packetType);
                 categoryOffset = netHelper.GetOffset(packetType, "category");
                 param1Offset = netHelper.GetOffset(packetType, "param1");
                 param2Offset = netHelper.GetOffset(packetType, "param2");
-                opCode = netHelper.GetOpcode("ActorControl143");
+                opCode = netHelper.GetOpcode("ActorControlSelf");
             }
             public Type packetType;
             public int size;

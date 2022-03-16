@@ -178,9 +178,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
         }
 
-        private void cbCutsceneDetectionLog_CheckedChanged(object sender, EventArgs e)
+        private void cbLogLines_CheckedChanged(object sender, EventArgs e)
         {
-            this.config.CutsceneDetectionLog = this.cbCutsceneDetectionLog.Checked;
+            this.config.LogLines = this.cbLogLines.Checked;
         }
     }
 }

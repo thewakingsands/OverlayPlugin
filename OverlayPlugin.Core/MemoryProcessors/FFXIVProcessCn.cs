@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
 
@@ -7,7 +8,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 {
     public class FFXIVProcessCn : FFXIVProcess
     {
-        // Last updated for FFXIV 5.5
+        // Last updated for FFXIV 6.0
 
         [StructLayout(LayoutKind.Explicit)]
         public unsafe struct EntityMemory
@@ -44,7 +45,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             [FieldOffset(0x1C4)]
             public CharacterDetails charDetails;
 
-            [FieldOffset(0x1997)]
+            [FieldOffset(0x19D9)]
             public byte shieldPercentage;
         }
 
@@ -73,10 +74,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             [FieldOffset(0x16)]
             public short max_cp;
 
-            [FieldOffset(0x1E)]
+            [FieldOffset(0x1C)]
             public EntityJob job;
 
-            [FieldOffset(0x1F)]
+            [FieldOffset(0x1D)]
             public byte level;
         }
         public FFXIVProcessCn(TinyIoCContainer container) : base(container) { }
@@ -203,11 +204,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
                 // dump '\0' string terminators
                 var memoryName = System.Text.Encoding.UTF8.GetString(mem.Name, EntityMemory.nameBytes).Split(new[] { '\0' }, 2)[0];
-                var capitalizedName = FFXIV_ACT_Plugin.Common.StringHelper.ToProperCase(memoryName);
 
                 EntityData entity = new EntityData()
                 {
-                    name = capitalizedName,
+                    name = memoryName,
                     id = mem.id,
                     type = mem.type,
                     distance = mem.distance,
@@ -226,7 +226,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     // This doesn't exist in memory, so just send the right value.
                     // As there are other versions that still have it, don't change the event.
                     entity.max_mp = 10000;
-
                     entity.shield_value = mem.shieldPercentage * entity.max_hp / 100;
 
                     if (IsGatherer(entity.job))
@@ -339,461 +338,649 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                             return JObject.FromObject(*(AstrologianJobMemory*)&p[0]);
                         case EntityJob.SAM:
                             return JObject.FromObject(*(SamuraiJobMemory*)&p[0]);
+                        case EntityJob.SGE:
+                            return JObject.FromObject(*(SageJobMemory*)&p[0]);
+                        case EntityJob.RPR:
+                            return JObject.FromObject(*(ReaperJobMemory*)&p[0]);
                     }
+                }
                     return null;
                 }
             }
         }
 
-        [Serializable]
-        [StructLayout(LayoutKind.Explicit)]
-        public struct RedMageJobMemory
+    [Serializable]
+    [StructLayout(LayoutKind.Explicit)]
+    public struct RedMageJobMemory
+    {
+        [FieldOffset(0x00)]
+        public byte whiteMana;
+
+        [FieldOffset(0x01)]
+        public byte blackMana;
+
+        [FieldOffset(0x02)]
+        public byte manaStacks;
+    };
+
+    [Serializable]
+    [StructLayout(LayoutKind.Explicit)]
+    public struct WarriorJobMemory
+    {
+        [FieldOffset(0x00)]
+        public byte beast;
+    };
+
+    [Serializable]
+    [StructLayout(LayoutKind.Explicit)]
+    public struct DarkKnightJobMemory
+    {
+        [FieldOffset(0x00)]
+        public byte blood;
+
+        [FieldOffset(0x02)]
+        public ushort darksideMilliseconds;
+
+        [FieldOffset(0x04)]
+        public byte darkArts;
+
+        [FieldOffset(0x06)]
+        public ushort livingShadowMilliseconds;
+    };
+
+    [Serializable]
+    [StructLayout(LayoutKind.Explicit)]
+    public struct PaladinJobMemory
+    {
+        [FieldOffset(0x00)]
+        public byte oath;
+    };
+
+    [Serializable]
+    [StructLayout(LayoutKind.Explicit)]
+    public struct GunbreakerJobMemory
+    {
+        [FieldOffset(0x00)]
+        public byte cartridges;
+
+        [FieldOffset(0x02)]
+        private ushort continuationMilliseconds; // Is 15000 if and only if continuationState is not zero.
+
+        [FieldOffset(0x04)]
+        public byte continuationState;
+    };
+
+    [Serializable]
+    [StructLayout(LayoutKind.Explicit)]
+    public struct BardJobMemory
+    {
+        [Flags]
+        private enum SongFlags : byte
         {
-            [FieldOffset(0x00)]
-            public byte whiteMana;
+            None = 0,
+            Ballad = 1, // Mage's Ballad.
+            Paeon = 1 << 1, // Army's Paeon.
+            Minuet = 1 | 1 << 1, // The Wanderer's Minuet.
+            BalladLastPlayed = 1 << 2,
+            PaeonLastPlayed = 1 << 3,
+            MinuetLastPlayed = 1 << 2 | 1 << 3,
+            BalladCoda = 1 << 4,
+            PaeonCoda = 1 << 5,
+            MinuetCoda = 1 << 6,
+        }
 
-            [FieldOffset(0x01)]
-            public byte blackMana;
-        };
+        [FieldOffset(0x00)]
+        public ushort songMilliseconds;
 
-        [Serializable]
-        [StructLayout(LayoutKind.Explicit)]
-        public struct WarriorJobMemory
+        [FieldOffset(0x04)]
+        public byte songProcs;
+
+        [FieldOffset(0x05)]
+        public byte soulGauge;
+
+        [NonSerialized]
+        [FieldOffset(0x06)]
+        private SongFlags songFlags;
+
+        public String songName
         {
-            [FieldOffset(0x00)]
-            public byte beast;
-        };
-
-        [Serializable]
-        [StructLayout(LayoutKind.Explicit)]
-        public struct DarkKnightJobMemory
-        {
-            [FieldOffset(0x00)]
-            public byte blood;
-
-            [FieldOffset(0x02)]
-            public ushort darksideMilliseconds;
-
-            [FieldOffset(0x04)]
-            public byte darkArts;
-
-            [FieldOffset(0x06)]
-            public ushort livingShadowMilliseconds;
-        };
-
-        [Serializable]
-        [StructLayout(LayoutKind.Explicit)]
-        public struct PaladinJobMemory
-        {
-            [FieldOffset(0x00)]
-            public byte oath;
-        };
-
-        [Serializable]
-        [StructLayout(LayoutKind.Explicit)]
-        public struct GunbreakerJobMemory
-        {
-            [FieldOffset(0x00)]
-            public byte cartridges;
-
-            [FieldOffset(0x02)]
-            private ushort continuationMilliseconds; // Is 15000 if and only if continuationState is not zero.
-
-            [FieldOffset(0x04)]
-            public byte continuationState;
-        };
-
-        [Serializable]
-        [StructLayout(LayoutKind.Explicit)]
-        public struct BardJobMemory
-        {
-            private enum Song : byte
+            get
             {
-                None = 0,
-                Ballad = 5, // Mage's Ballad.
-                Paeon = 10, // Army's Paeon.
-                Minuet = 15, // The Wanderer's Minuet.
-            }
-
-            [FieldOffset(0x00)]
-            public ushort songMilliseconds;
-
-            [FieldOffset(0x02)]
-            public byte songProcs;
-
-            [FieldOffset(0x03)]
-            public byte soulGauge;
-
-            [NonSerialized]
-            [FieldOffset(0x04)]
-            private Song song_type;
-
-            public String songName
-            {
-                get
-                {
-                    return !Enum.IsDefined(typeof(Song), song_type) ? "None" : song_type.ToString();
-                }
-            }
-
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct DancerJobMemory
-        {
-            private enum Step : byte
-            {
-                None = 0,
-                Emboite = 1,
-                Entrechat = 2,
-                Jete = 3,
-                Pirouette = 4,
-            }
-
-            [FieldOffset(0x00)]
-            public byte feathers;
-
-            [FieldOffset(0x01)]
-            public byte esprit;
-
-            [NonSerialized]
-            [FieldOffset(0x02)]
-            private Step step1;  // Order of steps in current Standard Step/Technical Step combo.
-
-            [NonSerialized]
-            [FieldOffset(0x03)]
-            private Step step2;
-
-            [NonSerialized]
-            [FieldOffset(0x04)]
-            private Step step3;
-
-            [NonSerialized]
-            [FieldOffset(0x05)]
-            private Step step4;
-
-            [FieldOffset(0x06)]
-            public byte currentStep; // Number of steps executed in current Standard Step/Technical Step combo.
-
-            public string steps
-            {
-                get
-                {
-                    string _steps = step1 == Step.None ? "None" : step1.ToString();
-                    _steps += step2 != Step.None ? ", " + step2.ToString() : "";
-                    _steps += step3 != Step.None ? ", " + step3.ToString() : "";
-                    _steps += step4 != Step.None ? ", " + step4.ToString() : "";
-                    return _steps;
-                }
-            }
-        };
-
-        [Serializable]
-        [StructLayout(LayoutKind.Explicit)]
-        public struct DragoonJobMemory
-        {
-            [NonSerialized]
-            [FieldOffset(0x00)]
-            private ushort blood_or_life_ms;
-
-            [NonSerialized]
-            [FieldOffset(0x02)]
-            private byte stance; // 0 = None, 1 = Blood, 2 = Life
-
-            [FieldOffset(0x03)]
-            public byte eyesAmount;
-
-            public uint bloodMilliseconds
-            {
-                get
-                {
-                    if (stance == 1)
-                        return blood_or_life_ms;
-                    else
-                        return 0;
-                }
-            }
-            public uint lifeMilliseconds
-            {
-                get
-                {
-                    if (stance == 2)
-                        return blood_or_life_ms;
-                    else
-                        return 0;
-                }
-            }
-        };
-
-        [Serializable]
-        [StructLayout(LayoutKind.Explicit)]
-        public struct NinjaJobMemory
-        {
-            [FieldOffset(0x00)]
-            public uint hutonMilliseconds;
-
-            [FieldOffset(0x04)]
-            public byte ninkiAmount;
-
-            [FieldOffset(0x05)]
-            private byte hutonCount; // Why though?
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct ThaumaturgeJobMemory
-        {
-            [FieldOffset(0x02)]
-            public ushort umbralMilliseconds; // Number of ms left in umbral fire/ice.
-
-            [FieldOffset(0x04)]
-            public sbyte umbralStacks; // Positive = Umbral Fire Stacks, Negative = Umbral Ice Stacks.
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct BlackMageJobMemory
-        {
-            [FieldOffset(0x00)]
-            public ushort nextPolyglotMilliseconds; // Number of ms left before polyglot proc.
-
-            [FieldOffset(0x02)]
-            public ushort umbralMilliseconds; // Number of ms left in umbral fire/ice.
-
-            [FieldOffset(0x04)]
-            public sbyte umbralStacks; // Positive = Umbral Fire Stacks, Negative = Umbral Ice Stacks.
-
-            [FieldOffset(0x05)]
-            public byte umbralHearts;
-
-            [FieldOffset(0x06)]
-            public byte foulCount;
-
-            [NonSerialized]
-            [FieldOffset(0x07)]
-            private byte enochian_state; // Bit 0 = Enochian active. Bit 1 = Polygot active.
-
-            public bool enochian
-            {
-                get
-                {
-                    return (enochian_state & 0xF) == 1;
-                }
-            }
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct WhiteMageJobMemory
-        {
-            [FieldOffset(0x02)]
-            public ushort lilyMilliseconds; // Number of ms left before lily gain.
-
-            [FieldOffset(0x04)]
-            public byte lilyStacks;
-
-            [FieldOffset(0x05)]
-            public byte bloodlilyStacks;
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct ArcanistJobMemory
-        {
-            [FieldOffset(0x04)]
-            public byte aetherflowStacks;
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct SummonerJobMemory
-        {
-            [FieldOffset(0x00)]
-            public ushort stanceMilliseconds; // Dreadwyrm or Bahamut/Phoenix time left in ms.
-
-            [FieldOffset(0x02)]
-            public byte bahamutStance; // 5 if Bahamut/Phoenix summoned, else 0.
-
-            [FieldOffset(0x03)]
-            public byte bahamutSummoned; // 1 if Bahamut/Phoenix summoned, else 0.
-
-            [NonSerialized]
-            [FieldOffset(0x04)]
-            private byte stacks; // Bits 1-2: Aetherflow. Bits 3-4: Dreadwyrm. Bit 5: Phoenix ready.
-
-            public int aetherflowStacks
-            {
-                get
-                {
-                    return (stacks >> 0) & 0x3; // Bottom 2 bits.
-                }
-            }
-            public int dreadwyrmStacks
-            {
-                get
-                {
-                    return (stacks >> 2) & 0x3; // Bottom 2 bits.
-                }
-            }
-            public bool phoenixReady
-            {
-                get
-                {
-                    return ((stacks >> 4) & 0x3) == 1; // Bottom 2 bits.
-                }
-            }
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct ScholarJobMemory
-        {
-            [FieldOffset(0x02)]
-            public byte aetherflowStacks;
-
-            [FieldOffset(0x03)]
-            public byte fairyGauge;
-
-            [FieldOffset(0x04)]
-            public ushort fairyMilliseconds; // Seraph time left ms.
-
-            [FieldOffset(0x06)]
-            public byte fairyStatus; // Varies depending on which fairy was summoned, during Seraph/Dissipation: 6 - Eos, 7 - Selene, else 0.
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct MonkJobMemory
-        {
-            [FieldOffset(0x00)]
-            public byte chakraStacks;
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct MachinistJobMemory
-        {
-            [FieldOffset(0x00)]
-            public ushort overheatMilliseconds;
-
-            [FieldOffset(0x02)]
-            public ushort batteryMilliseconds;
-
-            [FieldOffset(0x04)]
-            public byte heat;
-
-            [FieldOffset(0x05)]
-            public byte battery;
-
-            [FieldOffset(0x06)]
-            public byte lastBatteryAmount;
-
-            [NonSerialized]
-            [FieldOffset(0x07)]
-            private byte chargeTimerState;
-
-            public bool overheatActive
-            {
-                get
-                {
-                    return (chargeTimerState & 0x1) == 1;
-                }
-            }
-
-            public bool robotActive
-            {
-                get
-                {
-                    return (chargeTimerState & 0x2) == 1;
-                }
-            }
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct AstrologianJobMemory
-        {
-            public enum Card : byte
-            {
-                None = 0,
-                Balance = 1,
-                Bole = 2,
-                Arrow = 3,
-                Spear = 4,
-                Ewer = 5,
-                Spire = 6,
-            }
-
-            public enum Arcanum : byte
-            {
-                None = 0,
-                Solar = 1,
-                Lunar = 2,
-                Celestial = 3,
-            }
-
-            [FieldOffset(0x04)]
-            private Card _heldCard;
-
-            [NonSerialized]
-            [FieldOffset(0x05)]
-            private Arcanum arcanum_1;
-
-            [NonSerialized]
-            [FieldOffset(0x06)]
-            private Arcanum arcanum_2;
-
-            [NonSerialized]
-            [FieldOffset(0x07)]
-            private Arcanum arcanum_3;
-
-            public string heldCard
-            {
-                get
-                {
-                    return _heldCard.ToString();
-                }
-            }
-
-            public string arcanums
-            {
-                get
-                {
-                    string _arcanums = arcanum_1 == Arcanum.None ? "None" : arcanum_1.ToString();
-                    _arcanums += arcanum_2 != Arcanum.None ? ", " + arcanum_2.ToString() : "";
-                    _arcanums += arcanum_3 != Arcanum.None ? ", " + arcanum_3.ToString() : "";
-                    return _arcanums;
-                }
-            }
-        };
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct SamuraiJobMemory
-        {
-            [FieldOffset(0x03)]
-            public byte kenki;
-
-            [FieldOffset(0x04)]
-            public byte meditationStacks;
-
-            [NonSerialized]
-            [FieldOffset(0x05)]
-            private byte sen_bits;
-
-            public bool setsu
-            {
-                get
-                {
-                    return (sen_bits & 0x1) != 0;
-                }
-            }
-
-            public bool getsu
-            {
-                get
-                {
-                    return (sen_bits & 0x2) != 0;
-                }
-            }
-
-            public bool ka
-            {
-                get
-                {
-                    return (sen_bits & 0x4) != 0;
-                }
+                if (songFlags.HasFlag(SongFlags.Minuet))
+                    return "Minuet";
+                if (songFlags.HasFlag(SongFlags.Ballad))
+                    return "Ballad";
+                if (songFlags.HasFlag(SongFlags.Paeon))
+                    return "Paeon";
+                return "None";
             }
         }
+
+        public String lastPlayed
+        {
+            get
+            {
+                if (songFlags.HasFlag(SongFlags.MinuetLastPlayed))
+                    return "Minuet";
+                if (songFlags.HasFlag(SongFlags.BalladLastPlayed))
+                    return "Ballad";
+                if (songFlags.HasFlag(SongFlags.PaeonLastPlayed))
+                    return "Paeon";
+                return "None";
+            }
+        }
+
+        public String[] coda
+        {
+            get
+            {
+                return new[] {
+            this.songFlags.HasFlag(SongFlags.BalladCoda) ? "Ballad" : "None",
+            this.songFlags.HasFlag(SongFlags.PaeonCoda) ? "Paeon" : "None",
+            this.songFlags.HasFlag(SongFlags.MinuetCoda) ? "Minuet" : "None",
+          };
+            }
+        }
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct DancerJobMemory
+    {
+        private enum Step : byte
+        {
+            None = 0,
+            Emboite = 1,
+            Entrechat = 2,
+            Jete = 3,
+            Pirouette = 4,
+        }
+
+        [FieldOffset(0x00)]
+        public byte feathers;
+
+        [FieldOffset(0x01)]
+        public byte esprit;
+
+        [NonSerialized]
+        [FieldOffset(0x02)]
+        private Step step1;  // Order of steps in current Standard Step/Technical Step combo.
+
+        [NonSerialized]
+        [FieldOffset(0x03)]
+        private Step step2;
+
+        [NonSerialized]
+        [FieldOffset(0x04)]
+        private Step step3;
+
+        [NonSerialized]
+        [FieldOffset(0x05)]
+        private Step step4;
+
+        [FieldOffset(0x06)]
+        public byte currentStep; // Number of steps executed in current Standard Step/Technical Step combo.
+
+        public string[] steps
+        {
+            get
+            {
+                Step[] _steps = { step1, step2, step3, step4 };
+                return _steps.Select(s => s.ToString()).Where(s => s != "None").ToArray();
+            }
+        }
+    };
+
+    [Serializable]
+    [StructLayout(LayoutKind.Explicit)]
+    public struct DragoonJobMemory
+    {
+        [NonSerialized]
+        [FieldOffset(0x00)]
+        private ushort blood_or_life_ms;
+
+        [NonSerialized]
+        [FieldOffset(0x02)]
+        private byte stance; // 0 = None, 1 = Blood, 2 = Life
+
+        [FieldOffset(0x03)]
+        public byte eyesAmount;
+
+        public uint bloodMilliseconds
+        {
+            get
+            {
+                if (stance == 1)
+                    return blood_or_life_ms;
+                else
+                    return 0;
+            }
+        }
+        public uint lifeMilliseconds
+        {
+            get
+            {
+                if (stance == 2)
+                    return blood_or_life_ms;
+                else
+                    return 0;
+            }
+        }
+
+        [FieldOffset(0x04)]
+        public byte firstmindsFocus;
+    };
+
+    [Serializable]
+    [StructLayout(LayoutKind.Explicit)]
+    public struct NinjaJobMemory
+    {
+        [FieldOffset(0x00)]
+        public uint hutonMilliseconds;
+
+        [FieldOffset(0x04)]
+        public byte ninkiAmount;
+
+        [FieldOffset(0x05)]
+        private byte hutonCount; // Why though?
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct ThaumaturgeJobMemory
+    {
+        [FieldOffset(0x02)]
+        public ushort umbralMilliseconds; // Number of ms left in umbral fire/ice.
+
+        [FieldOffset(0x04)]
+        public sbyte umbralStacks; // Positive = Umbral Fire Stacks, Negative = Umbral Ice Stacks.
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct BlackMageJobMemory
+    {
+        [Flags]
+        public enum EnochianFlags : byte
+        {
+            None = 0,
+            Enochian = 1,
+            Paradox = 2,
+        }
+        [FieldOffset(0x00)]
+        public ushort nextPolyglotMilliseconds; // Number of ms left before polyglot proc.
+
+        [FieldOffset(0x02)]
+        public ushort umbralMilliseconds; // Number of ms left in umbral fire/ice.
+
+        [FieldOffset(0x04)]
+        public sbyte umbralStacks; // Positive = Umbral Fire Stacks, Negative = Umbral Ice Stacks.
+
+        [FieldOffset(0x05)]
+        public byte umbralHearts;
+
+        [FieldOffset(0x06)]
+        public byte polyglot;
+
+        [NonSerialized]
+        [FieldOffset(0x07)]
+        private EnochianFlags enochian_state;
+
+        public bool enochian
+        {
+            get
+            {
+                return enochian_state.HasFlag(EnochianFlags.Enochian);
+            }
+        }
+
+        public bool paradox
+        {
+            get
+            {
+                return enochian_state.HasFlag(EnochianFlags.Paradox);
+            }
+        }
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct WhiteMageJobMemory
+    {
+        [FieldOffset(0x02)]
+        public ushort lilyMilliseconds; // Number of ms left before lily gain.
+
+        [FieldOffset(0x04)]
+        public byte lilyStacks;
+
+        [FieldOffset(0x05)]
+        public byte bloodlilyStacks;
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct ArcanistJobMemory
+    {
+        [FieldOffset(0x04)]
+        public byte aetherflowStacks;
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct SummonerJobMemory
+    {
+        [FieldOffset(0x00)]
+        public ushort tranceMilliseconds;
+
+        [FieldOffset(0x02)]
+        public ushort attunementMilliseconds;
+
+        [FieldOffset(0x06)]
+        public byte attunement;
+
+        [NonSerialized]
+        [FieldOffset(0x07)]
+        private byte stance;
+
+        public string[] usableArcanum
+        {
+            get
+            {
+                var arcanums = new List<string>();
+                if ((stance & 0x20) != 0)
+                    arcanums.Add("Ruby"); // Fire/Ifrit
+                if ((stance & 0x40) != 0)
+                    arcanums.Add("Topaz"); // Earth/Titan
+                if ((stance & 0x80) != 0)
+                    arcanums.Add("Emerald"); // Wind/Garuda
+
+                return arcanums.ToArray();
+            }
+        }
+
+        public string activePrimal
+        {
+            get
+            {
+                if ((stance & 0xC) == 0x4)
+                    return "Ifrit";
+                else if ((stance & 0xC) == 0x8)
+                    return "Titan";
+                else if ((stance & 0xC) == 0xC)
+                    return "Garuda";
+                else
+                    return null;
+            }
+        }
+
+        public String nextSummoned
+        {
+            get
+            {
+                if ((stance & 0x10) == 0)
+                    return "Bahamut";
+                else
+                    return "Phoenix";
+            }
+        }
+
+        public int aetherflowStacks
+        {
+            get
+            {
+                return stance & 0x3;
+            }
+        }
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct ScholarJobMemory
+    {
+        [FieldOffset(0x02)]
+        public byte aetherflowStacks;
+
+        [FieldOffset(0x03)]
+        public byte fairyGauge;
+
+        [FieldOffset(0x04)]
+        public ushort fairyMilliseconds; // Seraph time left ms.
+
+        [FieldOffset(0x06)]
+        public byte fairyStatus; // Varies depending on which fairy was summoned, during Seraph/Dissipation: 6 - Eos, 7 - Selene, else 0.
+    };
+
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct MonkJobMemory
+    {
+        public enum Beast : byte
+        {
+            None = 0,
+            Coeurl = 1,
+            Opo = 2,
+            Raptor = 3,
+        }
+
+        [FieldOffset(0x00)]
+        public byte chakraStacks;
+
+        [NonSerialized]
+        [FieldOffset(0x01)]
+        private Beast beastChakra1;
+
+        [NonSerialized]
+        [FieldOffset(0x02)]
+        private Beast beastChakra2;
+
+        [NonSerialized]
+        [FieldOffset(0x03)]
+        private Beast beastChakra3;
+
+        [NonSerialized]
+        [FieldOffset(0x04)]
+        private byte Nadi;
+
+        public string[] beastChakra
+        {
+            get
+            {
+                Beast[] _beasts = { beastChakra1, beastChakra2, beastChakra3 };
+                return _beasts.Select(a => a.ToString()).Where(a => a != "None").ToArray();
+            }
+        }
+
+        public bool solarNadi
+        {
+            get
+            {
+                if ((Nadi & 0x4) == 0x4)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        public bool lunarNadi
+        {
+            get
+            {
+                if ((Nadi & 0x2) == 0x2)
+                    return true;
+                else
+                    return false;
+            }
+        }
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct MachinistJobMemory
+    {
+        [FieldOffset(0x00)]
+        public ushort overheatMilliseconds;
+
+        [FieldOffset(0x02)]
+        public ushort batteryMilliseconds;
+
+        [FieldOffset(0x04)]
+        public byte heat;
+
+        [FieldOffset(0x05)]
+        public byte battery;
+
+        [FieldOffset(0x06)]
+        public byte lastBatteryAmount;
+
+        [NonSerialized]
+        [FieldOffset(0x07)]
+        private byte chargeTimerState;
+
+        public bool overheatActive
+        {
+            get
+            {
+                return (chargeTimerState & 0x1) == 1;
+            }
+        }
+
+        public bool robotActive
+        {
+            get
+            {
+                return (chargeTimerState & 0x2) == 1;
+            }
+        }
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct AstrologianJobMemory
+    {
+        public enum Card : byte
+        {
+            None = 0,
+            Balance = 1,
+            Bole = 2,
+            Arrow = 3,
+            Spear = 4,
+            Ewer = 5,
+            Spire = 6,
+            Lord = 0x70,
+            Lady = 0x80,
+        }
+
+        public enum Arcanum : byte
+        {
+            None = 0,
+            Solar = 1,
+            Lunar = 2,
+            Celestial = 3,
+        }
+
+        [NonSerialized]
+        [FieldOffset(0x04)]
+        private byte _heldCard;
+
+        [NonSerialized]
+        [FieldOffset(0x05)]
+        private Arcanum arcanum_1;
+
+        [NonSerialized]
+        [FieldOffset(0x06)]
+        private Arcanum arcanum_2;
+
+        [NonSerialized]
+        [FieldOffset(0x07)]
+        private Arcanum arcanum_3;
+
+        public string heldCard
+        {
+            get
+            {
+                return ((Card)(_heldCard & 0xF)).ToString();
+            }
+        }
+
+        public string crownCard
+        {
+            get
+            {
+                return ((Card)(_heldCard & 0xF0)).ToString();
+            }
+        }
+
+        public string[] arcanums
+        {
+            get
+            {
+                Arcanum[] _arcanums = { arcanum_1, arcanum_2, arcanum_3 };
+                return _arcanums.Select(a => a.ToString()).Where(a => a != "None").ToArray();
+            }
+        }
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct SamuraiJobMemory
+    {
+        [FieldOffset(0x03)]
+        public byte kenki;
+
+        [FieldOffset(0x04)]
+        public byte meditationStacks;
+
+        [NonSerialized]
+        [FieldOffset(0x05)]
+        private byte sen_bits;
+
+        public bool setsu
+        {
+            get
+            {
+                return (sen_bits & 0x1) != 0;
+            }
+        }
+
+        public bool getsu
+        {
+            get
+            {
+                return (sen_bits & 0x2) != 0;
+            }
+        }
+
+        public bool ka
+        {
+            get
+            {
+                return (sen_bits & 0x4) != 0;
+            }
+        }
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct SageJobMemory
+    {
+        [FieldOffset(0x00)]
+        public ushort addersgallMilliseconds; // the addersgall gauge elapsed in milliseconds, from 0 to 19999.
+
+        [FieldOffset(0x02)]
+        public byte addersgall;
+
+        [FieldOffset(0x03)]
+        public byte addersting;
+
+        [FieldOffset(0x04)]
+        public byte eukrasia;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct ReaperJobMemory
+    {
+        [FieldOffset(0x00)]
+        public byte soul;
+
+        [FieldOffset(0x01)]
+        public byte shroud;
+
+        [FieldOffset(0x02)]
+        public ushort enshroudMilliseconds;
+
+        [FieldOffset(0x04)]
+        public byte lemureShroud;
+
+        [FieldOffset(0x05)]
+        public byte voidShroud;
     }
 }

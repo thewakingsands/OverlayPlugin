@@ -13,6 +13,14 @@ namespace RainbowMage.OverlayPlugin
         private PluginMain _plugin;
         public delegate void CustomCallbackDelegate(object o, string param);
 
+        private ActPluginData GetPluginData() {
+            return ActGlobals.oFormActMain.ActPlugins.FirstOrDefault(plugin => {
+                if (!plugin.cbEnabled.Checked || plugin.pluginObj == null)
+                  return false;
+                return plugin.lblPluginTitle.Text == "Triggernometry.dll";
+            });
+        }
+
         public TriggIntegration(TinyIoCContainer container)
         {
             var logger = container.Resolve<ILogger>();
@@ -20,7 +28,7 @@ namespace RainbowMage.OverlayPlugin
 
             try
             {
-                var trigg = ActGlobals.oFormActMain.ActPlugins.FirstOrDefault(x => x.lblPluginTitle.Text == "Triggernometry.dll");
+                var trigg = GetPluginData();
                 if (trigg == null || trigg.pluginObj == null)
                     return;
 
@@ -29,8 +37,16 @@ namespace RainbowMage.OverlayPlugin
                 if (deleType == null)
                     return;
 
-                var dele = Delegate.CreateDelegate(deleType, this, typeof(TriggIntegration).GetMethod("SendOverlayMessage"));
-                triggType.GetMethod("RegisterNamedCallback")?.Invoke(trigg.pluginObj, new object[] { "OverlayPluginMessage", dele, null });
+                var registerType = triggType.GetMethod("RegisterNamedCallback");
+
+                var sendDele = Delegate.CreateDelegate(deleType, this, typeof(TriggIntegration).GetMethod("SendOverlayMessage"));
+                registerType?.Invoke(trigg.pluginObj, new object[] { "OverlayPluginMessage", sendDele, null });
+
+                var hideDele = Delegate.CreateDelegate(deleType, this, typeof(TriggIntegration).GetMethod("HideOverlay"));
+                registerType?.Invoke(trigg.pluginObj, new object[] { "HideOverlay", hideDele, null });
+
+                var showDele = Delegate.CreateDelegate(deleType, this, typeof(TriggIntegration).GetMethod("ShowOverlay"));
+                registerType?.Invoke(trigg.pluginObj, new object[] { "ShowOverlay", showDele, null });
             } catch (Exception ex)
             {
                 logger.Log(LogLevel.Error, $"Failed to register Triggernometry callback: {ex}");
@@ -54,6 +70,30 @@ namespace RainbowMage.OverlayPlugin
                         type = "Triggernometry",
                         message = msg
                     }));
+                    break;
+                }
+            }
+        }
+
+        public void HideOverlay(object _, string msg)
+        {
+            foreach (var overlay in _plugin.Overlays)
+            {
+                if (overlay.Name == msg)
+                {
+                    overlay.Config.IsVisible = false;
+                    break;
+                }
+            }
+        }
+
+        public void ShowOverlay(object _, string msg)
+        {
+            foreach (var overlay in _plugin.Overlays)
+            {
+                if (overlay.Name == msg)
+                {
+                    overlay.Config.IsVisible = true;
                     break;
                 }
             }

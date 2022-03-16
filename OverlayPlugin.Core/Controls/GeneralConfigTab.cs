@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RainbowMage.HtmlRenderer;
 using Advanced_Combat_Tracker;
+using System.Threading;
+using System.Reflection;
+using System.IO;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -18,6 +21,8 @@ namespace RainbowMage.OverlayPlugin
         readonly string pluginDirectory;
         readonly PluginConfig config;
         readonly ILogger logger;
+
+        private DateTime lastClick;
 
         public GeneralConfigTab(TinyIoCContainer container)
         {
@@ -47,9 +52,26 @@ namespace RainbowMage.OverlayPlugin
             lblNewUserWelcome.Visible = visible;
         }
 
-        private void BtnUpdateCheck_Click(object sender, EventArgs e)
+        private void btnUpdateCheck_MouseClick(object sender, MouseEventArgs e)
         {
-            Updater.Updater.PerformUpdateIfNecessary(pluginDirectory, container, true);
+            // Shitty double-click detection. I'd love to have a proper double click event on buttons in WinForms. =/
+            double timePassed = 1000;
+            var now = DateTime.Now;
+
+            if (lastClick != null)
+            {
+                timePassed = now.Subtract(lastClick).TotalMilliseconds;
+            }
+
+            lastClick = now;
+
+            Task.Run(() =>
+            {
+                Thread.Sleep(500);
+
+                if (lastClick != now) return;
+                Updater.Updater.PerformUpdateIfNecessary(pluginDirectory, container, true, timePassed < 500);
+            });
         }
 
         private void CbErrorReports_CheckedChanged(object sender, EventArgs e)
@@ -103,6 +125,47 @@ namespace RainbowMage.OverlayPlugin
         private void newUserWelcome_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnCactbotUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var asm = Assembly.Load("CactbotEventSource");
+                var checkerType = asm.GetType("Cactbot.VersionChecker");
+                var loggerType = asm.GetType("Cactbot.ILogger");
+                var configType = asm.GetType("Cactbot.CactbotEventSourceConfig");
+
+                var esList = container.Resolve<Registry>().EventSources;
+                IEventSource cactbotEs = null;
+
+                foreach (var es in esList)
+                {
+                    if (es.Name == "Cactbot Config" || es.Name == "Cactbot")
+                    {
+                        cactbotEs = es;
+                        break;
+                    }
+                }
+
+                if (cactbotEs == null)
+                {
+                    MessageBox.Show("Cactbot is loaded but it never registered with OverlayPlugin!", "Error");
+                    return;
+                }
+
+                var cactbotConfig = cactbotEs.GetType().GetProperty("Config").GetValue(cactbotEs);
+                configType.GetField("LastUpdateCheck").SetValue(cactbotConfig, DateTime.MinValue);
+
+                var checker = checkerType.GetConstructor(new Type[] { loggerType }).Invoke(new object[] { cactbotEs });
+                checkerType.GetMethod("DoUpdateCheck", new Type[] {configType}).Invoke(checker, new object[] { cactbotConfig });
+            } catch(FileNotFoundException)
+            {
+                MessageBox.Show("Could not find Cactbot!", "Error");
+            } catch(Exception ex)
+            {
+                MessageBox.Show("Failed: " + ex.ToString(), "Error");
+            }
         }
     }
 }

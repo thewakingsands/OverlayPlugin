@@ -7,8 +7,7 @@ using System.Net;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
-using WebSocketSharp;
-using WebSocketSharp.Server;
+using Fleck;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Advanced_Combat_Tracker;
@@ -20,12 +19,18 @@ namespace RainbowMage.OverlayPlugin
     {
         TinyIoCContainer _container;
         ILogger _logger;
-        HttpServer _server;
+        WebSocketServer _server;
         IPluginConfig _cfg;
         PluginMain _plugin;
+        List<IWSConnection> _connections = new List<IWSConnection>();
         bool _failed = false;
 
         public EventHandler<StateChangedArgs> OnStateChanged;
+
+        interface IWSConnection : IEventReceiver
+        {
+            void Close();
+        }
 
         public void Stop()
         {
@@ -33,7 +38,14 @@ namespace RainbowMage.OverlayPlugin
             {
                 if (_server != null)
                 {
-                    _server.Stop();
+                    _server.Dispose();
+                    _server = null;
+
+                    foreach (var conn in _connections)
+                    {
+                        conn.Close();
+                    }
+                    _connections.Clear();
                 }
             }
             catch (Exception e)
@@ -47,7 +59,7 @@ namespace RainbowMage.OverlayPlugin
 
         public bool IsRunning()
         {
-            return _server != null && _server.IsListening;
+            return _server != null;
         }
 
         public bool IsFailed()
@@ -72,6 +84,34 @@ namespace RainbowMage.OverlayPlugin
         {
             _failed = false;
 
+            FleckLog.LogAction = (level, message, ex) =>
+            {
+#if !DEBUG
+                if (level < Fleck.LogLevel.Warn)
+                    return;
+#endif
+                LogLevel ourLevel = LogLevel.Info;
+                switch (level)
+                {
+                    case Fleck.LogLevel.Error:
+                        ourLevel = LogLevel.Error;
+                        break;
+                    case Fleck.LogLevel.Warn:
+                        ourLevel = LogLevel.Warning;
+                        break;
+                    case Fleck.LogLevel.Info:
+                        ourLevel = LogLevel.Info;
+                        break;
+                    case Fleck.LogLevel.Debug:
+                        //ourLevel = LogLevel.Debug;
+
+                        // prevent log spam
+                        return;
+                }
+
+                _logger.Log(ourLevel, $"WSServer: {message} {ex}");
+            };
+
             try
             {
                 var sslPath = GetCertPath();
@@ -79,87 +119,52 @@ namespace RainbowMage.OverlayPlugin
 
                 if (_cfg.WSServerIP == "*")
                 {
-                    _server = new HttpServer(_cfg.WSServerPort, secure);
+                    _server = new WebSocketServer((secure ? "wss://" : "ws://") + "0.0.0.0:" + _cfg.WSServerPort);
                 } else
                 {
-                    _server = new HttpServer(IPAddress.Parse(_cfg.WSServerIP), _cfg.WSServerPort, secure);
+                    _server = new WebSocketServer((secure ? "wss://" : "ws://") + _cfg.WSServerIP + ":" + _cfg.WSServerPort);
                 }
                 
-                _server.ReuseAddress = true;
-                _server.Log.Output += (LogData d, string msg) =>
-                {
-                    Log(LogLevel.Info, "WS: {0}: {1} {2}", d.Level.ToString(), d.Message, msg);
-                };
-                _server.Log.Level = WebSocketSharp.LogLevel.Info;
-
                 if (secure)
                 {
-                    Log(LogLevel.Debug, Resources.WSLoadingCert, sslPath);
+                    Log(LogLevel.Info, Resources.WSLoadingCert, sslPath);
 
                     // IMPORTANT: Do *not* change the password here. This is the default password that mkcert uses.
                     // If you use a different password here, you'd have to pass it to mkcert and update the text on the WSServer tab to match.
-                    _server.SslConfiguration.ServerCertificate = new X509Certificate2(sslPath, "changeit");
-                    _server.SslConfiguration.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls11 | System.Security.Authentication.SslProtocols.Tls12;
+                    _server.Certificate = new X509Certificate2(sslPath, "changeit");
+                    if ((_server.EnabledSslProtocols & System.Security.Authentication.SslProtocols.Tls12) == 0)
+                    {
+                        _server.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls11 | System.Security.Authentication.SslProtocols.Tls12;
+                    }
                 }
 
-                _server.AddWebSocketService<SocketHandler>("/ws", () => new SocketHandler(_container));
-                _server.AddWebSocketService<LegacyHandler>("/MiniParse", () => new LegacyHandler(_container));
-                _server.AddWebSocketService<LegacyHandler>("/BeforeLogLineRead", () => new LegacyHandler(_container));
+                _server.RestartAfterListenError = true;
+                _server.ListenerSocket.NoDelay = true;
 
-                _server.OnGet += (object sender, HttpRequestEventArgs e) =>
+                _server.Start((conn) =>
                 {
-                    if (e.Request.RawUrl == "/")
+                    Log(LogLevel.Debug, $"Got request on WSServer at {conn.ConnectionInfo.Path}");
+
+                    switch (conn.ConnectionInfo.Path)
                     {
-                        var builder = new StringBuilder();
-                        builder.Append(@"<!DOCTYPE html>
-<html>
-    <head>
-        <title>OverlayPlugin WSServer</title>
-    </head>
-    <body>
-        " + Resources.WSIndexPage + @"
-        <ul>");
-
-                        foreach (var overlay in _plugin.Overlays)
-                        {
-                            if (overlay.GetType() != typeof(MiniParseOverlay)) continue;
-
-                            var (confident, url) = GetUrl((MiniParseOverlay) overlay);
-
-                            url = url.Replace("&", "&amp;").Replace("\"", "&quot;");
-                            var overlayName = overlay.Name.Replace("&", "&amp;").Replace("<", "&lt;");
-                            
-                            if (url.StartsWith("file://"))
-                            {
-                                builder.Append($"<li>Local: {overlayName}: {url}</li>");
-                            } else
-                            {
-                                builder.Append($"<li><a href=\"{url}\">{overlayName}</a>");
-                            }
-                            
-                            if (!confident)
-                            {
-                                builder.Append(" " + Resources.WSNotConfidentLink);
-                            }
-
-                            builder.Append("</li>");
-                        }
-
-                        builder.Append("</ul></body></html>");
-
-                        var res = e.Response;
-                        res.StatusCode = 200;
-                        res.ContentType = "text/html";
-                        Ext.WriteContent(res, Encoding.UTF8.GetBytes(builder.ToString()));
+                        case "/ws":
+                            _connections.Add(new SocketHandler(_container, conn, this));
+                            break;
+                        case "/MiniParse":
+                            _connections.Add(new LegacyHandler(_container, conn, this));
+                            break;
+                        case "/BeforeLogLineRead":
+                            _connections.Add(new LegacyHandler(_container, conn, this));
+                            break;
                     }
-                };
+                });
 
-                _server.Start();
                 OnStateChanged?.Invoke(this, new StateChangedArgs(true, false));
             }
             catch(Exception e)
             {
                 _failed = true;
+                _server = null;
                 Log(LogLevel.Error, Resources.WSStartFailed, e);
                 OnStateChanged?.Invoke(this, new StateChangedArgs(false, true));
             }
@@ -198,6 +203,28 @@ namespace RainbowMage.OverlayPlugin
             return (argName != "HOST_PORT" || overlay.Config.ActwsCompatibility, url);
         }
 
+        public string GetModernUrl(string url)
+        {
+            if (url.Contains("?"))
+            {
+                url += "&";
+            } else
+            {
+                url += "?";
+            }
+
+            url += "OVERLAY_WS=ws";
+            if (_cfg.WSServerSSL) url += "s";
+            url += "://";
+            if (_cfg.WSServerIP == "*" || _cfg.WSServerIP == "0.0.0.0")
+                url += "127.0.0.1";
+            else
+                url += _cfg.WSServerIP;
+
+            url += ":" + _cfg.WSServerPort + "/ws";
+            return url;
+        }
+
         public string GetCertPath()
         {
             var path = Path.Combine(
@@ -213,46 +240,55 @@ namespace RainbowMage.OverlayPlugin
             _logger.Log(level, msg, args);
         }
 
-        public class SocketHandler : WebSocketBehavior, IEventReceiver
+        public class SocketHandler : IWSConnection
         {
             public string Name => "WSHandler";
             private ILogger _logger;
             private EventDispatcher _dispatcher;
+            private IWebSocketConnection _conn;
 
-            public SocketHandler(TinyIoCContainer container) : base()
+            public SocketHandler(TinyIoCContainer container, IWebSocketConnection conn, WSServer server)
             {
                 _logger = container.Resolve<ILogger>();
                 _dispatcher = container.Resolve<EventDispatcher>();
+                _conn = conn;
+
+                conn.OnMessage = OnMessage;
+                conn.OnClose = () =>
+                {
+                    try
+                    {
+                        _dispatcher.UnsubscribeAll(this);
+                        server._connections.Remove(this);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Log(LogLevel.Error, $"Failed to unsubscribe WebSocket connection: {ex}");
+                    }
+                };
+            }
+
+            public void Close()
+            {
+                _conn.Close();
             }
 
             public void HandleEvent(JObject e)
             {
-                SendAsync(e.ToString(Formatting.None), (success) =>
-                {
-                    if (!success)
-                    {
-                        _logger.Log(LogLevel.Error, Resources.WSMessageSendFailed, e);
-                        _dispatcher.UnsubscribeAll(this);
-                    }
-                });
+                _conn.Send(e.ToString(Formatting.None));
             }
 
-            protected override void OnOpen()
-            {
-
-            }
-
-            protected override void OnMessage(MessageEventArgs e)
+            public void OnMessage(string message)
             {
                 JObject data = null;
 
                 try
                 {
-                    data = JObject.Parse(e.Data);
+                    data = JObject.Parse(message);
                 }
-                catch(JsonException ex)
+                catch (JsonException ex)
                 {
-                    _logger.Log(LogLevel.Error, Resources.WSInvalidDataRecv, ex, e.Data);
+                    _logger.Log(LogLevel.Error, Resources.WSInvalidDataRecv, ex, message);
                     return;
                 }
 
@@ -267,13 +303,15 @@ namespace RainbowMage.OverlayPlugin
                         {
                             _dispatcher.Subscribe(item.ToString(), this);
                         }
-                    } catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         _logger.Log(LogLevel.Error, Resources.WSNewSubFail, ex);
                     }
 
                     return;
-                } else if (msgType == "unsubscribe")
+                }
+                else if (msgType == "unsubscribe")
                 {
                     try
                     {
@@ -281,70 +319,115 @@ namespace RainbowMage.OverlayPlugin
                         {
                             _dispatcher.Unsubscribe(item.ToString(), this);
                         }
-                    } catch (Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         _logger.Log(LogLevel.Error, Resources.WSUnsubFail, ex);
                     }
                     return;
                 }
 
-                Task.Run(() => {
+                Task.Run(() =>
+                {
                     try
                     {
                         var response = _dispatcher.CallHandler(data);
 
-                        if (response != null && response.Type != JTokenType.Object) {
+                        if (response != null && response.Type != JTokenType.Object)
+                        {
                             throw new Exception("Handler response must be an object or null");
                         }
 
-                        if (response == null) {
+                        if (response == null)
+                        {
                             response = new JObject();
                             response["$isNull"] = true;
                         }
 
-                        if (data.ContainsKey("rseq")) {
+                        if (data.ContainsKey("rseq"))
+                        {
                             response["rseq"] = data["rseq"];
                         }
 
-                        Send(response.ToString(Formatting.None));
-                    } catch(Exception ex)
+                        _conn.Send(response.ToString(Formatting.None));
+                    }
+                    catch (Exception ex)
                     {
                         _logger.Log(LogLevel.Error, Resources.WSHandlerException, ex);
                     }
                 });
             }
-
-
-            protected override void OnClose(CloseEventArgs e)
-            {
-                _dispatcher.UnsubscribeAll(this);
-            }
         }
 
-        private class LegacyHandler : WebSocketBehavior, IEventReceiver
+        private class LegacyHandler : IWSConnection
         {
             public string Name => "WSLegacyHandler";
             private ILogger _logger;
             private EventDispatcher _dispatcher;
             private FFXIVRepository _repository;
+            private IWebSocketConnection _conn;
 
-            public LegacyHandler(TinyIoCContainer container) : base()
+            public LegacyHandler(TinyIoCContainer container, IWebSocketConnection conn, WSServer server) : base()
             {
                 _logger = container.Resolve<ILogger>();
                 _dispatcher = container.Resolve<EventDispatcher>();
                 _repository = container.Resolve<FFXIVRepository>();
+                _conn = conn;
+
+                conn.OnOpen = OnOpen;
+                conn.OnMessage = OnMessage;
+                conn.OnClose = () =>
+                {
+                    try
+                    {
+                        _dispatcher.UnsubscribeAll(this);
+                        server._connections.Remove(this);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Log(LogLevel.Error, $"Failed to unsubscribe WebSocket connection: {ex}");
+                    }
+                };
             }
 
-            protected override void OnOpen()
+            public void Close()
             {
-                base.OnOpen();
+                _conn.Close();
+            }
 
+            public void HandleEvent(JObject e)
+            {
+                try {
+                    switch (e["type"].ToString())
+                    {
+                        case "CombatData":
+                            _conn.Send("{\"type\":\"broadcast\",\"msgtype\":\"CombatData\",\"msg\":" + e.ToString(Formatting.None) + "}");
+                            break;
+                        case "LogLine":
+                            _conn.Send("{\"type\":\"broadcast\",\"msgtype\":\"Chat\",\"msg\":" + JsonConvert.SerializeObject(e["rawLine"].ToString()) + "}");
+                            break;
+                        case "ChangeZone":
+                            _conn.Send("{\"type\":\"broadcast\",\"msgtype\":\"ChangeZone\",\"msg\":" + e.ToString(Formatting.None) + "}");
+                            break;
+                        case "ChangePrimaryPlayer":
+                            _conn.Send("{\"type\":\"broadcast\",\"msgtype\":\"SendCharName\",\"msg\":" + e.ToString(Formatting.None) + "}");
+                            break;
+                    }
+                } catch (InvalidOperationException ex)
+                {
+                    _logger.Log(LogLevel.Error, "Failed to send legacy WS message: {0}", ex);
+                    _conn.Close();
+                }
+            }
+
+            protected void OnOpen()
+            {
                 _dispatcher.Subscribe("CombatData", this);
                 _dispatcher.Subscribe("LogLine", this);
                 _dispatcher.Subscribe("ChangeZone", this);
                 _dispatcher.Subscribe("ChangePrimaryPlayer", this);
 
-                Send(JsonConvert.SerializeObject(new
+                _conn.Send(JsonConvert.SerializeObject(new
                 {
                     type = "broadcast",
                     msgtype = "SendCharName",
@@ -356,49 +439,17 @@ namespace RainbowMage.OverlayPlugin
                 }));
             }
 
-            protected override void OnClose(CloseEventArgs e)
-            {
-                base.OnClose(e);
-
-                _dispatcher.UnsubscribeAll(this);
-            }
-
-            public void HandleEvent(JObject e)
-            {
-                try {
-                    switch (e["type"].ToString())
-                    {
-                        case "CombatData":
-                            Send("{\"type\":\"broadcast\",\"msgtype\":\"CombatData\",\"msg\":" + e.ToString(Formatting.None) + "}");
-                            break;
-                        case "LogLine":
-                            Send("{\"type\":\"broadcast\",\"msgtype\":\"Chat\",\"msg\":" + JsonConvert.SerializeObject(e["rawLine"].ToString()) + "}");
-                            break;
-                        case "ChangeZone":
-                            Send("{\"type\":\"broadcast\",\"msgtype\":\"ChangeZone\",\"msg\":" + e.ToString(Formatting.None) + "}");
-                            break;
-                        case "ChangePrimaryPlayer":
-                            Send("{\"type\":\"broadcast\",\"msgtype\":\"SendCharName\",\"msg\":" + e.ToString(Formatting.None) + "}");
-                            break;
-                    }
-                } catch (InvalidOperationException ex)
-                {
-                    _logger.Log(LogLevel.Error, "Failed to send legacy WS message: {0}", ex);
-                    _dispatcher.UnsubscribeAll(this);
-                }
-            }
-
-            protected override void OnMessage(MessageEventArgs e)
+            protected void OnMessage(string message)
             {
                 JObject data = null;
 
                 try
                 {
-                    data = JObject.Parse(e.Data);
+                    data = JObject.Parse(message);
                 }
                 catch (JsonException ex)
                 {
-                    _logger.Log(LogLevel.Error, Resources.WSInvalidDataRecv, ex, e.Data);
+                    _logger.Log(LogLevel.Error, Resources.WSInvalidDataRecv, ex, message);
                     return;
                 }
 

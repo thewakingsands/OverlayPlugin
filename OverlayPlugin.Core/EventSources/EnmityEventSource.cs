@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RainbowMage.OverlayPlugin.MemoryProcessors;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace RainbowMage.OverlayPlugin.EventSources
 {
@@ -24,6 +25,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private const string EnmityTargetDataEvent = "EnmityTargetData";
         // All of the mobs with aggro on the player.  Equivalent of the sidebar aggro list in game.
         private const string EnmityAggroListEvent = "EnmityAggroList";
+        // TargetableEnemies
+        private const string TargetableEnemiesEvent = "TargetableEnemies";
         // State of combat, both act and game.
         private const string InCombatEvent = "InCombat";
 
@@ -42,6 +45,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         public BuiltinEventConfig Config { get; set; }
 
+        public event EventHandler<CombatStatusChangedArgs> CombatStatusChanged;
+
         public EnmityEventSource(TinyIoCContainer container) : base(container)
         {
             var repository = container.Resolve<FFXIVRepository>();
@@ -55,14 +60,15 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
 
             RegisterEventTypes(new List<string> {
-                EnmityTargetDataEvent, EnmityAggroListEvent,
+                EnmityTargetDataEvent, EnmityAggroListEvent, TargetableEnemiesEvent
             });
             RegisterCachedEventType(InCombatEvent);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private void PickMemoryCandidates(FFXIVRepository repository)
         {
-            memoryCandidates = new List<EnmityMemory>() { new EnmityMemory55(container) };
+            memoryCandidates = new List<EnmityMemory>() { new EnmityMemory60(container) };
         }
 
         public override Control CreateConfigControl()
@@ -134,6 +140,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
                 // Handle optional "end encounter of combat" logic.
                 bool inGameCombat = memory.GetInCombat();
+                if (inGameCombat != lastInGameCombat)
+                {
+                    logger.Log(LogLevel.Debug, inGameCombat ? "Entered combat" : "Left combat");
+                }
+
                 // If we've transitioned to being out of combat, start a delayed task to end the ACT encounter.
                 if (Config.EndEncounterOutOfCombat && lastInGameCombat && !inGameCombat)
                 {
@@ -154,6 +165,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     endEncounterToken.Cancel();
                     endEncounterToken = null;
                 }
+                if (lastInGameCombat != inGameCombat)
+                {
+                    CombatStatusChanged?.Invoke(this, new CombatStatusChangedArgs(inGameCombat));
+                }
                 lastInGameCombat = inGameCombat;
 
                 if (HasSubscriber(InCombatEvent))
@@ -171,7 +186,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
                 bool targetData = HasSubscriber(EnmityTargetDataEvent);
                 bool aggroList = HasSubscriber(EnmityAggroListEvent);
-                if (!targetData && !aggroList)
+                bool targetableEnemies = HasSubscriber(TargetableEnemiesEvent);
+                if (!targetData && !aggroList && !targetableEnemies)
                     return;
 
                 var combatants = memory.GetCombatantList();
@@ -185,7 +201,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 {
                     this.DispatchEvent(CreateAggroList(combatants));
                 }
-
+                if (targetableEnemies)
+                {
+                    this.DispatchEvent(CreateTargetableEnemyList(combatants));
+                }
 #if TRACE
                 Log(LogLevel.Trace, "UpdateEnmity: {0}ms", stopwatch.ElapsedMilliseconds);
 #endif
@@ -212,6 +231,14 @@ namespace RainbowMage.OverlayPlugin.EventSources
         {
             public string type = EnmityAggroListEvent;
             public List<AggroEntry> AggroList;
+            public List<EnmityHudEntry> EnmityHudList;
+        }
+
+        [Serializable]
+        internal class TargetableEnemiesObject
+        {
+            public string type = TargetableEnemiesEvent;
+            public List<TargetableEnemyEntry> TargetableEnemyList;
         }
 
         internal JObject CreateTargetData(List<Combatant> combatants)
@@ -237,17 +264,21 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
                 enmity.Focus = memory.GetFocusCombatant();
                 enmity.Hover = memory.GetHoverCombatant();
-                if (enmity.Focus != null)
+
+                if (mychar != null)
                 {
-                    enmity.Focus.Distance = mychar.DistanceString(enmity.Focus);
-                }
-                if (enmity.Hover != null)
-                {
-                    enmity.Hover.Distance = mychar.DistanceString(enmity.Hover);
-                }
-                if (enmity.TargetOfTarget != null)
-                {
-                    enmity.TargetOfTarget.Distance = mychar.DistanceString(enmity.TargetOfTarget);
+                    if (enmity.Focus != null)
+                    {
+                        enmity.Focus.Distance = mychar.DistanceString(enmity.Focus);
+                    }
+                    if (enmity.Hover != null)
+                    {
+                        enmity.Hover.Distance = mychar.DistanceString(enmity.Hover);
+                    }
+                    if (enmity.TargetOfTarget != null)
+                    {
+                        enmity.TargetOfTarget.Distance = mychar.DistanceString(enmity.TargetOfTarget);
+                    }
                 }
             }
             catch (Exception ex)
@@ -263,12 +294,37 @@ namespace RainbowMage.OverlayPlugin.EventSources
             try
             {
                 enmity.AggroList = memory.GetAggroList(combatants);
+                enmity.EnmityHudList = memory.GetEnmityHudEntries();
             }
             catch (Exception ex)
             {
                 this.logger.Log(LogLevel.Error, "CreateAggroList: {0}", ex);
             }
             return JObject.FromObject(enmity);
+        }
+
+        internal JObject CreateTargetableEnemyList(List<Combatant> combatants)
+        {
+            TargetableEnemiesObject enemies = new TargetableEnemiesObject();
+            try
+            {
+                enemies.TargetableEnemyList = memory.GetTargetableEnemyList(combatants);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Log(LogLevel.Error, "CreateAggroList: {0}", ex);
+            }
+            return JObject.FromObject(enemies);
+        }
+    }
+
+    public class CombatStatusChangedArgs : EventArgs
+    {
+        public bool InCombat { get; private set; }
+
+        public CombatStatusChangedArgs(bool status)
+        {
+            InCombat = status;
         }
     }
 }

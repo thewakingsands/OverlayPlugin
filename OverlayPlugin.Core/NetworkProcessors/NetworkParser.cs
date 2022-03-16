@@ -30,7 +30,14 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
                 var mach = Assembly.Load("Machina.FFXIV");
                 MessageType = mach.GetType("Machina.FFXIV.Headers.Server_MessageType");
 
-                var ActorControl142 = mach.GetType("Machina.FFXIV.Headers.Server_ActorControl142");
+                var ActorControl142 = mach.GetType("Machina.FFXIV.Headers.Server_ActorControl");
+                var oldStructNames = false;
+                if (ActorControl142 == null)
+                {
+                    oldStructNames = true;
+                    ActorControl142 = mach.GetType("Machina.FFXIV.Headers.Server_ActorControl142");
+                }
+
                 ActorControl142_Size = Marshal.SizeOf(ActorControl142);
 
                 var headerOffset = GetOffset(ActorControl142, "MessageHeader");
@@ -42,10 +49,10 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
                 Category_Offset = GetOffset(ActorControl142, "category");
                 Param1_Offset = GetOffset(ActorControl142, "param1");
 
-                ActorControl142_Opcode = GetOpcode("ActorControl142");
+                ActorControl142_Opcode = GetOpcode(oldStructNames ? "ActorControl142" : "ActorControl");
 
 #if DEBUG
-                logger.Log(LogLevel.Debug, $"ActorControl142 = {ActorControl142_Opcode.ToString("x")}");
+                logger.Log(LogLevel.Debug, $"ActorControl = {ActorControl142_Opcode.ToString("x")}");
 #endif
 
                 container.Resolve<FFXIVRepository>().RegisterNetworkParser(Parse);

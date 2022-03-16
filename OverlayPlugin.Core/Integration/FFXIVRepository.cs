@@ -65,13 +65,21 @@ namespace RainbowMage.OverlayPlugin
             logger = container.Resolve<ILogger>();
         }
 
+        private ActPluginData GetPluginData() {
+            return ActGlobals.oFormActMain.ActPlugins.FirstOrDefault(plugin => {
+                if (!plugin.cbEnabled.Checked || plugin.pluginObj == null)
+                  return false;
+                return plugin.lblPluginTitle.Text.StartsWith("FFXIV_ACT_Plugin");
+            });
+        }
+
         private IDataRepository GetRepository()
         {
             if (repository != null)
                 return repository;
 
-            var FFXIV = ActGlobals.oFormActMain.ActPlugins.FirstOrDefault(x => x.lblPluginTitle.Text == "FFXIV_ACT_Plugin.dll");
-            if (FFXIV != null && FFXIV.pluginObj != null)
+            var FFXIV = GetPluginData();
+            if (FFXIV != null)
             {
                 try
                 {
@@ -91,8 +99,8 @@ namespace RainbowMage.OverlayPlugin
             if (subscription != null)
                 return subscription;
 
-            var FFXIV = ActGlobals.oFormActMain.ActPlugins.FirstOrDefault(x => x.lblPluginTitle.Text == "FFXIV_ACT_Plugin.dll");
-            if (FFXIV != null && FFXIV.pluginObj != null)
+            var FFXIV = GetPluginData();
+            if (FFXIV != null)
             {
                 try
                 {
@@ -107,6 +115,7 @@ namespace RainbowMage.OverlayPlugin
             return subscription;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private Process GetCurrentFFXIVProcessImpl()
         {
             var repo = GetRepository();
@@ -116,6 +125,7 @@ namespace RainbowMage.OverlayPlugin
         }
 
         [Obsolete("Subscribe to the ProcessChanged event instead (See RegisterProcessChangedHandler())")]
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public Process GetCurrentFFXIVProcess()
         {
             try
@@ -133,6 +143,7 @@ namespace RainbowMage.OverlayPlugin
             return GetRepository() != null;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public bool IsFFXIVPluginPresent()
         {
             try
@@ -154,12 +165,14 @@ namespace RainbowMage.OverlayPlugin
             return typeof(IDataRepository).Assembly.Location;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private string GetGameVersionImpl()
         {
             //return GetRepository()?.GetGameVersion();
             return null;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public string GetGameVersion()
         {
             try
@@ -172,6 +185,7 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public uint GetPlayerIDImpl()
         {
             var repo = GetRepository();
@@ -180,6 +194,7 @@ namespace RainbowMage.OverlayPlugin
             return repo.GetCurrentPlayerID();
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public uint GetPlayerID()
         {
             try
@@ -205,6 +220,7 @@ namespace RainbowMage.OverlayPlugin
             return playerInfo.Name;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public string GetPlayerName()
         {
             try
@@ -226,6 +242,7 @@ namespace RainbowMage.OverlayPlugin
             return repo.GetCombatantList();
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public Language GetLanguage()
         {
             var repo = GetRepository();

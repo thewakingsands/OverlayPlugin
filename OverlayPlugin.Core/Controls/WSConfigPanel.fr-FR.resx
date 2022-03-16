@@ -136,7 +136,7 @@ Après, vous devriez pouvoir activer SSL.</value>
     <value>Démarrer</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>Etat</value>
+    <value>État :</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Port :</value>
@@ -158,5 +158,37 @@ Après, vous devriez pouvoir activer SSL.</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>URL :</value>
+  </data>
+  <data name="tunnelPage.Text" xml:space="preserve">
+    <value>Overlay Partagé</value>
+  </data>
+  <data name="simpStatusLbl.Text" xml:space="preserve">
+    <value>Inconnu</value>
+  </data>
+  <data name="simpStatusLabel.Text" xml:space="preserve">
+    <value>État :</value>
+  </data>
+  <data name="urlGeneratorBox.Text" xml:space="preserve">
+    <value>Générateur d'URL</value>
+  </data>
+  <data name="introPage.Text" xml:space="preserve">
+    <value>Introduction</value>
+  </data>
+  <data name="regionLabel.Text" xml:space="preserve">
+    <value>Région :</value>
+  </data>
+  <data name="lblWsserverIntro.Text" xml:space="preserve">
+    <value>Voici une brève explication pour les deux onglets :
+
+Overlay Local/Stream : Si vous démarrez WSServer par cet onglet, vous pouvez utiliser les URLs générées sur ce PC (par exemple dans OBS, XL overlay, etc.). Si vous vous y connaissez un peu en matière de réseaux et de SSL, vous pouvez même le faire fonctionner avec d'autres appareils sur votre réseau local, mais en général, je vous recommande d'utiliser l'onglet Overlay Partagé pour cela, car il est beaucoup plus facile à utiliser.
+
+Overlay Partagé : Si vous démarrez WSServer via cet onglet, vous pouvez utiliser les URL générées sur n'importe quel appareil connecté à Internet (votre téléphone, votre tablette, le PC d'un ami, etc.). Vous pouvez partager ces liens avec d'autres personnes. Enfin, si vous démarrez WSServer via l'onglet Overlay Local/Stream, il redémarrera automatiquement au lancement d'ACT. S'il est démarré par l'onglet Overlay Partagé, il ne démarrera pas automatiquement car vous obtiendrez de toute façon une nouvelle URL à chaque fois. Note : Si cela vous dérange, demandez à ngld dans le Discord ACT (ou sur le repo GitHub de OverlayPlugin) de corriger cela. Il y a des moyens de contourner ce problème, mais je ne sais pas combien de personnes souhaitent cette fonctionnalité.
+</value>
+  </data>
+  <data name="simpStartBtn.Text" xml:space="preserve">
+    <value>Démarrer</value>
+  </data>
+  <data name="simpStopBtn.Text" xml:space="preserve">
+    <value>Stop</value>
   </data>
 </root>

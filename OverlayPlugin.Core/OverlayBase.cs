@@ -122,7 +122,7 @@ namespace RainbowMage.OverlayPlugin
         {
             try
             {
-                this.Overlay = new OverlayForm(this.Name, Config.Url, this.Config.MaxFrameRate, new OverlayApi(container, this));
+                this.Overlay = new OverlayForm(this.Name, Config.Uuid.ToString(), Config.Url, this.Config.MaxFrameRate, new OverlayApi(container, this));
 
                 // 画面外にウィンドウがある場合は、初期表示位置をシステムに設定させる
                 if (!Util.IsOnScreen(this.Overlay))

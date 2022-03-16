@@ -124,6 +124,7 @@ namespace RainbowMage.OverlayPlugin
                     _logger.Log(LogLevel.Error, "");
                     _logger.Log(LogLevel.Error, "  ACT Discord: https://discord.gg/ahFKcmx");
                     _logger.Log(LogLevel.Error, "  GitHub repo: https://github.com/ngld/OverlayPlugin");
+
                     FailWithLog();
                     return;
                 }
@@ -239,8 +240,9 @@ namespace RainbowMage.OverlayPlugin
                         pair.Value.Name = pair.Key;
                         registry.RegisterOverlayPreset2(pair.Value);
                     }
-                }
-                catch (Exception ex)
+
+                    wsConfigPanel.RebuildOverlayOptions();
+                } catch (Exception ex)
                 {
                     _logger.Log(LogLevel.Error, string.Format("Failed to load presets: {0}", ex));
                 }
@@ -279,12 +281,10 @@ namespace RainbowMage.OverlayPlugin
                             // in that list.
                             this.label.Text = "Init Phase 2: Addons";
                             await Task.Run(LoadAddons);
+                            wsConfigPanel.RebuildOverlayOptions();
 
-#if DEBUG
                             this.label.Text = "Init Phase 2: Unstable new stuff";
                             _container.Register(new UnstableNewLogLines(_container));
-#endif
-
 
                             this.label.Text = "Init Phase 2: UI";
                             ActGlobals.oFormActMain.Invoke((Action)(() =>

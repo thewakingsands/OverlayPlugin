@@ -1,6 +1,6 @@
 try {
     # This assumes Visual Studio 2019 is installed in C:. You might have to change this depending on your system.
-    $VS_PATH = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise"
+    $VS_PATH = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
 
     if ( -not (Test-Path "$VS_PATH")) {
         echo "Error: VS_PATH isn't set correctly! Update the variable in build.ps1 for your system."
@@ -41,9 +41,7 @@ try {
     cp @("OverlayPlugin.dll", "OverlayPlugin.dll.config", "README.md", "LICENSE.txt") OverlayPlugin
     cp -Recurse libs\resources OverlayPlugin
     cp -Recurse libs\*.dll OverlayPlugin\libs
-    rm OverlayPlugin\libs\CefSharp.dll
-    rm OverlayPlugin\libs\CefSharp.Core.dll
-    rm OverlayPlugin\libs\CefSharp.OffScreen.dll
+    del OverlayPlugin\libs\CefSharp.*
 
     # Translations
     cp -Recurse @("de-DE", "fr-FR", "ja-JP", "ko-KR", "zh-CN") OverlayPlugin

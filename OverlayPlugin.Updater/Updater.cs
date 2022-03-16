@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -329,10 +325,11 @@ namespace RainbowMage.OverlayPlugin.Updater
             }
         }
 
-        public static async void PerformUpdateIfNecessary(string pluginDirectory, TinyIoCContainer container, bool manualCheck = false)
+        public static async void PerformUpdateIfNecessary(string pluginDirectory, TinyIoCContainer container, bool manualCheck = false, bool checkPreRelease = false)
         {
             return;
             var config = container.Resolve<IPluginConfig>();
+
             var options = new UpdaterOptions
             {
                 project = "OverlayPlugin",
@@ -342,7 +339,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                 checkInterval = TimeSpan.FromMinutes(5),
                 repo = "ngld/OverlayPlugin",
                 downloadUrl = "https://github.com/{REPO}/releases/download/v{VERSION}/OverlayPlugin-{VERSION}.7z",
-                actPluginId = 77,
+                actPluginId = checkPreRelease ? 86 : 77,
             };
 
             await RunAutoUpdater(options, manualCheck);

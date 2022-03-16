@@ -74,7 +74,7 @@ namespace RainbowMage.HtmlRenderer
                 }
             }
 
-            this.Renderer = new WinFormsRenderer("", url, this, api);
+            this.Renderer = new WinFormsRenderer("", "", url, this, api);
             this.Renderer.BeginRender();
 
             this.MaxFrameRate = maxFrameRate;

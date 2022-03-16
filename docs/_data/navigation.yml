@@ -5,13 +5,26 @@ header:
   - title: Streamer Info
     url:   /streamers
 
-  - title: Streamer Info (CN)
-    url:   /streamers_cn
-
   - title: Developer Info
     url:   /devs
 
+streamers:
+  - title: Language
+    children:
+      - title: English
+        url:   /streamers
+
+      - title: 简体中文
+        url:   /streamers_cn
+
 devs:
+  - title: Language
+    children:
+      - title: English
+        url:   /devs
+
+      - title: 简体中文
+        url:   /devs_cn
   - title: Content
     children:
       - title: Start
@@ -19,3 +32,20 @@ devs:
 
       - title: Event Types
         url:   /devs/event_types
+        
+        
+devs_cn:
+  - title: Language
+    children:
+      - title: English
+        url:   /devs
+
+      - title: 简体中文
+        url:   /devs_cn
+  - title: 内容导航
+    children:
+      - title: 开始
+        url:   /devs_cn
+
+      - title: 事件类型
+        url:   /devs_cn/event_types

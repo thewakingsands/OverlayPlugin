@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Windows.Forms;
 using RainbowMage.OverlayPlugin.NetworkProcessors;
 
 namespace RainbowMage.OverlayPlugin
@@ -13,10 +14,13 @@ namespace RainbowMage.OverlayPlugin
     {
         private bool gameActive = true;
         private bool inCutscene = false;
+        private bool inCombat = false;
         private IPluginConfig config;
         private ILogger logger;
         private PluginMain main;
         private FFXIVRepository repository;
+        private int ffxivPid = -1;
+        private Timer focusTimer;
 
         public OverlayHider(TinyIoCContainer container)
         {
@@ -27,6 +31,32 @@ namespace RainbowMage.OverlayPlugin
 
             container.Resolve<NativeMethods>().ActiveWindowChanged += ActiveWindowChangedHandler;
             container.Resolve<NetworkParser>().OnOnlineStatusChanged += OnlineStatusChanged;
+            container.Resolve<EventSources.EnmityEventSource>().CombatStatusChanged += CombatStatusChanged;
+
+            try
+            {
+                repository.RegisterProcessChangedHandler(UpdateFFXIVProcess);
+            } catch (Exception ex)
+            {
+                logger.Log(LogLevel.Error, "Failed to register process watcher for FFXIV; this is only an issue if you're playing FFXIV. As a consequence, OverlayPlugin won't be able to hide overlays if you're not in-game.");
+                logger.Log(LogLevel.Error, "Details: " + ex.ToString());
+            }
+
+            focusTimer = new Timer();
+            focusTimer.Tick += (o, e) => ActiveWindowChangedHandler(this, IntPtr.Zero);
+            focusTimer.Interval = 10000;  // 10 seconds
+            focusTimer.Start();
+        }
+
+        private void UpdateFFXIVProcess(Process p)
+        {
+            if (p != null)
+            {
+                ffxivPid = p.Id;
+            } else
+            {
+                ffxivPid = -1;
+            }
         }
 
         public void UpdateOverlays()
@@ -41,7 +71,10 @@ namespace RainbowMage.OverlayPlugin
             {
                 foreach (var overlay in main.Overlays)
                 {
-                    if (overlay.Config.IsVisible) overlay.Visible = gameActive && !inCutscene;
+                    if (overlay.Config.IsVisible)
+                    {
+                        overlay.Visible = gameActive && !inCutscene && (!overlay.Config.HideOutOfCombat || inCombat);
+                    }
                 }
             } catch (Exception ex)
             {
@@ -51,7 +84,7 @@ namespace RainbowMage.OverlayPlugin
 
         private void ActiveWindowChangedHandler(object sender, IntPtr changedWindow)
         {
-            if (!config.HideOverlaysWhenNotActive || changedWindow == IntPtr.Zero) return;
+            if (!config.HideOverlaysWhenNotActive) return;
             try
             {
                 try
@@ -61,10 +94,16 @@ namespace RainbowMage.OverlayPlugin
                     if (pid == 0)
                         return;
 
-                    var exePath = Process.GetProcessById((int)pid).MainModule.FileName;
-                    var fileName = Path.GetFileName(exePath.ToString());
-                    gameActive = (fileName == "ffxiv.exe" || fileName == "ffxiv_dx11.exe" ||
-                                    exePath.ToString() == Process.GetCurrentProcess().MainModule.FileName);
+                    if (ffxivPid != -1)
+                    {
+                        gameActive = pid == ffxivPid || pid == Process.GetCurrentProcess().Id;
+                    } else
+                    {
+                        var exePath = Process.GetProcessById((int)pid).MainModule.FileName;
+                        var fileName = Path.GetFileName(exePath.ToString());
+                        gameActive = (fileName == "ffxiv.exe" || fileName == "ffxiv_dx11.exe" ||
+                                        exePath.ToString() == Process.GetCurrentProcess().MainModule.FileName);
+                    }
                 }
                 catch (System.ComponentModel.Win32Exception ex)
                 {
@@ -93,6 +132,12 @@ namespace RainbowMage.OverlayPlugin
             if (!config.HideOverlayDuringCutscene || e.Target != repository.GetPlayerID()) return;
 
             inCutscene = e.Status == 15;
+            UpdateOverlays();
+        }
+
+        private void CombatStatusChanged(object sender, EventSources.CombatStatusChangedArgs e)
+        {
+            inCombat = e.InCombat;
             UpdateOverlays();
         }
     }

@@ -295,4 +295,8 @@
   <data name="EventConfigTab" xml:space="preserve">
     <value>Event Settings</value>
   </data>
+  <data name="LogNotConnectedError" xml:space="preserve">
+    <value>ERROR: Log not connected.</value>
+    <comment>This error appears in the log box when it wasn't connected to the overlay log. This should never happen and indicates that something went really wrong during plugin startup.</comment>
+  </data>
 </root>

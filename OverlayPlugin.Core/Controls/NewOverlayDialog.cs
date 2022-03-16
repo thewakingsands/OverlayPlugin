@@ -141,7 +141,7 @@ namespace RainbowMage.OverlayPlugin
 
                         // Reconstruct the overlay to reset the preview state.
                         SelectedOverlay = new Overlays.MiniParseOverlay(config, name, container);
-                        if (config.Url == "")
+                        if (config.Url == "" || config.Url.Contains("loading.html"))
                         {
                             // If the preview didn't load, we try again here to avoid ending up with an empty overlay.
                             SelectedOverlay.Navigate(preset.Url.Replace("%%", pluginMain.ResourceUri));
@@ -164,6 +164,7 @@ namespace RainbowMage.OverlayPlugin
         private void cbPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
             var preset = (IOverlayPreset)cbPreset.SelectedItem;
+            if (preset == null) return;
 
             if (preset.Url == "special:custom")
             {

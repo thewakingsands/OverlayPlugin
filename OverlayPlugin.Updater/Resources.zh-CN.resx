@@ -278,4 +278,11 @@ OverlayPlugin的运行需要它。现在安装？</value>
   <data name="UpdateSliderDetails" xml:space="preserve">
     <value>{0}已成功更新。</value>
   </data>
+  <data name="LogOverwriteRetry" xml:space="preserve">
+    <value>覆写{0}文件失败，正在重试...
+{1}</value>
+  </data>
+  <data name="LogOverwriteFailed" xml:space="preserve">
+    <value>超过重试次数，更新失败。</value>
+  </data>
 </root>

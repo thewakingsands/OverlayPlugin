@@ -165,4 +165,28 @@
   <data name="statusLabel.Text" xml:space="preserve">
     <value>알 수 없음</value>
   </data>
+  <data name="tunnelPage.Text" xml:space="preserve">
+    <value>공유 오버레이</value>
+  </data>
+  <data name="settingsPage.Text" xml:space="preserve">
+    <value>Stream/Local 오버레이</value>
+  </data>
+  <data name="simpStatusLabel.Text" xml:space="preserve">
+    <value>상태:</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>오버레이 :</value>
+  </data>
+  <data name="urlGeneratorBox.Text" xml:space="preserve">
+    <value>URL 생성기</value>
+  </data>
+  <data name="regionLabel.Text" xml:space="preserve">
+    <value>지역:</value>
+  </data>
+  <data name="simpStartBtn.Text" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="simpStopBtn.Text" xml:space="preserve">
+    <value>중지</value>
+  </data>
 </root>

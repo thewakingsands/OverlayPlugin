@@ -142,6 +142,12 @@
     <value>Failed to launch installer: {0}</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="libcurl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\libcurl.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="libcurl_x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\libcurl-x64.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="LogAbortedByUser" xml:space="preserve">
     <value>Aborted by user.</value>
   </data>
@@ -252,7 +258,7 @@ Make sure you load OverlayPlugin before any other plugins that also use SharpCom
     <comment>The [{0}/{1}] part indicates the current step. i.e. [1/2] would indicate that this is the first of two steps for the current task.</comment>
   </data>
   <data name="StatusDownloadStarted" xml:space="preserve">
-    <value>[{0}/{1}]: Starting download...</value>
+    <value>[{0}/{1}]: Downloading...</value>
     <comment>The [{0}/{1}] part indicates the current step. i.e. [1/2] would indicate that this is the first of two steps for the current task.</comment>
   </data>
   <data name="StatusError" xml:space="preserve">

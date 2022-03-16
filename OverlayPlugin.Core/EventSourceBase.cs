@@ -11,6 +11,7 @@ namespace RainbowMage.OverlayPlugin
         public string Name { get; protected set; }
         protected TinyIoCContainer container;
         private EventDispatcher dispatcher;
+        private bool updateRunning = false;
 
         protected Timer timer;
         protected ILogger logger;
@@ -38,13 +39,24 @@ namespace RainbowMage.OverlayPlugin
 
         protected void UpdateWrapper(object state)
         {
+            if (updateRunning)
+            {
+                Log(LogLevel.Error, "Update for {0} took too long, skipping overlapping tick!", this.GetType().Name);
+                return;
+            }
+
             try
             {
+                updateRunning = true;
                 Update();
             }
             catch (Exception ex)
             {
                 Log(LogLevel.Error, "Update: {0}", ex);
+            }
+            finally
+            {
+                updateRunning = false;
             }
         }
 

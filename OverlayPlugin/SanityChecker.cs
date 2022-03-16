@@ -64,7 +64,6 @@ namespace RainbowMage.OverlayPlugin
             var expectedVersions = new Dictionary<string, string>
             {
                 { "Newtonsoft.Json", "12.0.0" },
-                { "websocket-sharp", "1.0.2" },
             };
 
             
@@ -81,7 +80,7 @@ namespace RainbowMage.OverlayPlugin
                 {
                     MessageBox.Show(
                         string.Format(Resources.DependencyMissing, pair.Key, ex),
-                        "OvlerayPlugin Error",
+                        "OverlayPlugin Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );

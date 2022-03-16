@@ -236,6 +236,8 @@
         },
         "introPage.Text": {
             "en": "Intro",
+            "fr-FR": "Introduction",
+            "ko": "소개",
             "zh-CN": "简介"
         },
         "label1.Text": {
@@ -257,7 +259,7 @@
         "label3.Text": {
             "de-DE": "Status:",
             "en": "Status:",
-            "fr-FR": "Etat",
+            "fr-FR": "État :",
             "ja-JP": "ステータス :",
             "ko-KR": "상태:",
             "zh-CN": "状态："
@@ -266,6 +268,7 @@
             "de-DE": "Overlay:",
             "en": "Overlay:",
             "fr-FR": "Overlay :",
+            "ko-KR": "오버레이 :",
             "zh-CN": "悬浮窗："
         },
         "label5.Text": {
@@ -284,6 +287,7 @@
         },
         "lblWsserverIntro.Text": {
             "en": "Here's a short explanation for both tabs:\n\nStream/Local Overlay: If you start WSServer through this tab, you can use the generated URLs on this PC (i.e. in OBS, XL's overlay plugin, etc.). If you know a bit about networks and SSL you can even make this work with other devices in your LAN but in general I'd recommend using the Shared Overlay tab for that since it's much easier to use.\n\nShared Overlay: If you start WSServer through this tab, you can use the generated URLs on any device that is connected to the internet (your phone, tablet, a friend's PC, etc.). You can share these links with other people.\n\nFinally, if WSServer is started through the Stream/Local Overlay tab, it will automatically restart on ACT launch. If it's started through the Shared Overlay tab, it won't start automatically since you'd get a new URL each time anyway. Note: If this bothers you, ask ngld in the ACT Discord (or on OverlayPlugin's GitHub repo) to fix this. There are ways around this but I'm not sure how many people want this feature.\n",
+            "fr-FR": "Voici une brève explication pour les deux onglets :\n\nOverlay Local/Stream : Si vous démarrez WSServer par cet onglet, vous pouvez utiliser les URLs générées sur ce PC (par exemple dans OBS, XL overlay, etc.). Si vous vous y connaissez un peu en matière de réseaux et de SSL, vous pouvez même le faire fonctionner avec d'autres appareils sur votre réseau local, mais en général, je vous recommande d'utiliser l'onglet Overlay Partagé pour cela, car il est beaucoup plus facile à utiliser.\n\nOverlay Partagé : Si vous démarrez WSServer via cet onglet, vous pouvez utiliser les URL générées sur n'importe quel appareil connecté à Internet (votre téléphone, votre tablette, le PC d'un ami, etc.). Vous pouvez partager ces liens avec d'autres personnes. Enfin, si vous démarrez WSServer via l'onglet Overlay Local/Stream, il redémarrera automatiquement au lancement d'ACT. S'il est démarré par l'onglet Overlay Partagé, il ne démarrera pas automatiquement car vous obtiendrez de toute façon une nouvelle URL à chaque fois. Note : Si cela vous dérange, demandez à ngld dans le Discord ACT (ou sur le repo GitHub de OverlayPlugin) de corriger cela. Il y a des moyens de contourner ce problème, mais je ne sais pas combien de personnes souhaitent cette fonctionnalité.\n",
             "zh-CN": "此处是对后两个选项卡的简介：\n\n直播/本地悬浮窗：如果您通过此选项卡启动WS服务器，您就可以在这台电脑上使用生成的链接 （例如在OBS中，XL的overlay plugin中，等等）。如果您对网络和SSL略知一二，您甚至可以在您的局域网中的其他设备上使用它。但是一般来说，我建议使用共享悬浮窗选项卡，因为它更易于使用。\n\n共享悬浮窗：如果您通过此选项卡启动WS服务器，则可以在连接到互联网的任何设备上使用生成的链接（例如您的手机、平板电脑、朋友的电脑，等等）。您可以与其他人共享这些链接。\n\n最后，如果您通过“直播/本地悬浮窗”选项卡启动了WS服务器, 它将在ACT启动时自动重新启动。如果是通过“共享悬浮窗”选项卡启动的, 它不会自动启动，因为您每次都将获得一个新的链接。备注：如果这让您感到困扰，请在ACT Discord（或在OverlayPlugin的GitHub仓库）中要求ngld修复此问题。有很多方法可以解决这个问题，但是我不确定有多少人需要这个功能。\n"
         },
         "logDisplay.Text": {
@@ -296,26 +300,37 @@
         },
         "regionLabel.Text": {
             "en": "Region:",
+            "fr-FR": "Région :",
+            "ko-KR": "지역:",
             "zh-CN": "地区："
         },
         "settingsPage.Text": {
             "en": "Stream/Local Overlay",
+            "fr": "Overlay Local/Stream",
+            "ko-KR": "Stream/Local 오버레이",
             "zh-CN": "直播/本地悬浮窗"
         },
         "simpStartBtn.Text": {
             "en": "Start",
+            "fr-FR": "Démarrer",
+            "ko-KR": "시작",
             "zh-CN": "启用"
         },
         "simpStatusLabel.Text": {
             "en": "Status:",
+            "fr-FR": "État :",
+            "ko-KR": "상태:",
             "zh-CN": "状态："
         },
         "simpStatusLbl.Text": {
             "en": "Unknown",
+            "fr-FR": "Inconnu",
             "zh-CN": "未知"
         },
         "simpStopBtn.Text": {
             "en": "Stop",
+            "fr-FR": "Stop",
+            "ko-KR": "중지",
             "zh-CN": "停止"
         },
         "sslBox.Text": {
@@ -351,16 +366,22 @@
         },
         "tunnelPage.Text": {
             "en": "Shared Overlay",
+            "fr-FR": "Overlay Partagé",
+            "ko-KR": "공유 오버레이",
             "zh-CN": "共享悬浮窗"
         },
         "urlGeneratorBox.Text": {
             "en": "URL Generator",
+            "fr-FR": "Générateur d'URL",
+            "ko-KR": "URL 생성기",
             "zh-CN": "链接生成器"
         }
     },
     "OverlayPlugin.Core/EventSources/BuiltinEventConfigPanel": {
         "experimentalWarning.Text": {
             "en": "WARNING: Experimental options below - If you touch these, you confirm that you can troubleshoot any issues you encounter yourself and won't ask for help.",
+            "fr-FR": "AVERTISSEMENT : Options expérimentales ci-dessous - Si vous y touchez, vous confirmez que vous pouvez résoudre vous-même les problèmes que vous rencontrez et que vous ne demanderez pas d'aide.",
+            "ko-KR": "주의: 아래 옵션들은 실험적인 기능입니다. - 아래 옵션을 사용할 때, 마주치는 모든 문제를 직접 해결할 수 있고 도움을 요청하지 않을 것을 확인하고 사용하세요.",
             "zh-CN": "警告：以下选项是试验性功能———一旦启用，视为您确认可以自己解决遇到的任何问题，而不会寻求帮助。"
         },
         "label1.Text": {
@@ -405,14 +426,20 @@
         },
         "label6.Text": {
             "en": "End ACT encounter after wipe",
+            "fr-FR": "Arrêt du log après un wipe",
+            "ko-KR": "전멸 후 전투 기록 종료",
             "zh-CN": "团灭自动重置战斗记录"
         },
         "label7.Text": {
             "en": "End ACT encounter out of combat",
+            "fr-FR": "Arrêt du log si hors combat",
+            "ko-KR": "전투에서 벗어나면 전투 기록 종료",
             "zh-CN": "脱战自动重置战斗记录"
         },
         "lblCutsceneDetectionLog.Text": {
             "en": "Write cutscene detection log lines",
+            "fr-FR": "Écrire les lignes de détection des cinématiques",
+            "ko-KR": "컷신 감지 로그 남기기",
             "zh-CN": "输出过场检测日志行"
         }
     },
@@ -973,6 +1000,7 @@
             "de-DE": "Benutzerdefiniert",
             "en": "Custom",
             "fr-FR": "Personnalisé",
+            "ko-KR": "커스텀",
             "zh-CN": "自订"
         },
         "DuplicateHandlerError": {
@@ -1005,6 +1033,7 @@
         "EventConfigTab": {
             "de-DE": "Event Einstellungen",
             "en": "Event Settings",
+            "ko-KR": "이벤트 설정",
             "zh-CN": "基本设置"
         },
         "EventHandlerException": {
@@ -1045,6 +1074,7 @@
         "HotkeyActionToggleEnabled": {
             "de-DE": "Umschalten aktiviert",
             "en": "Toggle enabled",
+            "ko-KR": "토글 활성화",
             "zh-CN": "切换悬浮窗 启用/关闭"
         },
         "HotkeyActionToggleLock": {
@@ -1106,12 +1136,14 @@
             "#comment": "This name appears on the overlay list underneath the overlay name.",
             "de-DE": "LabelOverlay",
             "en": "LabelOverlay",
+            "ko-KR": "Label 오버레이",
             "zh-CN": "标签悬浮窗"
         },
         "MapOverlayMiniParse": {
             "#comment": "This name appears on the overlay list underneath the overlay name.",
             "de-DE": "MiniParseOverlay",
             "en": "MiniParseOverlay",
+            "ko-KR": "MiniParse 오버레이",
             "zh-CN": "数据统计悬浮窗"
         },
         "MapOverlayShortLabel": {
@@ -1139,6 +1171,7 @@
             "#comment": "This name appears on the overlay list underneath the overlay name.",
             "de-DE": "SpellTimerOverlay",
             "en": "SpellTimerOverlay",
+            "ko-KR": "SpellTimer 오버레이",
             "zh-CN": "技能冷却悬浮窗"
         },
         "MissingEventDispatchError": {
@@ -1173,6 +1206,7 @@
             "de-DE": "Machina oder das FFXIV-Plugin konnten nicht gefunden werden. Dies ist nur dann ein Problem, wenn Sie ACT mit FFXIV verwenden.",
             "en": "Could not find Machina or the FFXIV plugin. This is only an issue if you're using ACT with FFXIV.",
             "fr-FR": "Impossible de trouver le plugin FFXIV ou Machina. C'est seulement un problème si vous utilisez ACT avec FFXIV.",
+            "ko-KR": "Machina 혹은 FFXIV 플러그인을 발견하지 못했습니다. 이 문제는 파이널 판타지 14와 함께 ACT를 사용하는 분들께만 문제가 되는 부분입니다.",
             "zh-CN": "找不到Machina或FFXIV插件。仅当您将ACT与FFXIV一起使用时才是问题。"
         },
         "OverlayApiInvalidHandlerCall": {
@@ -1236,6 +1270,7 @@
             "de-DE": "Bitte wähle eineVoreinstellung aus.",
             "en": "Please select a preset.",
             "fr-FR": "Sélectionnez un preset.",
+            "ko-KR": "프리셋을 선택해주세요.",
             "zh-CN": "请选择一个预设悬浮窗。"
         },
         "RegisterHotkeyError": {
@@ -1260,6 +1295,7 @@
         "WSHandlerException": {
             "de-DE": "WS: Handler-Aufruf fehlgeschlagen: {0}",
             "en": "WS: Handler call failed: {0}",
+            "ko-KR": "WS: Handler 호출 실패: {0}",
             "zh-CN": "WS：处理程序调用失败：{0}"
         },
         "WSIndexPage": {
@@ -1378,10 +1414,12 @@
         },
         "label6.Text": {
             "en": "End ACT encounter after wipe",
+            "ko-KR": "전멸 후 전투 기록 종료",
             "zh-CN": "团灭自动重置战斗记录"
         },
         "label7.Text": {
             "en": "End ACT encounter out of combat",
+            "ko-KR": "전투에서 벗어나면 전투 기록 종료",
             "zh-CN": "脱战自动重置战斗记录"
         },
         "lnkManual.Text": {
@@ -1624,11 +1662,15 @@
             "zh-CN": "正在打开压缩包..."
         },
         "LogOverwriteFailed": {
-            "en": "No retries left, update failed."
+            "en": "No retries left, update failed.",
+            "ko-KR": "재시도 횟수 초과, 업데이트 실패.",
+            "zh-CN": "超过重试次数，更新失败。"
         },
         "LogOverwriteRetry": {
             "#comment": "{0} is the filename and {1} is the error message",
-            "en": "Failed to overwrite {0}, retrying...\n{1}"
+            "en": "Failed to overwrite {0}, retrying...\n{1}",
+            "ko-KR": "{0}을(를) 덮어씌우는데 실패했습니다, 재시도 중...\n{1}",
+            "zh-CN": "覆写{0}文件失败，正在重试...\n{1}"
         },
         "LogOverwritingOldFiles": {
             "de-DE": "Alte Dateien überschreiben ...",

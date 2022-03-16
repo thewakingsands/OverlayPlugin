@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
 
-namespace RainbowMage.OverlayPlugin.MemoryProcessors
-{
+namespace RainbowMage.OverlayPlugin.MemoryProcessors {
   public class FFXIVProcessIntl : FFXIVProcess {
-    // Last updated for FFXIV 5.2
+    // Last updated for FFXIV 5.4
 
     [StructLayout(LayoutKind.Explicit)]
     public unsafe struct EntityMemory {
@@ -39,7 +38,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
       [FieldOffset(0xB0)]
       public Single rotation;
 
-      [FieldOffset(0x1898)]
+      [FieldOffset(0x1C4)]
       public CharacterDetails charDetails;
     }
 
@@ -53,28 +52,29 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
       public int max_hp;
 
       [FieldOffset(0x08)]
-      public int mp;
+      public short mp;
 
-      [FieldOffset(0x12)]
+      [FieldOffset(0x10)]
       public short gp;
 
-      [FieldOffset(0x14)]
+      [FieldOffset(0x12)]
       public short max_gp;
 
-      [FieldOffset(0x16)]
+      [FieldOffset(0x14)]
       public short cp;
 
-      [FieldOffset(0x18)]
+      [FieldOffset(0x16)]
       public short max_cp;
 
-      [FieldOffset(0x42)]
+      [FieldOffset(0x1E)]
       public EntityJob job;
 
-      [FieldOffset(0x44)]
+      [FieldOffset(0x1F)]
       public byte level;
 
-      [FieldOffset(0x65)]
-      public short shieldPercentage;
+      // TODO: find this again
+      // [FieldOffset(0x65)]
+      // public short shieldPercentage;
     }
     public FFXIVProcessIntl(TinyIoCContainer container) : base(container) { }
 
@@ -120,7 +120,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
     internal override void ReadSignatures() {
       List<IntPtr> p;
-      
+
       // TODO: for now, support multiple matches on charmap signature.
       // This sig returns two matches that are identical for many, many characters.
       // They both point to the same spot, so verify these have the same value.
@@ -129,12 +129,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         logger_.Log(LogLevel.Error, "Charmap signature found " + p.Count + " matches");
       } else {
         IntPtr player_ptr_value = IntPtr.Zero;
-        foreach (IntPtr ptr in p)
-        {
+        foreach (IntPtr ptr in p) {
           IntPtr addr = IntPtr.Add(ptr, kCharmapStructOffsetPlayer);
           IntPtr value = ReadIntPtr(addr);
-          if (player_ptr_addr_ == IntPtr.Zero || player_ptr_value == value)
-          {
+          if (player_ptr_value == IntPtr.Zero || player_ptr_value == value) {
             player_ptr_value = value;
             player_ptr_addr_ = addr;
           } else {
@@ -201,7 +199,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
           // This doesn't exist in memory, so just send the right value.
           // As there are other versions that still have it, don't change the event.
           entity.max_mp = 10000;
-          entity.shield_value = mem.charDetails.shieldPercentage * entity.max_hp / 100;
+
+          // TODO: fix me
+          // entity.shield_value = mem.charDetails.shieldPercentage * entity.max_hp / 100;
+          entity.shield_value = 0;
 
           if (IsGatherer(entity.job)) {
             entity.gp = mem.charDetails.gp;
@@ -293,7 +294,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             case EntityJob.SCH:
                 return JObject.FromObject(*(ScholarJobMemory*)&p[0]);
             case EntityJob.PGL:
-                return JObject.FromObject(*(PuglistJobMemory*)&p[0]);
+                return JObject.FromObject(*(PugilistJobMemory*)&p[0]);
             case EntityJob.MNK:
                 return JObject.FromObject(*(MonkJobMemory*)&p[0]);
             case EntityJob.MCH:
@@ -330,8 +331,15 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
     public struct DarkKnightJobMemory {
       [FieldOffset(0x00)]
       public byte blood;
+
       [FieldOffset(0x02)]
       public ushort darksideMilliseconds;
+
+      [FieldOffset(0x04)]
+      public byte darkArts;
+
+      [FieldOffset(0x06)]
+      public ushort livingShadowMilliseconds;
     };
 
     [Serializable]
@@ -397,6 +405,9 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
       [FieldOffset(0x00)]
       public byte feathers;
+
+      [FieldOffset(0x01)]
+      public byte esprit;
 
       [NonSerialized]
       [FieldOffset(0x02)]
@@ -576,7 +587,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
     };
 
     [StructLayout(LayoutKind.Explicit)]
-    public struct PuglistJobMemory {
+    public struct PugilistJobMemory {
       [FieldOffset(0x00)]
       public ushort lightningMilliseconds;
 
@@ -594,6 +605,16 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
       [FieldOffset(0x03)]
       public byte chakraStacks;
+
+      [NonSerialized]
+      [FieldOffset(0x04)]
+      private byte _lightningTimerState;
+
+      public bool lightningTimerFrozen {
+        get {
+          return (_lightningTimerState > 0);
+        }
+      }
     };
 
     [StructLayout(LayoutKind.Explicit)]
@@ -609,6 +630,25 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
       [FieldOffset(0x05)]
       public byte battery;
+      
+      [FieldOffset(0x06)]
+      public byte lastBatteryAmount;
+
+      [NonSerialized]
+      [FieldOffset(0x07)]
+      private byte chargeTimerState;
+
+      public bool overheatActive {
+        get {
+          return (chargeTimerState & 0x1) == 1;
+        }
+      }
+
+      public bool robotActive {
+        get {
+          return (chargeTimerState & 0x2) == 1;
+        }
+      }
     };
 
     [StructLayout(LayoutKind.Explicit)]
@@ -663,8 +703,11 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
     [StructLayout(LayoutKind.Explicit)]
     public struct SamuraiJobMemory {
-      [FieldOffset(0x04)]
+      [FieldOffset(0x03)]
       public byte kenki;
+      
+      [FieldOffset(0x04)]
+      public byte meditationStacks;
 
       [NonSerialized]
       [FieldOffset(0x05)]

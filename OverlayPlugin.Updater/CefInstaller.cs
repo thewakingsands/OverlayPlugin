@@ -13,7 +13,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 {
     public class CefInstaller
     {
-        const string CEF_VERSION = "90.6.70";
+        const string CEF_VERSION = "95.7.14";
 
         public static string GetUrl()
         {
@@ -30,7 +30,15 @@ namespace RainbowMage.OverlayPlugin.Updater
                 if (lib != IntPtr.Zero)
                 {
                     NativeMethods.FreeLibrary(lib);
-                    break;
+
+                    if (!Environment.Is64BitProcess) break;
+
+                    lib = NativeMethods.LoadLibrary("vcruntime140_1.dll");
+                    if (lib != IntPtr.Zero)
+                    {
+                        NativeMethods.FreeLibrary(lib);
+                        break;
+                    }
                 }
 
                 var response = MessageBox.Show(
@@ -84,13 +92,13 @@ namespace RainbowMage.OverlayPlugin.Updater
             Directory.CreateDirectory(cefPath);
             try
             {
-                var result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.Common", "90.6.70"), "OverlayPluginCef.tmp2", cefPath, "CefSharp/x64/", "第1个，共3个", "lib/net452/");
+                var result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.Common", "95.7.141"), "OverlayPluginCef.tmp2", cefPath, "CefSharp/x64/", "第1个，共3个", "lib/net452/");
                 if (!result) throw new Exception("下载失败1");
 
-                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.OffScreen", "90.6.70"), "OverlayPluginCef.tmp3", cefPath, "lib/net452/", "第2个，共3个");
+                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.OffScreen", "95.7.141"), "OverlayPluginCef.tmp3", cefPath, "lib/net452/", "第2个，共3个");
                 if (!result) throw new Exception("下载失败2");
 
-                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("cef.redist.x64", "90.6.7"), "OverlayPluginCef.tmp1", cefPath, "CEF/", "第3个，共3个");
+                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("cef.redist.x64", "95.7.14"), "OverlayPluginCef.tmp1", cefPath, "CEF/", "第3个，共3个");
                 if (!result) throw new Exception("下载失败3");
 
                 File.WriteAllText(Path.Combine(cefPath, "version.txt"), CEF_VERSION);

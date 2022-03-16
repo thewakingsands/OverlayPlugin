@@ -1,5 +1,7 @@
 ---
 layout: article
+sidebar:
+    nav: streamers
 ---
 
 # 如何在OBS中设置模板

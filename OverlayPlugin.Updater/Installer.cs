@@ -35,6 +35,25 @@ namespace RainbowMage.OverlayPlugin.Updater
             TempDir = Path.Combine(Path.GetDirectoryName(dest), tmpName);
         }
 
+        private void SafeMove(string oldName, string newName)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    Directory.Move(oldName, newName);
+                    return;
+                } catch(Exception)
+                {
+                    // Let's try again in case this is just an AV messing with us...
+                    Thread.Sleep(500);
+                }
+            }
+
+            // Alright, one last try. If this fails, we'll throw.
+            Directory.Move(oldName, newName);
+        }
+
         public static async Task<bool> Run(string url, string destDir, string tmpName, int stripDirs = 0, bool overwrite = false)
         {
             var inst = new Installer(destDir, tmpName);
@@ -413,13 +432,13 @@ namespace RainbowMage.OverlayPlugin.Updater
                     if (Directory.Exists(backup))
                         Directory.Delete(backup, true);
 
-                    Directory.Move(_destDir, backup);
+                    SafeMove(_destDir, backup);
                 }
 
                 try
                 {
                     _display.Log(Resources.LogMovingDirectory);
-                    Directory.Move(Path.Combine(TempDir, "contents"), _destDir);
+                    SafeMove(Path.Combine(TempDir, "contents"), _destDir);
                 }
                 catch (Exception e)
                 {
@@ -435,7 +454,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     {
                         _display.Log(Resources.LogRestoringBackup);
 
-                        Directory.Move(backup, _destDir);
+                        SafeMove(backup, _destDir);
                     }
 
                     _display.Log(Resources.LogDone);

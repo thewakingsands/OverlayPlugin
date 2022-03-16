@@ -500,6 +500,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 }
             }
 
+            // TODO: Reimplement
+            // return new Dictionary<string, string>();
+
             var web = new System.Net.WebClient();
             web.Encoding = System.Text.Encoding.UTF8;
             System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Ssl3 | System.Net.SecurityProtocolType.Tls | System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;

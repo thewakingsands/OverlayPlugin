@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RainbowMage.OverlayPlugin</RootNamespace>
     <AssemblyName>OverlayPlugin.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -51,6 +51,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -63,6 +65,12 @@
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ConfigCreationConverter.cs" />
+    <Compile Include="Controls\ConfigErrorPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ConfigErrorPrompt.Designer.cs">
+      <DependentUpon>ConfigErrorPrompt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GeneralConfigTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -89,8 +97,9 @@
     <Compile Include="MemoryProcessors\EnmityMemory50.cs" />
     <Compile Include="MemoryProcessors\EnmityMemory52.cs" />
     <Compile Include="MemoryProcessors\EnmityMemory53.cs" />
-    <Compile Include="MemoryProcessors\EnmityMemory54.cs" />
+    <Compile Include="MemoryProcessors\EnmityMemory60.cs" />
     <Compile Include="MemoryProcessors\EnmityMemory55.cs" />
+    <Compile Include="MemoryProcessors\EnmityMemory54.cs" />
     <Compile Include="MemoryProcessors\EnmityMemoryCommon.cs" />
     <Compile Include="NetworkProcessors\FateWatcher.cs" />
     <Compile Include="MemoryProcessors\FFXIVProcess.cs" />
@@ -258,6 +267,7 @@
     <Content Include="resources\handle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\miniparse_debug.html" />
     <Content Include="resources\spelltimer.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -281,6 +291,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\ConfigErrorPrompt.resx">
+      <DependentUpon>ConfigErrorPrompt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlPanel.de-DE.resx">
       <DependentUpon>ControlPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -495,11 +508,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Fleck">
+      <Version>1.2.0</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="WebSocketSharp-NonPreRelease">
-      <Version>1.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

@@ -77,7 +77,7 @@ namespace RainbowMage.OverlayPlugin
             container.Register<ILogger>(logger);
 
             asmResolver.ExceptionOccured += (o, e) => logger.Log(LogLevel.Error, Resources.AssemblyResolverError, e.Exception);
-            asmResolver.AssemblyLoaded += (o, e) => logger.Log(LogLevel.Debug, Resources.AssemblyResolverLoaded, e.LoadedAssembly.FullName);
+            asmResolver.AssemblyLoaded += (o, e) => logger.Log(LogLevel.Info, Resources.AssemblyResolverLoaded, e.LoadedAssembly.FullName);
 
             this.Container = container;
             pluginMain = new PluginMain(pluginDirectory, logger, container);

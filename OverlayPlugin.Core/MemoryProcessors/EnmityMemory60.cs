@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace RainbowMage.OverlayPlugin.MemoryProcessors
 {
-    public class EnmityMemory55 : EnmityMemory
+    public class EnmityMemory60 : EnmityMemory
     {
         private FFXIVMemory memory;
         private ILogger logger;
@@ -45,13 +45,13 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         // Offsets from the enmityHudAddress tof find various enmity HUD data structures.
         private const int enmityHudCountOffset = 4;
-        private const int enmityHudEntryOffset = 20;
+        private const int enmityHudEntryOffset = 16;
 
         // Constants.
         private const uint emptyID = 0xE0000000;
         private const int numMemoryCombatants = 421;
 
-        public EnmityMemory55(TinyIoCContainer container)
+        public EnmityMemory60(TinyIoCContainer container)
         {
             this.memory = new FFXIVMemory(container);
             this.memory.OnProcessChange += ResetPointers;
@@ -210,7 +210,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             {
                 if (loggedScanErrors < 10)
                 {
-                    logger.Log(LogLevel.Error, "Failed to find enmity memory for 5.5: {0}.", String.Join(",", fail));
+                    logger.Log(LogLevel.Error, "Failed to find enmity memory for 6.0: {0}.", String.Join(",", fail));
                     loggedScanErrors++;
 
                     if (loggedScanErrors == 10)
@@ -221,7 +221,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             }
             else
             {
-                logger.Log(LogLevel.Info, "Found enmity memory for 5.5.");
+                logger.Log(LogLevel.Info, "Found enmity memory for 6.0.");
                 loggedScanErrors = 0;
             }
 
@@ -360,7 +360,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             [FieldOffset(0xB0)]
             public Single Rotation;
 
-            [FieldOffset(0x18D8)]
+            [FieldOffset(0x1940)]
             public uint TargetID;
 
             [FieldOffset(0x1C4)]
@@ -369,10 +369,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             [FieldOffset(0x1C8)]
             public int MaxHP;
 
-            [FieldOffset(0x1E2)]
+            [FieldOffset(0x1E0)]
             public byte Job;
 
-            [FieldOffset(0x19F8)]
+            [FieldOffset(0x1A38)]
             public fixed byte Effects[effectBytes];
         }
 
@@ -710,25 +710,28 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             return bytes[0] != 0;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 20)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         struct EnmityHudEntryMemory
         {
             public static int Size => Marshal.SizeOf(typeof(EnmityHudEntryMemory));
 
             [FieldOffset(0x00)]
-            public uint HPPercent;
+            public uint Unknown01;
 
             [FieldOffset(0x04)]
-            public uint EnmityPercent;
+            public uint HPPercent;
 
             [FieldOffset(0x08)]
-            public uint CastPercent;
+            public uint EnmityPercent;
 
             [FieldOffset(0x0C)]
-            public uint ID;
+            public uint CastPercent;
 
             [FieldOffset(0x10)]
-            public uint Unknown01;
+            public uint ID;
+
+            [FieldOffset(0x14)]
+            public uint Unknown02;
         }
 
         public override List<EnmityHudEntry> GetEnmityHudEntries()

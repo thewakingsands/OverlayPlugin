@@ -18,8 +18,11 @@ namespace RainbowMage.OverlayPlugin
         public event EventHandler GlobalHotkeyChanged;
         public event EventHandler<LockStateChangedEventArgs> LockChanged;
         public event EventHandler LogConsoleMessagesChanged;
+        public event EventHandler HideOutOfCombatChanged;
 
         public string Name { get; set; }
+
+        public Guid Uuid { get; set; }
 
         private bool isVisible;
         public bool IsVisible
@@ -201,9 +204,27 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
+        private bool hideOutOfCombat = false;
+        public bool HideOutOfCombat
+        {
+            get
+            {
+                return this.hideOutOfCombat;
+            }
+            set
+            {
+                if (this.hideOutOfCombat != value)
+                {
+                    this.hideOutOfCombat = value;
+                    HideOutOfCombatChanged?.Invoke(this, new EventArgs());
+                }
+            }
+        }
+
         protected OverlayConfigBase(string name)
         {
             this.Name = name;
+            this.Uuid = Guid.NewGuid();
             this.IsVisible = true;
             this.IsClickThru = false;
             this.Position = new Point(20, 20);
@@ -230,6 +251,11 @@ namespace RainbowMage.OverlayPlugin
                 globalHotkeyEnabled = false;
                 globalHotkeyModifiers = Keys.None;
                 globalHotkey = Keys.None;
+            }
+
+            if (Uuid == Guid.Empty)
+            {
+                Uuid = Guid.NewGuid();
             }
         }
 

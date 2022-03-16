@@ -45,10 +45,12 @@ namespace RainbowMage.OverlayPlugin
             _overlays.Remove(typeof(T));
         }
 
-        public void StartEventSource(IEventSource source)
+        public void StartEventSource<T>(T source)
+            where T: class, IEventSource
         {
             _container.BuildUp(source);
             _eventSources.Add(source);
+            _container.Register(source);
 
             source.LoadConfig(_container.Resolve<IPluginConfig>());
             source.Start();

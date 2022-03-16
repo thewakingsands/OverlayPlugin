@@ -13,6 +13,9 @@ try {
     }
 
     $ENV:PATH = "$VS_PATH\MSBuild\Current\Bin;${ENV:PATH}";
+    if (Test-Path "C:\Program Files\7-Zip\7z.exe") {
+        $ENV:PATH = "C:\Program Files\7-Zip;${ENV:PATH}";
+    }
 
     echo "==> Building..."
 
@@ -23,6 +26,7 @@ try {
     echo "==> Building CEF archives..."
 
     cd out\Release\libs\x64
+    copy ..\CefSharp* .
 
     $text = [System.IO.File]::ReadAllText("$PWD\README.txt");
     $regex = [regex]::New("CEF Version:\s*([0-9.]+)");
@@ -41,16 +45,17 @@ try {
 
     # Rename the archive here so I don't have to before uploading.
     # If you're wondering why I change the extension: People don't read. This seems like the easiest way to force them to.
-    mv $archive "..\..\..\CefSharp-$version-x64.DO_NOT_DOWNLOAD"
+    #mv $archive "..\..\..\CefSharp-$version-x64.DO_NOT_DOWNLOAD"
 
     cd ..\..\libs\x86
+    copy ..\CefSharp* .
 
     $archive = "..\..\..\CefSharp-$version-x86.7z"
 
     if (Test-Path $archive) { rm $archive }
     7z a $archive "-x!*.xml" "-x!*.pdb" .
 
-    mv $archive "..\..\..\CefSharp-$version-x86.DO_NOT_DOWNLOAD"
+    #mv $archive "..\..\..\CefSharp-$version-x86.DO_NOT_DOWNLOAD"
 
     cd ..\..
 } catch {

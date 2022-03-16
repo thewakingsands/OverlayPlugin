@@ -76,7 +76,10 @@ namespace RainbowMage.OverlayPlugin
 
             lock (eventFilter[eventName])
             {
-                eventFilter[eventName].Add(receiver);
+                if (!eventFilter[eventName].Contains(receiver))
+                {
+                    eventFilter[eventName].Add(receiver);
+                }
             }
         }
 

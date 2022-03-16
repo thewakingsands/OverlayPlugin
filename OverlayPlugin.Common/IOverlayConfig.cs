@@ -21,6 +21,7 @@ namespace RainbowMage.OverlayPlugin
         string Name { get; set; }
         bool IsVisible { get; set; }
         bool IsClickThru { get; set; }
+        bool HideOutOfCombat { get; set; }
         Point Position { get; set; }
         Size Size { get; set; }
         string Url { get; set; }

@@ -15,11 +15,13 @@ namespace RainbowMage.OverlayPlugin.Updater
     {
         private string _cefPath;
         private object _pluginLoader;
+        private TinyIoCContainer _container;
 
         public CefMissingTab(string cefPath, object pluginLoader, TinyIoCContainer container)
         {
             InitializeComponent();
 
+            _container = container;
             _cefPath = cefPath;
             _pluginLoader = pluginLoader;
             lnkManual.Text = CefInstaller.GetUrl();
@@ -28,7 +30,7 @@ namespace RainbowMage.OverlayPlugin.Updater
         private async void btnOpenManual_Click(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog();
-            dialog.Filter = "CEF bundle|*.DO_NOT_DOWNLOAD";
+            dialog.Filter = "CEF bundle|*.7z";
             var result = dialog.ShowDialog();
 
             if (result != DialogResult.OK)
@@ -37,7 +39,7 @@ namespace RainbowMage.OverlayPlugin.Updater
             if (await CefInstaller.InstallCef(_cefPath, dialog.FileName))
             {
                 Parent.Controls.Remove(this);
-                _pluginLoader.GetType().GetMethod("FinishInit").Invoke(_pluginLoader, new object[] { });
+                _pluginLoader.GetType().GetMethod("FinishInit").Invoke(_pluginLoader, new object[] { _container });
             }
         }
 
@@ -46,7 +48,7 @@ namespace RainbowMage.OverlayPlugin.Updater
             if (await CefInstaller.EnsureCef(_cefPath))
             {
                 Parent.Controls.Remove(this);
-                _pluginLoader.GetType().GetMethod("FinishInit").Invoke(_pluginLoader, new object[] { });
+                _pluginLoader.GetType().GetMethod("FinishInit").Invoke(_pluginLoader, new object[] { _container });
             }
         }
 

@@ -147,4 +147,10 @@
   <data name="btnOpenManual.Text" xml:space="preserve">
     <value>다운로드한 파일을 추출하기</value>
   </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>전멸 후 전투 기록 종료</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>전투에서 벗어나면 전투 기록 종료</value>
+  </data>
 </root>
