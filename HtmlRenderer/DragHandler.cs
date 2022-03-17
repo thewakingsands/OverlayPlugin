@@ -23,6 +23,7 @@ namespace RainbowMage.HtmlRenderer
         public void OnDraggableRegionsChanged(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IList<DraggableRegion> regions)
         {
             if (!frame.IsMain) return;
+            if (regions == null) return;
 
             var region = new Region();
             region.MakeEmpty();

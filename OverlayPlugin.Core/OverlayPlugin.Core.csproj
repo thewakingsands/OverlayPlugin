@@ -293,6 +293,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\ConfigErrorPrompt.resx">
       <DependentUpon>ConfigErrorPrompt.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlPanel.de-DE.resx">
       <DependentUpon>ControlPanel.cs</DependentUpon>
@@ -302,12 +303,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlPanel.ja-JP.resx">
       <DependentUpon>ControlPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlPanel.ko-KR.resx">
       <DependentUpon>ControlPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlPanel.resx">
       <DependentUpon>ControlPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ControlPanel.zh-CN.resx">
       <DependentUpon>ControlPanel.cs</DependentUpon>

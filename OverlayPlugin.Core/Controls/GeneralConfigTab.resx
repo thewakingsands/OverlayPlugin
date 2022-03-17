@@ -131,6 +131,9 @@
   <data name="lblNewUserWelcome.Location" type="System.Drawing.Point, System.Drawing">
     <value>17, 224</value>
   </data>
+  <data name="&gt;&gt;btnCactbotUpdate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;btnUpdateCheck.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -146,8 +149,8 @@
   <data name="cbUpdateCheck.Size" type="System.Drawing.Size, System.Drawing">
     <value>210, 16</value>
   </data>
-  <data name="lnkGithubRepo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>95, 160</value>
+  <data name="&gt;&gt;btnCactbotUpdate.Name" xml:space="preserve">
+    <value>btnCactbotUpdate</value>
   </data>
   <data name="lblGithub.Text" xml:space="preserve">
     <value>GitHub Repo:</value>
@@ -158,11 +161,14 @@
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>GeneralConfigTab</value>
   </data>
+  <data name="&gt;&gt;btnUpdateCheck.Name" xml:space="preserve">
+    <value>btnUpdateCheck</value>
+  </data>
   <data name="cbErrorReports.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;lblReadMe.Name" xml:space="preserve">
-    <value>lblReadMe</value>
+  <data name="lblGithub.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 12</value>
   </data>
   <data name="&gt;&gt;lblGithub.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -173,6 +179,12 @@
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblNewUserWelcome.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
+  </data>
+  <data name="lnkGithubRepo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>95, 160</value>
+  </data>
+  <data name="&gt;&gt;lblGithub.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="lblGithub.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -189,6 +201,9 @@
   <data name="&gt;&gt;lnkGithubRepo.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="btnCactbotUpdate.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;lblNewUserWelcome.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -203,6 +218,9 @@
   </data>
   <data name="cbHideOverlaysWhenNotActive.Text" xml:space="preserve">
     <value>Automatically hide overlays when the game is in the background</value>
+  </data>
+  <data name="cbUpdateCheck.Text" xml:space="preserve">
+    <value>Automatically check for updates</value>
   </data>
   <data name="btnUpdateCheck.Text" xml:space="preserve">
     <value>Check For Updates</value>
@@ -219,10 +237,13 @@
   <data name="&gt;&gt;lblNewUserWelcome.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="&gt;&gt;lblReadMe.Name" xml:space="preserve">
+    <value>lblReadMe</value>
+  </data>
   <data name="&gt;&gt;lnkGithubRepo.Type" xml:space="preserve">
     <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblReadMe.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btnCactbotUpdate.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="cbErrorReports.AutoSize" type="System.Boolean, mscorlib">
@@ -235,7 +256,7 @@
     <value>3, 29</value>
   </data>
   <data name="&gt;&gt;cbUpdateCheck.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="btnUpdateCheck.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -247,16 +268,13 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbHideOverlaysDuringCutscene.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;lblGithub.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;lblNewUserWelcome.Name" xml:space="preserve">
     <value>lblNewUserWelcome</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="lblNewUserWelcome.Text" xml:space="preserve">
     <value>If you're looking for a URL field here, you're either used to the old OverlayPlugin or following an outdated guide. You need to create an overlay using the New button in the bottom-left corner before you will see any overlays from OverlayPlugin.
@@ -270,8 +288,8 @@ Please try using the presets instead of manually setting the URL since this can 
   <data name="&gt;&gt;cbHideOverlaysWhenNotActive.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btnUpdateCheck.Name" xml:space="preserve">
-    <value>btnUpdateCheck</value>
+  <data name="lblNewUserWelcome.Size" type="System.Drawing.Size, System.Drawing">
+    <value>501, 110</value>
   </data>
   <data name="lnkGithubRepo.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -279,11 +297,14 @@ Please try using the presets instead of manually setting the URL since this can 
   <data name="&gt;&gt;lblGithub.Name" xml:space="preserve">
     <value>lblGithub</value>
   </data>
-  <data name="cbUpdateCheck.Text" xml:space="preserve">
-    <value>Automatically check for updates</value>
+  <data name="lblReadMe.Text" xml:space="preserve">
+    <value>READ THIS:</value>
   </data>
   <data name="lblGithub.Location" type="System.Drawing.Point, System.Drawing">
     <value>17, 160</value>
+  </data>
+  <data name="btnCactbotUpdate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 311</value>
   </data>
   <data name="cbHideOverlaysDuringCutscene.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -307,10 +328,7 @@ Please try using the presets instead of manually setting the URL since this can 
     <value>1</value>
   </data>
   <data name="&gt;&gt;btnUpdateCheck.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;lblReadMe.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="cbErrorReports.Text" xml:space="preserve">
     <value>Automatically send error reports to the developer</value>
@@ -327,14 +345,17 @@ Please try using the presets instead of manually setting the URL since this can 
   <data name="cbUpdateCheck.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblReadMe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 18</value>
+  <data name="&gt;&gt;btnCactbotUpdate.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cbHideOverlaysWhenNotActive.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 52</value>
   </data>
   <data name="btnUpdateCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblReadMe.Text" xml:space="preserve">
-    <value>READ THIS:</value>
+  <data name="btnCactbotUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
   <data name="&gt;&gt;cbErrorReports.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -343,22 +364,22 @@ Please try using the presets instead of manually setting the URL since this can 
     <value>6</value>
   </data>
   <data name="&gt;&gt;cbHideOverlaysWhenNotActive.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
-  <data name="lblGithub.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 12</value>
-  </data>
-  <data name="&gt;&gt;lnkGithubRepo.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;lblNewUserWelcome.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblReadMe.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;lblReadMe.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;cbErrorReports.Name" xml:space="preserve">
     <value>cbErrorReports</value>
   </data>
   <data name="&gt;&gt;cbUpdateCheck.Name" xml:space="preserve">
     <value>cbUpdateCheck</value>
+  </data>
+  <data name="&gt;&gt;lblNewUserWelcome.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="lblReadMe.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -367,19 +388,19 @@ Please try using the presets instead of manually setting the URL since this can 
     <value>0</value>
   </data>
   <data name="&gt;&gt;cbErrorReports.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
-  <data name="&gt;&gt;lblGithub.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="lblNewUserWelcome.Size" type="System.Drawing.Size, System.Drawing">
-    <value>501, 110</value>
+  <data name="lblReadMe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 18</value>
   </data>
   <data name="&gt;&gt;cbHideOverlaysWhenNotActive.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="cbHideOverlaysWhenNotActive.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 52</value>
+  <data name="&gt;&gt;lnkGithubRepo.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="cbHideOverlaysWhenNotActive.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>

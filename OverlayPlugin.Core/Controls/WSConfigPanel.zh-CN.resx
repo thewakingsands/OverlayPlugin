@@ -116,29 +116,28 @@
   </resheader>
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>  <data name="sslBox.Text" xml:space="preserve">
-    <value>启用SSL</value>
-  </data>
-  <data name="statusLabel.Text" xml:space="preserve">
-    <value>未知</value>
-  </data>
-  <data name="stopBtn.Text" xml:space="preserve">
-    <value>停止</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>端口：</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 12</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>IP地址</value>
   </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 12</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>端口：</value>
+  </data>
   <data name="genSslBtn.Text" xml:space="preserve">
     <value>生成SSL证书</value>
   </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>状态：</value>
+  <data name="sslBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 16</value>
   </data>
-  <data name="startBtn.Text" xml:space="preserve">
-    <value>启用</value>
+  <data name="sslBox.Text" xml:space="preserve">
+    <value>启用SSL</value>
   </data>
   <data name="logDisplay.Text" xml:space="preserve">
     <value>仅在您*知道*您需要SSL时才需启用它。通常，仅当您想与其他人或其他设备共享悬浮窗时才需要此功能。请在“共享悬浮窗”选项卡中进行设置。它的设置过程更加容易，可以让您与其他人共享悬浮窗（只需为其提供生成的链接），并且仍然可以与OBS和其他工具一起使用。
@@ -148,24 +147,29 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
 
 然后，您将可以启用SSL功能。</value>
   </data>
-
+  <data name="startBtn.Text" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="stopBtn.Text" xml:space="preserve">
+    <value>停止</value>
+  </data>
   <data name="label4.Text" xml:space="preserve">
     <value>悬浮窗：</value>
   </data>
-  <data name="ctxMenuLinkCopy.Text" xml:space="preserve">
-    <value>复制</value>
-  </data>
-  <data name="lblUrlConfidentWarning.Text" xml:space="preserve">
-    <value>如果此悬浮窗不支持ACTWebSocket，则此链接可能不会生效。</value>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 12</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>悬浮窗链接：</value>
   </data>
-  <data name="simpStartBtn.Text" xml:space="preserve">
-    <value>启用</value>
+  <data name="lblUrlConfidentWarning.Size" type="System.Drawing.Size, System.Drawing">
+    <value>329, 12</value>
   </data>
-  <data name="settingsPage.Text" xml:space="preserve">
-    <value>直播/本地悬浮窗</value>
+  <data name="lblUrlConfidentWarning.Text" xml:space="preserve">
+    <value>如果此悬浮窗不支持ACTWebSocket，则此链接可能不会生效。</value>
+  </data>
+  <data name="urlGeneratorBox.Text" xml:space="preserve">
+    <value>链接生成器</value>
   </data>
   <data name="lblWsserverIntro.Text" xml:space="preserve">
     <value>此处是对后两个选项卡的简介：
@@ -177,25 +181,49 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
 最后，如果您通过“直播/本地悬浮窗”选项卡启动了WS服务器, 它将在ACT启动时自动重新启动。如果是通过“共享悬浮窗”选项卡启动的, 它不会自动启动，因为您每次都将获得一个新的链接。备注：如果这让您感到困扰，请在ACT Discord（或在OverlayPlugin的GitHub仓库）中要求ngld修复此问题。有很多方法可以解决这个问题，但是我不确定有多少人需要这个功能。
 </value>
   </data>
+  <data name="introPage.Text" xml:space="preserve">
+    <value>简介</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 12</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>状态：</value>
+  </data>
+  <data name="statusLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
+  </data>
+  <data name="statusLabel.Text" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="settingsPage.Text" xml:space="preserve">
+    <value>直播/本地悬浮窗</value>
+  </data>
+  <data name="simpStopBtn.Text" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="simpStartBtn.Text" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="simpStatusLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
+  </data>
   <data name="simpStatusLbl.Text" xml:space="preserve">
     <value>未知</value>
+  </data>
+  <data name="regionLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 12</value>
+  </data>
+  <data name="regionLabel.Text" xml:space="preserve">
+    <value>地区：</value>
+  </data>
+  <data name="simpStatusLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 12</value>
   </data>
   <data name="simpStatusLabel.Text" xml:space="preserve">
     <value>状态：</value>
   </data>
   <data name="tunnelPage.Text" xml:space="preserve">
     <value>共享悬浮窗</value>
-  </data>
-  <data name="introPage.Text" xml:space="preserve">
-    <value>简介</value>
-  </data>
-  <data name="regionLabel.Text" xml:space="preserve">
-    <value>地区：</value>
-  </data>
-  <data name="simpStopBtn.Text" xml:space="preserve">
-    <value>停止</value>
-  </data>
-  <data name="urlGeneratorBox.Text" xml:space="preserve">
-    <value>链接生成器</value>
   </data>
 </root>

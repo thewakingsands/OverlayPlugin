@@ -49,11 +49,11 @@
             this.txtOverlayUrl = new System.Windows.Forms.TextBox();
             this.urlGeneratorBox = new System.Windows.Forms.GroupBox();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.introPage = new System.Windows.Forms.TabPage();
-            this.lblWsserverIntro = new System.Windows.Forms.Label();
             this.settingsPage = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.introPage = new System.Windows.Forms.TabPage();
+            this.lblWsserverIntro = new System.Windows.Forms.Label();
             this.tunnelPage = new System.Windows.Forms.TabPage();
             this.simpStopBtn = new System.Windows.Forms.Button();
             this.simpStartBtn = new System.Windows.Forms.Button();
@@ -64,8 +64,8 @@
             this.simpStatusLabel = new System.Windows.Forms.Label();
             this.urlGeneratorBox.SuspendLayout();
             this.tabControl.SuspendLayout();
-            this.introPage.SuspendLayout();
             this.settingsPage.SuspendLayout();
+            this.introPage.SuspendLayout();
             this.tunnelPage.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -139,10 +139,10 @@
             // 
             // cbOverlay
             // 
+            resources.ApplyResources(this.cbOverlay, "cbOverlay");
             this.cbOverlay.DisplayMember = "label";
             this.cbOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbOverlay.FormattingEnabled = true;
-            resources.ApplyResources(this.cbOverlay, "cbOverlay");
             this.cbOverlay.Name = "cbOverlay";
             this.cbOverlay.ValueMember = "overlay";
             this.cbOverlay.SelectedIndexChanged += new System.EventHandler(this.cbOverlay_SelectedIndexChanged);
@@ -173,26 +173,15 @@
             // tabControl
             // 
             resources.ApplyResources(this.tabControl, "tabControl");
-            this.tabControl.Controls.Add(this.settingsPage);
             this.tabControl.Controls.Add(this.introPage);
+            this.tabControl.Controls.Add(this.settingsPage);
             this.tabControl.Controls.Add(this.tunnelPage);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             // 
-            // introPage
-            // 
-            this.introPage.Controls.Add(this.lblWsserverIntro);
-            resources.ApplyResources(this.introPage, "introPage");
-            this.introPage.Name = "introPage";
-            this.introPage.UseVisualStyleBackColor = true;
-            // 
-            // lblWsserverIntro
-            // 
-            resources.ApplyResources(this.lblWsserverIntro, "lblWsserverIntro");
-            this.lblWsserverIntro.Name = "lblWsserverIntro";
-            // 
             // settingsPage
             // 
+            resources.ApplyResources(this.settingsPage, "settingsPage");
             this.settingsPage.Controls.Add(this.logDisplay);
             this.settingsPage.Controls.Add(this.label1);
             this.settingsPage.Controls.Add(this.label3);
@@ -204,7 +193,6 @@
             this.settingsPage.Controls.Add(this.label2);
             this.settingsPage.Controls.Add(this.startBtn);
             this.settingsPage.Controls.Add(this.stopBtn);
-            resources.ApplyResources(this.settingsPage, "settingsPage");
             this.settingsPage.Name = "settingsPage";
             this.settingsPage.UseVisualStyleBackColor = true;
             // 
@@ -218,8 +206,21 @@
             resources.ApplyResources(this.statusLabel, "statusLabel");
             this.statusLabel.Name = "statusLabel";
             // 
+            // introPage
+            // 
+            resources.ApplyResources(this.introPage, "introPage");
+            this.introPage.Controls.Add(this.lblWsserverIntro);
+            this.introPage.Name = "introPage";
+            this.introPage.UseVisualStyleBackColor = true;
+            // 
+            // lblWsserverIntro
+            // 
+            resources.ApplyResources(this.lblWsserverIntro, "lblWsserverIntro");
+            this.lblWsserverIntro.Name = "lblWsserverIntro";
+            // 
             // tunnelPage
             // 
+            resources.ApplyResources(this.tunnelPage, "tunnelPage");
             this.tunnelPage.Controls.Add(this.simpStopBtn);
             this.tunnelPage.Controls.Add(this.simpStartBtn);
             this.tunnelPage.Controls.Add(this.simpLogBox);
@@ -227,7 +228,6 @@
             this.tunnelPage.Controls.Add(this.regionCb);
             this.tunnelPage.Controls.Add(this.regionLabel);
             this.tunnelPage.Controls.Add(this.simpStatusLabel);
-            resources.ApplyResources(this.tunnelPage, "tunnelPage");
             this.tunnelPage.Name = "tunnelPage";
             this.tunnelPage.UseVisualStyleBackColor = true;
             // 
@@ -258,6 +258,7 @@
             // 
             // regionCb
             // 
+            resources.ApplyResources(this.regionCb, "regionCb");
             this.regionCb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.regionCb.FormattingEnabled = true;
             this.regionCb.Items.AddRange(new object[] {
@@ -268,7 +269,6 @@
             resources.GetString("regionCb.Items4"),
             resources.GetString("regionCb.Items5"),
             resources.GetString("regionCb.Items6")});
-            resources.ApplyResources(this.regionCb, "regionCb");
             this.regionCb.Name = "regionCb";
             this.regionCb.SelectedIndexChanged += new System.EventHandler(this.regionCb_SelectedIndexChanged);
             // 
@@ -292,9 +292,9 @@
             this.urlGeneratorBox.ResumeLayout(false);
             this.urlGeneratorBox.PerformLayout();
             this.tabControl.ResumeLayout(false);
-            this.introPage.ResumeLayout(false);
             this.settingsPage.ResumeLayout(false);
             this.settingsPage.PerformLayout();
+            this.introPage.ResumeLayout(false);
             this.tunnelPage.ResumeLayout(false);
             this.tunnelPage.PerformLayout();
             this.ResumeLayout(false);

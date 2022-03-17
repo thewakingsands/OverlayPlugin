@@ -29,7 +29,7 @@ namespace RainbowMage.OverlayPlugin.Integration
             parser = container.Resolve<NetworkParser>();
             enmitySource = container.Resolve<EnmityEventSource>();
             logger = container.Resolve<ILogger>();
-            logPath = Path.GetDirectoryName(ActGlobals.oFormActMain.LogFilePath) + "_OverlayPlugin.log";
+            logPath = Path.GetDirectoryName(ActGlobals.oFormActMain.LogFilePath ?? System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "_OverlayPlugin.log";
             var config = container.Resolve<BuiltinEventConfig>();
 
             config.LogLinesChanged += (o, e) =>

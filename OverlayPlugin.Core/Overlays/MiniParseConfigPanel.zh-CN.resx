@@ -118,6 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 334</value>
+  </data>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 12</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>脱战时隐藏悬浮窗</value>
+  </data>
+  <data name="cbHideOutOfCombat.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 332</value>
+  </data>
   <data name="applyPresetCombo.Location" type="System.Drawing.Point, System.Drawing">
     <value>180, 228</value>
   </data>
@@ -170,17 +182,17 @@
     <value>启用悬浮窗</value>
   </data>
   <data name="textMiniParseUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>416, 21</value>
+    <value>444, 21</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="buttonMiniParseSelectFile.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="buttonMiniParseSelectFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>416, 0</value>
+    <value>444, 0</value>
   </data>
   <data name="buttonMiniParseSelectFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 23</value>
+    <value>37, 23</value>
   </data>
   <data name="buttonMiniParseSelectFile.Text" xml:space="preserve">
     <value>浏览...</value>
@@ -255,7 +267,7 @@
     <value>如果您找不到悬浮窗或由于某种原因无法调整其大小时，请启用此选项。</value>
   </data>
   <data name="tabGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>684, 342</value>
+    <value>684, 410</value>
   </data>
   <data name="tabGeneral.Text" xml:space="preserve">
     <value>通用</value>
@@ -279,14 +291,17 @@
   <data name="hotkeyColEnabled.Width" type="System.Int32, mscorlib">
     <value>50</value>
   </data>
+  <data name="hotkeyColHotkey.HeaderText" xml:space="preserve">
+    <value>热键</value>
+  </data>
   <data name="hotkeyColAction.HeaderText" xml:space="preserve">
     <value>行为</value>
   </data>
   <data name="hotkeyGridView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>669, 301</value>
+    <value>669, 369</value>
   </data>
   <data name="tabHotkeys.Size" type="System.Drawing.Size, System.Drawing">
-    <value>684, 342</value>
+    <value>684, 410</value>
   </data>
   <data name="tabHotkeys.Text" xml:space="preserve">
     <value>快捷键</value>
@@ -295,10 +310,10 @@
     <value>缩放</value>
   </data>
   <data name="tbZoom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>435, 24</value>
+    <value>406, 24</value>
   </data>
   <data name="btnResetZoom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>444, 3</value>
+    <value>415, 3</value>
   </data>
   <data name="btnResetZoom.Text" xml:space="preserve">
     <value>重设</value>
@@ -319,7 +334,7 @@
     <value>最大帧速率</value>
   </data>
   <data name="tabAdvanced.Size" type="System.Drawing.Size, System.Drawing">
-    <value>684, 342</value>
+    <value>684, 410</value>
   </data>
   <data name="tabAdvanced.Text" xml:space="preserve">
     <value>高级</value>
@@ -337,7 +352,7 @@
     <value>此悬浮窗需要使用ACTWebSocket</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>510, 32</value>
+    <value>604, 32</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
     <value>仅当悬浮窗与OverlayPlugin不兼容时，才需要启用此选项。</value>
@@ -352,45 +367,39 @@
     <value>取消焦点</value>
   </data>
   <data name="tabACTWS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>684, 342</value>
-  </data>
-  <data name="tabACTWS.Text" xml:space="preserve">
-    <value>ACTWS</value>
+    <value>778, 410</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>692, 368</value>
+    <value>786, 436</value>
   </data>
   <data name="buttonMiniParseOpenDevTools.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 34</value>
+    <value>264, 34</value>
   </data>
   <data name="buttonMiniParseOpenDevTools.Text" xml:space="preserve">
-    <value>启动Debug工具</value>
+    <value>打开 DevTools</value>
   </data>
   <data name="buttonMiniParseReloadBrowser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 3</value>
+    <value>273, 3</value>
   </data>
   <data name="buttonMiniParseReloadBrowser.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 34</value>
+    <value>264, 34</value>
   </data>
   <data name="buttonMiniParseReloadBrowser.Text" xml:space="preserve">
-    <value>重新加载（用于更换悬浮窗后即时刷新）</value>
+    <value>刷新悬浮窗</value>
   </data>
   <data name="buttonResetOverlayPosition.Location" type="System.Drawing.Point, System.Drawing">
-    <value>453, 3</value>
+    <value>543, 3</value>
   </data>
   <data name="buttonResetOverlayPosition.Text" xml:space="preserve">
     <value>重置悬浮窗位置</value>
   </data>
   <data name="tableLayoutPanel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 373</value>
+    <value>3, 441</value>
   </data>
   <data name="tableLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>689, 40</value>
+    <value>779, 40</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>789, 420</value>
-  </data>
-  <data name="tabACTWS.Text" xml:space="preserve">
-    <value>ACTWS</value>
+    <value>789, 488</value>
   </data>
 </root>

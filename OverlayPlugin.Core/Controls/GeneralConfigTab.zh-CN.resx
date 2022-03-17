@@ -124,14 +124,24 @@
   <data name="cbErrorReports.Text" xml:space="preserve">
     <value>自动向开发者发送错误报告</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cbErrorReports.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="cbUpdateCheck.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 16</value>
   </data>
   <data name="cbUpdateCheck.Text" xml:space="preserve">
     <value>自动检查更新</value>
   </data>
+  <data name="cbUpdateCheck.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="btnUpdateCheck.Text" xml:space="preserve">
     <value>检查更新</value>
+  </data>
+  <data name="btnUpdateCheck.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="cbHideOverlaysWhenNotActive.Size" type="System.Drawing.Size, System.Drawing">
     <value>246, 16</value>
