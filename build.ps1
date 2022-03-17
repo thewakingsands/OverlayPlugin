@@ -1,6 +1,8 @@
 try {
     # This assumes Visual Studio 2019 is installed in C:. You might have to change this depending on your system.
-    $VS_PATH = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+    # $VS_PATH = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+    # $VS_PATH = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise"
+    $VS_PATH = .\vswhere.exe -prerelease -latest -property installationPath
 
     if ( -not (Test-Path "$VS_PATH")) {
         echo "Error: VS_PATH isn't set correctly! Update the variable in build.ps1 for your system."
