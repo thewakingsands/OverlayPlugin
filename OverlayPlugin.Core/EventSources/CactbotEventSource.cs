@@ -25,10 +25,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private SemaphoreSlim log_lines_semaphore_ = new SemaphoreSlim(1);
         // Not thread-safe, as OnLogLineRead may happen at any time. Use |log_lines_semaphore_| to access it.
         private List<string> log_lines_ = new List<string>(40);
-        private List<string> import_log_lines_ = new List<string>(40);
         // Used on the fast timer to avoid allocing List every time.
         private List<string> last_log_lines_ = new List<string>(40);
-        private List<string> last_import_log_lines_ = new List<string>(40);
 
         // When true, the update function should reset notify state back to defaults.
         private bool reset_notify_state_ = false;
@@ -326,9 +324,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private void OnLogLineRead(bool isImport, LogLineEventArgs args)
         {
             log_lines_semaphore_.Wait();
-            if (isImport)
-                import_log_lines_.Add(args.logLine);
-            else
+            if (!isImport)
                 log_lines_.Add(args.logLine);
             log_lines_semaphore_.Release();
         }
@@ -442,12 +438,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
             // onLogEvent: Fires when new combat log events from FFXIV are available. This fires after any
             // more specific events, some of which may involve parsing the logs as well.
             List<string> logs;
-            List<string> import_logs;
             log_lines_semaphore_.Wait();
             logs = log_lines_;
             log_lines_ = last_log_lines_;
-            import_logs = import_log_lines_;
-            import_log_lines_ = last_import_log_lines_;
 
             log_lines_semaphore_.Release();
 
@@ -458,7 +451,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
 
             last_log_lines_ = logs;
-            last_import_log_lines_ = import_logs;
 
             return game_active ? kFastTimerMilli : kSlowTimerMilli;
         }
