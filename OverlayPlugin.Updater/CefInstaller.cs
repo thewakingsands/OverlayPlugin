@@ -119,9 +119,9 @@ namespace RainbowMage.OverlayPlugin.Updater
 
         public static async Task<bool> RetryDownloadAndExtractTo(string packageName, string version, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
         {
+            List<Installer> failedInstaller = new List<Installer>();
             for (var i = 0; i < 4; i++)
             {
-                List<Installer> failedInstaller=new List<Installer>();
                 try
                 {
                     var installer = new Installer(destDir, tmpName);
@@ -141,6 +141,11 @@ namespace RainbowMage.OverlayPlugin.Updater
                                 }
                             });
                             return result;
+                        }
+                        else
+                        {
+                            //Stored for closing window
+                            failedInstaller.Add(installer);
                         }
                        
                     }
