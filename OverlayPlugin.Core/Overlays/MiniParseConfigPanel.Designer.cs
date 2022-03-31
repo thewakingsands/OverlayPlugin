@@ -111,7 +111,7 @@
             this.tabControl1.Controls.Add(this.tabAdvanced);
             this.tabControl1.Controls.Add(this.tabACTWS);
             this.tabControl1.Location = new System.Drawing.Point(0, 4);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1169, 507);
@@ -121,9 +121,9 @@
             // 
             this.tabGeneral.Controls.Add(this.tableLayoutPanel1);
             this.tabGeneral.Location = new System.Drawing.Point(4, 28);
-            this.tabGeneral.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabGeneral.Margin = new System.Windows.Forms.Padding(4);
             this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabGeneral.Padding = new System.Windows.Forms.Padding(4);
             this.tabGeneral.Size = new System.Drawing.Size(1161, 475);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "通用";
@@ -153,7 +153,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label9, 0, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 8;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -182,7 +182,7 @@
             this.cbWhiteBg.AutoSize = true;
             this.cbWhiteBg.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.cbWhiteBg.Location = new System.Drawing.Point(4, 4);
-            this.cbWhiteBg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbWhiteBg.Margin = new System.Windows.Forms.Padding(4);
             this.cbWhiteBg.Name = "cbWhiteBg";
             this.cbWhiteBg.Size = new System.Drawing.Size(22, 21);
             this.cbWhiteBg.TabIndex = 33;
@@ -217,7 +217,7 @@
             this.applyPresetCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.applyPresetCombo.FormattingEnabled = true;
             this.applyPresetCombo.Location = new System.Drawing.Point(4, 44);
-            this.applyPresetCombo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.applyPresetCombo.Margin = new System.Windows.Forms.Padding(4);
             this.applyPresetCombo.Name = "applyPresetCombo";
             this.applyPresetCombo.Size = new System.Drawing.Size(621, 26);
             this.applyPresetCombo.TabIndex = 41;
@@ -232,7 +232,7 @@
             this.tableLayoutPanel2.Controls.Add(this.textMiniParseUrl, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonMiniParseSelectFile, 1, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -287,7 +287,7 @@
             this.checkLock.AutoSize = true;
             this.checkLock.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.checkLock.Location = new System.Drawing.Point(4, 4);
-            this.checkLock.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkLock.Margin = new System.Windows.Forms.Padding(4);
             this.checkLock.Name = "checkLock";
             this.checkLock.Size = new System.Drawing.Size(22, 21);
             this.checkLock.TabIndex = 25;
@@ -308,7 +308,7 @@
             // 
             this.cbEnableOverlay.AutoSize = true;
             this.cbEnableOverlay.Location = new System.Drawing.Point(4, 4);
-            this.cbEnableOverlay.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbEnableOverlay.Margin = new System.Windows.Forms.Padding(4);
             this.cbEnableOverlay.Name = "cbEnableOverlay";
             this.cbEnableOverlay.Size = new System.Drawing.Size(22, 21);
             this.cbEnableOverlay.TabIndex = 36;
@@ -341,7 +341,7 @@
             // 
             this.cbHideOutOfCombat.AutoSize = true;
             this.cbHideOutOfCombat.Location = new System.Drawing.Point(304, 438);
-            this.cbHideOutOfCombat.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbHideOutOfCombat.Margin = new System.Windows.Forms.Padding(4);
             this.cbHideOutOfCombat.Name = "cbHideOutOfCombat";
             this.cbHideOutOfCombat.Size = new System.Drawing.Size(22, 21);
             this.cbHideOutOfCombat.TabIndex = 42;
@@ -373,7 +373,7 @@
             // 
             this.cbMuteHidden.AutoSize = true;
             this.cbMuteHidden.Location = new System.Drawing.Point(304, 409);
-            this.cbMuteHidden.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbMuteHidden.Margin = new System.Windows.Forms.Padding(4);
             this.cbMuteHidden.Name = "cbMuteHidden";
             this.cbMuteHidden.Size = new System.Drawing.Size(22, 21);
             this.cbMuteHidden.TabIndex = 40;
@@ -431,7 +431,7 @@
             this.checkMiniParseClickthru.AutoSize = true;
             this.checkMiniParseClickthru.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.checkMiniParseClickthru.Location = new System.Drawing.Point(304, 133);
-            this.checkMiniParseClickthru.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkMiniParseClickthru.Margin = new System.Windows.Forms.Padding(4);
             this.checkMiniParseClickthru.Name = "checkMiniParseClickthru";
             this.checkMiniParseClickthru.Size = new System.Drawing.Size(22, 21);
             this.checkMiniParseClickthru.TabIndex = 2;
@@ -443,7 +443,7 @@
             this.checkMiniParseVisible.AutoSize = true;
             this.checkMiniParseVisible.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.checkMiniParseVisible.Location = new System.Drawing.Point(304, 4);
-            this.checkMiniParseVisible.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkMiniParseVisible.Margin = new System.Windows.Forms.Padding(4);
             this.checkMiniParseVisible.Name = "checkMiniParseVisible";
             this.checkMiniParseVisible.Size = new System.Drawing.Size(22, 21);
             this.checkMiniParseVisible.TabIndex = 1;
@@ -469,10 +469,10 @@
             this.tabHotkeys.Controls.Add(this.btnAddHotkey);
             this.tabHotkeys.Controls.Add(this.hotkeyGridView);
             this.tabHotkeys.Location = new System.Drawing.Point(4, 28);
-            this.tabHotkeys.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabHotkeys.Margin = new System.Windows.Forms.Padding(4);
             this.tabHotkeys.Name = "tabHotkeys";
-            this.tabHotkeys.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabHotkeys.Size = new System.Drawing.Size(1171, 535);
+            this.tabHotkeys.Padding = new System.Windows.Forms.Padding(4);
+            this.tabHotkeys.Size = new System.Drawing.Size(1161, 475);
             this.tabHotkeys.TabIndex = 1;
             this.tabHotkeys.Text = "快捷键";
             this.tabHotkeys.UseVisualStyleBackColor = true;
@@ -480,7 +480,7 @@
             // btnApplyHotkeyChanges
             // 
             this.btnApplyHotkeyChanges.Location = new System.Drawing.Point(544, 9);
-            this.btnApplyHotkeyChanges.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnApplyHotkeyChanges.Margin = new System.Windows.Forms.Padding(4);
             this.btnApplyHotkeyChanges.Name = "btnApplyHotkeyChanges";
             this.btnApplyHotkeyChanges.Size = new System.Drawing.Size(188, 39);
             this.btnApplyHotkeyChanges.TabIndex = 3;
@@ -491,7 +491,7 @@
             // btnRemoveHotkey
             // 
             this.btnRemoveHotkey.Location = new System.Drawing.Point(246, 9);
-            this.btnRemoveHotkey.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRemoveHotkey.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveHotkey.Name = "btnRemoveHotkey";
             this.btnRemoveHotkey.Size = new System.Drawing.Size(270, 39);
             this.btnRemoveHotkey.TabIndex = 2;
@@ -502,7 +502,7 @@
             // btnAddHotkey
             // 
             this.btnAddHotkey.Location = new System.Drawing.Point(10, 9);
-            this.btnAddHotkey.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddHotkey.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddHotkey.Name = "btnAddHotkey";
             this.btnAddHotkey.Size = new System.Drawing.Size(208, 39);
             this.btnAddHotkey.TabIndex = 1;
@@ -525,7 +525,7 @@
             this.hotkeyColAction});
             this.hotkeyGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.hotkeyGridView.Location = new System.Drawing.Point(9, 57);
-            this.hotkeyGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hotkeyGridView.Margin = new System.Windows.Forms.Padding(4);
             this.hotkeyGridView.Name = "hotkeyGridView";
             this.hotkeyGridView.RowHeadersVisible = false;
             this.hotkeyGridView.RowHeadersWidth = 62;
@@ -568,9 +568,9 @@
             this.tabAdvanced.Controls.Add(this.label6);
             this.tabAdvanced.Controls.Add(this.nudMaxFrameRate);
             this.tabAdvanced.Location = new System.Drawing.Point(4, 28);
-            this.tabAdvanced.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabAdvanced.Margin = new System.Windows.Forms.Padding(4);
             this.tabAdvanced.Name = "tabAdvanced";
-            this.tabAdvanced.Size = new System.Drawing.Size(1171, 535);
+            this.tabAdvanced.Size = new System.Drawing.Size(1161, 475);
             this.tabAdvanced.TabIndex = 2;
             this.tabAdvanced.Text = "高级";
             this.tabAdvanced.UseVisualStyleBackColor = true;
@@ -597,7 +597,7 @@
             this.tableLayoutPanel4.Controls.Add(this.tbZoom, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnResetZoom, 1, 0);
             this.tableLayoutPanel4.Location = new System.Drawing.Point(240, 81);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -610,7 +610,7 @@
             this.tbZoom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbZoom.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tbZoom.Location = new System.Drawing.Point(4, 4);
-            this.tbZoom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbZoom.Margin = new System.Windows.Forms.Padding(4);
             this.tbZoom.Maximum = 400;
             this.tbZoom.Minimum = -200;
             this.tbZoom.Name = "tbZoom";
@@ -624,7 +624,7 @@
             this.btnResetZoom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnResetZoom.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.btnResetZoom.Location = new System.Drawing.Point(622, 4);
-            this.btnResetZoom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnResetZoom.Margin = new System.Windows.Forms.Padding(4);
             this.btnResetZoom.Name = "btnResetZoom";
             this.btnResetZoom.Size = new System.Drawing.Size(133, 37);
             this.btnResetZoom.TabIndex = 41;
@@ -637,7 +637,7 @@
             this.checkLogConsoleMessages.AutoSize = true;
             this.checkLogConsoleMessages.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.checkLogConsoleMessages.Location = new System.Drawing.Point(240, 50);
-            this.checkLogConsoleMessages.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkLogConsoleMessages.Margin = new System.Windows.Forms.Padding(4);
             this.checkLogConsoleMessages.Name = "checkLogConsoleMessages";
             this.checkLogConsoleMessages.Size = new System.Drawing.Size(358, 22);
             this.checkLogConsoleMessages.TabIndex = 40;
@@ -660,7 +660,7 @@
             // nudMaxFrameRate
             // 
             this.nudMaxFrameRate.Location = new System.Drawing.Point(240, 16);
-            this.nudMaxFrameRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudMaxFrameRate.Margin = new System.Windows.Forms.Padding(2);
             this.nudMaxFrameRate.Maximum = new decimal(new int[] {
             60,
             0,
@@ -690,9 +690,9 @@
             this.tabACTWS.Controls.Add(this.checkNoFocus);
             this.tabACTWS.Controls.Add(this.lblNoFocus);
             this.tabACTWS.Location = new System.Drawing.Point(4, 28);
-            this.tabACTWS.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabACTWS.Margin = new System.Windows.Forms.Padding(4);
             this.tabACTWS.Name = "tabACTWS";
-            this.tabACTWS.Size = new System.Drawing.Size(1171, 535);
+            this.tabACTWS.Size = new System.Drawing.Size(1161, 475);
             this.tabACTWS.TabIndex = 3;
             this.tabACTWS.Text = "ACTWS";
             this.tabACTWS.UseVisualStyleBackColor = true;
@@ -714,7 +714,7 @@
             this.checkActwsCompatbility.AutoSize = true;
             this.checkActwsCompatbility.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.checkActwsCompatbility.Location = new System.Drawing.Point(232, 14);
-            this.checkActwsCompatbility.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkActwsCompatbility.Margin = new System.Windows.Forms.Padding(4);
             this.checkActwsCompatbility.Name = "checkActwsCompatbility";
             this.checkActwsCompatbility.Size = new System.Drawing.Size(286, 22);
             this.checkActwsCompatbility.TabIndex = 28;
@@ -739,7 +739,7 @@
             this.checkNoFocus.AutoSize = true;
             this.checkNoFocus.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.checkNoFocus.Location = new System.Drawing.Point(232, 94);
-            this.checkNoFocus.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkNoFocus.Margin = new System.Windows.Forms.Padding(4);
             this.checkNoFocus.Name = "checkNoFocus";
             this.checkNoFocus.Size = new System.Drawing.Size(160, 22);
             this.checkNoFocus.TabIndex = 38;
@@ -771,7 +771,7 @@
             this.tableLayoutPanel3.Controls.Add(this.buttonMiniParseReloadBrowser, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.buttonResetOverlayPosition, 2, 0);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(4, 519);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -783,7 +783,7 @@
             this.buttonMiniParseOpenDevTools.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonMiniParseOpenDevTools.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.buttonMiniParseOpenDevTools.Location = new System.Drawing.Point(4, 4);
-            this.buttonMiniParseOpenDevTools.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonMiniParseOpenDevTools.Margin = new System.Windows.Forms.Padding(4);
             this.buttonMiniParseOpenDevTools.Name = "buttonMiniParseOpenDevTools";
             this.buttonMiniParseOpenDevTools.Size = new System.Drawing.Size(395, 52);
             this.buttonMiniParseOpenDevTools.TabIndex = 2;
@@ -797,7 +797,7 @@
             this.buttonMiniParseReloadBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonMiniParseReloadBrowser.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.buttonMiniParseReloadBrowser.Location = new System.Drawing.Point(407, 4);
-            this.buttonMiniParseReloadBrowser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonMiniParseReloadBrowser.Margin = new System.Windows.Forms.Padding(4);
             this.buttonMiniParseReloadBrowser.Name = "buttonMiniParseReloadBrowser";
             this.buttonMiniParseReloadBrowser.Size = new System.Drawing.Size(395, 52);
             this.buttonMiniParseReloadBrowser.TabIndex = 0;
@@ -810,7 +810,7 @@
             this.buttonResetOverlayPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonResetOverlayPosition.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.buttonResetOverlayPosition.Location = new System.Drawing.Point(810, 4);
-            this.buttonResetOverlayPosition.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonResetOverlayPosition.Margin = new System.Windows.Forms.Padding(4);
             this.buttonResetOverlayPosition.Name = "buttonResetOverlayPosition";
             this.buttonResetOverlayPosition.Size = new System.Drawing.Size(351, 52);
             this.buttonResetOverlayPosition.TabIndex = 3;
@@ -825,7 +825,7 @@
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.tabControl1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MiniParseConfigPanel";
             this.Size = new System.Drawing.Size(1184, 597);
             this.tabControl1.ResumeLayout(false);

@@ -121,10 +121,13 @@
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 22</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
   <data name="&gt;&gt;checkEnableGlobalHotkey.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="tableLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
@@ -150,8 +153,11 @@
   <data name="&gt;&gt;buttonSpellTimerSelectFile.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 44</value>
+  <data name="&gt;&gt;textGlobalHotkey.Name" xml:space="preserve">
+    <value>textGlobalHotkey</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
   </data>
   <data name="buttonOpenDevTools.Location" type="System.Drawing.Point, System.Drawing">
     <value>207, 3</value>
@@ -164,6 +170,9 @@
   </data>
   <data name="&gt;&gt;checkLock.Parent" xml:space="preserve">
     <value>tableLayoutPanel4</value>
+  </data>
+  <data name="nudMaxFrameRate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
   </data>
   <data name="&gt;&gt;comboHotkeyType.Name" xml:space="preserve">
     <value>comboHotkeyType</value>
@@ -186,14 +195,14 @@
   <data name="&gt;&gt;label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="textGlobalHotkey.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
   </data>
   <data name="checkEnableGlobalHotkey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
-  </data>
-  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 66</value>
   </data>
   <data name="&gt;&gt;checkBoxClickThru.Parent" xml:space="preserve">
     <value>tableLayoutPanel4</value>
@@ -231,14 +240,14 @@
   <data name="&gt;&gt;buttonSpellTimerSelectFile.Parent" xml:space="preserve">
     <value>tableLayoutPanel6</value>
   </data>
-  <data name="&gt;&gt;textGlobalHotkey.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="&gt;&gt;checkBoxVisible.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>URL</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -249,8 +258,14 @@
   <data name="nudMaxFrameRate.Size" type="System.Drawing.Size, System.Drawing">
     <value>461, 21</value>
   </data>
-  <data name="textGlobalHotkey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 133</value>
+  <data name="buttonReloadBrowser.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel5.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="buttonCopyVariable" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="buttonOpenDevTools" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="buttonReloadBrowser" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33,Percent,33.33,Percent,33.33" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;checkBoxClickThru.Name" xml:space="preserve">
+    <value>checkBoxClickThru</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -282,8 +297,8 @@
   <data name="checkBoxClickThru.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;buttonSpellTimerSelectFile.Name" xml:space="preserve">
-    <value>buttonSpellTimerSelectFile</value>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 358</value>
   </data>
   <data name="&gt;&gt;textGlobalHotkey.Parent" xml:space="preserve">
     <value>tableLayoutPanel4</value>
@@ -297,9 +312,6 @@
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>612, 51</value>
   </data>
-  <data name="label9.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="label3.Text" xml:space="preserve">
     <value>Lock overlay</value>
   </data>
@@ -312,17 +324,17 @@
   <data name="&gt;&gt;tableLayoutPanel6.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
   <data name="checkLock.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;checkEnableGlobalHotkey.Name" xml:space="preserve">
-    <value>checkEnableGlobalHotkey</value>
+  <data name="buttonCopyVariable.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
   </data>
   <data name="tableLayoutPanel4.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
@@ -330,8 +342,8 @@
   <data name="checkBoxVisible.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label8.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;checkEnableGlobalHotkey.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;checkEnableGlobalHotkey.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -347,9 +359,6 @@
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
-  </data>
-  <data name="buttonCopyVariable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 22</value>
@@ -378,8 +387,11 @@
   <data name="label8.Text" xml:space="preserve">
     <value>Enable clickthrough</value>
   </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
+  <data name="label8.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="buttonReloadBrowser.Size" type="System.Drawing.Size, System.Drawing">
     <value>198, 45</value>
@@ -426,11 +438,8 @@
   <data name="&gt;&gt;buttonOpenDevTools.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;buttonOpenDevTools.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;nudMaxFrameRate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="buttonSpellTimerSelectFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="comboHotkeyType.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -450,17 +459,17 @@
   <data name="tableLayoutPanel5.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="checkBoxVisible.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="&gt;&gt;tableLayoutPanel6.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="tableLayoutPanel5.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 22</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 22</value>
+  </data>
+  <data name="label8.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -474,9 +483,6 @@
   <data name="&gt;&gt;checkLock.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="&gt;&gt;textGlobalHotkey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="buttonOpenDevTools.Size" type="System.Drawing.Size, System.Drawing">
     <value>198, 45</value>
   </data>
@@ -489,32 +495,26 @@
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
+  <data name="tableLayoutPanel4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>618, 412</value>
   </data>
   <data name="tableLayoutPanel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
+  <data name="checkLock.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="buttonReloadBrowser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>411, 3</value>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>618, 412</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
+  <data name="label8.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="nudMaxFrameRate.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
-  </data>
-  <data name="checkBoxClickThru.Size" type="System.Drawing.Size, System.Drawing">
-    <value>457, 16</value>
   </data>
   <data name="&gt;&gt;buttonCopyVariable.Name" xml:space="preserve">
     <value>buttonCopyVariable</value>
@@ -525,17 +525,14 @@
   <data name="checkEnableGlobalHotkey.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>URL</value>
-  </data>
-  <data name="tableLayoutPanel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>618, 412</value>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 66</value>
   </data>
   <data name="buttonSpellTimerSelectFile.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="tableLayoutPanel5.ColumnCount" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="tableLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>461, 20</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 22</value>
@@ -551,9 +548,6 @@
   </data>
   <data name="label7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
-  </data>
-  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 88</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>Max. framerate</value>
@@ -576,8 +570,8 @@
   <data name="checkLock.Location" type="System.Drawing.Point, System.Drawing">
     <value>158, 47</value>
   </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+  <data name="&gt;&gt;buttonSpellTimerSelectFile.Name" xml:space="preserve">
+    <value>buttonSpellTimerSelectFile</value>
   </data>
   <data name="comboHotkeyType.Size" type="System.Drawing.Size, System.Drawing">
     <value>461, 20</value>
@@ -588,8 +582,8 @@
   <data name="buttonOpenDevTools.Text" xml:space="preserve">
     <value>Open DevTools</value>
   </data>
-  <data name="&gt;&gt;textBoxUrl.Name" xml:space="preserve">
-    <value>textBoxUrl</value>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 44</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -597,17 +591,17 @@
   <data name="&gt;&gt;nudMaxFrameRate.Name" xml:space="preserve">
     <value>nudMaxFrameRate</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;textBoxUrl.Name" xml:space="preserve">
+    <value>textBoxUrl</value>
+  </data>
+  <data name="label2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="&gt;&gt;checkLock.Name" xml:space="preserve">
     <value>checkLock</value>
   </data>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>618, 412</value>
-  </data>
-  <data name="&gt;&gt;checkBoxVisible.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
+  <data name="&gt;&gt;label9.Name" xml:space="preserve">
+    <value>label9</value>
   </data>
   <data name="buttonSpellTimerSelectFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>424, 0</value>
@@ -617,6 +611,9 @@
   </data>
   <data name="checkBoxVisible.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
+  </data>
+  <data name="textGlobalHotkey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>SpellTimerConfigPanel</value>
@@ -633,20 +630,29 @@
   <data name="textGlobalHotkey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
   </data>
-  <data name="label8.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
+  <data name="&gt;&gt;tableLayoutPanel5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudMaxFrameRate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;buttonOpenDevTools.Name" xml:space="preserve">
     <value>buttonOpenDevTools</value>
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
     <value>tableLayoutPanel4</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label9.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
@@ -657,53 +663,53 @@
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
+  <data name="&gt;&gt;textGlobalHotkey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="checkBoxClickThru.Location" type="System.Drawing.Point, System.Drawing">
     <value>158, 25</value>
-  </data>
-  <data name="&gt;&gt;textGlobalHotkey.Name" xml:space="preserve">
-    <value>textGlobalHotkey</value>
   </data>
   <data name="label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 358</value>
+  <data name="textGlobalHotkey.Location" type="System.Drawing.Point, System.Drawing">
+    <value>156, 133</value>
   </data>
   <data name="buttonCopyVariable.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="buttonSpellTimerSelectFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 88</value>
   </data>
   <data name="&gt;&gt;textBoxUrl.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tableLayoutPanel4.RowCount" type="System.Int32, mscorlib">
-    <value>10</value>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
+  </data>
+  <data name="&gt;&gt;textGlobalHotkey.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel4.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;buttonReloadBrowser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="checkEnableGlobalHotkey.Size" type="System.Drawing.Size, System.Drawing">
+    <value>457, 16</value>
   </data>
   <data name="checkBoxClickThru.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 22</value>
+  <data name="checkBoxClickThru.Size" type="System.Drawing.Size, System.Drawing">
+    <value>457, 16</value>
   </data>
   <data name="&gt;&gt;label3.Parent" xml:space="preserve">
     <value>tableLayoutPanel4</value>
   </data>
-  <data name="&gt;&gt;checkEnableGlobalHotkey.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
+  <data name="tableLayoutPanel5.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="tableLayoutPanel6.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="textBoxUrl" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="buttonSpellTimerSelectFile" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,56" /&gt;&lt;Rows Styles="Percent,100,Absolute,30" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="textBoxUrl" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="buttonSpellTimerSelectFile" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,56" /&gt;&lt;Rows Styles="Percent,100,Absolute,29" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="buttonCopyVariable.Text" xml:space="preserve">
     <value>Copy the update variable to clipboard</value>
@@ -726,14 +732,17 @@
   <data name="&gt;&gt;tableLayoutPanel6.Name" xml:space="preserve">
     <value>tableLayoutPanel6</value>
   </data>
-  <data name="label8.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;buttonReloadBrowser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="checkBoxClickThru.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -741,20 +750,17 @@
   <data name="nudMaxFrameRate.Location" type="System.Drawing.Point, System.Drawing">
     <value>156, 89</value>
   </data>
-  <data name="textGlobalHotkey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="&gt;&gt;checkEnableGlobalHotkey.Name" xml:space="preserve">
+    <value>checkEnableGlobalHotkey</value>
+  </data>
+  <data name="checkBoxVisible.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
-  </data>
-  <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="label9.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
+  <data name="buttonReloadBrowser.Location" type="System.Drawing.Point, System.Drawing">
+    <value>411, 3</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel5.Parent" xml:space="preserve">
     <value>panel2</value>
@@ -774,11 +780,8 @@
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 132</value>
   </data>
-  <data name="nudMaxFrameRate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;checkBoxVisible.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
   </data>
   <data name="buttonCopyVariable.Size" type="System.Drawing.Size, System.Drawing">
     <value>198, 45</value>
@@ -786,8 +789,8 @@
   <data name="buttonCopyVariable.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
+  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel6.Parent" xml:space="preserve">
     <value>tableLayoutPanel4</value>
@@ -798,14 +801,8 @@
   <data name="buttonReloadBrowser.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="tableLayoutPanel6.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel4.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;checkBoxClickThru.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -828,32 +825,32 @@
   <data name="buttonReloadBrowser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="checkEnableGlobalHotkey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>457, 16</value>
-  </data>
-  <data name="buttonReloadBrowser.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;tableLayoutPanel4.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;label7.Parent" xml:space="preserve">
     <value>tableLayoutPanel4</value>
   </data>
-  <data name="label10.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="tableLayoutPanel4.RowCount" type="System.Int32, mscorlib">
+    <value>10</value>
   </data>
   <data name="checkLock.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="tableLayoutPanel5.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
   <data name="checkEnableGlobalHotkey.Location" type="System.Drawing.Point, System.Drawing">
     <value>158, 113</value>
-  </data>
-  <data name="tableLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>461, 20</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 20</value>
   </data>
-  <data name="&gt;&gt;checkBoxClickThru.Name" xml:space="preserve">
-    <value>checkBoxClickThru</value>
+  <data name="&gt;&gt;buttonOpenDevTools.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 22</value>
@@ -861,8 +858,8 @@
   <data name="comboHotkeyType.Location" type="System.Drawing.Point, System.Drawing">
     <value>156, 155</value>
   </data>
-  <data name="tableLayoutPanel5.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="buttonCopyVariable" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="buttonOpenDevTools" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="buttonReloadBrowser" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33,Percent,33.33,Percent,33.33" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
   </data>
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -870,14 +867,17 @@
   <data name="&gt;&gt;label9.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label10.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Hotkey Type</value>
   </data>
-  <data name="checkLock.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="nudMaxFrameRate.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
