@@ -22,7 +22,6 @@ namespace RainbowMage.OverlayPlugin.Updater
         public string TempDir { get; private set; }
         string _destDir = null;
         CancellationToken _token = CancellationToken.None;
-        bool isWindowsClosed=false;
 
         public ProgressDisplay Display => _display;
 
@@ -34,25 +33,6 @@ namespace RainbowMage.OverlayPlugin.Updater
             _destDir = dest;
             // Make sure our temporary directory is on the same drive as the destination.
             TempDir = Path.Combine(Path.GetDirectoryName(dest), tmpName);
-        }
-
-        private void SafeMove(string oldName, string newName)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                try
-                {
-                    Directory.Move(oldName, newName);
-                    return;
-                } catch(Exception)
-                {
-                    // Let's try again in case this is just an AV messing with us...
-                    Thread.Sleep(500);
-                }
-            }
-
-            // Alright, one last try. If this fails, we'll throw.
-            Directory.Move(oldName, newName);
         }
 
         public static async Task<bool> Run(string url, string destDir, string tmpName, int stripDirs = 0, bool overwrite = false)
@@ -106,27 +86,50 @@ namespace RainbowMage.OverlayPlugin.Updater
             var inst = new Installer(destDir, tmpName);
             return await DownloadAndExtractTo(inst, url, tmpName, destDir, archiveDir, message, archiveDir2);
         }
-            public static async Task<bool> DownloadAndExtractTo(Installer inst, string url, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
+
+        public static async Task<bool> DownloadAndExtractTo(Installer inst, string url, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
         {
-            
-                return await Task.Run(() =>
+
+            return await Task.Run(() =>
+            {
+                inst._display.Log($"正在准备下载【悬浮窗插件】的组件，{message}，请等待下载窗口全部消失后再重启 ACT。");
+                inst._display.Log("本【悬浮窗插件】是 cactbot 的必备组件。");
+                inst._display.Log("如果遇到问题，请尝试【重启ACT】或者【重启电脑】并【关闭杀毒软件】再试。");
+                inst._display.Log("--------------");
+
+                var temp = Path.Combine(inst.TempDir, "archive.tmp");
+                inst.Download(url, temp, true);
+                inst._display.Log("正在解压文件，请稍候……");
+
+                using (var archive = ArchiveFactory.Open(temp))
                 {
-                    inst._display.Log($"正在准备下载【悬浮窗插件】的组件，{message}，请等待下载窗口全部消失后再重启 ACT。");
-                    inst._display.Log("本【悬浮窗插件】是 cactbot 的必备组件。");
-                    inst._display.Log("如果遇到问题，请尝试【重启ACT】或者【重启电脑】并【关闭杀毒软件】再试。");
-                    inst._display.Log("--------------");
+                    var options = new SharpCompress.Common.ExtractionOptions() { Overwrite = true };
+                    var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir) && !x.IsDirectory);
+                    foreach (var entry in entries)
+                    {
+                        var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir.Length));
+                        var fileInfo = new FileInfo(filename);
+                        fileInfo.Directory.Create();
+                        try
+                        {
+                            entry.WriteToFile(fileInfo.FullName, options);
+                        }
+                        catch (Exception e)
+                        {
+                            entry.WriteToFile(fileInfo.FullName + ".cafestoreupdate", options);
+                        }
+                    }
+                }
 
-                    var temp = Path.Combine(inst.TempDir, "archive.tmp");
-                    inst.Download(url, temp, true);
-                    inst._display.Log("正在解压文件，请稍候……");
-
+                if (archiveDir2 != null)
+                {
                     using (var archive = ArchiveFactory.Open(temp))
                     {
                         var options = new SharpCompress.Common.ExtractionOptions() { Overwrite = true };
-                        var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir) && !x.IsDirectory);
+                        var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir2) && !x.IsDirectory);
                         foreach (var entry in entries)
                         {
-                            var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir.Length));
+                            var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir2.Length));
                             var fileInfo = new FileInfo(filename);
                             fileInfo.Directory.Create();
                             try
@@ -139,48 +142,23 @@ namespace RainbowMage.OverlayPlugin.Updater
                             }
                         }
                     }
+                }
 
-                    if (archiveDir2 != null)
-                    {
-                        using (var archive = ArchiveFactory.Open(temp))
-                        {
-                            var options = new SharpCompress.Common.ExtractionOptions() { Overwrite = true };
-                            var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir2) && !x.IsDirectory);
-                            foreach (var entry in entries)
-                            {
-                                var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir2.Length));
-                                var fileInfo = new FileInfo(filename);
-                                fileInfo.Directory.Create();
-                                try
-                                {
-                                    entry.WriteToFile(fileInfo.FullName, options);
-                                }
-                                catch (Exception e)
-                                {
-                                    entry.WriteToFile(fileInfo.FullName + ".cafestoreupdate", options);
-                                }
-                            }
-                        }
-                    }
-
-                    inst._display.Log("正在删除临时文件，请稍候……");
-                    try
-                    {
-                        File.Delete(tmpName);
-                    }
-                    catch (Exception e)
-                    {
+                inst._display.Log("正在删除临时文件，请稍候……");
+                try
+                {
+                    File.Delete(tmpName);
+                }
+                catch (Exception e)
+                {
                     // do nothing
                 }
 
-                    inst._display.Log("处理完成。");
-                    inst._display.Close();
+                inst._display.Log("处理完成。");
+                inst._display.Close();
 
-                    return true;
-                });
-           
-          
-           
+                return true;
+            });
         }
 
         public bool Download(string url, string dest, bool useHttpClient = true)
@@ -213,7 +191,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
             try
             {
-                var retries = 3;
+                var retries = 10;
 
                 while (retries > 0 && !cancel.IsCancellationRequested)
                 {
@@ -233,7 +211,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     }
                     catch (Exception ex)
                     {
-                        _display.Log(string.Format(Resources.LogDownloadInterrupted, ex.Message));
+                        _display.Log(string.Format(Resources.LogDownloadInterrupted, ex));
 
                         if (retries > 0 && !cancel.IsCancellationRequested)
                         {
@@ -286,7 +264,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     return false;
                 }
 
-                _display.Log(string.Format(Resources.Exception, ex.Message));
+                _display.Log(string.Format(Resources.Exception, ex));
                 return false;
             }
             finally
@@ -439,13 +417,13 @@ namespace RainbowMage.OverlayPlugin.Updater
                     if (Directory.Exists(backup))
                         Directory.Delete(backup, true);
 
-                    SafeMove(_destDir, backup);
+                    Directory.Move(_destDir, backup);
                 }
 
                 try
                 {
                     _display.Log(Resources.LogMovingDirectory);
-                    SafeMove(Path.Combine(TempDir, "contents"), _destDir);
+                    Directory.Move(Path.Combine(TempDir, "contents"), _destDir);
                 }
                 catch (Exception e)
                 {
@@ -461,7 +439,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     {
                         _display.Log(Resources.LogRestoringBackup);
 
-                        SafeMove(backup, _destDir);
+                        Directory.Move(backup, _destDir);
                     }
 
                     _display.Log(Resources.LogDone);
