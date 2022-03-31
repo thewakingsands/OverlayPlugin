@@ -43,7 +43,8 @@ namespace RainbowMage.OverlayPlugin.Updater
                 {
                     Directory.Move(oldName, newName);
                     return;
-                } catch(Exception)
+                }
+                catch (Exception)
                 {
                     // Let's try again in case this is just an AV messing with us...
                     Thread.Sleep(500);
@@ -100,10 +101,14 @@ namespace RainbowMage.OverlayPlugin.Updater
             });
         }
 
-
         public static async Task<bool> DownloadAndExtractTo(string url, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
         {
             var inst = new Installer(destDir, tmpName);
+            return await DownloadAndExtractTo(inst, tmpName, destDir, archiveDir, message, archiveDir2);
+        }
+
+        public static async Task<bool> DownloadAndExtractTo(Installer inst, string url, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
+        {
 
             return await Task.Run(() =>
             {
