@@ -273,14 +273,8 @@ namespace RainbowMage.OverlayPlugin
                             _container.Register(new NetworkParser(_container));
                             _container.Register(new TriggIntegration(_container));
 
-                            // This timer runs on the UI thread (it has to since we create UI controls) but LoadAddons()
-                            // can block for some time. We run it on the background thread to avoid blocking the UI.
-                            // We can't run LoadAddons() in the first init phase since it checks other ACT plugins for
-                            // addons. Plugins below OverlayPlugin wouldn't have been loaded in the first init phase.
-                            // However, in the second phase all plugins have been loaded which means we can look for addons
-                            // in that list.
                             this.label.Text = "Init Phase 2: Addons";
-                            await Task.Run(LoadAddons);
+                            LoadAddons();
                             wsConfigPanel.RebuildOverlayOptions();
 
                             this.label.Text = "Init Phase 2: Unstable new stuff";
