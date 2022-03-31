@@ -92,13 +92,13 @@ namespace RainbowMage.OverlayPlugin.Updater
             Directory.CreateDirectory(cefPath);
             try
             {
-                var result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.Common", "95.7.141"), "OverlayPluginCef.tmp2", cefPath, "CefSharp/x64/", "第1个，共3个", "lib/net452/");
+                var result = await RetryDownloadAndExtractTo("CefSharp.Common", "95.7.141", "OverlayPluginCef.tmp2", cefPath, "CefSharp/x64/", "第1个，共3个", "lib/net452/");
                 if (!result) throw new Exception("下载失败1");
 
-                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("CefSharp.OffScreen", "95.7.141"), "OverlayPluginCef.tmp3", cefPath, "lib/net452/", "第2个，共3个");
+                result = await RetryDownloadAndExtractTo("CefSharp.OffScreen", "95.7.141", "OverlayPluginCef.tmp3", cefPath, "lib/net452/", "第2个，共3个");
                 if (!result) throw new Exception("下载失败2");
 
-                result = await Installer.DownloadAndExtractTo(GetNupkgUrl("cef.redist.x64", "95.7.14"), "OverlayPluginCef.tmp1", cefPath, "CEF/", "第3个，共3个");
+                result = await RetryDownloadAndExtractTo("cef.redist.x64", "95.7.14", "OverlayPluginCef.tmp1", cefPath, "CEF/", "第3个，共3个");
                 if (!result) throw new Exception("下载失败3");
 
                 File.WriteAllText(Path.Combine(cefPath, "version.txt"), CEF_VERSION);
@@ -106,7 +106,7 @@ namespace RainbowMage.OverlayPlugin.Updater
             catch (Exception)
             {
                 MessageBox.Show(
-                    "安装悬浮窗浏览器组件失败，请尝试：\r\n1. 禁用 WebSocket 悬浮窗插件后重启 ACT\r\n2. 关闭360/腾讯电脑管家等安全软件\r\n3. 重启电脑\r\n如果还不能成功，请加群 163386335",
+                    "安装悬浮窗浏览器组件失败，请先查看刚刚的下载日志，然后尝试：\r\n1. 禁用 WebSocket 悬浮窗插件后重启 ACT\r\n2. 关闭360/腾讯电脑管家等安全软件\r\n3. 重启电脑\r\n如果还不能成功，请加群 163386335",
                     Resources.ErrorTitle,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -117,6 +117,22 @@ namespace RainbowMage.OverlayPlugin.Updater
             return true;
         }
 
+        public static async Task<bool> RetryDownloadAndExtractTo(string packageName, string version, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                try
+                {
+                    return await Installer.DownloadAndExtractTo(GetNupkgUrl(packageName, version, i), tmpName, destDir, archiveDir, message, archiveDir2);
+                }
+                catch
+                {
+                    // pass
+                }
+            }
+            return false;
+        }
+
         public static async Task<bool> InstallMsvcrt()
         {
             Process.Start("https://www.yuque.com/ffcafe/act/downloadvc");
@@ -124,9 +140,16 @@ namespace RainbowMage.OverlayPlugin.Updater
             return false;
         }
 
-        public static string GetNupkgUrl(string packageName, string version)
+        public static string GetNupkgUrl(string packageName, string version, int index)
         {
-            return $"https://repo.huaweicloud.com/repository/nuget/v3-flatcontainer/{packageName.ToLower()}/{version}/{packageName.ToLower()}.{version}.nupkg";
+            var list = new[]{
+                $"https://repo.huaweicloud.com/repository/nuget/v3-flatcontainer/{packageName.ToLower()}/{version}/{packageName.ToLower()}.{version}.nupkg",
+                $"https://nuget.cdn.azure.cn/v3-flatcontainer/{packageName.ToLower()}/{version}/{packageName.ToLower()}.{version}.nupkg",
+                $"https://mirrors.cloud.tencent.com/repository/nuget-group/{packageName.ToLower()}/{version}",
+                $"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/{version}/{packageName.ToLower()}.{version}.nupkg",
+            };
+
+            return list[index % list.Length];
         }
 
         private static void CopyFiles(string SourcePath, string DestinationPath)

@@ -206,7 +206,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
             try
             {
-                var retries = 10;
+                var retries = 3;
 
                 while (retries > 0 && !cancel.IsCancellationRequested)
                 {
@@ -226,7 +226,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     }
                     catch (Exception ex)
                     {
-                        _display.Log(string.Format(Resources.LogDownloadInterrupted, ex));
+                        _display.Log(string.Format(Resources.LogDownloadInterrupted, ex.Message));
 
                         if (retries > 0 && !cancel.IsCancellationRequested)
                         {
@@ -279,7 +279,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     return false;
                 }
 
-                _display.Log(string.Format(Resources.Exception, ex));
+                _display.Log(string.Format(Resources.Exception, ex.Message));
                 return false;
             }
             finally
