@@ -35,6 +35,26 @@ namespace RainbowMage.OverlayPlugin.Updater
             TempDir = Path.Combine(Path.GetDirectoryName(dest), tmpName);
         }
 
+        private void SafeMove(string oldName, string newName)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    Directory.Move(oldName, newName);
+                    return;
+                }
+                catch (Exception)
+                {
+                    // Let's try again in case this is just an AV messing with us...
+                    Thread.Sleep(500);
+                }
+            }
+
+            // Alright, one last try. If this fails, we'll throw.
+            Directory.Move(oldName, newName);
+        }
+
         public static async Task<bool> Run(string url, string destDir, string tmpName, int stripDirs = 0, bool overwrite = false)
         {
             var inst = new Installer(destDir, tmpName);
@@ -84,7 +104,7 @@ namespace RainbowMage.OverlayPlugin.Updater
         public static async Task<bool> DownloadAndExtractTo(string url, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
         {
             var inst = new Installer(destDir, tmpName);
-            return await DownloadAndExtractTo(inst, url, tmpName, destDir, archiveDir, message, archiveDir2);
+            return await DownloadAndExtractTo(inst, tmpName, destDir, archiveDir, message, archiveDir2);
         }
 
         public static async Task<bool> DownloadAndExtractTo(Installer inst, string url, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
@@ -191,7 +211,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
             try
             {
-                var retries = 10;
+                var retries = 3;
 
                 while (retries > 0 && !cancel.IsCancellationRequested)
                 {
@@ -211,7 +231,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     }
                     catch (Exception ex)
                     {
-                        _display.Log(string.Format(Resources.LogDownloadInterrupted, ex));
+                        _display.Log(string.Format(Resources.LogDownloadInterrupted, ex.Message));
 
                         if (retries > 0 && !cancel.IsCancellationRequested)
                         {
@@ -264,7 +284,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     return false;
                 }
 
-                _display.Log(string.Format(Resources.Exception, ex));
+                _display.Log(string.Format(Resources.Exception, ex.Message));
                 return false;
             }
             finally
@@ -417,13 +437,13 @@ namespace RainbowMage.OverlayPlugin.Updater
                     if (Directory.Exists(backup))
                         Directory.Delete(backup, true);
 
-                    Directory.Move(_destDir, backup);
+                    SafeMove(_destDir, backup);
                 }
 
                 try
                 {
                     _display.Log(Resources.LogMovingDirectory);
-                    Directory.Move(Path.Combine(TempDir, "contents"), _destDir);
+                    SafeMove(Path.Combine(TempDir, "contents"), _destDir);
                 }
                 catch (Exception e)
                 {
@@ -439,7 +459,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                     {
                         _display.Log(Resources.LogRestoringBackup);
 
-                        Directory.Move(backup, _destDir);
+                        SafeMove(backup, _destDir);
                     }
 
                     _display.Log(Resources.LogDone);
