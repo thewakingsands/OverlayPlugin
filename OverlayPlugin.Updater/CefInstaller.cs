@@ -121,12 +121,38 @@ namespace RainbowMage.OverlayPlugin.Updater
         {
             for (var i = 0; i < 4; i++)
             {
+                List<Installer> failedInstaller=new List<Installer>();
                 try
                 {
-                    return await Installer.DownloadAndExtractTo(GetNupkgUrl(packageName, version, i), tmpName, destDir, archiveDir, message, archiveDir2);
+                    var installer = new Installer(destDir, tmpName);
+                    try
+                    {
+                        bool result= await Installer.DownloadAndExtractTo(installer, GetNupkgUrl(packageName, version, i), tmpName, destDir, archiveDir, message, archiveDir2);
+                        if (result)
+                        {
+
+                            failedInstaller.ForEach(inst => {
+                                try {
+                                    inst.Display.Close();
+                                }
+                                catch 
+                                {
+                                    //ignored
+                                }
+                            });
+                            return result;
+                        }
+                       
+                    }
+                    catch
+                    {
+                        //Stored for closing window
+                        failedInstaller.Add(installer);
+                    }
                 }
                 catch
                 {
+
                     // pass
                 }
             }

@@ -22,6 +22,7 @@ namespace RainbowMage.OverlayPlugin.Updater
         public string TempDir { get; private set; }
         string _destDir = null;
         CancellationToken _token = CancellationToken.None;
+        bool isWindowsClosed=false;
 
         public ProgressDisplay Display => _display;
 
@@ -100,51 +101,32 @@ namespace RainbowMage.OverlayPlugin.Updater
             });
         }
 
-
         public static async Task<bool> DownloadAndExtractTo(string url, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
         {
             var inst = new Installer(destDir, tmpName);
-
-            return await Task.Run(() =>
-            {
-                inst._display.Log($"正在准备下载【悬浮窗插件】的组件，{message}，请等待下载窗口全部消失后再重启 ACT。");
-                inst._display.Log("本【悬浮窗插件】是 cactbot 的必备组件。");
-                inst._display.Log("如果遇到问题，请尝试【重启ACT】或者【重启电脑】并【关闭杀毒软件】再试。");
-                inst._display.Log("--------------");
-
-                var temp = Path.Combine(inst.TempDir, "archive.tmp");
-                inst.Download(url, temp, true);
-                inst._display.Log("正在解压文件，请稍候……");
-
-                using (var archive = ArchiveFactory.Open(temp))
+            return await DownloadAndExtractTo(inst, url, tmpName, destDir, archiveDir, message, archiveDir2);
+        }
+            public static async Task<bool> DownloadAndExtractTo(Installer inst, string url, string tmpName, string destDir, string archiveDir, string message, string archiveDir2 = null)
+        {
+            
+                return await Task.Run(() =>
                 {
-                    var options = new SharpCompress.Common.ExtractionOptions() { Overwrite = true };
-                    var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir) && !x.IsDirectory);
-                    foreach (var entry in entries)
-                    {
-                        var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir.Length));
-                        var fileInfo = new FileInfo(filename);
-                        fileInfo.Directory.Create();
-                        try
-                        {
-                            entry.WriteToFile(fileInfo.FullName, options);
-                        }
-                        catch (Exception e)
-                        {
-                            entry.WriteToFile(fileInfo.FullName + ".cafestoreupdate", options);
-                        }
-                    }
-                }
+                    inst._display.Log($"正在准备下载【悬浮窗插件】的组件，{message}，请等待下载窗口全部消失后再重启 ACT。");
+                    inst._display.Log("本【悬浮窗插件】是 cactbot 的必备组件。");
+                    inst._display.Log("如果遇到问题，请尝试【重启ACT】或者【重启电脑】并【关闭杀毒软件】再试。");
+                    inst._display.Log("--------------");
 
-                if (archiveDir2 != null)
-                {
+                    var temp = Path.Combine(inst.TempDir, "archive.tmp");
+                    inst.Download(url, temp, true);
+                    inst._display.Log("正在解压文件，请稍候……");
+
                     using (var archive = ArchiveFactory.Open(temp))
                     {
                         var options = new SharpCompress.Common.ExtractionOptions() { Overwrite = true };
-                        var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir2) && !x.IsDirectory);
+                        var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir) && !x.IsDirectory);
                         foreach (var entry in entries)
                         {
-                            var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir2.Length));
+                            var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir.Length));
                             var fileInfo = new FileInfo(filename);
                             fileInfo.Directory.Create();
                             try
@@ -157,23 +139,48 @@ namespace RainbowMage.OverlayPlugin.Updater
                             }
                         }
                     }
-                }
 
-                inst._display.Log("正在删除临时文件，请稍候……");
-                try
-                {
-                    File.Delete(tmpName);
-                }
-                catch (Exception e)
-                {
+                    if (archiveDir2 != null)
+                    {
+                        using (var archive = ArchiveFactory.Open(temp))
+                        {
+                            var options = new SharpCompress.Common.ExtractionOptions() { Overwrite = true };
+                            var entries = archive.Entries.Where(x => x.Key.StartsWith(archiveDir2) && !x.IsDirectory);
+                            foreach (var entry in entries)
+                            {
+                                var filename = Path.Combine(destDir, entry.Key.Substring(archiveDir2.Length));
+                                var fileInfo = new FileInfo(filename);
+                                fileInfo.Directory.Create();
+                                try
+                                {
+                                    entry.WriteToFile(fileInfo.FullName, options);
+                                }
+                                catch (Exception e)
+                                {
+                                    entry.WriteToFile(fileInfo.FullName + ".cafestoreupdate", options);
+                                }
+                            }
+                        }
+                    }
+
+                    inst._display.Log("正在删除临时文件，请稍候……");
+                    try
+                    {
+                        File.Delete(tmpName);
+                    }
+                    catch (Exception e)
+                    {
                     // do nothing
                 }
 
-                inst._display.Log("处理完成。");
-                inst._display.Close();
+                    inst._display.Log("处理完成。");
+                    inst._display.Close();
 
-                return true;
-            });
+                    return true;
+                });
+           
+          
+           
         }
 
         public bool Download(string url, string dest, bool useHttpClient = true)
