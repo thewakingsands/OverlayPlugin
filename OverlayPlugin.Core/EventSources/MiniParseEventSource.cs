@@ -736,7 +736,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
             stopwatch.Start();
 #endif
 
-            var varStopwatch = new Stopwatch();
 
             var combatantList = new List<KeyValuePair<CombatantData, Dictionary<string, string>>>();
             Parallel.ForEach(allies, (ally) =>
@@ -747,8 +746,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 {
                     try
                     {
-                        varStopwatch.Reset();
-                        varStopwatch.Start();
 
                         // NAME タグには {NAME:8} のようにコロンで区切られたエクストラ情報が必要で、
                         // プラグインの仕組み的に対応することができないので除外する
@@ -768,14 +765,12 @@ namespace RainbowMage.OverlayPlugin.EventSources
                             if (!ally.Items[CombatantData.DamageTypeDataOutgoingDamage].Items.ContainsKey("All"))
                             {
                                 valueDict.Add(exportValuePair.Key, "");
-                                Log(LogLevel.Debug, $"Combatant: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                                 continue;
                             }
                         }
 
                         var value = exportValuePair.Value.GetExportString(ally, "");
                         valueDict.Add(exportValuePair.Key, value);
-                        Log(LogLevel.Debug, $"Combatant: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                     }
                     catch (Exception e)
                     {
@@ -806,7 +801,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
             stopwatch.Start();
 #endif
 
-            var varStopwatch = new Stopwatch();
 
             var encounterDict = new Dictionary<string, string>();
             foreach (var exportValuePair in EncounterData.ExportVariables)
@@ -827,7 +821,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
                         if (!allies.All((ally) => ally.Items[CombatantData.DamageTypeDataOutgoingDamage].Items.ContainsKey("All")))
                         {
                             encounterDict.Add(exportValuePair.Key, "");
-                            Log(LogLevel.Debug, $"Encounter: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                             continue;
                         }
                     }
@@ -839,7 +832,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     //lock (encounterDict)
                     //{
                     encounterDict.Add(exportValuePair.Key, value);
-                    Log(LogLevel.Debug, $"Encounter: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                     //}
                 }
                 catch (Exception e)
