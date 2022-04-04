@@ -584,7 +584,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     this.prevEndDateTime == ActGlobals.oFormActMain.ActiveZone.ActiveEncounter.EndTime &&
                     this.prevEncounterActive == ActGlobals.oFormActMain.ActiveZone.ActiveEncounter.Active)
                 {
-                    // return;
+                    return;
                 }
 
                 this.prevEncounterId = ActGlobals.oFormActMain.ActiveZone.ActiveEncounter.EncId;
