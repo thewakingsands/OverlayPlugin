@@ -807,8 +807,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
             {
                 try
                 {
-                    varStopwatch.Reset();
-                    varStopwatch.Start();
 
                     // ACT_FFXIV_Plugin が提供する LastXXDPS は、
                     // ally.Items[CombatantData.DamageTypeDataOutgoingDamage].Items に All キーが存在しない場合に、
