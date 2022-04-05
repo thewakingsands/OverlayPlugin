@@ -133,7 +133,7 @@
     <value>0</value>
   </data>
   <data name="errorExplanation.Text" xml:space="preserve">
-    <value>Failed to load the plugin configuration. This usually happens because the PC wasn't shut down properly which can cause the config file to become corrupted. You can either reset the plugin config or disable OverlayPlugin for now (in the latter case this prompt will reappear the next time you launch ACT).</value>
+    <value>载入插件配置失败，这一般是因为电脑异常关机让插件配置损坏引起的，你可以选择重置插件配置或禁用ngld插件（禁用插件后再次重启ACT仍然会看见这个弹窗）。</value>
   </data>
   <data name="&gt;&gt;errorExplanation.Name" xml:space="preserve">
     <value>errorExplanation</value>
@@ -163,7 +163,7 @@
     <value>1</value>
   </data>
   <data name="btnCancel.Text" xml:space="preserve">
-    <value>Disable OverlayPlugin</value>
+    <value>禁用ngld悬浮窗插件</value>
   </data>
   <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
     <value>btnCancel</value>
@@ -190,7 +190,7 @@
     <value>0</value>
   </data>
   <data name="btnReset.Text" xml:space="preserve">
-    <value>Reset config and continue</value>
+    <value>重置配置并继续</value>
   </data>
   <data name="&gt;&gt;btnReset.Name" xml:space="preserve">
     <value>btnReset</value>

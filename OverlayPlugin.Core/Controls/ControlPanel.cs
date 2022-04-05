@@ -89,7 +89,7 @@ namespace RainbowMage.OverlayPlugin
                 logConnected = true;
                 logBox.Text = "";
             } else if (logBox.TextLength > 200 * 1024) {
-                logBox.Text = "============ LOG TRUNCATED ==============\nThe log was truncated to reduce memory usage.\n=========================================\n" + msg;
+                logBox.Text = "============日志已被截断 ==============\n为减少内存占用，日志已被截断。\n=========================================\n" + msg;
                 return;
             }
 

@@ -159,7 +159,7 @@
     <value>GitHub项目：</value>
   </data>
   <data name="lblNewUserWelcome.Text" xml:space="preserve">
-    <value>如果你想添加 DPS 悬浮窗，请点击左下角的“添加”按钮添加一个悬浮窗。</value>
+    <value>如果你想添加 DPS 悬浮窗，请点击左下角的“新建”按钮添加一个悬浮窗。</value>
   </data>
   <data name="lblReadMe.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 18</value>

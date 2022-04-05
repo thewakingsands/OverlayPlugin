@@ -61,7 +61,7 @@
             "fr-FR": "Cliquez [Ajouter] pour configurer les overlays.",
             "ja-JP": "[追加] バートンを押して、オーバーレイを設定してください",
             "ko-KR": "[추가] 버튼을 눌러서 오버레이를 설정해주십시오.",
-            "zh-CN": "点击[添加]按钮设置悬浮窗"
+            "zh-CN": "点击[新建]按钮设置悬浮窗"
         },
         "tabPageMain.Text": {
             "de-DE": "Allgemein",
@@ -1001,7 +1001,7 @@
             "en": "Custom",
             "fr-FR": "Personnalisé",
             "ko-KR": "커스텀",
-            "zh-CN": "自订"
+            "zh-CN": "自定义模板链接"
         },
         "DuplicateHandlerError": {
             "de-DE": "Doppelter Handler für Name {0}!",
