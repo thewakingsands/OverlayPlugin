@@ -207,7 +207,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
             this.config.IsClickThru = checkMiniParseClickthru.Checked;
         }
 
-        private void textMiniParseUrl_Leave(object sender, EventArgs e)
+        private void textMiniParseUrl_TextChanged(object sender, EventArgs e)
         {
             this.config.Url = textMiniParseUrl.Text;
         }

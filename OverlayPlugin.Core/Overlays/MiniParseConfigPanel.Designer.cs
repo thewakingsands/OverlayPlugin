@@ -262,7 +262,7 @@
             // 
             resources.ApplyResources(this.textMiniParseUrl, "textMiniParseUrl");
             this.textMiniParseUrl.Name = "textMiniParseUrl";
-            this.textMiniParseUrl.Leave += new System.EventHandler(this.textMiniParseUrl_Leave);
+            this.textMiniParseUrl.TextChanged += new System.EventHandler(this.textMiniParseUrl_TextChanged);
             // 
             // applyPresetCombo
             // 
