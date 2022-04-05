@@ -118,23 +118,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ipTxt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 20</value>
+  </data>
+  <data name="portTxt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 20</value>
+  </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 12</value>
+    <value>41, 13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>IP地址</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 12</value>
+    <value>43, 13</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>端口：</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="genSslBtn.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="genSslBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 88</value>
+  </data>
+  <data name="genSslBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 25</value>
+  </data>
   <data name="genSslBtn.Text" xml:space="preserve">
     <value>生成SSL证书</value>
   </data>
+  <data name="sslBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 93</value>
+  </data>
   <data name="sslBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 16</value>
+    <value>70, 17</value>
   </data>
   <data name="sslBox.Text" xml:space="preserve">
     <value>启用SSL</value>
@@ -147,29 +166,86 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
 
 然后，您将可以启用SSL功能。</value>
   </data>
+  <data name="startBtn.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="startBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>377, 15</value>
+  </data>
   <data name="startBtn.Text" xml:space="preserve">
     <value>启用</value>
   </data>
+  <data name="stopBtn.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="stopBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>377, 49</value>
+  </data>
   <data name="stopBtn.Text" xml:space="preserve">
     <value>停止</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>悬浮窗：</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 12</value>
+    <value>79, 13</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>悬浮窗链接：</value>
   </data>
+  <data name="cbOverlay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 14</value>
+  </data>
+  <data name="cbOverlay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 21</value>
+  </data>
+  <data name="lblUrlConfidentWarning.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 73</value>
+  </data>
   <data name="lblUrlConfidentWarning.Size" type="System.Drawing.Size, System.Drawing">
-    <value>329, 12</value>
+    <value>337, 13</value>
   </data>
   <data name="lblUrlConfidentWarning.Text" xml:space="preserve">
     <value>如果此悬浮窗不支持ACTWebSocket，则此链接可能不会生效。</value>
   </data>
+  <data name="txtOverlayUrl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 41</value>
+  </data>
+  <data name="txtOverlayUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>447, 20</value>
+  </data>
   <data name="urlGeneratorBox.Text" xml:space="preserve">
     <value>链接生成器</value>
+  </data>
+  <data name="introPage.Text" xml:space="preserve">
+    <value>简介</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>341, 88</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>状态：</value>
+  </data>
+  <data name="statusLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>390, 88</value>
+  </data>
+  <data name="statusLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>31, 13</value>
+  </data>
+  <data name="statusLabel.Text" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="settingsPage.Text" xml:space="preserve">
+    <value>直播/本地悬浮窗</value>
+  </data>
+  <data name="tunnelPage.Text" xml:space="preserve">
+    <value>共享悬浮窗</value>
   </data>
   <data name="lblWsserverIntro.Text" xml:space="preserve">
     <value>此处是对后两个选项卡的简介：
@@ -181,49 +257,61 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
 最后，如果您通过“直播/本地悬浮窗”选项卡启动了WS服务器, 它将在ACT启动时自动重新启动。如果是通过“共享悬浮窗”选项卡启动的, 它不会自动启动，因为您每次都将获得一个新的链接。备注：如果这让您感到困扰，请在ACT Discord（或在OverlayPlugin的GitHub仓库）中要求ngld修复此问题。有很多方法可以解决这个问题，但是我不确定有多少人需要这个功能。
 </value>
   </data>
-  <data name="introPage.Text" xml:space="preserve">
-    <value>简介</value>
+  <data name="simpStopBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>125, 64</value>
   </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 12</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>状态：</value>
-  </data>
-  <data name="statusLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="statusLabel.Text" xml:space="preserve">
-    <value>未知</value>
-  </data>
-  <data name="settingsPage.Text" xml:space="preserve">
-    <value>直播/本地悬浮窗</value>
+  <data name="simpStopBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 36</value>
   </data>
   <data name="simpStopBtn.Text" xml:space="preserve">
     <value>停止</value>
+  </data>
+  <data name="simpStartBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 36</value>
   </data>
   <data name="simpStartBtn.Text" xml:space="preserve">
     <value>启用</value>
   </data>
   <data name="simpStatusLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
+    <value>31, 13</value>
   </data>
   <data name="simpStatusLbl.Text" xml:space="preserve">
     <value>未知</value>
   </data>
+  <data name="regionCb.Size" type="System.Drawing.Size, System.Drawing">
+    <value>247, 21</value>
+  </data>
   <data name="regionLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 12</value>
+    <value>43, 13</value>
   </data>
   <data name="regionLabel.Text" xml:space="preserve">
     <value>地区：</value>
   </data>
   <data name="simpStatusLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 12</value>
+    <value>43, 13</value>
   </data>
   <data name="simpStatusLabel.Text" xml:space="preserve">
     <value>状态：</value>
   </data>
-  <data name="tunnelPage.Text" xml:space="preserve">
-    <value>共享悬浮窗</value>
+  <data name="regionCb.Items" xml:space="preserve">
+    <value>us - 美国 (俄亥俄州)</value>
+  </data>
+  <data name="regionCb.Items1" xml:space="preserve">
+    <value>eu - 欧洲 (法兰克福)</value>
+  </data>
+  <data name="regionCb.Items2" xml:space="preserve">
+    <value>ap - 亚太 (新加波)</value>
+  </data>
+  <data name="regionCb.Items3" xml:space="preserve">
+    <value>au - 澳大利亚 (悉尼)</value>
+  </data>
+  <data name="regionCb.Items4" xml:space="preserve">
+    <value>sa - 北美 (圣保罗)</value>
+  </data>
+  <data name="regionCb.Items5" xml:space="preserve">
+    <value>jp - 日本 (东京)</value>
+  </data>
+  <data name="regionCb.Items6" xml:space="preserve">
+    <value>in - 印度 (孟买)</value>
   </data>
 </root>

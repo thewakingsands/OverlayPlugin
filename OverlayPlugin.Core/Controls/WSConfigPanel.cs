@@ -84,7 +84,7 @@ namespace RainbowMage.OverlayPlugin
 
             if (e.Running)
             {
-                statusLabel.Text = "Running";
+                statusLabel.Text = "运行中";
                 statusLabel.ForeColor = Color.ForestGreen;
 
                 startBtn.Enabled = false;
@@ -92,12 +92,12 @@ namespace RainbowMage.OverlayPlugin
             }
             else if (e.Failed)
             {
-                statusLabel.Text = "Failed";
+                statusLabel.Text = "开启失败";
                 statusLabel.ForeColor = Color.DarkRed;
             }
             else
             {
-                statusLabel.Text = "Stopped";
+                statusLabel.Text = "已停止";
                 statusLabel.ForeColor = Color.Gray;
             }
         }
@@ -107,7 +107,7 @@ namespace RainbowMage.OverlayPlugin
             switch (status)
             {
                 case TunnelStatus.Unknown:
-                    simpStatusLbl.Text = "Unknown";
+                    simpStatusLbl.Text = "未知";
                     simpStatusLbl.ForeColor = Color.Gray;
 
                     simpStartBtn.Enabled = false;
@@ -115,7 +115,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Downloading:
-                    simpStatusLbl.Text = "Downloading client...";
+                    simpStatusLbl.Text = "下载客户端...";
                     simpStatusLbl.ForeColor = Color.CornflowerBlue;
 
                     simpStartBtn.Enabled = false;
@@ -123,7 +123,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Launching:
-                    simpStatusLbl.Text = "Launching...";
+                    simpStatusLbl.Text = "启动中...";
                     simpStatusLbl.ForeColor = Color.CornflowerBlue;
 
                     simpStartBtn.Enabled = false;
@@ -131,7 +131,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Active:
-                    simpStatusLbl.Text = "Active";
+                    simpStatusLbl.Text = "运行中";
                     simpStatusLbl.ForeColor = Color.ForestGreen;
 
                     simpStartBtn.Enabled = false;
@@ -139,7 +139,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Inactive:
-                    simpStatusLbl.Text = "Inactive";
+                    simpStatusLbl.Text = "停止";
                     simpStatusLbl.ForeColor = Color.Gray;
 
                     simpStartBtn.Enabled = true;
@@ -147,7 +147,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Error:
-                    simpStatusLbl.Text = "Error";
+                    simpStatusLbl.Text = "出现错误";
                     simpStatusLbl.ForeColor = Color.DarkRed;
 
                     simpStartBtn.Enabled = true;
@@ -171,7 +171,7 @@ namespace RainbowMage.OverlayPlugin
         private void genSslBtn_Click(object sender, EventArgs e)
         {
             genSslBtn.Enabled = false;
-            logDisplay.Text = "Generating SSL Certificate. Please wait...\r\n";
+            logDisplay.Text = "获取SSL证书中，请等待...\r\n";
             
             Task.Run(GenSsl);
         }
@@ -184,37 +184,37 @@ namespace RainbowMage.OverlayPlugin
 
                 if (!File.Exists(mkcertPath))
                 {
-                    logDisplay.AppendText("Downloading mkcert...\r\n");
+                    logDisplay.AppendText("下载mkcert...\r\n");
 
                     try
                     {
-                        CurlWrapper.Get(MKCERT_DOWNLOAD, new Dictionary<string, string>(), mkcertPath, null, false);
+                        HttpClientWrapper.Get(MKCERT_DOWNLOAD, new Dictionary<string, string>(), mkcertPath, null, false);
                     }
                     catch (Exception e)
                     {
-                        logDisplay.AppendText(string.Format("\nFailed: {0}", e));
+                        logDisplay.AppendText(string.Format("\n失败: {0}", e));
                         genSslBtn.Enabled = true;
                         return;
                     }
                 }
 
-                logDisplay.AppendText("Installing CA...\r\n");
+                logDisplay.AppendText("安装证书...\r\n");
                 if (!RunLogCmd(mkcertPath, "-install"))
                 {
-                    logDisplay.AppendText("\r\nFailed!\r\n");
+                    logDisplay.AppendText("\r\n失败！\r\n");
                     genSslBtn.Enabled = true;
                     return;
                 }
 
-                logDisplay.AppendText("Generating certificate...\r\n");
+                logDisplay.AppendText("获取证书...\r\n");
                 if (!RunLogCmd(mkcertPath, string.Format("-pkcs12 -p12-file \"{0}\" localhost 127.0.0.1 ::1", _server.GetCertPath())))
                 {
-                    logDisplay.AppendText("\r\nFailed!\r\n");
+                    logDisplay.AppendText("\r\n失败！\r\n");
                     genSslBtn.Enabled = true;
                     return;
                 }
 
-                logDisplay.AppendText("\r\nDone.\r\n");
+                logDisplay.AppendText("\r\n完成。\r\n");
 
                 sslBox.Enabled = _server.IsSSLPossible();
                 sslBox.Checked = sslBox.Enabled;
@@ -223,7 +223,7 @@ namespace RainbowMage.OverlayPlugin
             }
             catch (Exception e)
             {
-                logDisplay.AppendText(string.Format("\r\nException: {0}", e));
+                logDisplay.AppendText(string.Format("\r\n出现异常: {0}", e));
                 genSslBtn.Enabled = true;
             }
         }
@@ -286,8 +286,8 @@ namespace RainbowMage.OverlayPlugin
             else
             {
                 MessageBox.Show(
-                    string.Format("{0} is not a valid port. Should be a number between 1 and 65535.", portTxt.Text),
-                    "Invalid Port",
+                    string.Format("{0} 端口不正确，范围应为1-65535.", portTxt.Text),
+                    "端口不正确",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                     );
@@ -304,8 +304,8 @@ namespace RainbowMage.OverlayPlugin
             else
             {
                 MessageBox.Show(
-                    string.Format("{0} is not a IP address.", ipTxt.Text),
-                    "Invalid Address",
+                    string.Format("{0} 不是IP地址", ipTxt.Text),
+                    "IP地址错误",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                     );
@@ -421,7 +421,7 @@ namespace RainbowMage.OverlayPlugin
 
                     if (_ngrok != null && !_ngrok.HasExited)
                     {
-                        simpLogBox.AppendText("Detected left over ngrok process. Performing cleanup...\r\n");
+                        simpLogBox.AppendText("检测到遗留的 ngrok 进程。清理中...\r\n");
                         _ngrok.Kill();
                         _ngrok = null;
                     }
@@ -439,11 +439,11 @@ namespace RainbowMage.OverlayPlugin
                         _config.WSServerPort = 10501;
                     }
 
-                    simpLogBox.AppendText("Launching WSServer...\r\n");
+                    simpLogBox.AppendText("启动WS服务...\r\n");
                     _config.WSServerRunning = true;
                     _server.Start();
 
-                    simpLogBox.AppendText("Launching ngrok...\r\n");
+                    simpLogBox.AppendText("启动ngrok...\r\n");
 
                     var region = _config.TunnelRegion;
                     if (region == null)
@@ -491,7 +491,7 @@ tunnels:
 
                     if (p.WaitForExit(3000))
                     {
-                        simpLogBox.AppendText("ngrok crashed!\r\n");
+                        simpLogBox.AppendText("ngrok崩溃了！\r\n");
                         UpdateTunnelStatus(TunnelStatus.Error);
                         return;
                     }
@@ -509,13 +509,13 @@ tunnels:
                     {
                         try
                         {
-                            data = CurlWrapper.Get(apiUrl, headers, null, null, false);
+                            data = HttpClientWrapper.Get(apiUrl, headers, null, null, false);
                             break;
                         } catch(CurlException ex)
                         {
                             if (!ex.Retry)
                             {
-                                simpLogBox.AppendText(string.Format("Failed: {0}\r\n", ex));
+                                simpLogBox.AppendText(string.Format("错误: {0}\r\n", ex));
                                 UpdateTunnelStatus(TunnelStatus.Error);
                                 return;
                             } else
@@ -524,7 +524,7 @@ tunnels:
                             }
                         } catch (Exception ex)
                         {
-                            simpLogBox.AppendText(string.Format("Failed: {0}\r\n", ex));
+                            simpLogBox.AppendText(string.Format("失败: {0}\r\n", ex));
                             UpdateTunnelStatus(TunnelStatus.Error);
                             return;
                         }
@@ -548,8 +548,8 @@ tunnels:
                     if (done)
                     {
                         simpLogBox.AppendText("Done!\r\n");
-                        simpLogBox.AppendText("\r\n#############################################\r\nUse the URL Generator below to generate URLs for you.\r\n\r\n");
-                        simpLogBox.AppendText("\r\nIf you know what you're doing or you're using an overlay that isn't listed, here are some query strings for you:\r\n");
+                        simpLogBox.AppendText("\r\n#############################################\r\n请使用下面的URL生成器：\r\n\r\n");
+                        simpLogBox.AppendText("\r\n如果你知道在做什么或者在使用未在此处列出的悬浮窗, 这里是一些请求用的字段:\r\n");
                         simpLogBox.AppendText("\r\n    ?HOST_PORT=" + _ngrokPrefix + "\r\n    ?OVERLAY_WS=" + _ngrokPrefix + "/ws\r\n");
                         simpLogBox.AppendText("#############################################\r\n");
 
@@ -561,12 +561,12 @@ tunnels:
                         };
                     } else
                     {
-                        simpLogBox.AppendText("Failed!\r\n");
+                        simpLogBox.AppendText("失败!\r\n");
                         UpdateTunnelStatus(TunnelStatus.Error);
                     }
                 } catch (Exception ex)
                 {
-                    simpLogBox.AppendText(string.Format("\r\nUncaught exception: {0}\r\n\r\n", ex));
+                    simpLogBox.AppendText(string.Format("\r\n未捕获的异常: {0}\r\n\r\n", ex));
                     UpdateTunnelStatus(TunnelStatus.Error);
                 }
             });
@@ -594,14 +594,14 @@ tunnels:
             {
                 UpdateTunnelStatus(TunnelStatus.Downloading);
 
-                simpLogBox.AppendText("Fetching latest ngrok version...\r\n");
+                simpLogBox.AppendText("获取最新的ngrok客户端...\r\n");
                 string dlPage;
                 try
                 {
-                    dlPage = CurlWrapper.Get(NGROK_DOWNLOAD_IDX);
+                    dlPage = HttpClientWrapper.Get(NGROK_DOWNLOAD_IDX);
                 } catch (Exception e)
                 {
-                    simpLogBox.AppendText(string.Format("\r\nFailed: {0}\r\n\r\n", e));
+                    simpLogBox.AppendText(string.Format("\r\n错误: {0}\r\n\r\n", e));
                     return false;
                 }
 
@@ -610,22 +610,22 @@ tunnels:
                 var match = Regex.Match(dlPage, " href=\"(https://bin.equinox.io/c/[^/]+/ngrok-stable-windows-" + arch + "\\.zip)\"");
                 if (match == Match.Empty)
                 {
-                    simpLogBox.AppendText("Failed to find version on the download page! Please notify ngld or some other dev working on OverlayPlugin.\r\n");
+                    simpLogBox.AppendText("无法找到下载链接！请告知开发者。\r\n");
                     return false;
                 }
 
-                simpLogBox.AppendText("Downloading ngrok client...\r\n");
+                simpLogBox.AppendText("下载ngrok客户端...\r\n");
                 try
                 {
-                    CurlWrapper.Get(match.Groups[1].Captures[0].Value, new Dictionary<string, string>(), ngrokPath + ".zip", NgrokProgressCallback, false);
+                    HttpClientWrapper.Get(match.Groups[1].Captures[0].Value, new Dictionary<string, string>(), ngrokPath + ".zip", NgrokProgressCallback, false);
                 }
                 catch (Exception e)
                 {
-                    simpLogBox.AppendText(string.Format("\r\nFailed: {0}\r\n\r\n", e));
+                    simpLogBox.AppendText(string.Format("\r\n错误: {0}\r\n\r\n", e));
                     return false;
                 }
 
-                simpLogBox.AppendText("\r\nExtracting ngrok client...\r\n");
+                simpLogBox.AppendText("\r\n解压ngrok客户端...\r\n");
                 try
                 {
                     using (var archive = ZipArchive.Open(ngrokPath + ".zip"))
@@ -652,7 +652,7 @@ tunnels:
 
                 if (!File.Exists(ngrokPath))
                 {
-                    simpLogBox.AppendText("\r\nExtraction failed!\r\n");
+                    simpLogBox.AppendText("\r\n解压失败!\r\n");
                     return false;
                 }
 
@@ -660,7 +660,7 @@ tunnels:
             }
             catch (Exception e)
             {
-                simpLogBox.AppendText(string.Format("\r\nException: {0}\r\n\r\n", e));
+                simpLogBox.AppendText(string.Format("\r\n异常: {0}\r\n\r\n", e));
                 return false;
             }
         }
@@ -669,7 +669,7 @@ tunnels:
         {
             try
             {
-                simpLogBox.AppendText("\r\nStopping tunnel...\r\n");
+                simpLogBox.AppendText("\r\n关闭隧道...\r\n");
 
                 if (_ngrok != null && !_ngrok.HasExited)
                 {
@@ -679,17 +679,17 @@ tunnels:
 
                 _ngrokPrefix = null;
 
-                simpLogBox.AppendText("Stopping WSServer...\r\n");
+                simpLogBox.AppendText("关闭WS服务器...\r\n");
                 if (_server.IsRunning())
                 {
                     _server.Stop();
                 }
 
-                simpLogBox.AppendText("Done!\r\n");
+                simpLogBox.AppendText("完成!\r\n");
                 UpdateTunnelStatus(TunnelStatus.Inactive);
             } catch (Exception ex)
             {
-                simpLogBox.AppendText(string.Format("\r\nFailed: {0}\r\n\r\n", ex));
+                simpLogBox.AppendText(string.Format("\r\n错误: {0}\r\n\r\n", ex));
                 UpdateTunnelStatus(TunnelStatus.Error);
             }
         }

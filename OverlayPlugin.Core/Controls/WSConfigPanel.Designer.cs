@@ -49,11 +49,11 @@
             this.txtOverlayUrl = new System.Windows.Forms.TextBox();
             this.urlGeneratorBox = new System.Windows.Forms.GroupBox();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.introPage = new System.Windows.Forms.TabPage();
+            this.lblWsserverIntro = new System.Windows.Forms.Label();
             this.settingsPage = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
-            this.introPage = new System.Windows.Forms.TabPage();
-            this.lblWsserverIntro = new System.Windows.Forms.Label();
             this.tunnelPage = new System.Windows.Forms.TabPage();
             this.simpStopBtn = new System.Windows.Forms.Button();
             this.simpStartBtn = new System.Windows.Forms.Button();
@@ -64,8 +64,8 @@
             this.simpStatusLabel = new System.Windows.Forms.Label();
             this.urlGeneratorBox.SuspendLayout();
             this.tabControl.SuspendLayout();
-            this.settingsPage.SuspendLayout();
             this.introPage.SuspendLayout();
+            this.settingsPage.SuspendLayout();
             this.tunnelPage.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -179,6 +179,18 @@
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             // 
+            // introPage
+            // 
+            resources.ApplyResources(this.introPage, "introPage");
+            this.introPage.Controls.Add(this.lblWsserverIntro);
+            this.introPage.Name = "introPage";
+            this.introPage.UseVisualStyleBackColor = true;
+            // 
+            // lblWsserverIntro
+            // 
+            resources.ApplyResources(this.lblWsserverIntro, "lblWsserverIntro");
+            this.lblWsserverIntro.Name = "lblWsserverIntro";
+            // 
             // settingsPage
             // 
             resources.ApplyResources(this.settingsPage, "settingsPage");
@@ -205,18 +217,6 @@
             // 
             resources.ApplyResources(this.statusLabel, "statusLabel");
             this.statusLabel.Name = "statusLabel";
-            // 
-            // introPage
-            // 
-            resources.ApplyResources(this.introPage, "introPage");
-            this.introPage.Controls.Add(this.lblWsserverIntro);
-            this.introPage.Name = "introPage";
-            this.introPage.UseVisualStyleBackColor = true;
-            // 
-            // lblWsserverIntro
-            // 
-            resources.ApplyResources(this.lblWsserverIntro, "lblWsserverIntro");
-            this.lblWsserverIntro.Name = "lblWsserverIntro";
             // 
             // tunnelPage
             // 
@@ -292,9 +292,9 @@
             this.urlGeneratorBox.ResumeLayout(false);
             this.urlGeneratorBox.PerformLayout();
             this.tabControl.ResumeLayout(false);
+            this.introPage.ResumeLayout(false);
             this.settingsPage.ResumeLayout(false);
             this.settingsPage.PerformLayout();
-            this.introPage.ResumeLayout(false);
             this.tunnelPage.ResumeLayout(false);
             this.tunnelPage.PerformLayout();
             this.ResumeLayout(false);
