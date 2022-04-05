@@ -119,10 +119,10 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="ipTxt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 20</value>
+    <value>178, 20</value>
   </data>
   <data name="portTxt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 20</value>
+    <value>178, 20</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 13</value>
@@ -143,6 +143,10 @@
   <data name="genSslBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>117, 88</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="genSslBtn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
   <data name="genSslBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>178, 25</value>
   </data>
@@ -151,6 +155,9 @@
   </data>
   <data name="sslBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 93</value>
+  </data>
+  <data name="sslBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="sslBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 17</value>
@@ -172,6 +179,9 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   <data name="startBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>377, 15</value>
   </data>
+  <data name="startBtn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
   <data name="startBtn.Text" xml:space="preserve">
     <value>启用</value>
   </data>
@@ -181,14 +191,23 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   <data name="stopBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>377, 49</value>
   </data>
+  <data name="stopBtn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
   <data name="stopBtn.Text" xml:space="preserve">
     <value>停止</value>
+  </data>
+  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>悬浮窗：</value>
+  </data>
+  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>79, 13</value>
@@ -199,11 +218,17 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   <data name="cbOverlay.Location" type="System.Drawing.Point, System.Drawing">
     <value>120, 14</value>
   </data>
+  <data name="cbOverlay.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
   <data name="cbOverlay.Size" type="System.Drawing.Size, System.Drawing">
     <value>179, 21</value>
   </data>
   <data name="lblUrlConfidentWarning.Location" type="System.Drawing.Point, System.Drawing">
     <value>117, 73</value>
+  </data>
+  <data name="lblUrlConfidentWarning.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="lblUrlConfidentWarning.Size" type="System.Drawing.Size, System.Drawing">
     <value>337, 13</value>
@@ -214,11 +239,24 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   <data name="txtOverlayUrl.Location" type="System.Drawing.Point, System.Drawing">
     <value>120, 41</value>
   </data>
+  <data name="txtOverlayUrl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
   <data name="txtOverlayUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 20</value>
   </data>
   <data name="urlGeneratorBox.Text" xml:space="preserve">
     <value>链接生成器</value>
+  </data>
+  <data name="lblWsserverIntro.Text" xml:space="preserve">
+    <value>此处是对后两个选项卡的简介：
+
+直播/本地悬浮窗：如果您通过此选项卡启动WS服务器，您就可以在这台电脑上使用生成的链接 （例如在OBS中，XL的overlay plugin中，等等）。如果您对网络和SSL略知一二，您甚至可以在您的局域网中的其他设备上使用它。但是一般来说，我建议使用共享悬浮窗选项卡，因为它更易于使用。
+
+共享悬浮窗：如果您通过此选项卡启动WS服务器，则可以在连接到互联网的任何设备上使用生成的链接（例如您的手机、平板电脑、朋友的电脑，等等）。您可以与其他人共享这些链接。
+
+最后，如果您通过“直播/本地悬浮窗”选项卡启动了WS服务器, 它将在ACT启动时自动重新启动。如果是通过“共享悬浮窗”选项卡启动的, 它不会自动启动，因为您每次都将获得一个新的链接。备注：如果这让您感到困扰，请在ACT Discord（或在OverlayPlugin的GitHub仓库）中要求ngld修复此问题。有很多方法可以解决这个问题，但是我不确定有多少人需要这个功能。
+</value>
   </data>
   <data name="introPage.Text" xml:space="preserve">
     <value>简介</value>
@@ -233,7 +271,10 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
     <value>状态：</value>
   </data>
   <data name="statusLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>390, 88</value>
+    <value>421, 88</value>
+  </data>
+  <data name="statusLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="statusLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 13</value>
@@ -244,21 +285,11 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   <data name="settingsPage.Text" xml:space="preserve">
     <value>直播/本地悬浮窗</value>
   </data>
-  <data name="tunnelPage.Text" xml:space="preserve">
-    <value>共享悬浮窗</value>
-  </data>
-  <data name="lblWsserverIntro.Text" xml:space="preserve">
-    <value>此处是对后两个选项卡的简介：
-
-直播/本地悬浮窗：如果您通过此选项卡启动WS服务器，您就可以在这台电脑上使用生成的链接 （例如在OBS中，XL的overlay plugin中，等等）。如果您对网络和SSL略知一二，您甚至可以在您的局域网中的其他设备上使用它。但是一般来说，我建议使用共享悬浮窗选项卡，因为它更易于使用。
-
-共享悬浮窗：如果您通过此选项卡启动WS服务器，则可以在连接到互联网的任何设备上使用生成的链接（例如您的手机、平板电脑、朋友的电脑，等等）。您可以与其他人共享这些链接。
-
-最后，如果您通过“直播/本地悬浮窗”选项卡启动了WS服务器, 它将在ACT启动时自动重新启动。如果是通过“共享悬浮窗”选项卡启动的, 它不会自动启动，因为您每次都将获得一个新的链接。备注：如果这让您感到困扰，请在ACT Discord（或在OverlayPlugin的GitHub仓库）中要求ngld修复此问题。有很多方法可以解决这个问题，但是我不确定有多少人需要这个功能。
-</value>
-  </data>
   <data name="simpStopBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>125, 64</value>
+  </data>
+  <data name="simpStopBtn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="simpStopBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>115, 36</value>
@@ -266,11 +297,20 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   <data name="simpStopBtn.Text" xml:space="preserve">
     <value>停止</value>
   </data>
+  <data name="simpStartBtn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
   <data name="simpStartBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>110, 36</value>
   </data>
   <data name="simpStartBtn.Text" xml:space="preserve">
     <value>启用</value>
+  </data>
+  <data name="simpStatusLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>113, 7</value>
+  </data>
+  <data name="simpStatusLbl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="simpStatusLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 13</value>
@@ -278,8 +318,14 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   <data name="simpStatusLbl.Text" xml:space="preserve">
     <value>未知</value>
   </data>
+  <data name="regionCb.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
   <data name="regionCb.Size" type="System.Drawing.Size, System.Drawing">
     <value>247, 21</value>
+  </data>
+  <data name="regionLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="regionLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -293,25 +339,28 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   <data name="simpStatusLabel.Text" xml:space="preserve">
     <value>状态：</value>
   </data>
+  <data name="tunnelPage.Text" xml:space="preserve">
+    <value>共享悬浮窗</value>
+</data>
   <data name="regionCb.Items" xml:space="preserve">
     <value>us - 美国 (俄亥俄州)</value>
   </data>
-  <data name="regionCb.Items1" xml:space="preserve">
+	  <data name="regionCb.Items1" xml:space="preserve">
     <value>eu - 欧洲 (法兰克福)</value>
   </data>
-  <data name="regionCb.Items2" xml:space="preserve">
+	  <data name="regionCb.Items2" xml:space="preserve">
     <value>ap - 亚太 (新加波)</value>
   </data>
-  <data name="regionCb.Items3" xml:space="preserve">
+	  <data name="regionCb.Items3" xml:space="preserve">
     <value>au - 澳大利亚 (悉尼)</value>
   </data>
-  <data name="regionCb.Items4" xml:space="preserve">
+	  <data name="regionCb.Items4" xml:space="preserve">
     <value>sa - 北美 (圣保罗)</value>
   </data>
-  <data name="regionCb.Items5" xml:space="preserve">
+	  <data name="regionCb.Items5" xml:space="preserve">
     <value>jp - 日本 (东京)</value>
   </data>
-  <data name="regionCb.Items6" xml:space="preserve">
+	  <data name="regionCb.Items6" xml:space="preserve">
     <value>in - 印度 (孟买)</value>
   </data>
 </root>

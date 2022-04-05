@@ -19,7 +19,7 @@ namespace RainbowMage.OverlayPlugin
 {
     public partial class WSConfigPanel : UserControl
     {
-        const string MKCERT_DOWNLOAD = "https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-windows-amd64.exe";
+        const string MKCERT_DOWNLOAD = "https://cafemenu-dl.xivcdn.com/tools/mkcert-v1.4.3-windows-amd64.exe";
         const string NGROK_DOWNLOAD_IDX = "https://ngrok.com/download";
 
         IPluginConfig _config;
@@ -547,9 +547,9 @@ tunnels:
 
                     if (done)
                     {
-                        simpLogBox.AppendText("Done!\r\n");
-                        simpLogBox.AppendText("\r\n#############################################\r\n请使用下面的URL生成器：\r\n\r\n");
-                        simpLogBox.AppendText("\r\n如果你知道在做什么或者在使用未在此处列出的悬浮窗, 这里是一些请求用的字段:\r\n");
+                        simpLogBox.AppendText("完成!\r\n");
+                        simpLogBox.AppendText("\r\n#############################################\r\n请使用最下方的【链接生成器】生成悬浮窗链接：\r\n\r\n");
+                        simpLogBox.AppendText("\r\n如果你知道在做什么或者在使用未在此处列出的悬浮窗, 这里是一些悬浮窗链接中会使用的请求字段:\r\n");
                         simpLogBox.AppendText("\r\n    ?HOST_PORT=" + _ngrokPrefix + "\r\n    ?OVERLAY_WS=" + _ngrokPrefix + "/ws\r\n");
                         simpLogBox.AppendText("#############################################\r\n");
 
@@ -594,7 +594,7 @@ tunnels:
             {
                 UpdateTunnelStatus(TunnelStatus.Downloading);
 
-                simpLogBox.AppendText("获取最新的ngrok客户端...\r\n");
+                simpLogBox.AppendText("获取最新的ngrok客户端下载链接...\r\n");
                 string dlPage;
                 try
                 {

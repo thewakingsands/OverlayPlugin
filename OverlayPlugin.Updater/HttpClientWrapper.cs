@@ -66,7 +66,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
                         DownloadProgressChangedEventHandler progressChangedHandler = (ps, pe) =>
                         {
-                            if (pe.UserState == tcs)
+                            if (pe.UserState == tcs || infoCb != null)
                                 infoCb(0, pe.TotalBytesToReceive, pe.BytesReceived, 0, 0);
                         };
 

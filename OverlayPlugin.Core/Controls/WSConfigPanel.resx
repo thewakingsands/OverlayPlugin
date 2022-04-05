@@ -134,6 +134,9 @@
   <data name="simpStatusLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="&gt;&gt;tabControl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;label3.Parent" xml:space="preserve">
     <value>settingsPage</value>
   </data>
@@ -166,9 +169,6 @@ Finally, if WSServer is started through the Stream/Local Overlay tab, it will au
   <data name="&gt;&gt;logDisplay.Name" xml:space="preserve">
     <value>logDisplay</value>
   </data>
-  <data name="portTxt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 21</value>
-  </data>
   <data name="lblUrlConfidentWarning.Size" type="System.Drawing.Size, System.Drawing">
     <value>413, 12</value>
   </data>
@@ -186,9 +186,6 @@ Finally, if WSServer is started through the Stream/Local Overlay tab, it will au
   </data>
   <data name="&gt;&gt;genSslBtn.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="genSslBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 90</value>
   </data>
   <data name="&gt;&gt;lblWsserverIntro.Parent" xml:space="preserve">
     <value>introPage</value>
@@ -274,8 +271,8 @@ Finally, if WSServer is started through the Stream/Local Overlay tab, it will au
   <data name="logDisplay.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Both</value>
   </data>
-  <data name="&gt;&gt;simpStatusLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 12</value>
   </data>
   <data name="&gt;&gt;label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -295,8 +292,8 @@ Finally, if WSServer is started through the Stream/Local Overlay tab, it will au
   <data name="&gt;&gt;simpStopBtn.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="simpStartBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="cbOverlay.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
   </data>
   <data name="introPage.Text" xml:space="preserve">
     <value>Intro</value>
@@ -319,6 +316,9 @@ Finally, if WSServer is started through the Stream/Local Overlay tab, it will au
   <data name="&gt;&gt;regionCb.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="logDisplay.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -340,9 +340,6 @@ Finally, if WSServer is started through the Stream/Local Overlay tab, it will au
   <data name="settingsPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>621, 393</value>
-  </data>
   <data name="&gt;&gt;startBtn.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
@@ -357,6 +354,9 @@ Finally, if WSServer is started through the Stream/Local Overlay tab, it will au
   </data>
   <data name="&gt;&gt;sslBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 22</value>
@@ -381,6 +381,9 @@ Finally, if WSServer is started through the Stream/Local Overlay tab, it will au
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
+  </data>
+  <data name="txtOverlayUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>557, 21</value>
   </data>
   <data name="&gt;&gt;simpStatusLabel.Name" xml:space="preserve">
     <value>simpStatusLabel</value>
@@ -492,8 +495,14 @@ Afterwards, you should be able to enable SSL.</value>
   <data name="regionCb.Items" xml:space="preserve">
     <value>us - United States (Ohio)</value>
   </data>
+  <data name="&gt;&gt;logDisplay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;simpStatusLabel.ZOrder" xml:space="preserve">
     <value>6</value>
+  </data>
+  <data name="simpStartBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
   <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -543,9 +552,6 @@ Afterwards, you should be able to enable SSL.</value>
   <data name="&gt;&gt;txtOverlayUrl.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 12</value>
-  </data>
   <data name="simpStopBtn.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
@@ -576,14 +582,14 @@ Afterwards, you should be able to enable SSL.</value>
   <data name="stopBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>377, 38</value>
   </data>
-  <data name="&gt;&gt;portTxt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;statusLabel.Parent" xml:space="preserve">
+    <value>settingsPage</value>
   </data>
   <data name="&gt;&gt;tunnelPage.Name" xml:space="preserve">
     <value>tunnelPage</value>
   </data>
-  <data name="&gt;&gt;logDisplay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="genSslBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 90</value>
   </data>
   <data name="&gt;&gt;regionLabel.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -621,8 +627,8 @@ Afterwards, you should be able to enable SSL.</value>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>urlGeneratorBox</value>
   </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+  <data name="portTxt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 21</value>
   </data>
   <data name="sslBox.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -735,20 +741,17 @@ Afterwards, you should be able to enable SSL.</value>
   <data name="&gt;&gt;lblUrlConfidentWarning.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="introPage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
   <data name="&gt;&gt;simpStartBtn.Parent" xml:space="preserve">
     <value>tunnelPage</value>
   </data>
   <data name="&gt;&gt;ipTxt.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="cbOverlay.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+  <data name="&gt;&gt;portTxt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabControl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;simpStatusLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="sslBox.Text" xml:space="preserve">
     <value>Enable SSL</value>
@@ -792,8 +795,8 @@ Afterwards, you should be able to enable SSL.</value>
   <data name="tunnelPage.Text" xml:space="preserve">
     <value>Shared Overlay</value>
   </data>
-  <data name="txtOverlayUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>557, 21</value>
+  <data name="stopBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
   <data name="ipTxt.Location" type="System.Drawing.Point, System.Drawing">
     <value>117, 15</value>
@@ -816,8 +819,8 @@ Afterwards, you should be able to enable SSL.</value>
   <data name="urlGeneratorBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 406</value>
   </data>
-  <data name="&gt;&gt;cbOverlay.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>621, 393</value>
   </data>
   <data name="tabControl.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 3</value>
@@ -836,9 +839,6 @@ Afterwards, you should be able to enable SSL.</value>
   </data>
   <data name="&gt;&gt;logDisplay.Parent" xml:space="preserve">
     <value>settingsPage</value>
-  </data>
-  <data name="simpLogBox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
   </data>
   <data name="introPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
@@ -900,14 +900,14 @@ Afterwards, you should be able to enable SSL.</value>
   <data name="&gt;&gt;regionCb.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;statusLabel.Parent" xml:space="preserve">
-    <value>settingsPage</value>
+  <data name="&gt;&gt;cbOverlay.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="simpLogBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="stopBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+  <data name="introPage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="&gt;&gt;statusLabel.ZOrder" xml:space="preserve">
     <value>7</value>
