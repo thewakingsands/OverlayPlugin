@@ -222,7 +222,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
             this.overlay.Reload();
         }
 
-        private void buttonSelectFile_Click(object sender, EventArgs e)
+        private void buttonMiniParseSelectFile_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog();
 
@@ -435,5 +435,6 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             overlay.Overlay.Renderer.ClearCache();
         }
+
     }
 }

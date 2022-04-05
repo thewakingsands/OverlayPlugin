@@ -108,14 +108,14 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Controls.Add(this.btnCactbotUpdate);
+            //this.Controls.Add(this.btnCactbotUpdate);
             this.Controls.Add(this.lblReadMe);
             this.Controls.Add(this.lblNewUserWelcome);
             this.Controls.Add(this.lnkGithubRepo);
             this.Controls.Add(this.lblGithub);
-            this.Controls.Add(this.btnUpdateCheck);
+            //this.Controls.Add(this.btnUpdateCheck);
             this.Controls.Add(this.cbErrorReports);
-            this.Controls.Add(this.cbUpdateCheck);
+            //this.Controls.Add(this.cbUpdateCheck);
             this.Controls.Add(this.cbHideOverlaysDuringCutscene);
             this.Controls.Add(this.cbHideOverlaysWhenNotActive);
             this.Name = "GeneralConfigTab";
