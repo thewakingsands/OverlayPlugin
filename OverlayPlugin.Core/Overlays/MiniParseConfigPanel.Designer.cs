@@ -60,9 +60,6 @@
             this.btnRemoveHotkey = new System.Windows.Forms.Button();
             this.btnAddHotkey = new System.Windows.Forms.Button();
             this.hotkeyGridView = new System.Windows.Forms.DataGridView();
-            this.hotkeyColEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.hotkeyColHotkey = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.hotkeyColAction = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.tabAdvanced = new System.Windows.Forms.TabPage();
             this.label15 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -81,6 +78,9 @@
             this.buttonMiniParseOpenDevTools = new System.Windows.Forms.Button();
             this.buttonMiniParseReloadBrowser = new System.Windows.Forms.Button();
             this.buttonResetOverlayPosition = new System.Windows.Forms.Button();
+            this.hotkeyColEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.hotkeyColHotkey = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.hotkeyColAction = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -313,7 +313,6 @@
             this.hotkeyGridView.AllowUserToResizeRows = false;
             resources.ApplyResources(this.hotkeyGridView, "hotkeyGridView");
             this.hotkeyGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.hotkeyGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.hotkeyGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.hotkeyColEnabled,
             this.hotkeyColHotkey,
@@ -322,27 +321,12 @@
             this.hotkeyGridView.GridColor = System.Drawing.SystemColors.ControlDarkDark;
             this.hotkeyGridView.Name = "hotkeyGridView";
             this.hotkeyGridView.RowHeadersVisible = false;
-            this.hotkeyGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.hotkeyGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.hotkeyGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.hotkeyGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.hotkeyGridView_CellFormatting);
             this.hotkeyGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.hotkeyGridView_CellMouseClick);
             this.hotkeyGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.hotkeyGridView_CellValidated);
             this.hotkeyGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.hotkeyGridView_EditingControlShowing);
-            // 
-            // hotkeyColEnabled
-            // 
-            this.hotkeyColEnabled.Name = "hotkeyColEnabled";
-            resources.ApplyResources(this.hotkeyColEnabled, "hotkeyColEnabled");
-            // 
-            // hotkeyColHotkey
-            // 
-            this.hotkeyColHotkey.Name = "hotkeyColHotkey";
-            resources.ApplyResources(this.hotkeyColHotkey, "hotkeyColHotkey");
-            // 
-            // hotkeyColAction
-            // 
-            resources.ApplyResources(this.hotkeyColAction, "hotkeyColAction");
-            this.hotkeyColAction.Name = "hotkeyColAction";
             // 
             // tabAdvanced
             // 
@@ -486,6 +470,25 @@
             this.buttonResetOverlayPosition.UseVisualStyleBackColor = true;
             this.buttonResetOverlayPosition.Click += new System.EventHandler(this.buttonResetOverlayPosition_Click);
             // 
+            // hotkeyColEnabled
+            // 
+            this.hotkeyColEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.hotkeyColEnabled, "hotkeyColEnabled");
+            this.hotkeyColEnabled.Name = "hotkeyColEnabled";
+            // 
+            // hotkeyColHotkey
+            // 
+            this.hotkeyColHotkey.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.hotkeyColHotkey, "hotkeyColHotkey");
+            this.hotkeyColHotkey.Name = "hotkeyColHotkey";
+            this.hotkeyColHotkey.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // hotkeyColAction
+            // 
+            this.hotkeyColAction.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.hotkeyColAction, "hotkeyColAction");
+            this.hotkeyColAction.Name = "hotkeyColAction";
+            // 
             // MiniParseConfigPanel
             // 
             resources.ApplyResources(this, "$this");
@@ -541,9 +544,6 @@
         private System.Windows.Forms.Button btnAddHotkey;
         private System.Windows.Forms.Button btnRemoveHotkey;
         private System.Windows.Forms.Button btnApplyHotkeyChanges;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn hotkeyColEnabled;
-        private System.Windows.Forms.DataGridViewTextBoxColumn hotkeyColHotkey;
-        private System.Windows.Forms.DataGridViewComboBoxColumn hotkeyColAction;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btnClearCache;
         private System.Windows.Forms.CheckBox checkMiniParseVisible;
@@ -568,5 +568,8 @@
         private System.Windows.Forms.TextBox textMiniParseUrl;
         private System.Windows.Forms.ComboBox applyPresetCombo;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn hotkeyColEnabled;
+        private System.Windows.Forms.DataGridViewTextBoxColumn hotkeyColHotkey;
+        private System.Windows.Forms.DataGridViewComboBoxColumn hotkeyColAction;
     }
 }
