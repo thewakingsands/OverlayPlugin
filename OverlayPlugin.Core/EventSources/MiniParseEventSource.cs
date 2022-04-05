@@ -584,7 +584,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     this.prevEndDateTime == ActGlobals.oFormActMain.ActiveZone.ActiveEncounter.EndTime &&
                     this.prevEncounterActive == ActGlobals.oFormActMain.ActiveZone.ActiveEncounter.Active)
                 {
-                    return;
+                    // return;
                 }
 
                 this.prevEncounterId = ActGlobals.oFormActMain.ActiveZone.ActiveEncounter.EncId;
@@ -720,7 +720,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 obj["Combatant"][pair.Key.Name] = value;
             }
 
-            obj["isActive"] = ActGlobals.oFormActMain.ActiveZone.ActiveEncounter.Active ? "true" : "false";
+            obj["isActive"] = ActGlobals.oFormActMain.ActiveZone.ActiveEncounter?.Active == true ? "true" : "false";
 
 #if TRACE
             stopwatch.Stop();
@@ -731,10 +731,12 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         private List<KeyValuePair<CombatantData, Dictionary<string, string>>> GetCombatantList(List<CombatantData> allies)
         {
-#if TRACE
+#if TRACE 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 #endif
+
+            var varStopwatch = new Stopwatch();
 
             var combatantList = new List<KeyValuePair<CombatantData, Dictionary<string, string>>>();
             Parallel.ForEach(allies, (ally) =>
@@ -745,6 +747,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 {
                     try
                     {
+                        varStopwatch.Reset();
+                        varStopwatch.Start();
+
                         // NAME タグには {NAME:8} のようにコロンで区切られたエクストラ情報が必要で、
                         // プラグインの仕組み的に対応することができないので除外する
                         if (exportValuePair.Key.StartsWith("NAME"))
@@ -763,12 +768,14 @@ namespace RainbowMage.OverlayPlugin.EventSources
                             if (!ally.Items[CombatantData.DamageTypeDataOutgoingDamage].Items.ContainsKey("All"))
                             {
                                 valueDict.Add(exportValuePair.Key, "");
+                                Log(LogLevel.Debug, $"Combatant: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                                 continue;
                             }
                         }
 
                         var value = exportValuePair.Value.GetExportString(ally, "");
                         valueDict.Add(exportValuePair.Key, value);
+                        Log(LogLevel.Debug, $"Combatant: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                     }
                     catch (Exception e)
                     {
@@ -799,11 +806,16 @@ namespace RainbowMage.OverlayPlugin.EventSources
             stopwatch.Start();
 #endif
 
+            var varStopwatch = new Stopwatch();
+
             var encounterDict = new Dictionary<string, string>();
             foreach (var exportValuePair in EncounterData.ExportVariables)
             {
                 try
                 {
+                    varStopwatch.Reset();
+                    varStopwatch.Start();
+
                     // ACT_FFXIV_Plugin が提供する LastXXDPS は、
                     // ally.Items[CombatantData.DamageTypeDataOutgoingDamage].Items に All キーが存在しない場合に、
                     // プラグイン内で例外が発生してしまい、パフォーマンスが悪化するので代わりに空の文字列を挿入する
@@ -815,6 +827,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                         if (!allies.All((ally) => ally.Items[CombatantData.DamageTypeDataOutgoingDamage].Items.ContainsKey("All")))
                         {
                             encounterDict.Add(exportValuePair.Key, "");
+                            Log(LogLevel.Debug, $"Encounter: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                             continue;
                         }
                     }
@@ -826,6 +839,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     //lock (encounterDict)
                     //{
                     encounterDict.Add(exportValuePair.Key, value);
+                    Log(LogLevel.Debug, $"Encounter: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                     //}
                 }
                 catch (Exception e)

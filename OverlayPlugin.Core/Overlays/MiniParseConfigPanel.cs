@@ -430,5 +430,10 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             config.HideOutOfCombat = cbHideOutOfCombat.Checked;
         }
+
+        private void btnClearCache_Click(object sender, EventArgs e)
+        {
+            overlay.Overlay.Renderer.ClearCache();
+        }
     }
 }

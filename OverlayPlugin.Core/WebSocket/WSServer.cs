@@ -253,9 +253,14 @@ namespace RainbowMage.OverlayPlugin
                 _dispatcher = container.Resolve<EventDispatcher>();
                 _conn = conn;
 
+                var open = true;
+
                 conn.OnMessage = OnMessage;
                 conn.OnClose = () =>
                 {
+                    if (!open) return;
+                    open = false;
+
                     try
                     {
                         _dispatcher.UnsubscribeAll(this);
@@ -266,6 +271,13 @@ namespace RainbowMage.OverlayPlugin
                         _logger.Log(LogLevel.Error, $"Failed to unsubscribe WebSocket connection: {ex}");
                     }
                 };
+                conn.OnError = (ex) =>
+                {
+                    // Fleck will close the connection; make sure we always clean up even if Fleck doesn't call OnClose().
+                    conn.OnClose();
+
+                    _logger.Log(LogLevel.Info, $"WebSocket connection was closed with error: {ex}");
+                };
             }
 
             public void Close()
@@ -275,6 +287,13 @@ namespace RainbowMage.OverlayPlugin
 
             public void HandleEvent(JObject e)
             {
+                if (!_conn.IsAvailable)
+                {
+                    _logger.Log(LogLevel.Error, "A closed WebSocket connection wasn't cleaned up properly; fixing.");
+                    _conn.OnClose();
+                    return;
+                }
+
                 _conn.Send(e.ToString(Formatting.None));
             }
 
@@ -374,10 +393,15 @@ namespace RainbowMage.OverlayPlugin
                 _repository = container.Resolve<FFXIVRepository>();
                 _conn = conn;
 
+                var open = true;
+
                 conn.OnOpen = OnOpen;
                 conn.OnMessage = OnMessage;
                 conn.OnClose = () =>
                 {
+                    if (!open) return;
+                    open = false;
+
                     try
                     {
                         _dispatcher.UnsubscribeAll(this);
@@ -388,6 +412,13 @@ namespace RainbowMage.OverlayPlugin
                         _logger.Log(LogLevel.Error, $"Failed to unsubscribe WebSocket connection: {ex}");
                     }
                 };
+                conn.OnError = (ex) =>
+                {
+                    // Fleck will close the connection; make sure we always clean up even if Fleck doesn't call OnClose().
+                    conn.OnClose();
+
+                    _logger.Log(LogLevel.Info, $"WebSocket connection was closed with error: {ex}");
+                };
             }
 
             public void Close()
@@ -397,6 +428,13 @@ namespace RainbowMage.OverlayPlugin
 
             public void HandleEvent(JObject e)
             {
+                if (!_conn.IsAvailable)
+                {
+                    _logger.Log(LogLevel.Error, "A closed WebSocket connection wasn't cleaned up properly; fixing.");
+                    _conn.OnClose();
+                    return;
+                }
+
                 try {
                     switch (e["type"].ToString())
                     {

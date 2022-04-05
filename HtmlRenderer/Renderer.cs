@@ -406,6 +406,33 @@ namespace RainbowMage.HtmlRenderer
             return null;
         }
 
+        public async void ClearCache()
+        {
+            try
+            {
+                if (_browser == null) return;
+
+                // Find the first / after https://
+                var slashAfterHost = lastUrl.IndexOf("/", 9);
+
+                // If we can't build an origin, there's nothing we can do.
+                if (slashAfterHost < 0) return;
+
+                var origin = lastUrl.Substring(0, slashAfterHost);
+                var dtc = DevToolsExtensions.GetDevToolsClient(_browser);
+                var result = await dtc.Storage.ClearDataForOriginAsync(origin, "appcache,cookies,file_systems,cache_storage");
+                
+                BrowserConsoleLog?.Invoke(null, new BrowserConsoleLogEventArgs(result.Success ? result.ResponseAsJsonString : "fail", "", 0));
+
+                // Reload the overlay to refill the cache and replace that potentially corrupted resources.
+                Reload();
+            }
+            catch (Exception ex)
+            {
+                BrowserConsoleLog?.Invoke(null, new BrowserConsoleLogEventArgs($"Failed to clear cache: {ex}", "", 0));
+            }
+        }
+
         public void Dispose()
         {
             if (this._browser != null)

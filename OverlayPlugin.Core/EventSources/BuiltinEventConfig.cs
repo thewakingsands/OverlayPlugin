@@ -227,7 +227,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
                     foreach (var key in result.OverlayData.Keys)
                     {
-                        if (!key.StartsWith("overlay#")) continue;
+                        if (!key.StartsWith("overlay#") || key.Length < 44) continue;
 
                         var uuid = key.Substring(8, 36);
                         if (!overlayUUIDs.Contains(uuid))
