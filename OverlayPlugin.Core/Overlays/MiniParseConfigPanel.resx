@@ -322,8 +322,8 @@
     <value>37</value>
   </data>
   <data name="label8.Text" xml:space="preserve">
-    <value>禁用某个悬浮窗会减少CPU使用率，但也会停止它的所有工作（例如声音）。
-隐藏某个悬浮窗只会使其不可见，它仍然在后台运行，并仍可以播放声音、收集统计信息等。
+    <value>不启用某个悬浮窗会减少CPU使用率，但也会停止它的所有工作（例如声音）。
+不显示某个悬浮窗只会使其不可见，它仍然在后台运行，并仍可以播放声音、收集统计信息等。
 </value>
   </data>
   <data name="&gt;&gt;label8.Name" xml:space="preserve">
