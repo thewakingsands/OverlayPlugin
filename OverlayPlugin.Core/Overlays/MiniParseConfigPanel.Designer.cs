@@ -262,6 +262,7 @@
             // 
             resources.ApplyResources(this.textMiniParseUrl, "textMiniParseUrl");
             this.textMiniParseUrl.Name = "textMiniParseUrl";
+            this.textMiniParseUrl.TextChanged += new System.EventHandler((events,args)=>this.overlay.Config.Url=this.textMiniParseUrl.Text );
             // 
             // applyPresetCombo
             // 
