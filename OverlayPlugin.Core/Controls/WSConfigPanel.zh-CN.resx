@@ -341,26 +341,26 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   </data>
   <data name="tunnelPage.Text" xml:space="preserve">
     <value>共享悬浮窗</value>
-</data>
+  </data>
   <data name="regionCb.Items" xml:space="preserve">
     <value>us - 美国 (俄亥俄州)</value>
   </data>
-	  <data name="regionCb.Items1" xml:space="preserve">
+  <data name="regionCb.Items1" xml:space="preserve">
     <value>eu - 欧洲 (法兰克福)</value>
   </data>
-	  <data name="regionCb.Items2" xml:space="preserve">
+  <data name="regionCb.Items2" xml:space="preserve">
     <value>ap - 亚太 (新加波)</value>
   </data>
-	  <data name="regionCb.Items3" xml:space="preserve">
+  <data name="regionCb.Items3" xml:space="preserve">
     <value>au - 澳大利亚 (悉尼)</value>
   </data>
-	  <data name="regionCb.Items4" xml:space="preserve">
-    <value>sa - 北美 (圣保罗)</value>
+  <data name="regionCb.Items4" xml:space="preserve">
+    <value>sa - 南美洲 (圣保罗)</value>
   </data>
-	  <data name="regionCb.Items5" xml:space="preserve">
+  <data name="regionCb.Items5" xml:space="preserve">
     <value>jp - 日本 (东京)</value>
   </data>
-	  <data name="regionCb.Items6" xml:space="preserve">
+  <data name="regionCb.Items6" xml:space="preserve">
     <value>in - 印度 (孟买)</value>
   </data>
 </root>
