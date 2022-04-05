@@ -410,7 +410,7 @@ namespace RainbowMage.HtmlRenderer
         {
             try
             {
-                if (_browser == null) return;
+                if (_browser == null||!_isRendering) return;
                 
                 var dtc = DevToolsExtensions.GetDevToolsClient(_browser);
                 var result = await dtc.Network.ClearBrowserCacheAsync();
