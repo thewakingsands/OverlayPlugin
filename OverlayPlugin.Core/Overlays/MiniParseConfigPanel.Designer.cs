@@ -472,7 +472,7 @@
             // 
             // hotkeyColEnabled
             // 
-            this.hotkeyColEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.hotkeyColEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             resources.ApplyResources(this.hotkeyColEnabled, "hotkeyColEnabled");
             this.hotkeyColEnabled.Name = "hotkeyColEnabled";
             // 
