@@ -2,5 +2,5 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("22.3.31.2")]
-[assembly: AssemblyFileVersion("22.3.31.2")]
+[assembly: AssemblyVersion("22.4.5.0")]
+[assembly: AssemblyFileVersion("22.4.5.0")]
