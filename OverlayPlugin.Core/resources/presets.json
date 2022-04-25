@@ -2,7 +2,7 @@
   "【悬浮窗向导】": {
     "type": "MiniParse",
     "url": "%%/guide.html",
-    "size": [ 700, 300 ],
+    "size": [ 750, 300 ],
     "supports": [ "modern" ]
   },
   "Kagerou 悬浮窗": {
