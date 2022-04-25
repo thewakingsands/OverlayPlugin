@@ -59,6 +59,24 @@
     "size": [ 600, 500 ],
     "supports": [ "legacy", "actws" ]
   },
+  "SkillDisplay 循环显示": {
+    "type": "MiniParse",
+    "url": "https://overlays.ffcafe.cn/SkillDisplay/",
+    "size": [ 600, 500 ],
+    "supports": [ "modern" ]
+  },
+  "Skyline 横板悬浮窗": {
+    "type": "MiniParse",
+    "url": "https://overlays.ffcafe.cn/skyline/",
+    "size": [ 1000, 300 ],
+    "supports": [ "modern" ]
+  },
+  "ZeffUI 多功能自定义监控": {
+    "type": "MiniParse",
+    "url": "https://overlays.ffcafe.cn/zeffui/",
+    "size": [ 600, 500 ],
+    "supports": [ "modern" ]
+  },
   "本地精简悬浮窗": {
     "type": "MiniParse",
     "url": "%%/miniparse.html",
