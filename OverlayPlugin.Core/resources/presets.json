@@ -63,7 +63,7 @@
     "type": "MiniParse",
     "url": "https://overlays.ffcafe.cn/SkillDisplay/",
     "size": [ 600, 500 ],
-    "supports": [ "modern" ]
+    "supports": [ "legacy", "actws" ]
   },
   "Skyline 横板悬浮窗": {
     "type": "MiniParse",
