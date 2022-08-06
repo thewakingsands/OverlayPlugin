@@ -8,7 +8,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 {
     public class FFXIVProcessCn : FFXIVProcess
     {
-        // Last updated for FFXIV 6.0
+        // Last updated for FFXIV 6.1
 
         [StructLayout(LayoutKind.Explicit)]
         public unsafe struct EntityMemory
@@ -87,7 +87,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         // A piece of code that reads the pointer to the list of all entities, that we
         // refer to as the charmap. The pointer is the 4 byte ?????????.
-        private static String kCharmapSignature = "48c1ea0381faa7010000????8bc2488d0d";
+        private static String kCharmapSignature = "48c1ea0381faa9010000????8bc2488d0d";
         private static int kCharmapSignatureOffset = 0;
         // The signature finds a pointer in the executable code which uses RIP addressing.
         private static bool kCharmapSignatureRIP = true;
