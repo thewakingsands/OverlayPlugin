@@ -118,19 +118,34 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         public Single PosY;
         public Single PosZ;
         public Single Rotation;
+        public Single Radius;
 
         public string Distance;
-        public byte EffectiveDistance;
+        public string EffectiveDistance;
+        [NonSerialized]
+        public byte RawEffectiveDistance;
 
         public List<EffectEntry> Effects;
 
-        public string DistanceString(Combatant target)
+        private Single GetDistance(Combatant target)
         {
             var distanceX = (float)Math.Abs(PosX - target.PosX);
             var distanceY = (float)Math.Abs(PosY - target.PosY);
             var distanceZ = (float)Math.Abs(PosZ - target.PosZ);
-            var distance = (float)Math.Sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ));
-            return distance.ToString("0.00");
+            return (Single)Math.Sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ));
+        }
+
+        public string DistanceString(Combatant target)
+        {
+            return GetDistance(target).ToString("0.00");
+        }
+
+        public string EffectiveDistanceString(Combatant target)
+        {
+            // Mild hack for backwards compat for pre-6.x with no Radius memory location.
+            if (target.Radius == 0)
+                return this.RawEffectiveDistance.ToString("0.00");
+            return (GetDistance(target) - target.Radius).ToString("0.00");
         }
     }
 

@@ -168,7 +168,7 @@
     <value>用户已终止。</value>
   </data>
   <data name="StatusDownloadStarted" xml:space="preserve">
-    <value>[{0}/{1}]:正在开始下载...</value>
+    <value>[{0}/{1}]: 下载中...</value>
   </data>
   <data name="LogRetryAfter1s" xml:space="preserve">
     <value>1秒后重试。</value>

@@ -8,6 +8,12 @@
             "zh-CN": "浏览器崩溃了！({0})尝试重新启动。"
         }
     },
+    "OverlayPlugin.Core/Controls/ConfigErrorPrompt": {
+        "errorExplanation.Text": {
+            "en": "Failed to load the plugin configuration. This usually happens because the PC wasn't shut down properly which can cause the config file to become corrupted. You can either reset the plugin config or disable OverlayPlugin for now (in the latter case this prompt will reappear the next time you launch ACT).",
+            "zh-CN": "加载插件配置失败。这通常是因为您的电脑没有正确关闭所导致配置文件损坏。你可以重新设置插件配置或暂时禁用OverlayPlugin（在后一种情况下，此提示将在你下次启动ACT时重新出现）。"
+        }
+    },
     "OverlayPlugin.Core/Controls/ControlPanel": {
         "buttonClearLog.Text": {
             "de-DE": "Log leeren",
@@ -73,6 +79,10 @@
         }
     },
     "OverlayPlugin.Core/Controls/GeneralConfigTab": {
+        "btnCactbotUpdate.Text": {
+            "en": "Check For Cactbot Updates",
+            "zh-CN": "检查Cactbot更新"
+        },
         "btnUpdateCheck.Text": {
             "de-DE": "Auf Updates überprüfen",
             "en": "Check For Updates",
@@ -441,6 +451,10 @@
             "fr-FR": "Écrire les lignes de détection des cinématiques",
             "ko-KR": "컷신 감지 로그 남기기",
             "zh-CN": "输出过场检测日志行"
+        },
+        "lblLogLines.Text": {
+            "en": "Write additional log lines",
+            "zh-CN": "输出额外日志行"
         }
     },
     "OverlayPlugin.Core/Overlays/LabelOverlayConfigPanel": {
@@ -652,6 +666,10 @@
             "ko-KR": "수정 내용 적용",
             "zh-CN": "应用更改"
         },
+        "btnClearCache.Text": {
+            "en": "Clear Cache",
+            "zh-CN": "清除缓存"
+        },
         "btnRemoveHotkey.Text": {
             "de-DE": "Entferne selektierten Hotkey",
             "en": "Remove Selected Hotkey",
@@ -782,6 +800,10 @@
             "ja-JP": "オーバーレイが隠れているときに\nミュートにする",
             "ko-KR": "숨겨진 상태일 때 음소거하기",
             "zh-CN": "隐藏时使悬浮窗静音"
+        },
+        "label14.Text": {
+            "en": "Hide overlay outside combat",
+            "zh-CN": "脱战后隐藏悬浮窗"
         },
         "label15.Text": {
             "de-DE": "Zoom",
@@ -1126,6 +1148,11 @@
             "ko-KR": "{0}을 기준으로 정렬 실패: {1}",
             "zh-CN": "以{0}: {1}排序列表失败"
         },
+        "LogNotConnectedError": {
+            "#comment": "This error appears in the log box when it wasn't connected to the overlay log. This should never happen and indicates that something went really wrong during plugin startup.",
+            "en": "ERROR: Log not connected.",
+            "zh-CN": "错误：未连接到日志。"
+        },
         "MapESMiniParse": {
             "de-DE": "MiniParseEventSource",
             "en": "MiniParseEventSource",
@@ -1442,6 +1469,10 @@
             "fr-FR": "Installation manuelle",
             "ko-KR": "수동 설치",
             "zh-CN": "手动安装"
+        },
+        "tabPage3.Text": {
+            "en": "Log",
+            "zh-CN": "日志"
         }
     },
     "OverlayPlugin.Updater/ProgressDisplay": {
@@ -1794,11 +1825,11 @@
         "StatusDownloadStarted": {
             "#comment": "The [{0}/{1}] part indicates the current step. i.e. [1/2] would indicate that this is the first of two steps for the current task.",
             "de-DE": "[{0}/{1}]: Download wird gestartet ...",
-            "en": "[{0}/{1}]: Starting download...",
+            "en": "[{0}/{1}]: Downloading...",
             "fr-FR": "[{0}/{1}] : Démarrage du téléchargement ...",
             "ja-JP": "[{0}/{1}]: ダウンロードを開始中...",
             "ko-KR": "[{0}/{1}]: 다운로드를 시작하는 중...",
-            "zh-CN": "[{0}/{1}]:正在开始下载..."
+            "zh-CN": "[{0}/{1}]: 下载中..."
         },
         "StatusError": {
             "de-DE": "Fehler",

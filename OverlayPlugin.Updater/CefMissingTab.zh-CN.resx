@@ -166,4 +166,7 @@
   <data name="label6.Text" xml:space="preserve">
     <value>团灭自动重置战斗记录</value>
   </data>
+  <data name="tabPage3.Text" xml:space="preserve">
+    <value>日志</value>
+  </data>
 </root>

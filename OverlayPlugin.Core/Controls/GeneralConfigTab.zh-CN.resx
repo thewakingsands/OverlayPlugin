@@ -167,4 +167,7 @@
   <data name="lblReadMe.Text" xml:space="preserve">
     <value>【注意】</value>
   </data>
+  <data name="btnCactbotUpdate.Text" xml:space="preserve">
+    <value>检查Cactbot更新</value>
+  </data>
 </root>

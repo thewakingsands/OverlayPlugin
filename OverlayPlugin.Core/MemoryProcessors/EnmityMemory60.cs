@@ -360,6 +360,9 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             [FieldOffset(0xB0)]
             public Single Rotation;
 
+            [FieldOffset(0XC0)]
+            public Single Radius;
+
             [FieldOffset(0x1940)]
             public uint TargetID;
 
@@ -419,11 +422,12 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     ModelStatus = (ModelStatus)mem.ModelStatus,
                     // Normalize all possible aggression statuses into the basic 4 ones.
                     AggressionStatus = (AggressionStatus)(mem.AggressionStatus - (mem.AggressionStatus / 4) * 4),
-                    EffectiveDistance = mem.EffectiveDistance,
+                    RawEffectiveDistance = mem.EffectiveDistance,
                     PosX = mem.PosX,
                     PosY = mem.PosY,
                     PosZ = mem.PosZ,
                     Rotation = mem.Rotation,
+                    Radius = mem.Radius,
                     TargetID = mem.TargetID,
                     CurrentHP = mem.CurrentHP,
                     MaxHP = mem.MaxHP,
@@ -649,7 +653,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     CurrentHP = combatant.CurrentHP,
                     MaxHP = combatant.CurrentHP,
                     IsEngaged = (combatant.AggressionStatus >= AggressionStatus.EngagedPassive),
-                    EffectiveDistance = combatant.EffectiveDistance
+                    EffectiveDistance = combatant.RawEffectiveDistance
                 };
                 enemyList.Add(entry);
             }

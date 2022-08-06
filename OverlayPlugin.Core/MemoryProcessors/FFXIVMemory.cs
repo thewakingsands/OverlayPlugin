@@ -348,7 +348,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         /// <param name="offset">The offset from the end of the found pattern to read a pointer from the process memory.</param>
         /// <param name="rip_addressing">Uses x64 RIP relative addressing mode</param>
         /// <returns>A list of pointers read relative to the end of strings in the process memory matching the |pattern|.</returns>
-        public List<IntPtr> SigScan(string pattern, int offset, bool rip_addressing)
+        public List<IntPtr> SigScan(string pattern, int pattern_offset, bool rip_addressing, int rip_offset = 0)
         {
             _processLock.EnterReadLock();
             try
@@ -396,7 +396,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     IntPtr num_bytes_read = IntPtr.Zero;
                     if (NativeMethods.ReadProcessMemory(processHandle, read_start_addr, read_buffer, read_size, ref num_bytes_read))
                     {
-                        int max_search_offset = num_bytes_read.ToInt32() - pattern_array.Length - Math.Max(0, offset);
+                        int max_search_offset = num_bytes_read.ToInt32() - pattern_array.Length - Math.Max(0, pattern_offset);
                         // With RIP we will read a 4byte pointer at the |offset|, else we read an 8byte pointer. Either
                         // way we can't find a pattern such that the pointer we want to read is off the end of the buffer.
                         if (rip_addressing)
@@ -423,10 +423,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                                 IntPtr pointer;
                                 if (rip_addressing)
                                 {
-                                    Int32 rip_ptr_offset = BitConverter.ToInt32(read_buffer, search_offset + pattern_array.Length + offset);
+                                    Int32 rip_ptr_offset = BitConverter.ToInt32(read_buffer, search_offset + pattern_array.Length + pattern_offset);
                                     Int64 pattern_start_game_addr = read_start_addr.ToInt64() + search_offset;
-                                    Int64 pointer_offset_from_pattern_start = pattern_array.Length + offset;
-                                    Int64 rip_ptr_base = pattern_start_game_addr + pointer_offset_from_pattern_start + 4;
+                                    Int64 pointer_offset_from_pattern_start = pattern_array.Length + pattern_offset;
+                                    Int64 rip_ptr_base = pattern_start_game_addr + pointer_offset_from_pattern_start + 4 + rip_offset;
                                     // In RIP addressing, the pointer from the executable is 32bits which we stored as |rip_ptr_offset|. The pointer
                                     // is then added to the address of the byte following the pointer, making it relative to that address, which we
                                     // stored as |rip_ptr_base|.

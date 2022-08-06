@@ -286,4 +286,7 @@
   <data name="HotkeyActionToggleEnabled" xml:space="preserve">
     <value>切换悬浮窗 启用/关闭</value>
   </data>
+  <data name="LogNotConnectedError" xml:space="preserve">
+    <value>错误：未连接到日志。</value>
+  </data>
 </root>
