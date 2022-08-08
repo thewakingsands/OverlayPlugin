@@ -435,7 +435,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                                 else
                                 {
                                     // In normal addressing, the 64bits found with the pattern are the absolute pointer.
-                                    pointer = new IntPtr(BitConverter.ToInt64(read_buffer, search_offset + pattern_array.Length + offset));
+                                    pointer = new IntPtr(BitConverter.ToInt64(read_buffer, search_offset + pattern_array.Length + pattern_offset));
                                 }
                                 matches_list.Add(pointer);
                             }
