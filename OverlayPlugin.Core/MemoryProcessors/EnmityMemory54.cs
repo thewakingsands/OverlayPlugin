@@ -402,7 +402,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     ID = mem.ID,
                     OwnerID = mem.OwnerID == emptyID ? 0 : mem.OwnerID,
                     Type = (ObjectType)mem.Type,
-                    EffectiveDistance = mem.EffectiveDistance,
+                    RawEffectiveDistance = mem.EffectiveDistance,
                     PosX = mem.PosX,
                     PosY = mem.PosY,
                     PosZ = mem.PosZ,

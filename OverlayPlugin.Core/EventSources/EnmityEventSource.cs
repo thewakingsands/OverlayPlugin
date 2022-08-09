@@ -68,7 +68,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         [MethodImpl(MethodImplOptions.NoInlining)]
         private void PickMemoryCandidates(FFXIVRepository repository)
         {
-            memoryCandidates = new List<EnmityMemory>() { new EnmityMemory60(container) };
+            memoryCandidates = new List<EnmityMemory>() { new EnmityMemory61(container) };
         }
 
         public override Control CreateConfigControl()
@@ -255,6 +255,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                         enmity.TargetOfTarget = combatants.FirstOrDefault((Combatant x) => x.ID == (enmity.Target.TargetID));
                     }
                     enmity.Target.Distance = mychar.DistanceString(enmity.Target);
+                    enmity.Target.EffectiveDistance = mychar.EffectiveDistanceString(enmity.Target);
 
                     if (enmity.Target.Type == ObjectType.Monster)
                     {
@@ -270,14 +271,17 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     if (enmity.Focus != null)
                     {
                         enmity.Focus.Distance = mychar.DistanceString(enmity.Focus);
+                        enmity.Focus.EffectiveDistance = mychar.EffectiveDistanceString(enmity.Focus);
                     }
                     if (enmity.Hover != null)
                     {
                         enmity.Hover.Distance = mychar.DistanceString(enmity.Hover);
+                        enmity.Hover.EffectiveDistance = mychar.EffectiveDistanceString(enmity.Hover);
                     }
                     if (enmity.TargetOfTarget != null)
                     {
                         enmity.TargetOfTarget.Distance = mychar.DistanceString(enmity.TargetOfTarget);
+                        enmity.TargetOfTarget.EffectiveDistance = mychar.EffectiveDistanceString(enmity.TargetOfTarget);
                     }
                 }
             }

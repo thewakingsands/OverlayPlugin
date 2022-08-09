@@ -8,7 +8,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 {
     public class FFXIVProcessCn : FFXIVProcess
     {
-        // Last updated for FFXIV 6.0
+        // Last updated for FFXIV 6.1
 
         [StructLayout(LayoutKind.Explicit)]
         public unsafe struct EntityMemory
@@ -87,7 +87,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         // A piece of code that reads the pointer to the list of all entities, that we
         // refer to as the charmap. The pointer is the 4 byte ?????????.
-        private static String kCharmapSignature = "48c1ea0381faa7010000????8bc2488d0d";
+        private static String kCharmapSignature = "48c1ea0381faa9010000????8bc2488d0d";
         private static int kCharmapSignatureOffset = 0;
         // The signature finds a pointer in the executable code which uses RIP addressing.
         private static bool kCharmapSignatureRIP = true;
@@ -100,14 +100,13 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         private static int kCharmapStructOffsetPlayer = 0;
 
         // In combat boolean.
-        // Variable is set at 83FA587D70534883EC204863C2410FB6D8381C08744E (offset=0)
-        // via a mov [rax+rcx],bl line.
-        // This sig below finds the calling function that sets rax(offset) and rcx(base address).
-        private static String kInCombatSignature = "84C07425450FB6C7488D0D";
-        private static int kInCombatBaseOffset = 0;
-        private static bool kInCombatBaseRIP = true;
-        private static int kInCombatOffsetOffset = 5;
-        private static bool kInCombatOffsetRIP = false;
+        // This address is written to by "mov [rax+rcx],bl" and has three readers.
+        // This reader is "cmp byte ptr [ffxiv_dx11.exe+????????],00 { (0),0 }"
+        private static String kInCombatSignature = "803D????????000F95C04883C428";
+        private static int kInCombatSignatureOffset = -12;
+        private static bool kInCombatSignatureRIP = true;
+        // Because this line is a cmp byte line, the signature is not at the end of the line.
+        private static int kInCombatRipOffset = 1;
 
         // Bait integer.
         // Variable is accessed via a cmp eax,[...] line at offset=0.
@@ -163,26 +162,14 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 job_data_outer_addr_ = IntPtr.Add(p[0], kJobDataOuterStructOffset);
             }
 
-            p = SigScan(kInCombatSignature, kInCombatBaseOffset, kInCombatBaseRIP);
+            p = SigScan(kInCombatSignature, kInCombatSignatureOffset, kInCombatSignatureRIP, kInCombatRipOffset);
             if (p.Count != 1)
             {
                 logger_.Log(LogLevel.Error, "In combat signature found " + p.Count + " matches");
             }
             else
             {
-                var baseAddress = p[0];
-                p = SigScan(kInCombatSignature, kInCombatOffsetOffset, kInCombatOffsetRIP);
-                if (p.Count != 1)
-                {
-                    logger_.Log(LogLevel.Error, "In combat offset signature found " + p.Count + " matches");
-                }
-                else
-                {
-                    // Abuse sigscan here to return 64-bit "pointer" which we will mask into the 32-bit immediate integer we need.
-                    // TODO: maybe sigscan should be able to return different types?
-                    int offset = (int)(((UInt64)p[0]) & 0xFFFFFFFF);
-                    in_combat_addr_ = IntPtr.Add(baseAddress, offset);
-                }
+                in_combat_addr_ = p[0];
             }
 
             p = SigScan(kBaitSignature, kBaitBaseOffset, kBaitBaseRIP);
@@ -870,20 +857,12 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         }
 
         [NonSerialized]
-        [FieldOffset(0x04)]
+        [FieldOffset(0x05)]
         private byte _heldCard;
 
         [NonSerialized]
-        [FieldOffset(0x05)]
-        private Arcanum arcanum_1;
-
-        [NonSerialized]
         [FieldOffset(0x06)]
-        private Arcanum arcanum_2;
-
-        [NonSerialized]
-        [FieldOffset(0x07)]
-        private Arcanum arcanum_3;
+        private byte _arcanumsmix;
 
         public string heldCard
         {
@@ -905,7 +884,12 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         {
             get
             {
-                Arcanum[] _arcanums = { arcanum_1, arcanum_2, arcanum_3 };
+                var _arcanums = new List<Arcanum>();
+                for (var i = 0; i < 3; i++)
+                {
+                    int arcanum = (_arcanumsmix >> 2 * i) & 0x3;
+                    _arcanums.Add((Arcanum)arcanum);
+                }
                 return _arcanums.Select(a => a.ToString()).Where(a => a != "None").ToArray();
             }
         }

@@ -152,7 +152,7 @@ const formatOptionsByKey = {
     minimumFractionDigits: 2,
   },
   EffectiveDistance: {
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
   },
   PercentHP: {
     minimumFractionDigits: 2,
@@ -444,7 +444,10 @@ function defaultAsPx(str) {
 // e.g. num=123456789, digits=3 => 123M
 // e.g. num=123456789, digits=4 => 123.4M
 // e.g. num=-0.1234567, digits=3 => -0.123
-function formatNumberSimplify(num, lang, options, digits) {
+function formatNumberSimplify(signedNum, lang, options, digits) {
+  const sign = signedNum < 0 ? -1 : 1;
+  let num = Math.abs(signedNum);
+
   // The leading zero does not count.
   if (num < 1)
     digits++;
@@ -481,7 +484,7 @@ function formatNumberSimplify(num, lang, options, digits) {
   num = Math.floor(num * shift) / shift;
 
   const locale = languageToLocale[lang] || languageToLocale[defaultLang];
-  return num.toLocaleString(locale, {
+  return (sign * num).toLocaleString(locale, {
     minimumFractionDigits: decimalPlacesNeeded,
     maximumFractionDigits: decimalPlacesNeeded,
   }) + suffix;
