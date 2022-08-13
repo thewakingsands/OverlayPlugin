@@ -145,6 +145,11 @@ namespace RainbowMage.OverlayPlugin
                 catch (Exception e)
                 {
                     _logger.Log(LogLevel.Error, "InitPlugin: {0}", e);
+                    if (e is TypeLoadException)
+                    {
+                        //Let upper invoker handle this exception
+                        throw new TypeLoadException("CefSharp Load Failed", e);
+                    }
                 }
 
 #if DEBUG
