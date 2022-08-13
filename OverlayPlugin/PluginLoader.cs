@@ -108,7 +108,7 @@ namespace RainbowMage.OverlayPlugin
                 if (SanityChecker.LoadSaneAssembly("HtmlRenderer"))
                 {
                     // Since this is an async method, we could have switched threds. Make sure InitPlugin() runs on the ACT main thread.
-                    ActGlobals.oFormActMain.Invoke((Action)(async () =>
+                    ActGlobals.oFormActMain.Invoke((Action)(() =>
                     {
                         try { 
                             pluginMain.InitPlugin(pluginScreenSpace, pluginStatusText);
@@ -121,7 +121,7 @@ namespace RainbowMage.OverlayPlugin
                                 if (ex.Message.Contains("CefSharp"))
                                 {
                                     //Cef load failed, try to repair cef
-                                    await CefInstaller.InstallCef(GetCefPath());
+                                    Task.Run(()=>CefInstaller.InstallCef(GetCefPath())).Wait();
                                     try
                                     {
                                         pluginMain.InitPlugin(pluginScreenSpace, pluginStatusText);
