@@ -81,9 +81,9 @@ namespace RainbowMage.OverlayPlugin.Updater
                         }
                         else if (
                             //Check cef sharp version
-                            (name.StartsWith("CefSharp") && !FileVersionInfo.GetVersionInfo(filePath).FileVersion.Equals(CEF_VERSION))
+                            (name.StartsWith("CefSharp") && !EnsureVersion(filePath, CEF_VERSION))
                             //Check cef redist version
-                            || (name.Equals("libcef.dll") && !FileVersionInfo.GetVersionInfo(filePath).FileVersion.Equals(CEF_REDIST_VERSION))
+                            || (name.Equals("libcef.dll") && !EnsureVersion(filePath, CEF_REDIST_VERSION))
                             )
                         {
                             itsFine = false;
@@ -96,6 +96,12 @@ namespace RainbowMage.OverlayPlugin.Updater
             }
 
             return await InstallCef(cefPath);
+        }
+
+        private static bool EnsureVersion(string filePath, string expect)
+        {
+            var info = FileVersionInfo.GetVersionInfo(filePath);
+            return $"{info.FileMajorPart}.{info.FileMinorPart}.{info.FileBuildPart}".Equals(expect);
         }
 
         public static async Task<bool> InstallCef(string cefPath, string archivePath = null)
