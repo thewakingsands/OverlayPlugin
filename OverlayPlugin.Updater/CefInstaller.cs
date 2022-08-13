@@ -73,7 +73,18 @@ namespace RainbowMage.OverlayPlugin.Updater
                     var itsFine = true;
                     foreach (var name in importantFiles)
                     {
-                        if (!File.Exists(Path.Combine(cefPath, name)))
+                        var filePath = Path.Combine(cefPath, name);
+                        if (!File.Exists(filePath))
+                        {
+                            itsFine = false;
+                            break;
+                        }
+                        else if (
+                            //Check cef sharp version
+                            (name.StartsWith("CefSharp") && !FileVersionInfo.GetVersionInfo(filePath).FileVersion.Equals(CEF_VERSION))
+                            //Check cef redist version
+                            || (name.Equals("libcef.dll") && !FileVersionInfo.GetVersionInfo(filePath).FileVersion.Equals(CEF_REDIST_VERSION))
+                            )
                         {
                             itsFine = false;
                             break;
@@ -128,15 +139,17 @@ namespace RainbowMage.OverlayPlugin.Updater
                     var installer = new Installer(destDir, tmpName);
                     try
                     {
-                        bool result= await Installer.DownloadAndExtractTo(installer, GetNupkgUrl(packageName, version, i), tmpName, destDir, archiveDir, message, archiveDir2);
+                        bool result = await Installer.DownloadAndExtractTo(installer, GetNupkgUrl(packageName, version, i), tmpName, destDir, archiveDir, message, archiveDir2);
                         if (result)
                         {
 
-                            failedInstaller.ForEach(inst => {
-                                try {
+                            failedInstaller.ForEach(inst =>
+                            {
+                                try
+                                {
                                     inst.Display.Close();
                                 }
-                                catch 
+                                catch
                                 {
                                     //ignored
                                 }
@@ -148,7 +161,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                             //Stored for closing window
                             failedInstaller.Add(installer);
                         }
-                       
+
                     }
                     catch
                     {
