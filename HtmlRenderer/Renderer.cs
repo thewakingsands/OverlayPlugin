@@ -58,7 +58,7 @@ namespace RainbowMage.HtmlRenderer
 
         public void InitBrowser()
         {
-            this._browser = new BrowserWrapper(lastUrl ?? "about:blank", automaticallyCreateBrowser: false, target: _target, requestContext: new RequestContext());
+            this._browser = new BrowserWrapper(lastUrl ?? "about:blank", automaticallyCreateBrowser: false, target: _target);
             _browser.RequestHandler = new CustomRequestHandler(this);
             _browser.MenuHandler = new ContextMenuHandler(_ctxMenuCallback);
             _browser.BrowserInitialized += _browser_BrowserInitialized;
