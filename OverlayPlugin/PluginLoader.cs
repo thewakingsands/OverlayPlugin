@@ -113,15 +113,33 @@ namespace RainbowMage.OverlayPlugin
                         try { 
                             pluginMain.InitPlugin(pluginScreenSpace, pluginStatusText);
                             initFailed = false;
-                        } catch (Exception ex)
+                        }
+                        catch (Exception ex)
                         {
+                            if (ex is TypeLoadException)
+                            {
+                                if (ex.Message.Contains("CefSharp"))
+                                {
+                                    //Cef load failed, try to repair cef
+                                    Task.Run(()=>CefInstaller.InstallCef(GetCefPath())).Wait();
+                                    try
+                                    {
+                                        pluginMain.InitPlugin(pluginScreenSpace, pluginStatusText);
+                                    }
+                                    catch (Exception ex2)
+                                    {
+                                        //Still failed, showing message to users
+                                        ex = ex2;
+                                    }
+                                }
+                            }
                             // TODO: Add a log box to CefMissingTab and while CEF missing is the most likely
                             // cause for an exception here, it is not necessarily the case.
                             // logger.Log(LogLevel.Error, "Failed to init plugin: " + ex.ToString());
-                            
+
                             initFailed = true;
 
-                            MessageBox.Show("Failed to init OverlayPlugin: " + ex.ToString(), "OverlayPlugin Error");
+                            MessageBox.Show("加载ngld悬浮窗插件失败: " + ex.ToString(), "ngld悬浮窗插件错误");
                             pluginScreenSpace.Controls.Add(new CefMissingTab(GetCefPath(), this, container));
                         }
                     }));
