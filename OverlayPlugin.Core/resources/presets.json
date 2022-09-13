@@ -57,13 +57,13 @@
     "type": "MiniParse",
     "url": "https://overlays.ffcafe.cn/amethyst/",
     "size": [ 600, 500 ],
-    "supports": [ "legacy", "actws" ]
+    "supports": [ "actws" ]
   },
   "SkillDisplay 循环显示": {
     "type": "MiniParse",
     "url": "https://overlays.ffcafe.cn/SkillDisplay/",
     "size": [ 600, 500 ],
-    "supports": [ "legacy", "actws" ]
+    "supports": [ "actws" ]
   },
   "Skyline 横板悬浮窗": {
     "type": "MiniParse",
