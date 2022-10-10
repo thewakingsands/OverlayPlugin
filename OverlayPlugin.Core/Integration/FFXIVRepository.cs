@@ -291,50 +291,17 @@ namespace RainbowMage.OverlayPlugin
         [MethodImpl(MethodImplOptions.NoInlining)]
         public Language GetLanguage()
         {
-            var repo = GetRepository();
-            if (repo == null)
-            {
-                // Defaults to English
-                return Language.English;
-            }
-            return repo.GetSelectedLanguageID();
+            return Language.Chinese;
         }
 
         public string GetLocaleString()
         {
-            switch (GetLanguage())
-            {
-                case Language.English:
-                    return "en";
-                case Language.French:
-                    return "fr";
-                case Language.German:
-                    return "de";
-                case Language.Japanese:
-                    return "ja";
-                case Language.Chinese:
-                    return "cn";
-                case Language.Korean:
-                    return "ko";
-                default:
-                    return null;
-            }
+             return "cn";
         }
 
         public GameRegion GetMachinaRegion()
         {
-            try
-            {
-                var mach = Assembly.Load("Machina.FFXIV");
-                var opcode_manager_type = mach.GetType("Machina.FFXIV.Headers.Opcodes.OpcodeManager");
-                var opcode_manager = opcode_manager_type.GetProperty("Instance").GetValue(null);
-                var machina_region = opcode_manager_type.GetProperty("GameRegion").GetValue(opcode_manager).ToString();
-
-                if (Enum.TryParse<GameRegion>(machina_region, out var region))
-                    return region;
-            }
-            catch (Exception) { }
-            return GameRegion.Global;
+            return GameRegion.Chinese;
         }
 
         public DateTime EpochToDateTime(long epoch)
