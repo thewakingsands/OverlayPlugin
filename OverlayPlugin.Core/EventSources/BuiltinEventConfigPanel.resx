@@ -526,7 +526,7 @@
     <value>15</value>
   </data>
   <data name="experimentalWarning.Text" xml:space="preserve">
-    <value>Experimental Options:</value>
+    <value>WARNING: Experimental options below - If you touch these, you confirm that you can troubleshoot any issues you encounter yourself and won't ask for help.</value>
   </data>
   <data name="&gt;&gt;experimentalWarning.Name" xml:space="preserve">
     <value>experimentalWarning</value>
@@ -644,5 +644,14 @@
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>End ACT encounter after wipe</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>End ACT encounter out of combat</value>
+  </data>
+  <data name="lblCutsceneDetectionLog.Text" xml:space="preserve">
+    <value>Write cutscene detection log lines</value>
   </data>
 </root>

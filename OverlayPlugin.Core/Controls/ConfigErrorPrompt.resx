@@ -133,7 +133,7 @@
     <value>0</value>
   </data>
   <data name="errorExplanation.Text" xml:space="preserve">
-    <value>载入插件配置失败，这一般是因为电脑异常关机让插件配置损坏引起的，你可以选择重置插件配置或禁用ngld插件（禁用插件后再次重启ACT仍然会看见这个弹窗）。</value>
+    <value>Failed to load the plugin configuration. This usually happens because the PC wasn't shut down properly which can cause the config file to become corrupted. You can either reset the plugin config or disable OverlayPlugin for now (in the latter case this prompt will reappear the next time you launch ACT).</value>
   </data>
   <data name="&gt;&gt;errorExplanation.Name" xml:space="preserve">
     <value>errorExplanation</value>

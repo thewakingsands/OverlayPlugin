@@ -153,21 +153,24 @@
     <value>180, 16</value>
   </data>
   <data name="cbHideOverlaysDuringCutscene.Text" xml:space="preserve">
-    <value>当过场动画时自动隐藏悬浮窗</value>
+    <value>在过场动画时自动隐藏悬浮窗</value>
   </data>
   <data name="lblGithub.Text" xml:space="preserve">
-    <value>GitHub项目：</value>
+    <value>GitHub 项目: </value>
   </data>
   <data name="lblNewUserWelcome.Text" xml:space="preserve">
-    <value>如果你想添加 DPS 悬浮窗，请点击左下角的“新建”按钮添加一个悬浮窗。</value>
+    <value>你在找 [链接] 这个输入框吗？在新版本插件中，您首先需要使用左下角的 [新建] 按钮创建一个悬浮窗，然后才能看到并配置一个悬浮窗。
+请尝试使用我们预先内置的预设而不是手动设置的链接，这将可以防止一系列的问题。
+
+</value>
   </data>
   <data name="lblReadMe.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 18</value>
   </data>
   <data name="lblReadMe.Text" xml:space="preserve">
-    <value>【注意】</value>
+    <value>温馨提示: </value>
   </data>
   <data name="btnCactbotUpdate.Text" xml:space="preserve">
-    <value>检查Cactbot更新</value>
+    <value>检查 Cactbot 更新</value>
   </data>
 </root>

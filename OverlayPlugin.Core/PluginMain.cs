@@ -1,18 +1,25 @@
-﻿using Advanced_Combat_Tracker;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using RainbowMage.HtmlRenderer;
-using System;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using Advanced_Combat_Tracker;
 using Newtonsoft.Json;
-using RainbowMage.OverlayPlugin.Overlays;
-using RainbowMage.OverlayPlugin.EventSources;
-using RainbowMage.OverlayPlugin.NetworkProcessors;
-using RainbowMage.OverlayPlugin.Integration;
+using RainbowMage.HtmlRenderer;
 using RainbowMage.OverlayPlugin.Controls;
+using RainbowMage.OverlayPlugin.EventSources;
+using RainbowMage.OverlayPlugin.Integration;
+using RainbowMage.OverlayPlugin.MemoryProcessors;
+using RainbowMage.OverlayPlugin.MemoryProcessors.Aggro;
+using RainbowMage.OverlayPlugin.MemoryProcessors.Combatant;
+using RainbowMage.OverlayPlugin.MemoryProcessors.Enmity;
+using RainbowMage.OverlayPlugin.MemoryProcessors.EnmityHud;
+using RainbowMage.OverlayPlugin.MemoryProcessors.InCombat;
+using RainbowMage.OverlayPlugin.MemoryProcessors.Target;
+using RainbowMage.OverlayPlugin.NetworkProcessors;
+using RainbowMage.OverlayPlugin.Overlays;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -123,7 +130,7 @@ namespace RainbowMage.OverlayPlugin
                     _logger.Log(LogLevel.Error, "Failed to load the plugin config. Please report this error on the GitHub repo or on the ACT Discord.");
                     _logger.Log(LogLevel.Error, "");
                     _logger.Log(LogLevel.Error, "  ACT Discord: https://discord.gg/ahFKcmx");
-                    _logger.Log(LogLevel.Error, "  GitHub repo: https://github.com/ngld/OverlayPlugin");
+                    _logger.Log(LogLevel.Error, "  GitHub repo: https://github.com/OverlayPlugin/OverlayPlugin");
 
                     FailWithLog();
                     return;
@@ -195,7 +202,7 @@ namespace RainbowMage.OverlayPlugin
 #if DEBUG
                 watch.Reset();
 #endif
-      
+
                 this.label.Text = "Init Phase 1: UI";
 
                 // Setup the UI
@@ -210,7 +217,7 @@ namespace RainbowMage.OverlayPlugin
                 this.wsTabPage = new TabPage("悬浮窗WS服务");
                 this.wsTabPage.Controls.Add(wsConfigPanel);
                 ((TabControl)this.tabPage.Parent).TabPages.Add(this.wsTabPage);
-                
+
                 _logger.Log(LogLevel.Info, "InitPlugin: Initialised.");
 
                 if (false) //if (Config.UpdateCheck)
@@ -247,7 +254,8 @@ namespace RainbowMage.OverlayPlugin
                     }
 
                     wsConfigPanel.RebuildOverlayOptions();
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     _logger.Log(LogLevel.Error, string.Format("Failed to load presets: {0}", ex));
                 }
@@ -277,6 +285,20 @@ namespace RainbowMage.OverlayPlugin
                             _container.Register(new FFXIVRepository(_container));
                             _container.Register(new NetworkParser(_container));
                             _container.Register(new TriggIntegration(_container));
+                            _container.Register(new FFXIVCustomLogLines(_container));
+                            _container.Register(new OverlayPluginLogLines(_container));
+
+                            // Register FFXIV memory reading subcomponents.
+                            // Must be done before loading addons.
+                            _container.Register(new FFXIVMemory(_container));
+
+                            // These are registered to be lazy-loaded. Use interface to force TinyIoC to use singleton pattern.
+                            _container.Register<ICombatantMemory, CombatantMemoryManager>();
+                            _container.Register<ITargetMemory, TargetMemoryManager>();
+                            _container.Register<IAggroMemory, AggroMemoryManager>();
+                            _container.Register<IEnmityMemory, EnmityMemoryManager>();
+                            _container.Register<IEnmityHudMemory, EnmityHudMemoryManager>();
+                            _container.Register<IInCombatMemory, InCombatMemoryManager>();
 
                             this.label.Text = "Init Phase 2: Addons";
                             LoadAddons();
@@ -296,7 +318,7 @@ namespace RainbowMage.OverlayPlugin
                                     InitializeOverlays();
                                     controlPanel.InitializeOverlayConfigTabs();
 
-                                    this.label.Text = "Init Phase 2: Overlay tasks";                                
+                                    this.label.Text = "Init Phase 2: Overlay tasks";
                                     _container.Register(new OverlayHider(_container));
                                     _container.Register(new OverlayZCorrector(_container));
 
@@ -312,7 +334,10 @@ namespace RainbowMage.OverlayPlugin
                                     configSaveTimer.Start();
 
                                     this.label.Text = "Initialised";
-                                } catch (Exception ex)
+                                    // Make the log small; startup was successful and there shouldn't be any error message to show.
+                                    controlPanel.ResizeLog();
+                                }
+                                catch (Exception ex)
                                 {
                                     _logger.Log(LogLevel.Error, "InitPlugin: {0}", ex);
                                 }

@@ -79,7 +79,7 @@ namespace RainbowMage.OverlayPlugin
         {
             ActGlobals.oFormActMain.Invoke((Action)(() =>
             {
-                ActGlobals.oFormActMain.EndCombat(true);
+                 ActGlobals.oFormActMain.EndCombat(true);
             }));
         }
 

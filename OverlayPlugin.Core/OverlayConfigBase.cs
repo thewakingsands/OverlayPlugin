@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Runtime.Serialization;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -169,7 +169,7 @@ namespace RainbowMage.OverlayPlugin
         }
 
         public List<GlobalHotkey> GlobalHotkeys;
-        
+
         private bool isLocked;
         public bool IsLocked
         {

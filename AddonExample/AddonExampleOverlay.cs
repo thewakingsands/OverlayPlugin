@@ -1,5 +1,5 @@
-﻿using RainbowMage.OverlayPlugin;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using RainbowMage.OverlayPlugin;
 
 namespace AddonExample
 {

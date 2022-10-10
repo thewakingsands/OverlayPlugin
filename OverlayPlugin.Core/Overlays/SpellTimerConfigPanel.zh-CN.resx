@@ -129,7 +129,7 @@
     <value>224, 33</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
-    <value>最大帧速率</value>
+    <value>最大帧速率 (FPS)</value>
   </data>
   <data name="nudMaxFrameRate.Location" type="System.Drawing.Point, System.Drawing">
     <value>234, 134</value>
@@ -204,7 +204,7 @@
     <value>298, 70</value>
   </data>
   <data name="buttonCopyVariable.Text" xml:space="preserve">
-    <value>复制变量</value>
+    <value>复制变量到剪贴板</value>
   </data>
   <data name="buttonOpenDevTools.Location" type="System.Drawing.Point, System.Drawing">
     <value>310, 4</value>
@@ -216,7 +216,7 @@
     <value>298, 70</value>
   </data>
   <data name="buttonOpenDevTools.Text" xml:space="preserve">
-    <value>打开 DevTools</value>
+    <value>启动Debug工具</value>
   </data>
   <data name="buttonReloadBrowser.Location" type="System.Drawing.Point, System.Drawing">
     <value>616, 4</value>
@@ -228,7 +228,7 @@
     <value>299, 70</value>
   </data>
   <data name="buttonReloadBrowser.Text" xml:space="preserve">
-    <value>刷新悬浮窗</value>
+    <value>重载悬浮窗（用于更换悬浮窗后即时刷新）</value>
   </data>
   <data name="tableLayoutPanel5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>

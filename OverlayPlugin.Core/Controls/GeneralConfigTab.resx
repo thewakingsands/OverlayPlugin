@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -144,7 +144,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="lnkGithubRepo.Text" xml:space="preserve">
-    <value>https://github.com/ngld/OverlayPlugin</value>
+    <value>https://github.com/thewakingsands/OverlayPlugin</value>
   </data>
   <data name="cbUpdateCheck.Size" type="System.Drawing.Size, System.Drawing">
     <value>210, 16</value>
@@ -417,4 +417,7 @@ Please try using the presets instead of manually setting the URL since this can 
   <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>zh-CN</value>
   </metadata>
+  <data name="btnCactbotUpdate.Text" xml:space="preserve">
+    <value>Check For Cactbot Updates</value>
+  </data>
 </root>

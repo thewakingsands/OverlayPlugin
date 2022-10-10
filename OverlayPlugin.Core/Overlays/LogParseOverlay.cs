@@ -1,5 +1,4 @@
-﻿using Advanced_Combat_Tracker;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Advanced_Combat_Tracker;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -147,7 +147,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
             obj["Encounter"] = JObject.FromObject(encounter);
             obj["Combatant"] = new JObject();
-            
+
             foreach (var pair in combatant)
             {
                 JObject value = new JObject();
@@ -268,7 +268,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
                         "");
                     //lock (encounterDict)
                     //{
-                        encounterDict.Add(exportValuePair.Key, value);
+                    encounterDict.Add(exportValuePair.Key, value);
                     //}
                 }
                 catch (Exception e)

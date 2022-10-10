@@ -1,9 +1,11 @@
-using System;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
-using System.Linq;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using Advanced_Combat_Tracker;
 using FFXIV_ACT_Plugin.Common;
 
@@ -45,6 +47,7 @@ namespace RainbowMage.OverlayPlugin
         NetworkEffectResult,
         NetworkStatusList,
         NetworkUpdateHp,
+        ChangeMap,
         Settings = 249,
         Process,
         Debug,
@@ -54,21 +57,33 @@ namespace RainbowMage.OverlayPlugin
         Timer
     }
 
+    public enum GameRegion
+    {
+        Global = 1,
+        Chinese = 2,
+        Korean = 3
+    }
+
     class FFXIVRepository
     {
         private readonly ILogger logger;
         private IDataRepository repository;
         private IDataSubscription subscription;
+        private MethodInfo logOutputWriteLineFunc;
+        private object logOutput;
+        private Func<long, DateTime> machinaEpochToDateTimeWrapper;
 
         public FFXIVRepository(TinyIoCContainer container)
         {
             logger = container.Resolve<ILogger>();
         }
 
-        private ActPluginData GetPluginData() {
-            return ActGlobals.oFormActMain.ActPlugins.FirstOrDefault(plugin => {
+        private ActPluginData GetPluginData()
+        {
+            return ActGlobals.oFormActMain.ActPlugins.FirstOrDefault(plugin =>
+            {
                 if (!plugin.cbEnabled.Checked || plugin.pluginObj == null)
-                  return false;
+                    return false;
                 return plugin.lblPluginTitle.Text.StartsWith("FFXIV_ACT_Plugin");
             });
         }
@@ -131,7 +146,8 @@ namespace RainbowMage.OverlayPlugin
             try
             {
                 return GetCurrentFFXIVProcessImpl();
-            } catch (FileNotFoundException)
+            }
+            catch (FileNotFoundException)
             {
                 // The FFXIV plugin isn't loaded
                 return null;
@@ -149,10 +165,16 @@ namespace RainbowMage.OverlayPlugin
             try
             {
                 return IsFFXIVPluginPresentImpl();
-            } catch (FileNotFoundException)
+            }
+            catch (FileNotFoundException)
             {
                 return false;
             }
+        }
+
+        public Version GetOverlayPluginVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         public Version GetPluginVersion()
@@ -178,7 +200,8 @@ namespace RainbowMage.OverlayPlugin
             try
             {
                 return GetGameVersionImpl();
-            } catch (FileNotFoundException)
+            }
+            catch (FileNotFoundException)
             {
                 // The FFXIV plugin isn't loaded
                 return null;
@@ -200,7 +223,8 @@ namespace RainbowMage.OverlayPlugin
             try
             {
                 return GetPlayerIDImpl();
-            } catch (FileNotFoundException)
+            }
+            catch (FileNotFoundException)
             {
                 // The FFXIV plugin isn't loaded
                 return 0;
@@ -218,6 +242,28 @@ namespace RainbowMage.OverlayPlugin
             if (playerInfo == null) return null;
 
             return playerInfo.Name;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public IDictionary<uint, string> GetResourceDictionary(ResourceType resourceType)
+        {
+            try
+            {
+                return GetResourceDictionaryImpl(resourceType);
+            }
+            catch (FileNotFoundException)
+            {
+                // The FFXIV plugin isn't loaded
+                return null;
+            }
+        }
+
+        public IDictionary<uint, string> GetResourceDictionaryImpl(ResourceType resourceType)
+        {
+            var repo = GetRepository();
+            if (repo == null) return null;
+
+            return repo.GetResourceDictionary(resourceType);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -247,7 +293,10 @@ namespace RainbowMage.OverlayPlugin
         {
             var repo = GetRepository();
             if (repo == null)
-                return Language.Unknown;
+            {
+                // Defaults to English
+                return Language.English;
+            }
             return repo.GetSelectedLanguageID();
         }
 
@@ -270,6 +319,95 @@ namespace RainbowMage.OverlayPlugin
                 default:
                     return null;
             }
+        }
+
+        public GameRegion GetMachinaRegion()
+        {
+            try
+            {
+                var mach = Assembly.Load("Machina.FFXIV");
+                var opcode_manager_type = mach.GetType("Machina.FFXIV.Headers.Opcodes.OpcodeManager");
+                var opcode_manager = opcode_manager_type.GetProperty("Instance").GetValue(null);
+                var machina_region = opcode_manager_type.GetProperty("GameRegion").GetValue(opcode_manager).ToString();
+
+                if (Enum.TryParse<GameRegion>(machina_region, out var region))
+                    return region;
+            }
+            catch (Exception) { }
+            return GameRegion.Global;
+        }
+
+        public DateTime EpochToDateTime(long epoch)
+        {
+            if (machinaEpochToDateTimeWrapper == null)
+            {
+                try
+                {
+                    var mach = Assembly.Load("Machina");
+                    var conversionUtility = mach.GetType("Machina.Infrastructure.ConversionUtility");
+                    var epochToDateTime = conversionUtility.GetMethod("EpochToDateTime");
+                    machinaEpochToDateTimeWrapper = (e) =>
+                    {
+                        return (DateTime)epochToDateTime.Invoke(null, new object[] { e });
+                    };
+                }
+                catch (Exception e)
+                {
+                    logger.Log(LogLevel.Error, e.ToString());
+                }
+            }
+            return machinaEpochToDateTimeWrapper(epoch).ToLocalTime();
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal bool WriteLogLineImpl(uint ID, DateTime timestamp, string line)
+        {
+            if (logOutputWriteLineFunc == null)
+            {
+                var plugin = GetPluginData();
+                if (plugin == null) return false;
+                var field = plugin.pluginObj.GetType().GetField("_iocContainer", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (field == null)
+                {
+                    logger.Log(LogLevel.Error, "Unable to retrieve _iocContainer field information from FFXIV_ACT_Plugin");
+                    return false;
+                }
+                var iocContainer = field.GetValue(plugin.pluginObj);
+                if (iocContainer == null)
+                {
+                    logger.Log(LogLevel.Error, "Unable to retrieve _iocContainer field value from FFXIV_ACT_Plugin");
+                    return false;
+                }
+                var getServiceMethod = iocContainer.GetType().GetMethod("GetService");
+                if (getServiceMethod == null)
+                {
+                    logger.Log(LogLevel.Error, "Unable to retrieve _iocContainer field value from FFXIV_ACT_Plugin");
+                    return false;
+                }
+                var logfileAssembly = AppDomain.CurrentDomain.GetAssemblies().
+                    SingleOrDefault(assembly => assembly.GetName().Name == "FFXIV_ACT_Plugin.Logfile");
+                if (logfileAssembly == null)
+                {
+                    logger.Log(LogLevel.Error, "Unable to retrieve FFXIV_ACT_Plugin.Logfile assembly");
+                    return false;
+                }
+                logOutput = getServiceMethod.Invoke(iocContainer, new object[] { logfileAssembly.GetType("FFXIV_ACT_Plugin.Logfile.ILogOutput") });
+                if (logOutput == null)
+                {
+                    logger.Log(LogLevel.Error, "Unable to retrieve LogOutput singleton from FFXIV_ACT_Plugin IOC");
+                    return false;
+                }
+                logOutputWriteLineFunc = logOutput.GetType().GetMethod("WriteLine");
+                if (logOutputWriteLineFunc == null)
+                {
+                    logger.Log(LogLevel.Error, "Unable to retrieve LogOutput singleton from FFXIV_ACT_Plugin IOC");
+                    return false;
+                }
+            }
+
+            logOutputWriteLineFunc.Invoke(logOutput, new object[] { (int)ID, timestamp, line });
+
+            return true;
         }
 
         // LogLineDelegate(uint EventType, uint Seconds, string logline);
@@ -309,13 +447,13 @@ namespace RainbowMage.OverlayPlugin
             if (sub != null)
             {
                 sub.ProcessChanged += new ProcessChangedDelegate(handler);
-                /*
+
                 var repo = GetRepository();
                 if (repo != null)
                 {
                     var process = repo.GetCurrentFFXIVProcess();
                     if (process != null) handler(process);
-                }*/
+                }
             }
         }
     }

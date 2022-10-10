@@ -279,6 +279,9 @@
   <data name="ErrorCouldNotLoadPresets" xml:space="preserve">
     <value>NewOverlayDialog: Failed to load presets: {0}</value>
   </data>
+  <data name="ErrorCouldNotLoadReservedLogLines" xml:space="preserve">
+    <value>FFXIVCustomLogLines: Failed to load reserved log line: {0}</value>
+  </data>
   <data name="OverlayPreviewName" xml:space="preserve">
     <value>Preview</value>
     <comment>This is used as the temporary name for the preview overlay.</comment>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -140,7 +140,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
             if (int.TryParse(this.textUpdateInterval.Text, out int value))
             {
                 this.config.UpdateInterval = value;
-            } else
+            }
+            else
             {
                 this.textUpdateInterval.Text = "" + this.config.UpdateInterval;
             }

@@ -1,24 +1,19 @@
-﻿using RainbowMage.HtmlRenderer;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms; 
+using System.Windows.Forms;
 using CefSharp;
-using CefSharp.Structs;
 using CefSharp.Enums;
+using CefSharp.Structs;
+using RainbowMage.HtmlRenderer;
 
 namespace RainbowMage.HtmlRenderer
 {
     public partial class OverlayControl : Control, IWinFormsTarget
     {
-        private bool terminated = false;
-
         private object surfaceLock = new object();
         private Bitmap surfaceBuffer;
-        private Bitmap popupBuffer;
-        private Rectangle popupPosition;
-        private bool popupVisible = false;
 
         public WinFormsRenderer Renderer { get; private set; }
 
@@ -93,7 +88,8 @@ namespace RainbowMage.HtmlRenderer
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            switch (keyData) {
+            switch (keyData)
+            {
                 // Override the default behavior for these keys to avoid focus loss.
                 /*case Keys.Up:
                 case Keys.Down:
@@ -117,7 +113,8 @@ namespace RainbowMage.HtmlRenderer
                 m.Msg == NativeMethods.WM_SYSCHAR)
             {
                 // Renderer.OnKeyEvent(ref m);
-            } else
+            }
+            else
             {
                 base.WndProc(ref m);
             }

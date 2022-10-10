@@ -10,7 +10,6 @@ namespace RainbowMage.OverlayPlugin
         private List<Type> _overlays;
         private List<IEventSource> _eventSources;
         private List<Type> _esQueue;
-        private bool _esReady = false;
         private List<IOverlayPreset> _overlayPresets;
 
         public IEnumerable<Type> Overlays => _overlays;
@@ -28,25 +27,24 @@ namespace RainbowMage.OverlayPlugin
             _overlays = new List<Type>();
             _eventSources = new List<IEventSource>();
             _esQueue = new List<Type>();
-            _esReady = false;
             _overlayPresets = new List<IOverlayPreset>();
         }
 
         public void RegisterOverlay<T>()
-            where T: class, IOverlay
+            where T : class, IOverlay
         {
             _overlays.Add(typeof(T));
             _container.Register<T>();
         }
 
         public void UnregisterOverlay<T>()
-            where T: class, IOverlay
+            where T : class, IOverlay
         {
             _overlays.Remove(typeof(T));
         }
 
         public void StartEventSource<T>(T source)
-            where T: class, IEventSource
+            where T : class, IEventSource
         {
             _container.BuildUp(source);
             _eventSources.Add(source);
@@ -60,11 +58,11 @@ namespace RainbowMage.OverlayPlugin
 
         [Obsolete("Please call StartEventSource() on the Registry object instead.")]
         public static void RegisterEventSource<T>()
-            where T: class, IEventSource
+            where T : class, IEventSource
         {
             var container = GetContainer();
             var logger = container.Resolve<ILogger>();
-            var obj = (T) typeof(T).GetConstructor(new Type[] { typeof(ILogger) }).Invoke(new object[] { logger });
+            var obj = (T)typeof(T).GetConstructor(new Type[] { typeof(ILogger) }).Invoke(new object[] { logger });
             container.Resolve<Registry>().StartEventSource(obj);
         }
 
@@ -91,7 +89,7 @@ namespace RainbowMage.OverlayPlugin
             {
                 if (entry.pluginObj != null && entry.pluginObj.GetType().FullName == "RainbowMage.OverlayPlugin.PluginLoader")
                 {
-                   return (TinyIoCContainer) entry.pluginObj.GetType().GetProperty("Container").GetValue(entry.pluginObj);
+                    return (TinyIoCContainer)entry.pluginObj.GetType().GetProperty("Container").GetValue(entry.pluginObj);
                 }
             }
 

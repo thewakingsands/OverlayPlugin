@@ -1,19 +1,19 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Threading;
-using System.IO;
-using System.Windows.Forms;
-using System.Net;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Forms;
 using Advanced_Combat_Tracker;
-using SharpCompress.Archives.Zip;
 using Newtonsoft.Json.Linq;
 using RainbowMage.OverlayPlugin.Updater;
+using SharpCompress.Archives.Zip;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -56,7 +56,7 @@ namespace RainbowMage.OverlayPlugin
 
             for (var i = 0; i < regionCb.Items.Count; i++)
             {
-                if ((string) regionCb.Items[i] == _config.TunnelRegion)
+                if ((string)regionCb.Items[i] == _config.TunnelRegion)
                 {
                     regionCb.SelectedIndex = i;
                     break;
@@ -84,7 +84,7 @@ namespace RainbowMage.OverlayPlugin
 
             if (e.Running)
             {
-                statusLabel.Text = "ÔËĞĞÖĞ";
+                statusLabel.Text = "è¿è¡Œä¸­";
                 statusLabel.ForeColor = Color.ForestGreen;
 
                 startBtn.Enabled = false;
@@ -92,12 +92,12 @@ namespace RainbowMage.OverlayPlugin
             }
             else if (e.Failed)
             {
-                statusLabel.Text = "¿ªÆôÊ§°Ü";
+                statusLabel.Text = "å¼€å¯å¤±è´¥";
                 statusLabel.ForeColor = Color.DarkRed;
             }
             else
             {
-                statusLabel.Text = "ÒÑÍ£Ö¹";
+                statusLabel.Text = "å·²åœæ­¢";
                 statusLabel.ForeColor = Color.Gray;
             }
         }
@@ -107,7 +107,7 @@ namespace RainbowMage.OverlayPlugin
             switch (status)
             {
                 case TunnelStatus.Unknown:
-                    simpStatusLbl.Text = "Î´Öª";
+                    simpStatusLbl.Text = "æœªçŸ¥";
                     simpStatusLbl.ForeColor = Color.Gray;
 
                     simpStartBtn.Enabled = false;
@@ -115,7 +115,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Downloading:
-                    simpStatusLbl.Text = "ÏÂÔØ¿Í»§¶Ë...";
+                    simpStatusLbl.Text = "ä¸‹è½½å®¢æˆ·ç«¯...";
                     simpStatusLbl.ForeColor = Color.CornflowerBlue;
 
                     simpStartBtn.Enabled = false;
@@ -123,7 +123,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Launching:
-                    simpStatusLbl.Text = "Æô¶¯ÖĞ...";
+                    simpStatusLbl.Text = "å¯åŠ¨ä¸­...";
                     simpStatusLbl.ForeColor = Color.CornflowerBlue;
 
                     simpStartBtn.Enabled = false;
@@ -131,7 +131,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Active:
-                    simpStatusLbl.Text = "ÔËĞĞÖĞ";
+                    simpStatusLbl.Text = "è¿è¡Œä¸­";
                     simpStatusLbl.ForeColor = Color.ForestGreen;
 
                     simpStartBtn.Enabled = false;
@@ -139,7 +139,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Inactive:
-                    simpStatusLbl.Text = "Í£Ö¹";
+                    simpStatusLbl.Text = "åœæ­¢";
                     simpStatusLbl.ForeColor = Color.Gray;
 
                     simpStartBtn.Enabled = true;
@@ -147,7 +147,7 @@ namespace RainbowMage.OverlayPlugin
                     break;
 
                 case TunnelStatus.Error:
-                    simpStatusLbl.Text = "³öÏÖ´íÎó";
+                    simpStatusLbl.Text = "å‡ºç°é”™è¯¯";
                     simpStatusLbl.ForeColor = Color.DarkRed;
 
                     simpStartBtn.Enabled = true;
@@ -171,7 +171,7 @@ namespace RainbowMage.OverlayPlugin
         private void genSslBtn_Click(object sender, EventArgs e)
         {
             genSslBtn.Enabled = false;
-            logDisplay.Text = "»ñÈ¡SSLÖ¤ÊéÖĞ£¬ÇëµÈ´ı...\r\n";
+            logDisplay.Text = "è·å–SSLè¯ä¹¦ä¸­ï¼Œè¯·ç­‰å¾…...\r\n";
             
             Task.Run(GenSsl);
         }
@@ -184,7 +184,7 @@ namespace RainbowMage.OverlayPlugin
 
                 if (!File.Exists(mkcertPath))
                 {
-                    logDisplay.AppendText("ÏÂÔØmkcert...\r\n");
+                    logDisplay.AppendText("ä¸‹è½½mkcert...\r\n");
 
                     try
                     {
@@ -192,29 +192,29 @@ namespace RainbowMage.OverlayPlugin
                     }
                     catch (Exception e)
                     {
-                        logDisplay.AppendText(string.Format("\nÊ§°Ü: {0}", e));
+                        logDisplay.AppendText(string.Format("\nå¤±è´¥: {0}", e));
                         genSslBtn.Enabled = true;
                         return;
                     }
                 }
 
-                logDisplay.AppendText("°²×°Ö¤Êé...\r\n");
+                logDisplay.AppendText("å®‰è£…è¯ä¹¦...\r\n");
                 if (!RunLogCmd(mkcertPath, "-install"))
                 {
-                    logDisplay.AppendText("\r\nÊ§°Ü£¡\r\n");
+                    logDisplay.AppendText("\r\nå¤±è´¥ï¼\r\n");
                     genSslBtn.Enabled = true;
                     return;
                 }
 
-                logDisplay.AppendText("»ñÈ¡Ö¤Êé...\r\n");
+                logDisplay.AppendText("è·å–è¯ä¹¦...\r\n");
                 if (!RunLogCmd(mkcertPath, string.Format("-pkcs12 -p12-file \"{0}\" localhost 127.0.0.1 ::1", _server.GetCertPath())))
                 {
-                    logDisplay.AppendText("\r\nÊ§°Ü£¡\r\n");
+                    logDisplay.AppendText("\r\nå¤±è´¥ï¼\r\n");
                     genSslBtn.Enabled = true;
                     return;
                 }
 
-                logDisplay.AppendText("\r\nÍê³É¡£\r\n");
+                logDisplay.AppendText("\r\nå®Œæˆã€‚\r\n");
 
                 sslBox.Enabled = _server.IsSSLPossible();
                 sslBox.Checked = sslBox.Enabled;
@@ -223,7 +223,7 @@ namespace RainbowMage.OverlayPlugin
             }
             catch (Exception e)
             {
-                logDisplay.AppendText(string.Format("\r\n³öÏÖÒì³£: {0}", e));
+                logDisplay.AppendText(string.Format("\r\nå‡ºç°å¼‚å¸¸: {0}", e));
                 genSslBtn.Enabled = true;
             }
         }
@@ -286,8 +286,8 @@ namespace RainbowMage.OverlayPlugin
             else
             {
                 MessageBox.Show(
-                    string.Format("{0} ¶Ë¿Ú²»ÕıÈ·£¬·¶Î§Ó¦Îª1-65535.", portTxt.Text),
-                    "¶Ë¿Ú²»ÕıÈ·",
+                    string.Format("{0} ç«¯å£ä¸æ­£ç¡®ï¼ŒèŒƒå›´åº”ä¸º1-65535.", portTxt.Text),
+                    "ç«¯å£ä¸æ­£ç¡®",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                     );
@@ -304,8 +304,8 @@ namespace RainbowMage.OverlayPlugin
             else
             {
                 MessageBox.Show(
-                    string.Format("{0} ²»ÊÇIPµØÖ·", ipTxt.Text),
-                    "IPµØÖ·´íÎó",
+                    string.Format("{0} ä¸æ˜¯IPåœ°å€", ipTxt.Text),
+                    "IPåœ°å€é”™è¯¯",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                     );
@@ -331,19 +331,21 @@ namespace RainbowMage.OverlayPlugin
             if (cbOverlay.SelectedIndex == -1) return;
 
             var item = cbOverlay.Items[cbOverlay.SelectedIndex];
-            var preset = (IOverlayPreset) item.GetType().GetProperty("preset").GetValue(item);
+            var preset = (IOverlayPreset)item.GetType().GetProperty("preset").GetValue(item);
             if (preset == null) return;
 
             var hostUrl = "";
             if (_ngrokPrefix != null)
             {
                 hostUrl += _ngrokPrefix;
-            } else
+            }
+            else
             {
                 if (_config.WSServerSSL)
                 {
                     hostUrl += "wss://";
-                } else
+                }
+                else
                 {
                     hostUrl += "ws://";
                 }
@@ -351,7 +353,8 @@ namespace RainbowMage.OverlayPlugin
                 if (_config.WSServerIP == "0.0.0.0")
                 {
                     hostUrl += "127.0.0.1";
-                } else
+                }
+                else
                 {
                     hostUrl += _config.WSServerIP;
                 }
@@ -371,10 +374,12 @@ namespace RainbowMage.OverlayPlugin
             if (preset.Supports.Contains("modern"))
             {
                 query_params.Add("OVERLAY_WS", hostUrl + "/ws");
-            } else if (preset.Supports.Contains("actws"))
+            }
+            else if (preset.Supports.Contains("actws"))
             {
                 query_params.Add("HOST_PORT", hostUrl + "/");
-            } else
+            }
+            else
             {
                 url = "";
             }
@@ -408,7 +413,8 @@ namespace RainbowMage.OverlayPlugin
         {
             simpStartBtn.Enabled = false;
 
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 try
                 {
                     var ngrokPath = Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "ngrok-" + (Environment.Is64BitOperatingSystem ? "x64" : "x86") + ".exe");
@@ -421,7 +427,7 @@ namespace RainbowMage.OverlayPlugin
 
                     if (_ngrok != null && !_ngrok.HasExited)
                     {
-                        simpLogBox.AppendText("¼ì²âµ½ÒÅÁôµÄ ngrok ½ø³Ì¡£ÇåÀíÖĞ...\r\n");
+                        simpLogBox.AppendText("æ£€æµ‹åˆ°é—ç•™çš„ ngrok è¿›ç¨‹ã€‚æ¸…ç†ä¸­...\r\n");
                         _ngrok.Kill();
                         _ngrok = null;
                     }
@@ -439,17 +445,18 @@ namespace RainbowMage.OverlayPlugin
                         _config.WSServerPort = 10501;
                     }
 
-                    simpLogBox.AppendText("Æô¶¯WS·şÎñ...\r\n");
+                    simpLogBox.AppendText("å¯åŠ¨WSæœåŠ¡...\r\n");
                     _config.WSServerRunning = true;
                     _server.Start();
 
-                    simpLogBox.AppendText("Æô¶¯ngrok...\r\n");
+                    simpLogBox.AppendText("å¯åŠ¨ngrok...\r\n");
 
                     var region = _config.TunnelRegion;
                     if (region == null)
                     {
                         region = "us";
-                    } else
+                    }
+                    else
                     {
                         region = region.Split(' ')[0];
                     }
@@ -471,7 +478,7 @@ tunnels:
 
                     var p = new Process();
                     p.StartInfo.FileName = ngrokPath;
-                    p.StartInfo.Arguments = "start -config=\"" + ngrokConfigPath + "\" wsserver";
+                    p.StartInfo.Arguments = "start --config=\"" + ngrokConfigPath + "\" wsserver";
                     p.StartInfo.UseShellExecute = false;
                     p.StartInfo.CreateNoWindow = true;
                     p.StartInfo.RedirectStandardError = true;
@@ -491,7 +498,7 @@ tunnels:
 
                     if (p.WaitForExit(3000))
                     {
-                        simpLogBox.AppendText("ngrok±ÀÀ£ÁË£¡\r\n");
+                        simpLogBox.AppendText("ngrokå´©æºƒäº†ï¼\r\n");
                         UpdateTunnelStatus(TunnelStatus.Error);
                         return;
                     }
@@ -511,20 +518,23 @@ tunnels:
                         {
                             data = HttpClientWrapper.Get(apiUrl, headers, null, null, false);
                             break;
-                        } catch(CurlException ex)
+                        }
+                        catch (CurlException ex)
                         {
                             if (!ex.Retry)
                             {
-                                simpLogBox.AppendText(string.Format("´íÎó: {0}\r\n", ex));
+                                simpLogBox.AppendText(string.Format("é”™è¯¯: {0}\r\n", ex));
                                 UpdateTunnelStatus(TunnelStatus.Error);
                                 return;
-                            } else
+                            }
+                            else
                             {
                                 Thread.Sleep(500);
                             }
-                        } catch (Exception ex)
+                        }
+                        catch (Exception ex)
                         {
-                            simpLogBox.AppendText(string.Format("Ê§°Ü: {0}\r\n", ex));
+                            simpLogBox.AppendText(string.Format("å¤±è´¥: {0}\r\n", ex));
                             UpdateTunnelStatus(TunnelStatus.Error);
                             return;
                         }
@@ -537,7 +547,7 @@ tunnels:
                         if (tun["name"] != null && tun["name"].ToString() == "wsserver" && tun["public_url"] != null)
                         {
                             _ngrokPrefix = tun["public_url"].ToString().Replace("https://", "wss://");
-                            
+
                             // Update the generated URL box
                             cbOverlay_SelectedIndexChanged(null, null);
                             done = true;
@@ -547,9 +557,9 @@ tunnels:
 
                     if (done)
                     {
-                        simpLogBox.AppendText("Íê³É!\r\n");
-                        simpLogBox.AppendText("\r\n#############################################\r\nÇëÊ¹ÓÃ×îÏÂ·½µÄ¡¾Á´½ÓÉú³ÉÆ÷¡¿Éú³ÉĞü¸¡´°Á´½Ó£º\r\n\r\n");
-                        simpLogBox.AppendText("\r\nÈç¹ûÄãÖªµÀÔÚ×öÊ²Ã´»òÕßÔÚÊ¹ÓÃÎ´ÔÚ´Ë´¦ÁĞ³öµÄĞü¸¡´°, ÕâÀïÊÇÒ»Ğ©Ğü¸¡´°Á´½ÓÖĞ»áÊ¹ÓÃµÄÇëÇó×Ö¶Î:\r\n");
+                        simpLogBox.AppendText("å®Œæˆ!\r\n");
+                        simpLogBox.AppendText("\r\n#############################################\r\nè¯·ä½¿ç”¨æœ€ä¸‹æ–¹çš„ã€é“¾æ¥ç”Ÿæˆå™¨ã€‘ç”Ÿæˆæ‚¬æµ®çª—é“¾æ¥ï¼š\r\n\r\n");
+                        simpLogBox.AppendText("\r\nå¦‚æœä½ çŸ¥é“åœ¨åšä»€ä¹ˆæˆ–è€…åœ¨ä½¿ç”¨æœªåœ¨æ­¤å¤„åˆ—å‡ºçš„æ‚¬æµ®çª—, è¿™é‡Œæ˜¯ä¸€äº›æ‚¬æµ®çª—é“¾æ¥ä¸­ä¼šä½¿ç”¨çš„è¯·æ±‚å­—æ®µ:\r\n");
                         simpLogBox.AppendText("\r\n    ?HOST_PORT=" + _ngrokPrefix + "\r\n    ?OVERLAY_WS=" + _ngrokPrefix + "/ws\r\n");
                         simpLogBox.AppendText("#############################################\r\n");
 
@@ -559,14 +569,16 @@ tunnels:
                         {
                             UpdateTunnelStatus(TunnelStatus.Error);
                         };
-                    } else
+                    }
+                    else
                     {
-                        simpLogBox.AppendText("Ê§°Ü!\r\n");
+                        simpLogBox.AppendText("å¤±è´¥!\r\n");
                         UpdateTunnelStatus(TunnelStatus.Error);
                     }
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
-                    simpLogBox.AppendText(string.Format("\r\nÎ´²¶»ñµÄÒì³£: {0}\r\n\r\n", ex));
+                    simpLogBox.AppendText(string.Format("\r\næœªæ•è·çš„å¼‚å¸¸: {0}\r\n\r\n", ex));
                     UpdateTunnelStatus(TunnelStatus.Error);
                 }
             });
@@ -594,38 +606,24 @@ tunnels:
             {
                 UpdateTunnelStatus(TunnelStatus.Downloading);
 
-                simpLogBox.AppendText("»ñÈ¡×îĞÂµÄngrok¿Í»§¶ËÏÂÔØÁ´½Ó...\r\n");
-                string dlPage;
+                // Use latest known 2.x because 3.x is incompatible
+                // URLs from https://dl.equinox.io/ngrok/ngrok/stable/archive
+                var ngrokUrl = Environment.Is64BitOperatingSystem ?
+                    "https://bin.equinox.io/a/8exBtGpBr59/ngrok-2.3.40-windows-amd64.zip" :
+                    "https://bin.equinox.io/a/cfjNxTRk1tM/ngrok-2.3.40-windows-386.zip";
+
+                simpLogBox.AppendText("ä¸‹è½½ngrokå®¢æˆ·ç«¯...\r\n");
                 try
                 {
-                    dlPage = HttpClientWrapper.Get(NGROK_DOWNLOAD_IDX);
-                } catch (Exception e)
-                {
-                    simpLogBox.AppendText(string.Format("\r\n´íÎó: {0}\r\n\r\n", e));
-                    return false;
-                }
-
-                var arch = Environment.Is64BitOperatingSystem ? "amd64" : "386";
-                // <a id="dl-windows-amd64" href="https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip" class="download-btn"
-                var match = Regex.Match(dlPage, " href=\"(https://bin.equinox.io/c/[^/]+/ngrok-stable-windows-" + arch + "\\.zip)\"");
-                if (match == Match.Empty)
-                {
-                    simpLogBox.AppendText("ÎŞ·¨ÕÒµ½ÏÂÔØÁ´½Ó£¡Çë¸æÖª¿ª·¢Õß¡£\r\n");
-                    return false;
-                }
-
-                simpLogBox.AppendText("ÏÂÔØngrok¿Í»§¶Ë...\r\n");
-                try
-                {
-                    HttpClientWrapper.Get(match.Groups[1].Captures[0].Value, new Dictionary<string, string>(), ngrokPath + ".zip", NgrokProgressCallback, false);
+                    CurlWrapper.Get(ngrokUrl, new Dictionary<string, string>(), ngrokPath + ".zip", NgrokProgressCallback, false);
                 }
                 catch (Exception e)
                 {
-                    simpLogBox.AppendText(string.Format("\r\n´íÎó: {0}\r\n\r\n", e));
+                    simpLogBox.AppendText(string.Format("\r\né”™è¯¯: {0}\r\n\r\n", e));
                     return false;
                 }
 
-                simpLogBox.AppendText("\r\n½âÑ¹ngrok¿Í»§¶Ë...\r\n");
+                simpLogBox.AppendText("\r\nè§£å‹ngrokå®¢æˆ·ç«¯...\r\n");
                 try
                 {
                     using (var archive = ZipArchive.Open(ngrokPath + ".zip"))
@@ -645,14 +643,15 @@ tunnels:
                     }
 
                     File.Delete(ngrokPath + ".zip");
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     simpLogBox.AppendText(string.Format("\r\n{0}\r\n\r\n", e));
                 }
 
                 if (!File.Exists(ngrokPath))
                 {
-                    simpLogBox.AppendText("\r\n½âÑ¹Ê§°Ü!\r\n");
+                    simpLogBox.AppendText("\r\nè§£å‹å¤±è´¥!\r\n");
                     return false;
                 }
 
@@ -660,7 +659,7 @@ tunnels:
             }
             catch (Exception e)
             {
-                simpLogBox.AppendText(string.Format("\r\nÒì³£: {0}\r\n\r\n", e));
+                simpLogBox.AppendText(string.Format("\r\nå¼‚å¸¸: {0}\r\n\r\n", e));
                 return false;
             }
         }
@@ -669,7 +668,7 @@ tunnels:
         {
             try
             {
-                simpLogBox.AppendText("\r\n¹Ø±ÕËíµÀ...\r\n");
+                simpLogBox.AppendText("\r\nå…³é—­éš§é“...\r\n");
 
                 if (_ngrok != null && !_ngrok.HasExited)
                 {
@@ -679,24 +678,25 @@ tunnels:
 
                 _ngrokPrefix = null;
 
-                simpLogBox.AppendText("¹Ø±ÕWS·şÎñÆ÷...\r\n");
+                simpLogBox.AppendText("å…³é—­WSæœåŠ¡å™¨...\r\n");
                 if (_server.IsRunning())
                 {
                     _server.Stop();
                 }
 
-                simpLogBox.AppendText("Íê³É!\r\n");
+                simpLogBox.AppendText("å®Œæˆ!\r\n");
                 UpdateTunnelStatus(TunnelStatus.Inactive);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                simpLogBox.AppendText(string.Format("\r\n´íÎó: {0}\r\n\r\n", ex));
+                simpLogBox.AppendText(string.Format("\r\né”™è¯¯: {0}\r\n\r\n", ex));
                 UpdateTunnelStatus(TunnelStatus.Error);
             }
         }
 
         private void regionCb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _config.TunnelRegion = (string) regionCb.SelectedItem;
+            _config.TunnelRegion = (string)regionCb.SelectedItem;
         }
     }
 }

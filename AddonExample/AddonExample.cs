@@ -1,6 +1,6 @@
-﻿using Advanced_Combat_Tracker;
+﻿using System.Windows.Forms;
+using Advanced_Combat_Tracker;
 using RainbowMage.OverlayPlugin;
-using System.Windows.Forms;
 
 namespace AddonExample
 {

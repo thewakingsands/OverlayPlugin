@@ -136,13 +136,13 @@
     <value>锁定悬浮窗</value>
   </data>
   <data name="buttonCopyUpdateScript.Text" xml:space="preserve">
-    <value>复制变量到剪切板</value>
+    <value>复制变量到剪贴板</value>
   </data>
   <data name="buttonOpenDevTools.Text" xml:space="preserve">
     <value>启动Debug工具</value>
   </data>
   <data name="buttonReloadBrowser.Text" xml:space="preserve">
-    <value>重新加载（用于更换悬浮窗后即时刷新）</value>
+    <value>重载悬浮窗（用于更换悬浮窗后即时刷新）</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>悬浮窗路径</value>
@@ -151,6 +151,6 @@
     <value>浏览</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>将文本显示为HTML</value>
+    <value>将文本显示为 HTML</value>
   </data>
 </root>

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 using System.Windows.Forms;
 using CefSharp;
 using Point = System.Drawing.Point;
@@ -163,7 +163,7 @@ namespace RainbowMage.HtmlRenderer
         {
             var keyEvent = new KeyEvent();
             keyEvent.WindowsKeyCode = m.WParam.ToInt32();
-            keyEvent.NativeKeyCode = (int) m.LParam.ToInt64();
+            keyEvent.NativeKeyCode = (int)m.LParam.ToInt64();
             keyEvent.IsSystemKey = m.Msg == NativeMethods.WM_SYSCHAR ||
                                    m.Msg == NativeMethods.WM_SYSKEYDOWN ||
                                    m.Msg == NativeMethods.WM_SYSKEYUP;

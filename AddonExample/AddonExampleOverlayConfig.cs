@@ -1,5 +1,5 @@
-﻿using RainbowMage.OverlayPlugin;
-using System;
+﻿using System;
+using RainbowMage.OverlayPlugin;
 
 namespace AddonExample
 {

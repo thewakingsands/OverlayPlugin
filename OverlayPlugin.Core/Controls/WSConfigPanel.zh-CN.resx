@@ -128,13 +128,13 @@
     <value>41, 13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>IP地址</value>
+    <value>IP 地址</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>端口：</value>
+    <value>端口: </value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="genSslBtn.AutoSize" type="System.Boolean, mscorlib">
@@ -151,7 +151,7 @@
     <value>178, 25</value>
   </data>
   <data name="genSslBtn.Text" xml:space="preserve">
-    <value>生成SSL证书</value>
+    <value>生成 SSL 证书</value>
   </data>
   <data name="sslBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 93</value>
@@ -163,15 +163,24 @@
     <value>70, 17</value>
   </data>
   <data name="sslBox.Text" xml:space="preserve">
-    <value>启用SSL</value>
+    <value>启用 SSL</value>
   </data>
   <data name="logDisplay.Text" xml:space="preserve">
-    <value>仅在您*知道*您需要SSL时才需启用它。通常，仅当您想与其他人或其他设备共享悬浮窗时才需要此功能。请在“共享悬浮窗”选项卡中进行设置。它的设置过程更加容易，可以让您与其他人共享悬浮窗（只需为其提供生成的链接），并且仍然可以与OBS和其他工具一起使用。
+    <value>简短使用说明：
+一、本机使用（仅用在该电脑上）
+1.点击启用，如果提示失败请随便改成另外的端口（范围为0-65535）。
+2.使用下方的链接生成器生成的链接即可。
+
+二、其他设备使用
+1.将 IP 地址 修改为 0.0.0.0，点击启用，如果提示失败请随便改成另外的端口（范围为0-65535）。
+2.使用下方的链接生成器，将生成的链接中的 https 改为 http，wss 改为 ws，127.0.0.1 更改为你的内网IP （可在解析插件的本机IP过滤中找到，如有多个 IP 请通过与木桩战斗进行测试，直到悬浮窗有数据为止），然后使用其他设备的浏览器将链接打开即可。
+
+对于 SSL 功能，请在你 *确实知道* 你需要 SSL 时才需启用它 (一般当你想与其他人或其他设备共享悬浮窗时才需要此功能，如果使用自签名证书，需要其他人或其他设备也需要安装此证书，因此我们更推荐你使用 "共享悬浮窗"。它的设置更加容易, 并且可以让你与其他人共享悬浮窗〔只需提供其生成的链接〕, 并且这个链接仍然可以用在OBS或其他工具上。)
 
 
-SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上方的按钮自动生成一个，或将PKCS#12文件放置在%AppData%\Advanced Combat Tracker\Config\OverlayPluginSSL.p12中并重新启动ACT。
+SSL 功能仅在你拥有 SSL 证书的情况下才能启用, 要使用它，你可以点击上方的按钮来自动生成一个证书（自签名证书，需要手动安装到其他设备上才能正常使用 SSL 功能）, 也可以把 PKCS#12 的证书文件重命名为 OverlayPluginSSL.p12 并放在 ACT 的 AppData\Advanced Combat Tracker\Config\ 目录下并重新启动 ACT。
 
-然后，您将可以启用SSL功能。</value>
+当证书文件放置妥当后, 即可启用 SSL 功能。</value>
   </data>
   <data name="startBtn.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -183,7 +192,7 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
     <value>0, 0, 0, 0</value>
   </data>
   <data name="startBtn.Text" xml:space="preserve">
-    <value>启用</value>
+    <value>启动</value>
   </data>
   <data name="stopBtn.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -204,7 +213,7 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
     <value>55, 13</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>悬浮窗：</value>
+    <value>悬浮窗: </value>
   </data>
   <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -213,7 +222,7 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
     <value>79, 13</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>悬浮窗链接：</value>
+    <value>悬浮窗链接: </value>
   </data>
   <data name="cbOverlay.Location" type="System.Drawing.Point, System.Drawing">
     <value>120, 14</value>
@@ -234,7 +243,7 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
     <value>337, 13</value>
   </data>
   <data name="lblUrlConfidentWarning.Text" xml:space="preserve">
-    <value>如果此悬浮窗不支持ACTWebSocket，则此链接可能不会生效。</value>
+    <value>如果此悬浮窗不支持 ACTWebSocket, 此链接可能不会生效。</value>
   </data>
   <data name="txtOverlayUrl.Location" type="System.Drawing.Point, System.Drawing">
     <value>120, 41</value>
@@ -255,7 +264,7 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
 
 共享悬浮窗：如果您通过此选项卡启动WS服务器，则可以在连接到互联网的任何设备上使用生成的链接（例如您的手机、平板电脑、朋友的电脑，等等）。您可以与其他人共享这些链接。
 
-最后，如果您通过“直播/本地悬浮窗”选项卡启动了WS服务器, 它将在ACT启动时自动重新启动。如果是通过“共享悬浮窗”选项卡启动的, 它不会自动启动，因为您每次都将获得一个新的链接。备注：如果这让您感到困扰，请在ACT Discord（或在OverlayPlugin的GitHub仓库）中要求ngld修复此问题。有很多方法可以解决这个问题，但是我不确定有多少人需要这个功能。
+最后，如果您通过“直播/本地悬浮窗”选项卡启动了WS服务器, 它将在ACT启动时自动重新启动。如果是通过“共享悬浮窗”选项卡启动的, 它不会自动启动，因为您每次都将获得一个新的链接。备注：如果这让您感到困扰，请在ACT Discord（或在OverlayPlugin的GitHub仓库）中要求 ngld 修复此问题。有很多方法可以解决这个问题，但是我不确定有多少人需要这个功能。
 </value>
   </data>
   <data name="introPage.Text" xml:space="preserve">
@@ -268,7 +277,7 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
     <value>43, 13</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>状态：</value>
+    <value>状态: </value>
   </data>
   <data name="statusLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>421, 88</value>
@@ -304,7 +313,7 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
     <value>110, 36</value>
   </data>
   <data name="simpStartBtn.Text" xml:space="preserve">
-    <value>启用</value>
+    <value>启动</value>
   </data>
   <data name="simpStatusLbl.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 7</value>
@@ -331,13 +340,13 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
     <value>43, 13</value>
   </data>
   <data name="regionLabel.Text" xml:space="preserve">
-    <value>地区：</value>
+    <value>地区: </value>
   </data>
   <data name="simpStatusLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
   </data>
   <data name="simpStatusLabel.Text" xml:space="preserve">
-    <value>状态：</value>
+    <value>状态: </value>
   </data>
   <data name="tunnelPage.Text" xml:space="preserve">
     <value>共享悬浮窗</value>
@@ -362,5 +371,8 @@ SSL功能仅在您拥有SSL证书的情况下才能启用。您可以单击上�
   </data>
   <data name="regionCb.Items6" xml:space="preserve">
     <value>in - 印度 (孟买)</value>
+  </data>
+  <data name="ctxMenuLinkCopy.Text" xml:space="preserve">
+    <value>复制</value>
   </data>
 </root>

@@ -1,5 +1,4 @@
-﻿using RainbowMage.OverlayPlugin.Overlays;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -7,11 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Linq;
-using System.Windows.Forms;
+using Newtonsoft.Json.Serialization;
+using RainbowMage.OverlayPlugin.Overlays;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -83,6 +83,8 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
+        // Should OverlayPlugin check for automatic updates?
+        // Note: this is also tied to automatically trying to fetch new opcodes.
         private bool _updateCheck;
         public bool UpdateCheck
         {
@@ -163,6 +165,35 @@ namespace RainbowMage.OverlayPlugin
             set
             {
                 _tunnelRegion = value;
+                isDirty = true;
+            }
+        }
+
+        private JToken _cachedOpcodeFile = new JObject();
+        public JToken CachedOpcodeFile
+        {
+            get
+            {
+                return _cachedOpcodeFile;
+            }
+            set
+            {
+                _cachedOpcodeFile = value;
+                isDirty = true;
+            }
+        }
+
+        // Empty string is treated as unset.
+        private string _cachedOpcodeOverlayPluginVersion = "";
+        public string CachedOpcodeOverlayPluginVersion
+        {
+            get
+            {
+                return _cachedOpcodeOverlayPluginVersion;
+            }
+            set
+            {
+                _cachedOpcodeOverlayPluginVersion = value;
                 isDirty = true;
             }
         }
@@ -275,11 +306,13 @@ namespace RainbowMage.OverlayPlugin
                 {
                     LoadJson(configPath);
                     useBackup = false;
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     logger.Log(LogLevel.Error, "LoadConfig: Failed to load configuration: {0}", ex);
                 }
-            } else
+            }
+            else
             {
                 useBackup = true;
             }
@@ -293,7 +326,8 @@ namespace RainbowMage.OverlayPlugin
                     try
                     {
                         LoadJson(configPath + BACKUP_SUFFIX);
-                    } catch (Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         logger.Log(LogLevel.Error, "LoadConfig: Failed to load backup: {0}", ex);
 
@@ -301,7 +335,8 @@ namespace RainbowMage.OverlayPlugin
                         if (dialog.ShowDialog() == DialogResult.Yes)
                         {
                             initEmpty = true;
-                        } else
+                        }
+                        else
                         {
                             throw ex;
                         }
@@ -348,7 +383,8 @@ namespace RainbowMage.OverlayPlugin
                         JToken.ReadFrom(reader);
                     }
                     oldConfigValid = true;
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     logger.Log(LogLevel.Error, "Failed to read old config. Skipping backup... {0}", ex);
                 }
@@ -407,7 +443,7 @@ namespace RainbowMage.OverlayPlugin
                         throw new Exception($"Type {typeName} not found!");
                     }
 
-                    this.Overlays.Add((IOverlayConfig) JsonConvert.DeserializeObject(
+                    this.Overlays.Add((IOverlayConfig)JsonConvert.DeserializeObject(
                         item.ToString(Formatting.None),
                         type,
                         new ConfigCreationConverter(_container)

@@ -35,7 +35,8 @@ namespace RainbowMage.HtmlRenderer
                 if (sub.Draggable)
                 {
                     region.Union(rect);
-                } else
+                }
+                else
                 {
                     region.Exclude(rect);
                 }

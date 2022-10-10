@@ -164,6 +164,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\libcurl.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\libcurl-x64.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Markdig.Signed">
       <Version>0.18.3</Version>
     </PackageReference>
