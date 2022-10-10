@@ -480,6 +480,8 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             // e.g. if X = 6.1 with [5.2, 5.3, 6.0, 6.2] return 6.0, 6.2, 5.3, 5.2
 
             Version target;
+
+            //CN 6.1
             target = new Version(6,1);
 
             candidates = candidates.OrderBy(x => x.GetVersion()).ToList();
