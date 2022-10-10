@@ -33,8 +33,16 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             repository = container.Resolve<FFXIVRepository>();
             config = container.Resolve<PluginConfig>();
             //CN 6.11
-            opcodes.Add("MapEffect", new OpcodeConfigEntry(154, 11));
-            opcodes.Add("CEDirector", new OpcodeConfigEntry(854, 16));
+            opcodes.Add("MapEffect", new OpcodeConfigEntry()
+            {
+                opcode = 154,
+                size = 11
+            });
+            opcodes.Add("CEDirector", new OpcodeConfigEntry()
+            {
+                opcode = 854,
+                size = 16
+            });
         }
         public IOpcodeConfigEntry this[string name]
         {
@@ -54,12 +62,6 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
     [JsonObject(NamingStrategyType = typeof(Newtonsoft.Json.Serialization.DefaultNamingStrategy))]
     class OpcodeConfigEntry : IOpcodeConfigEntry
     {
-        public OpcodeConfigEntry(uint opcode, uint size)
-        {
-            this.opcode = opcode;
-            this.size = size;
-        }
-
         public uint opcode { get; set; }
         public uint size { get; set; }
     }
