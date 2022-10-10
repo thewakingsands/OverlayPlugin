@@ -329,6 +329,9 @@ namespace RainbowMage.OverlayPlugin
         [MethodImpl(MethodImplOptions.NoInlining)]
         internal bool WriteLogLineImpl(uint ID, DateTime timestamp, string line)
         {
+            //Temporary disable due to current FFXIV plugin unsupported
+            return false;
+
             if (logOutputWriteLineFunc == null)
             {
                 var plugin = GetPluginData();
