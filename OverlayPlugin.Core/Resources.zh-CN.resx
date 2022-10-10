@@ -272,7 +272,7 @@
     <value>预览</value>
   </data>
   <data name="CustomPresetLabel" xml:space="preserve">
-    <value>自定义模板链接</value>
+    <value>自订</value>
   </data>
   <data name="PresetUsesUnsupportedType" xml:space="preserve">
     <value>预设 {0} 使用了不受支持的类型 {1}!</value>
