@@ -135,6 +135,7 @@
     <EmbeddedResource Include="Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.zh-CN.resx" />
     <EmbeddedResource Include="UpdateQuestionForm.de-DE.resx">

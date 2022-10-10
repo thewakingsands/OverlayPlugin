@@ -334,8 +334,6 @@ namespace RainbowMage.OverlayPlugin
                                     configSaveTimer.Start();
 
                                     this.label.Text = "Initialised";
-                                    // Make the log small; startup was successful and there shouldn't be any error message to show.
-                                    controlPanel.ResizeLog();
                                 }
                                 catch (Exception ex)
                                 {

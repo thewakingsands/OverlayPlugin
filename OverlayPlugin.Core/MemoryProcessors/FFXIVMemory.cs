@@ -15,7 +15,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         bool IsValid();
     }
 
-    public class FFXIVMemory
+    public class FFXIVMemory : IDisposable
     {
         private event EventHandler<Process> OnProcessChange;
 
@@ -480,12 +480,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             // e.g. if X = 6.1 with [5.2, 5.3, 6.0, 6.2] return 6.0, 6.2, 5.3, 5.2
 
             Version target;
-            if (region == GameRegion.Chinese)
-                target = cnVersion;
-            else if (region == GameRegion.Korean)
-                target = koVersion;
-            else
-                target = globalVersion;
+            target = new Version(6,1);
 
             candidates = candidates.OrderBy(x => x.GetVersion()).ToList();
             int idx = candidates.FindIndex(x => x.GetVersion() > target);

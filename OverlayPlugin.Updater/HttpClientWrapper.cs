@@ -27,8 +27,8 @@ namespace RainbowMage.OverlayPlugin.Updater
         public static string Get(string url, Dictionary<string, string> headers, string downloadDest,
             ProgressInfoCallback infoCb, bool resume)
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "OverlayPlugin/OverlayPlugin v" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            var client = new WebClient();
+            client.Headers.Add("User-Agent", "OverlayPlugin/OverlayPlugin v" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             foreach (var key in headers.Keys)
             {
@@ -41,12 +41,13 @@ namespace RainbowMage.OverlayPlugin.Updater
             var retry = false;
 
             Action action = (async () => {
-                try {
+                try
+                {
                     if (downloadDest == null)
                     {
                         result = await client.DownloadStringTaskAsync(url);
                     }
-                   
+
                     else
                     {
                         var tcs = new TaskCompletionSource<object>(url);
@@ -76,7 +77,6 @@ namespace RainbowMage.OverlayPlugin.Updater
                         try
                         {
                             client.DownloadFileAsync(new Uri(url), downloadDest, tcs);
-
                             await tcs.Task;
                         }
                         finally
@@ -84,10 +84,6 @@ namespace RainbowMage.OverlayPlugin.Updater
                             client.DownloadFileCompleted -= completedHandler;
                             client.DownloadProgressChanged -= progressChangedHandler;
                         }
-                        finally
-                        {
-                            client.DownloadFileCompleted -= completedHandler;
-                            client.DownloadProgressChanged -= progressChangedHandler;
                     }
                 }
                 catch (IOException e)

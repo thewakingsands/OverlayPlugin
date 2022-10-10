@@ -13,10 +13,6 @@ try {
         echo "... or implement it properly with vswhere and submit a PR. (Please)"
         exit 1
     }
-        $VS_PATH = $DEFAULT_VS_PATH
-    } else {
-        $VS_PATH = & "$DEFAULT_VSWHERE_PATH" -latest -property installationPath
-    }
 
     if ( -not (Test-Path "Thirdparty\ACT\Advanced Combat Tracker.exe" )) {
         echo 'Error: Please run tools\fetch_deps.py'
