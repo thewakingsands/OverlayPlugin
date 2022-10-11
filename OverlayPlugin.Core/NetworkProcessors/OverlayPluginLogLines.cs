@@ -32,15 +32,15 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             logger = container.Resolve<ILogger>();
             repository = container.Resolve<FFXIVRepository>();
             config = container.Resolve<PluginConfig>();
-            //CN 6.11
+            //CN 6.15
             opcodes.Add("MapEffect", new OpcodeConfigEntry()
             {
-                opcode = 154,
+                opcode = 0x3AF,
                 size = 11
             });
             opcodes.Add("CEDirector", new OpcodeConfigEntry()
             {
-                opcode = 854,
+                opcode = 0x0D1,
                 size = 16
             });
         }
