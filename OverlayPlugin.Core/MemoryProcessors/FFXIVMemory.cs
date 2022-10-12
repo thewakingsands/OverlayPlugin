@@ -94,7 +94,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     MessageBox.Show("现在 ACT 的部分功能不支持 DX9 启动的游戏。\r\n请在游戏启动器器设置里选择以 DX11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            OnProcessChange?.Invoke(this, null);
+            OnProcessChange?.Invoke(this, process);
         }
 
         private void FindProcess()
@@ -172,7 +172,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 _processLock.ExitWriteLock();
                 if (hasChangedProcess)
                 {
-                    OnProcessChange?.Invoke(this, null);
+                    OnProcessChange?.Invoke(this, process);
                 }
             }
         }
