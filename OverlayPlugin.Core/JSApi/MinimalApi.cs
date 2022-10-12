@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RainbowMage.HtmlRenderer;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RainbowMage.HtmlRenderer;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -52,7 +52,8 @@ namespace RainbowMage.OverlayPlugin
         // Also handles (un)subscription to make switching between this and WS easier.
         public void callHandler(string data, object callback)
         {
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 var result = dispatcher.ProcessHandlerMessage(this, data);
                 if (callback != null)
                 {

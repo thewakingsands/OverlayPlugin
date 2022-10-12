@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Globalization;
-using System.Threading;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -148,10 +148,11 @@ namespace RainbowMage.OverlayPlugin
 
             if (_pluginMain.Overlays.Count == 0)
             {
-                ((GeneralConfigTab) _generalTab.Controls[0]).SetReadmeVisible(true);
-            } else
+                ((GeneralConfigTab)_generalTab.Controls[0]).SetReadmeVisible(true);
+            }
+            else
             {
-                ((GeneralConfigTab) _generalTab.Controls[0]).SetReadmeVisible(false);
+                ((GeneralConfigTab)_generalTab.Controls[0]).SetReadmeVisible(false);
             }
         }
 
@@ -176,7 +177,7 @@ namespace RainbowMage.OverlayPlugin
                 tabPage.Controls.Add(control);
 
                 this.tabControl.TabPages.Add(tabPage);
-                ((GeneralConfigTab) _generalTab.Controls[0]).SetReadmeVisible(false);
+                ((GeneralConfigTab)_generalTab.Controls[0]).SetReadmeVisible(false);
             }
         }
 
@@ -203,10 +204,11 @@ namespace RainbowMage.OverlayPlugin
                 var index = 0;
                 foreach (var page in this.tabControl.TabPages)
                 {
-                    if (index == 0 || ((ConfigTabPage) page).IsEventSource)
+                    if (index == 0 || ((ConfigTabPage)page).IsEventSource)
                     {
                         index++;
-                    } else
+                    }
+                    else
                     {
                         break;
                     }
@@ -238,7 +240,7 @@ namespace RainbowMage.OverlayPlugin
                         return true;
                     }
                 };
-            
+
             if (newOverlayDialog.ShowDialog(this.ParentForm) == DialogResult.OK)
             {
                 if (this.tabControl.TabCount == 1 && this.tabControl.TabPages[0].Equals(this.tabPageMain))
@@ -247,7 +249,7 @@ namespace RainbowMage.OverlayPlugin
                 }
                 CreateAndRegisterOverlay(newOverlayDialog.SelectedOverlay);
             }
-            
+
             newOverlayDialog.Dispose();
         }
 
@@ -283,7 +285,7 @@ namespace RainbowMage.OverlayPlugin
                 tabControl.SelectedTab = tabControl.TabPages[0];
 
             var subLabel = tabControl.SelectedTab.Text;
-            if (!((ConfigTabPage) tabControl.SelectedTab).IsOverlay)
+            if (!((ConfigTabPage)tabControl.SelectedTab).IsOverlay)
             {
                 return;
             }
@@ -327,7 +329,7 @@ namespace RainbowMage.OverlayPlugin
             this.tabControl.Update();
             if (_pluginMain.Overlays.Count == 0)
             {
-                ((GeneralConfigTab) _generalTab.Controls[0]).SetReadmeVisible(true);
+                ((GeneralConfigTab)_generalTab.Controls[0]).SetReadmeVisible(true);
             }
         }
 

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RainbowMage.OverlayPlugin.MemoryProcessors
+namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
 {
     public enum ObjectType : byte
     {
@@ -117,7 +114,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         public Single PosX;
         public Single PosY;
         public Single PosZ;
-        public Single Rotation;
+        public Single Heading;
         public Single Radius;
 
         public string Distance;
@@ -126,6 +123,28 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         public byte RawEffectiveDistance;
 
         public List<EffectEntry> Effects;
+
+        public uint BNpcID;
+        public int CurrentMP;
+        public int MaxMP;
+        public byte Level;
+
+        public uint BNpcNameID;
+
+        public ushort WorldID;
+        public ushort CurrentWorldID;
+        public uint NPCTargetID;
+        public ushort CurrentGP;
+        public ushort MaxGP;
+        public ushort CurrentCP;
+        public ushort MaxCP;
+        public uint PCTargetID;
+        public byte IsCasting1;
+        public byte IsCasting2;
+        public uint CastBuffID;
+        public uint CastTargetID;
+        public float CastDurationCurrent;
+        public float CastDurationMax;
 
         private Single GetDistance(Combatant target)
         {
@@ -150,38 +169,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
     }
 
     [Serializable]
-    public class EnmityEntry
-    {
-        public uint ID;
-        public uint OwnerID;
-        public string Name;
-        public uint Enmity;
-        public bool isMe;
-        public int HateRate;
-        public byte Job;
-    }
-
-    [Serializable]
-    public class AggroEntry
-    {
-        public uint ID;
-        public string Name;
-        public int HateRate;
-        public int Order;
-        public bool isCurrentTarget;
-        public bool IsTargetable;
-
-        public int CurrentHP;
-        public int MaxHP;
-
-        // Target of Enemy
-        public EnmityEntry Target;
-
-        // Effects
-        public List<EffectEntry> Effects;
-    }
-
-    [Serializable]
     public class EffectEntry
     {
         public ushort BuffID;
@@ -189,41 +176,5 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         public float Timer;
         public uint ActorID;
         public bool isOwner;
-    }
-
-    [Serializable]
-    public class TargetableEnemyEntry
-    {
-        public uint ID;
-        public string Name;
-        public int CurrentHP;
-        public int MaxHP;
-        public bool IsEngaged;
-        public byte EffectiveDistance;
-    }
-
-    [Serializable]
-    public class EnmityHudEntry
-    {
-        public int Order;
-        public uint ID;
-        public uint HPPercent;
-        public uint EnmityPercent;
-        public uint CastPercent;
-    }
-
-    public abstract class EnmityMemory
-    {
-        abstract public bool IsValid();
-        abstract public Combatant GetTargetCombatant();
-        abstract public Combatant GetSelfCombatant();
-        abstract public Combatant GetFocusCombatant();
-        abstract public Combatant GetHoverCombatant();
-        abstract public List<Combatant> GetCombatantList();
-        abstract public List<EnmityEntry> GetEnmityEntryList(List<Combatant> combatantList);
-        abstract public List<EnmityHudEntry> GetEnmityHudEntries();
-        abstract public unsafe List<AggroEntry> GetAggroList(List<Combatant> combatantList);
-        abstract public List<TargetableEnemyEntry> GetTargetableEnemyList(List<Combatant> combatantList);
-        abstract public bool GetInCombat();
     }
 }

@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Windows.Forms;
-using System.Reflection;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using CefSharp;
+using CefSharp.Enums;
+using CefSharp.Internals;
 using CefSharp.OffScreen;
 using CefSharp.Structs;
-using CefSharp.Enums;
-using CefSharp;
-using CefSharp.Internals;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 
 namespace RainbowMage.HtmlRenderer
 {
@@ -121,7 +121,8 @@ namespace RainbowMage.HtmlRenderer
             {
                 BrowserStartLoading?.Invoke(this, new BrowserLoadEventArgs(0, e.Url));
             }
-            catch (Exception ex)
+           
+            catch  (Exception ex)
             {
                 BrowserConsoleLog?.Invoke(this, new BrowserConsoleLogEventArgs(ex.ToString(), "", 1));
             }
@@ -133,7 +134,8 @@ namespace RainbowMage.HtmlRenderer
             {
                 BrowserError?.Invoke(sender, new BrowserErrorEventArgs(e.ErrorCode, e.ErrorText, e.FailedUrl));
             }
-            catch (Exception ex)
+           
+            catch  (Exception ex)
             {
                 BrowserConsoleLog?.Invoke(this, new BrowserConsoleLogEventArgs(ex.ToString(), "", 1));
             }
@@ -166,7 +168,8 @@ namespace RainbowMage.HtmlRenderer
                 }
                 BrowserLoad?.Invoke(sender, new BrowserLoadEventArgs(e.HttpStatusCode, e.Url));
             }
-            catch (Exception ex)
+           
+            catch  (Exception ex)
             {
                 BrowserConsoleLog?.Invoke(this, new BrowserConsoleLogEventArgs(ex.ToString(), "", 1));
             }
@@ -178,6 +181,7 @@ namespace RainbowMage.HtmlRenderer
             {
                 this._browser.Load(url);
             }
+           
             else
             {
                 urlToLoad = url;
@@ -508,8 +512,6 @@ namespace RainbowMage.HtmlRenderer
                 {
                     // Ignore; if we can't open the log, CEF can't do it either which means that we don't have to worry about log size.
                 }
-
-                cefSettings.EnableAudio();
 
                 // Necessary to avoid input lag with a framerate limit below 60.
                 cefSettings.CefCommandLineArgs["enable-begin-frame-scheduling"] = "1";

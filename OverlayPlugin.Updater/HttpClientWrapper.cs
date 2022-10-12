@@ -28,9 +28,8 @@ namespace RainbowMage.OverlayPlugin.Updater
             ProgressInfoCallback infoCb, bool resume)
         {
             var client = new WebClient();
-            client.Headers.Add("user-agent", "NuGet Client V3/3.4.2");
-            client.Headers.Add("X-NuGet-Client-Version", "3.4.2");
-            
+            client.Headers.Add("User-Agent", "OverlayPlugin/OverlayPlugin v" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
             foreach (var key in headers.Keys)
             {
                 client.Headers.Add(key, headers[key]);
@@ -42,11 +41,13 @@ namespace RainbowMage.OverlayPlugin.Updater
             var retry = false;
 
             Action action = (async () => {
-                try {
+                try
+                {
                     if (downloadDest == null)
                     {
                         result = await client.DownloadStringTaskAsync(url);
                     }
+
                     else
                     {
                         var tcs = new TaskCompletionSource<object>(url);
@@ -76,7 +77,6 @@ namespace RainbowMage.OverlayPlugin.Updater
                         try
                         {
                             client.DownloadFileAsync(new Uri(url), downloadDest, tcs);
-
                             await tcs.Task;
                         }
                         finally
@@ -85,19 +85,23 @@ namespace RainbowMage.OverlayPlugin.Updater
                             client.DownloadProgressChanged -= progressChangedHandler;
                         }
                     }
-                } catch (IOException e)
+                }
+                catch (IOException e)
                 {
                     error = e;
                     retry = true;
-                } catch(UnauthorizedAccessException e)
+                }
+                catch (UnauthorizedAccessException e)
                 {
                     error = e;
                     retry = true;
-                } catch (HttpRequestException e)
+                }
+                catch (HttpRequestException e)
                 {
                     error = e;
                     retry = true;
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     error = e;
                 }

@@ -1,6 +1,10 @@
+param (
+    [switch]$ci = $false
+)
+
 try {
-    # This assumes Visual Studio 2019 is installed in C:. You might have to change this depending on your system.
-    # $VS_PATH = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+    # This assumes Visual Studio 2022 is installed in C:. You might have to change this depending on your system.
+    # $DEFAULT_VS_PATH = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
     # $VS_PATH = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise"
     $VS_PATH = .\vswhere.exe -prerelease -latest -property installationPath
 
@@ -24,6 +28,34 @@ try {
     $ENV:PATH = "$VS_PATH\MSBuild\Current\Bin;${ENV:PATH}";
     if (Test-Path "C:\Program Files\7-Zip\7z.exe") {
         $ENV:PATH = "C:\Program Files\7-Zip;${ENV:PATH}";
+    }
+
+    if ( -not (Test-Path .\OverlayPlugin.Updater\Resources\libcurl.dll)) {
+        echo "==> Building cURL..."
+
+        mkdir .\OverlayPlugin.Updater\Resources
+        cd Thirdparty\curl\winbuild
+
+        echo "@call `"$VS_PATH\VC\Auxiliary\Build\vcvarsall.bat`" amd64"           | Out-File -Encoding ascii tmp_build.bat
+        echo "nmake /f Makefile.vc mode=dll VC=16 GEN_PDB=no DEBUG=no MACHINE=x64" | Out-File -Encoding ascii -Append tmp_build.bat
+        echo "@call `"$VS_PATH\VC\Auxiliary\Build\vcvarsall.bat`" x86"             | Out-File -Encoding ascii -Append tmp_build.bat
+        echo "nmake /f Makefile.vc mode=dll VC=16 GEN_PDB=no DEBUG=no MACHINE=x86" | Out-File -Encoding ascii -Append tmp_build.bat
+
+        cmd "/c" "tmp_build.bat"
+        sleep 3
+        del tmp_build.bat
+
+        cd ..\builds
+        copy .\libcurl-vc16-x64-release-dll-ipv6-sspi-winssl\bin\libcurl.dll ..\..\..\OverlayPlugin.Updater\Resources\libcurl-x64.dll
+        copy .\libcurl-vc16-x86-release-dll-ipv6-sspi-winssl\bin\libcurl.dll ..\..\..\OverlayPlugin.Updater\Resources\libcurl.dll
+
+        cd ..\..\..
+    }
+
+    if ($ci) {
+        echo "==> Continuous integration flag set. Building Debug..."
+        msbuild -p:Configuration=Debug -p:Platform=x64 "OverlayPlugin.sln" -t:Restore
+        msbuild -p:Configuration=Debug -p:Platform=x64 "OverlayPlugin.sln"    
     }
 
     echo "==> Building..."

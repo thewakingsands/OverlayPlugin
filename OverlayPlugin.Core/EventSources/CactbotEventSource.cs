@@ -251,22 +251,8 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 LogInfo("System Locale: {0}", pc_locale_);
             }
 
-            // Temporarily target cn if plugin is old v2.0.4.0
-            if (language_ == "cn" || ffxivPluginVersion.ToString() == "2.0.4.0")
-            {
-                ffxiv_ = new FFXIVProcessCn(container);
-                LogInfo("Version: cn");
-            }
-            else if (language_ == "ko")
-            {
-                ffxiv_ = new FFXIVProcessKo(container);
-                LogInfo("Version: ko");
-            }
-            else
-            {
-                ffxiv_ = new FFXIVProcessIntl(container);
-                LogInfo("Version: intl");
-            }
+
+             ffxiv_ = new FFXIVProcessCn(container);
 
             fate_watcher_ = new FateWatcher(container);
             fate_watcher_.OnFateChanged += (o, e) => DispatchToJS(new JSEvents.FateEvent(e.eventType, e.fateID, e.progress));

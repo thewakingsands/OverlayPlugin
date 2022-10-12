@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -133,7 +133,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             this.config.Url = textLogParseUrl.Text;
         }
-        
+
         private void ComboHotkeyMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             var value = (GlobalHotkeyType)this.comboHotkeyType.SelectedValue;

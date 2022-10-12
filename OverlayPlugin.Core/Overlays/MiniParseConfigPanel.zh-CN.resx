@@ -125,7 +125,7 @@
     <value>101, 12</value>
   </data>
   <data name="label14.Text" xml:space="preserve">
-    <value>脱战时隐藏悬浮窗</value>
+    <value>脱战后隐藏悬浮窗</value>
   </data>
   <data name="cbHideOutOfCombat.Location" type="System.Drawing.Point, System.Drawing">
     <value>177, 332</value>
@@ -195,7 +195,7 @@
     <value>37, 23</value>
   </data>
   <data name="buttonMiniParseSelectFile.Text" xml:space="preserve">
-    <value>浏览...</value>
+    <value>浏览</value>
   </data>
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>180, 200</value>
@@ -292,7 +292,7 @@
     <value>50</value>
   </data>
   <data name="hotkeyColHotkey.HeaderText" xml:space="preserve">
-    <value>热键</value>
+    <value>快捷键</value>
   </data>
   <data name="hotkeyColAction.HeaderText" xml:space="preserve">
     <value>行为</value>
@@ -316,7 +316,7 @@
     <value>415, 3</value>
   </data>
   <data name="btnResetZoom.Text" xml:space="preserve">
-    <value>重设</value>
+    <value>重置</value>
   </data>
   <data name="tableLayoutPanel4.Size" type="System.Drawing.Size, System.Drawing">
     <value>506, 30</value>
@@ -331,7 +331,7 @@
     <value>65, 12</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>最大帧速率</value>
+    <value>最大帧速率 (FPS)</value>
   </data>
   <data name="tabAdvanced.Size" type="System.Drawing.Size, System.Drawing">
     <value>684, 410</value>
@@ -343,19 +343,19 @@
     <value>71, 12</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>ACTWS兼容性</value>
+    <value>ACTWS 兼容性</value>
   </data>
   <data name="checkActwsCompatbility.Size" type="System.Drawing.Size, System.Drawing">
     <value>192, 16</value>
   </data>
   <data name="checkActwsCompatbility.Text" xml:space="preserve">
-    <value>此悬浮窗需要使用ACTWebSocket</value>
+    <value>此悬浮窗需要使用 ACTWebSocket</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>604, 32</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
-    <value>仅当悬浮窗与OverlayPlugin不兼容时，才需要启用此选项。</value>
+    <value>若悬浮窗与 OverlayPlugin 不兼容, 请启用此选项。</value>
   </data>
   <data name="checkNoFocus.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 16</value>
@@ -376,7 +376,7 @@
     <value>264, 34</value>
   </data>
   <data name="buttonMiniParseOpenDevTools.Text" xml:space="preserve">
-    <value>打开 DevTools</value>
+    <value>启动Debug工具</value>
   </data>
   <data name="buttonMiniParseReloadBrowser.Location" type="System.Drawing.Point, System.Drawing">
     <value>273, 3</value>
@@ -385,7 +385,7 @@
     <value>264, 34</value>
   </data>
   <data name="buttonMiniParseReloadBrowser.Text" xml:space="preserve">
-    <value>刷新悬浮窗</value>
+    <value>重载悬浮窗（用于更换悬浮窗后即时刷新）</value>
   </data>
   <data name="buttonResetOverlayPosition.Location" type="System.Drawing.Point, System.Drawing">
     <value>543, 3</value>
@@ -407,5 +407,8 @@
   </data>
   <data name="label14.Text" xml:space="preserve">
     <value>脱战后隐藏悬浮窗</value>
+  </data>
+  <data name="tabACTWS.Text" xml:space="preserve">
+    <value>ACTWS</value>
   </data>
 </root>

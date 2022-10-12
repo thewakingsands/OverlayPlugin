@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 using RainbowMage.OverlayPlugin;
-using System;
 
 namespace AddonExample
 {

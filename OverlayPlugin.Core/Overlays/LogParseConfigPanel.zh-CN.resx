@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label6.Text" xml:space="preserve">
-    <value>最大帧速率</value>
+    <value>最大帧速率 (FPS)</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>鼠标穿透</value>
@@ -130,13 +130,13 @@
     <value>悬浮窗路径</value>
   </data>
   <data name="buttonLogParseCopyActXiv.Text" xml:space="preserve">
-    <value>复制变量到剪切板</value>
+    <value>复制变量到剪贴板</value>
   </data>
   <data name="buttonLogParseOpenDevTools.Text" xml:space="preserve">
     <value>启动Debug工具</value>
   </data>
   <data name="buttonLogParseReloadBrowser.Text" xml:space="preserve">
-    <value>重新加载（用于更换悬浮窗后即时刷新）</value>
+    <value>重载悬浮窗（用于更换悬浮窗后即时刷新）</value>
   </data>
   <data name="buttonLogParseSelectFile.Text" xml:space="preserve">
     <value>浏览</value>

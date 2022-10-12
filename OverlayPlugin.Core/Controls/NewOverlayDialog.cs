@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
-using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -52,7 +52,8 @@ namespace RainbowMage.OverlayPlugin
                     name = name.Substring(0, name.Length - 7);
                 }
 
-                if (overlayNames.ContainsKey(name)) {
+                if (overlayNames.ContainsKey(name))
+                {
                     name = overlayNames[name];
                 }
 
@@ -79,7 +80,7 @@ namespace RainbowMage.OverlayPlugin
             PreparePresetCombo(container, cbPreset);
             return presets;
         }
-        
+
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -109,7 +110,7 @@ namespace RainbowMage.OverlayPlugin
                     return;
                 }
 
-                if (preset.Url == "special:custom") 
+                if (preset.Url == "special:custom")
                 {
                     if (cbType.SelectedItem == null)
                     {
@@ -124,7 +125,8 @@ namespace RainbowMage.OverlayPlugin
                     parameters["name"] = name;
 
                     SelectedOverlay = (IOverlay)container.Resolve(overlayType, parameters);
-                } else
+                }
+                else
                 {
                     // Store the current preview position and size in the config object...
                     preview.SavePositionAndSize();
@@ -202,7 +204,7 @@ namespace RainbowMage.OverlayPlugin
                         var presetUrl = preset.Url.Replace("%%", resourcesPath);
                         var overlay = new Overlays.MiniParseOverlay(config, config.Name, container);
                         overlay.Preview = true;
-                        
+
                         var first = true;
                         overlay.Overlay.Renderer.BrowserLoad += (o, ev) =>
                         {
@@ -277,9 +279,12 @@ namespace RainbowMage.OverlayPlugin
         public bool Locked { get; set; }
         public List<string> Supports { get; set; }
 
+        // Suppress CS0649 since this is modified on deserialization
+#pragma warning disable 0649
         [JsonExtensionData]
         [SuppressMessage("Style", "IDE0044:Add readonly modifier", Justification = "JsonExtensionData modifies this variable")]
         private IDictionary<string, JToken> _others;
+#pragma warning restore 0649
 
         [OnDeserialized]
         public void ParseOthers(StreamingContext ctx)
@@ -287,9 +292,10 @@ namespace RainbowMage.OverlayPlugin
             var size = _others["size"];
             Size = new int[2];
 
-            for(int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
             {
-                switch (size[i].Type) {
+                switch (size[i].Type)
+                {
                     case JTokenType.Integer:
                         Size[i] = size[i].ToObject<int>();
                         break;
@@ -300,8 +306,9 @@ namespace RainbowMage.OverlayPlugin
                             var percent = float.Parse(part.Substring(0, part.Length - 1)) / 100;
                             var screenSize = Screen.PrimaryScreen.WorkingArea;
 
-                            Size[i] = (int) Math.Round(percent * (i == 0 ? screenSize.Width : screenSize.Height));
-                        } else
+                            Size[i] = (int)Math.Round(percent * (i == 0 ? screenSize.Width : screenSize.Height));
+                        }
+                        else
                         {
                             Size[i] = int.Parse(part);
                         }

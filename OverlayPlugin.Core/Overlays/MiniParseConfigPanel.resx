@@ -145,7 +145,7 @@
     <value>46</value>
   </data>
   <data name="btnClearCache.Text" xml:space="preserve">
-    <value>清除缓存</value>
+    <value>Clear Cache</value>
   </data>
   <data name="&gt;&gt;btnClearCache.Name" xml:space="preserve">
     <value>btnClearCache</value>
@@ -205,7 +205,7 @@
     <value>35</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
-    <value>启用悬浮窗</value>
+    <value>Enable overlay</value>
   </data>
   <data name="&gt;&gt;label7.Name" xml:space="preserve">
     <value>label7</value>
@@ -238,7 +238,7 @@
     <value>43</value>
   </data>
   <data name="label14.Text" xml:space="preserve">
-    <value>脱战时隐藏悬浮窗</value>
+    <value>Hide overlay outside combat</value>
   </data>
   <data name="&gt;&gt;label14.Name" xml:space="preserve">
     <value>label14</value>
@@ -322,8 +322,8 @@
     <value>37</value>
   </data>
   <data name="label8.Text" xml:space="preserve">
-    <value>不启用某个悬浮窗会减少CPU使用率，但也会停止它的所有工作（例如声音）。
-不显示某个悬浮窗只会使其不可见，它仍然在后台运行，并仍可以播放声音、收集统计信息等。
+    <value>Disabling an overlay reduces CPU usage but also stops everything it's doing (i.e. sounds).
+Hiding an overlay only turns it invisible. It still runs in the background and can still play sounds, collect statistics, etc.
 </value>
   </data>
   <data name="&gt;&gt;label8.Name" xml:space="preserve">
@@ -357,7 +357,7 @@
     <value>39</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
-    <value>隐藏时使悬浮窗静音</value>
+    <value>Mute overlay when hidden</value>
   </data>
   <data name="&gt;&gt;label13.Name" xml:space="preserve">
     <value>label13</value>
@@ -393,7 +393,7 @@
     <value>0</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>鼠标穿透</value>
+    <value>Enable clickthrough</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -453,7 +453,7 @@
     <value>32</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>在悬浮窗下强制启用白色背景</value>
+    <value>Force white background</value>
   </data>
   <data name="label4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -489,7 +489,7 @@
     <value>34</value>
   </data>
   <data name="label12.Text" xml:space="preserve">
-    <value>如果您找不到悬浮窗或由于某种原因无法调整其大小时，请启用此选项。</value>
+    <value>Use this if you can't find the overlay or for some reason can't resize it.</value>
   </data>
   <data name="&gt;&gt;label12.Name" xml:space="preserve">
     <value>label12</value>
@@ -522,7 +522,7 @@
     <value>0</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>显示悬浮窗</value>
+    <value>Show overlay</value>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -609,8 +609,7 @@
     <value>38</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
-    <value>如果某悬浮窗被锁定，其位置将固定不变，只有将其再次解锁才能移动。
-某些悬浮窗(如cactbot)锁定后方可正常工作。</value>
+    <value>If an overlay is locked, its location becomes fixed and you won't be able to move it until you unlock it again.</value>
   </data>
   <data name="&gt;&gt;label10.Name" xml:space="preserve">
     <value>label10</value>
@@ -670,7 +669,7 @@
     <value>23</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
-    <value>锁定悬浮窗</value>
+    <value>Lock overlay</value>
   </data>
   <data name="label9.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -706,7 +705,7 @@
     <value>6</value>
   </data>
   <data name="buttonMiniParseSelectFile.Text" xml:space="preserve">
-    <value>浏览...</value>
+    <value>...</value>
   </data>
   <data name="&gt;&gt;buttonMiniParseSelectFile.Name" xml:space="preserve">
     <value>buttonMiniParseSelectFile</value>
@@ -814,7 +813,7 @@
     <value>26</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>悬浮窗路径</value>
+    <value>URL</value>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -877,7 +876,7 @@
     <value>0</value>
   </data>
   <data name="tabGeneral.Text" xml:space="preserve">
-    <value>通用</value>
+    <value>General</value>
   </data>
   <data name="&gt;&gt;tabGeneral.Name" xml:space="preserve">
     <value>tabGeneral</value>
@@ -901,7 +900,7 @@
     <value>3</value>
   </data>
   <data name="btnApplyHotkeyChanges.Text" xml:space="preserve">
-    <value>应用更改</value>
+    <value>Apply Changes</value>
   </data>
   <data name="&gt;&gt;btnApplyHotkeyChanges.Name" xml:space="preserve">
     <value>btnApplyHotkeyChanges</value>
@@ -925,7 +924,7 @@
     <value>2</value>
   </data>
   <data name="btnRemoveHotkey.Text" xml:space="preserve">
-    <value>删除选定快捷键</value>
+    <value>Remove Selected Hotkey</value>
   </data>
   <data name="&gt;&gt;btnRemoveHotkey.Name" xml:space="preserve">
     <value>btnRemoveHotkey</value>
@@ -949,7 +948,7 @@
     <value>1</value>
   </data>
   <data name="btnAddHotkey.Text" xml:space="preserve">
-    <value>添加快捷键</value>
+    <value>Add New Hotkey</value>
   </data>
   <data name="&gt;&gt;btnAddHotkey.Name" xml:space="preserve">
     <value>btnAddHotkey</value>
@@ -982,7 +981,7 @@
     <value>True</value>
   </metadata>
   <data name="hotkeyColAction.HeaderText" xml:space="preserve">
-    <value>行为</value>
+    <value>Action</value>
   </data>
   <data name="hotkeyColAction.MinimumWidth" type="System.Int32, mscorlib">
     <value>150</value>
@@ -1024,7 +1023,7 @@
     <value>1</value>
   </data>
   <data name="tabHotkeys.Text" xml:space="preserve">
-    <value>快捷键</value>
+    <value>Hotkeys</value>
   </data>
   <data name="&gt;&gt;tabHotkeys.Name" xml:space="preserve">
     <value>tabHotkeys</value>
@@ -1057,7 +1056,7 @@
     <value>37</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
-    <value>缩放</value>
+    <value>Zoom</value>
   </data>
   <data name="label15.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1123,7 +1122,7 @@
     <value>41</value>
   </data>
   <data name="btnResetZoom.Text" xml:space="preserve">
-    <value>重设</value>
+    <value>Reset</value>
   </data>
   <data name="&gt;&gt;btnResetZoom.Name" xml:space="preserve">
     <value>btnResetZoom</value>
@@ -1180,7 +1179,7 @@
     <value>40</value>
   </data>
   <data name="checkLogConsoleMessages.Text" xml:space="preserve">
-    <value>在日志中显示来自此悬浮窗的控制台消息</value>
+    <value>Show console messages from this overlay in the overlay log</value>
   </data>
   <data name="&gt;&gt;checkLogConsoleMessages.Name" xml:space="preserve">
     <value>checkLogConsoleMessages</value>
@@ -1210,7 +1209,7 @@
     <value>12</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>最大帧速率</value>
+    <value>Max. framerate</value>
   </data>
   <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1261,7 +1260,7 @@
     <value>2</value>
   </data>
   <data name="tabAdvanced.Text" xml:space="preserve">
-    <value>高级</value>
+    <value>Advanced</value>
   </data>
   <data name="&gt;&gt;tabAdvanced.Name" xml:space="preserve">
     <value>tabAdvanced</value>
@@ -1294,7 +1293,7 @@
     <value>30</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>ACTWS兼容性</value>
+    <value>ACTWS Compatiblity</value>
   </data>
   <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1327,7 +1326,7 @@
     <value>28</value>
   </data>
   <data name="checkActwsCompatbility.Text" xml:space="preserve">
-    <value>此悬浮窗需要使用ACTWebSocket</value>
+    <value>This is an overlay that requires ACTWebSocket</value>
   </data>
   <data name="&gt;&gt;checkActwsCompatbility.Name" xml:space="preserve">
     <value>checkActwsCompatbility</value>
@@ -1357,7 +1356,7 @@
     <value>31</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
-    <value>仅当悬浮窗与OverlayPlugin不兼容时，才需要启用此选项。</value>
+    <value>You only need to enable the above option if the overlay skin isn't compatible with OverlayPlugin normally.</value>
   </data>
   <data name="&gt;&gt;label11.Name" xml:space="preserve">
     <value>label11</value>
@@ -1387,7 +1386,7 @@
     <value>38</value>
   </data>
   <data name="checkNoFocus.Text" xml:space="preserve">
-    <value>不焦点此悬浮窗</value>
+    <value>Don't accept focus for this overlay</value>
   </data>
   <data name="&gt;&gt;checkNoFocus.Name" xml:space="preserve">
     <value>checkNoFocus</value>
@@ -1417,7 +1416,7 @@
     <value>35</value>
   </data>
   <data name="lblNoFocus.Text" xml:space="preserve">
-    <value>取消焦点</value>
+    <value>No Focus</value>
   </data>
   <data name="lblNoFocus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1498,7 +1497,7 @@
     <value>2</value>
   </data>
   <data name="buttonMiniParseOpenDevTools.Text" xml:space="preserve">
-    <value>打开 DevTools</value>
+    <value>Open DevTools</value>
   </data>
   <data name="&gt;&gt;buttonMiniParseOpenDevTools.Name" xml:space="preserve">
     <value>buttonMiniParseOpenDevTools</value>
@@ -1528,7 +1527,7 @@
     <value>0</value>
   </data>
   <data name="buttonMiniParseReloadBrowser.Text" xml:space="preserve">
-    <value>刷新悬浮窗</value>
+    <value>Reload overlay</value>
   </data>
   <data name="&gt;&gt;buttonMiniParseReloadBrowser.Name" xml:space="preserve">
     <value>buttonMiniParseReloadBrowser</value>
@@ -1558,7 +1557,7 @@
     <value>3</value>
   </data>
   <data name="buttonResetOverlayPosition.Text" xml:space="preserve">
-    <value>重置悬浮窗位置</value>
+    <value>Reset Overlay Position</value>
   </data>
   <data name="&gt;&gt;buttonResetOverlayPosition.Name" xml:space="preserve">
     <value>buttonResetOverlayPosition</value>
@@ -1634,5 +1633,11 @@
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="hotkeyColEnabled.HeaderText" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="hotkeyColHotkey.HeaderText" xml:space="preserve">
+    <value>Hotkey</value>
   </data>
 </root>

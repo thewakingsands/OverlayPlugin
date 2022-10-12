@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -37,12 +37,13 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             0x93E
         );
 
-        private struct CEDirectorOPCodes
+            private struct CEDirectorOPCodes
+       
         {
-            public CEDirectorOPCodes(int size_, int opcode_) { this.size = size_; this.opcode = opcode_; }
-            public int size;
-            public int opcode;
-        }
+                  public CEDirectorOPCodes(int size_, int opcode_) { this.size = size_; this.opcode = opcode_; }
+                  public int size;
+                  public int opcode;
+            }
 
         private static readonly CEDirectorOPCodes cedirector_cn = new CEDirectorOPCodes(
           0x30,
@@ -69,39 +70,40 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             public int opCode;
         };
 
-        [Serializable]
-        [StructLayout(LayoutKind.Explicit)]
-        public struct CEDirectorData
+            [Serializable]
+            [StructLayout(LayoutKind.Explicit)]
+            public struct CEDirectorData
+       
         {
 
-            [FieldOffset(0x20)]
-            public uint popTime;
-            [FieldOffset(0x24)]
-            public ushort timeRemaining;
-            [FieldOffset(0x28)]
-            public byte ceKey;
-            [FieldOffset(0x29)]
-            public byte numPlayers;
-            [FieldOffset(0x2A)]
-            public byte status;
-            [FieldOffset(0x2C)]
-            public byte progress;
-        };
+                  [FieldOffset(0x20)]
+                  public uint popTime;
+                  [FieldOffset(0x24)]
+                  public ushort timeRemaining;
+                  [FieldOffset(0x28)]
+                  public byte ceKey;
+                  [FieldOffset(0x29)]
+                  public byte numPlayers;
+                  [FieldOffset(0x2A)]
+                  public byte status;
+                  [FieldOffset(0x2C)]
+                  public byte progress;
+            };
 
-        private static SemaphoreSlim fateSemaphore;
-        private static SemaphoreSlim ceSemaphore;
-        private Dictionary<string, AC143OPCodes> ac143opcodes = null;
-        private Dictionary<string, CEDirectorOPCodes> cedirectoropcodes = null;
+            private static SemaphoreSlim fateSemaphore;
+            private static SemaphoreSlim ceSemaphore;
+            private Dictionary<string, AC143OPCodes> ac143opcodes = null;
+            private Dictionary<string, CEDirectorOPCodes> cedirectoropcodes = null;
 
         private Type MessageType = null;
-        private Type messageHeader = null;
-        public int headerOffset = 0;
-        public int messageTypeOffset = 0;
-        private ActorControl143 actorControl143;
+            private Type messageHeader = null;
+            public int headerOffset = 0;
+            public int messageTypeOffset = 0;
+            private ActorControl143 actorControl143;
 
-        // fates<fateID, progress>
-        private static Dictionary<int, int> fates;
-        private static Dictionary<int, CEDirectorData> ces;
+            // fates<fateID, progress>
+            private static Dictionary<int, int> fates;
+            private static Dictionary<int, CEDirectorData> ces;
 
         public event EventHandler<FateChangedArgs> OnFateChanged;
         public event EventHandler<CEChangedArgs> OnCEChanged;
@@ -129,19 +131,19 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             else
                 region_ = "intl";
 
-            fateSemaphore = new SemaphoreSlim(0, 1);
-            ceSemaphore = new SemaphoreSlim(0, 1);
-            ac143opcodes = new Dictionary<string, AC143OPCodes>();
-            ac143opcodes.Add("ko", ac143_v5_2);
-            ac143opcodes.Add("cn", ac143_v5_2);
-            ac143opcodes.Add("intl", ac143_v5_2);
+                  fateSemaphore = new SemaphoreSlim(0, 1);
+                  ceSemaphore = new SemaphoreSlim(0, 1);
+                  ac143opcodes = new Dictionary<string, AC143OPCodes>();
+                  ac143opcodes.Add("ko", ac143_v5_2);
+                  ac143opcodes.Add("cn", ac143_v5_2);
+                  ac143opcodes.Add("intl", ac143_v5_2);
 
             cedirectoropcodes = new Dictionary<string, CEDirectorOPCodes>();
             cedirectoropcodes.Add("intl", cedirector_cn);
             cedirectoropcodes.Add("cn", cedirector_cn);
 
-            fates = new Dictionary<int, int>();
-            ces = new Dictionary<int, CEDirectorData>();
+                  fates = new Dictionary<int, int>();
+                  ces = new Dictionary<int, CEDirectorData>();
 
             var netHelper = container.Resolve<NetworkParser>();
             var mach = Assembly.Load("Machina.FFXIV");
@@ -155,98 +157,122 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
 
         private unsafe void MessageReceived(string id, long epoch, byte[] message)
         {
-            if (message.Length < actorControl143.size && message.Length < cedirectoropcodes[region_].size)
-                return;
-
-            fixed (byte* buffer = message)
-            {
-                if (*(ushort*)&buffer[messageTypeOffset] == actorControl143.opCode)
-                {
-                    ProcessActorControl143(buffer, message);
-                    return;
-                }
-                if (cedirectoropcodes.ContainsKey(region_))
-                {
-                    if (*(ushort*)&buffer[messageTypeOffset] == cedirectoropcodes[region_].opcode)
-                    {
-                        ProcessCEDirector(buffer, message);
+                  if (message.Length < actorControl143.size && message.Length < cedirectoropcodes[region_].size)
                         return;
-                    }
-                }
-            }
+
+                  fixed (byte* buffer = message)
+           
+            {
+                        if (*(ushort*)&buffer[messageTypeOffset] == actorControl143.opCode)
+               
+                {
+                              ProcessActorControl143(buffer, message);
+                              return;
+                        }
+                        if (cedirectoropcodes.ContainsKey(region_))
+               
+                {
+                              if (*(ushort*)&buffer[messageTypeOffset] == cedirectoropcodes[region_].opcode)
+                   
+                    {
+                                    ProcessCEDirector(buffer, message);
+                                    return;
+                              }
+                        }
+                  }
         }
 
-        public unsafe void ProcessActorControl143(byte* buffer, byte[] message)
+            public unsafe void ProcessActorControl143(byte* buffer, byte[] message)
+       
         {
-            int a = *(ushort*)&buffer[actorControl143.categoryOffset];
+                  int a = *(ushort*)&buffer[actorControl143.categoryOffset];
 
-            fateSemaphore.WaitAsync();
-            try
+                  fateSemaphore.WaitAsync();
+                  try
+           
             {
-                if (a == ac143opcodes[region_].add)
+                        if (a == ac143opcodes[region_].add)
+               
                 {
-                    AddFate(*(int*)&buffer[actorControl143.param1Offset]);
-                }
+                              AddFate(*(int*)&buffer[actorControl143.param1Offset]);
+                        }
+               
                 else if (a == ac143opcodes[region_].remove)
+               
                 {
-                    RemoveFate(*(int*)&buffer[actorControl143.param1Offset]);
-                }
+                              RemoveFate(*(int*)&buffer[actorControl143.param1Offset]);
+                        }
+               
                 else if (a == ac143opcodes[region_].update)
+               
                 {
-                    int param1 = *(int*)&buffer[actorControl143.param1Offset];
-                    int param2 = *(int*)&buffer[actorControl143.param2Offset];
-                    if (!fates.ContainsKey(param1))
+                              int param1 = *(int*)&buffer[actorControl143.param1Offset];
+                              int param2 = *(int*)&buffer[actorControl143.param2Offset];
+                              if (!fates.ContainsKey(param1))
+                   
                     {
-                        AddFate(param1);
-                    }
-                    if (fates[param1] != param2)
+                                    AddFate(param1);
+                              }
+                              if (fates[param1] != param2)
+                   
                     {
-                        UpdateFate(param1, param2);
-                    }
-                }
-            }
+                                    UpdateFate(param1, param2);
+                              }
+                        }
+                  }
+           
             finally
+           
             {
-                fateSemaphore.Release();
+                        fateSemaphore.Release();
+                  }
             }
-        }
 
-        public unsafe void ProcessCEDirector(byte* buffer, byte[] message)
+            public unsafe void ProcessCEDirector(byte* buffer, byte[] message)
+       
         {
-            CEDirectorData data = *(CEDirectorData*)&buffer[0];
+                  CEDirectorData data = *(CEDirectorData*)&buffer[0];
 
-            ceSemaphore.WaitAsync();
-            try
+                  ceSemaphore.WaitAsync();
+                  try
+           
             {
-                if (data.status != 0 && !ces.ContainsKey(data.ceKey))
+                        if (data.status != 0 && !ces.ContainsKey(data.ceKey))
+               
                 {
-                    AddCE(data);
-                    return;
-                }
+                              AddCE(data);
+                              return;
+                        }
+               
                 else
+               
                 {
 
-                    // Don't update if key is about to be removed
-                    if (!ces[data.ceKey].Equals(data) &&
-                      data.status != 0)
+                              // Don't update if key is about to be removed
+                              if (!ces[data.ceKey].Equals(data) &&
+                                data.status != 0)
+                   
                     {
-                        UpdateCE(data.ceKey, data);
-                        return;
-                    }
+                                    UpdateCE(data.ceKey, data);
+                                    return;
+                              }
 
-                    // Needs removing
-                    if (data.status == 0)
+                              // Needs removing
+                              if (data.status == 0)
+                   
                     {
-                        RemoveCE(data);
-                        return;
-                    }
-                }
-            }
+                                    RemoveCE(data);
+                                    return;
+                              }
+                        }
+                  }
+           
             finally
+           
             {
-                ceSemaphore.Release();
+                        ceSemaphore.Release();
+                  }
             }
-        }
 
 
         private void AddCE(CEDirectorData data)

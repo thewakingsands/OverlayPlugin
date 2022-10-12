@@ -97,6 +97,15 @@ namespace RainbowMage.OverlayPlugin {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FFXIVCustomLogLines: Failed to load reserved log line: {0}.
+        /// </summary>
+        internal static string ErrorCouldNotLoadReservedLogLines {
+            get {
+                return ResourceManager.GetString("ErrorCouldNotLoadReservedLogLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name must not be empty or white space only..
         /// </summary>
         internal static string ErrorOverlayNameEmpty {
