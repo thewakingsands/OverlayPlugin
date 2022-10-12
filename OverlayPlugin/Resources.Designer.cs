@@ -61,9 +61,9 @@ namespace RainbowMage.OverlayPlugin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ACT tried to load {0} {1} which doesn&apos;t match your OverlayPlugin version ({2}). Aborting plugin load.
+        ///   Looks up a localized string similar to ACT 正在试图加载位于 {0} 下版本 {1} 的 ngld 悬浮窗插件，这与当前 ngld 悬浮窗插件版本 {2} 不同。插件加载已终止。
         ///
-        ///Please make sure the old OverlayPlugin is disabled and restart ACT. If that doesn&apos;t fix the issue, remove the above mentioned file and any OverlayPlugin*.dll, CEF or HtmlRenderer.dll files in the same directory.
+        ///请确保旧版本的悬浮窗插件已被禁用且已重启ACT，如果仍然如此，请尝试重装 ngld 悬浮窗插件，并在高级管理中将第三方插件下移到 OverlayPlugin.dll 下后重启ACT。
         ///.
         /// </summary>
         internal static string AssemblyMismatch {
@@ -129,7 +129,7 @@ namespace RainbowMage.OverlayPlugin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fatal: The loaded {0} version is older than expected ({1}  &lt; {2})! This might cause strange bugs in OverlayPlugin and its addons..
+        ///   Looks up a localized string similar to Fatal: The loaded {0} version is older than expected ({1} &lt; {2})! This might cause strange bugs in OverlayPlugin and its addons..
         /// </summary>
         internal static string DependencyOutdated {
             get {

@@ -88,7 +88,9 @@ namespace RainbowMage.OverlayPlugin
                 // Remove the error message about the log not being connected since it is now.
                 logConnected = true;
                 logBox.Text = "";
-            } else if (logBox.TextLength > 200 * 1024) {
+            }
+            else if (logBox.TextLength > 200 * 1024)
+            {
                 logBox.Text = "============日志已被截断 ==============\n为减少内存占用，日志已被截断。\n=========================================\n" + msg;
                 return;
             }

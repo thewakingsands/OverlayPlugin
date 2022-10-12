@@ -331,10 +331,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                             return JObject.FromObject(*(ReaperJobMemory*)&p[0]);
                     }
                 }
-                    return null;
-                }
+                return null;
             }
         }
+    }
 
     [Serializable]
     [StructLayout(LayoutKind.Explicit)]

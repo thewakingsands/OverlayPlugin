@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Advanced_Combat_Tracker;
 using RainbowMage.HtmlRenderer;
 using RainbowMage.OverlayPlugin.Updater;
-using System.Threading;
-using System.Globalization;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -59,7 +59,7 @@ namespace RainbowMage.OverlayPlugin
                 pluginStatusText.Text = Resources.FailedToLoadCommon;
                 return;
             }
-            
+
             pluginScreenSpace.Text = "ngld悬浮窗插件";
             Initialize();
         }
@@ -123,7 +123,7 @@ namespace RainbowMage.OverlayPlugin
                                 if (ex.Message.Contains("CefSharp"))
                                 {
                                     //Cef load failed, try to repair cef
-                                    Task.Run(()=>CefInstaller.InstallCef(GetCefPath())).Wait();
+                                    Task.Run(() => CefInstaller.InstallCef(GetCefPath())).Wait();
                                     try
                                     {
                                         pluginMain.InitPlugin(pluginScreenSpace, pluginStatusText);

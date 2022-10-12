@@ -1,14 +1,14 @@
-﻿using Advanced_Combat_Tracker;
-using Newtonsoft.Json.Linq;
-using RainbowMage.HtmlRenderer;
-using RainbowMage.OverlayPlugin.MemoryProcessors;
-using RainbowMage.OverlayPlugin.NetworkProcessors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using Advanced_Combat_Tracker;
+using Newtonsoft.Json.Linq;
+using RainbowMage.HtmlRenderer;
+using RainbowMage.OverlayPlugin.MemoryProcessors;
+using RainbowMage.OverlayPlugin.NetworkProcessors;
 
 namespace RainbowMage.OverlayPlugin.EventSources
 {

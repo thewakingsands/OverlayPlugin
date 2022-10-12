@@ -1,9 +1,9 @@
-﻿using RainbowMage.OverlayPlugin;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RainbowMage.OverlayPlugin;
 
 namespace RainbowMage.OverlayPlugin.EventSources
 {
