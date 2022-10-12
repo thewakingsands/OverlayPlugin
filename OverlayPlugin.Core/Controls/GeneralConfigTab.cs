@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -54,6 +54,7 @@ namespace RainbowMage.OverlayPlugin
 
         private void btnUpdateCheck_MouseClick(object sender, MouseEventArgs e)
         {
+            return;
             // Shitty double-click detection. I'd love to have a proper double click event on buttons in WinForms. =/
             double timePassed = 1000;
             var now = DateTime.Now;
@@ -82,7 +83,8 @@ namespace RainbowMage.OverlayPlugin
                 {
                     //Renderer.EnableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
                     Renderer.DisableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
-                } else
+                }
+                else
                 {
                     Renderer.DisableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
                 }
@@ -130,6 +132,7 @@ namespace RainbowMage.OverlayPlugin
 
         private void btnCactbotUpdate_Click(object sender, EventArgs e)
         {
+            return;
             try
             {
                 var asm = Assembly.Load("CactbotEventSource");

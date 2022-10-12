@@ -760,7 +760,7 @@ MaxUploadsPerDay=0
 
         void IRenderWebBrowser.OnCursorChange(IntPtr cursor, CursorType type, CursorInfo customCursorInfo)
         {
-            if(cursor != IntPtr.Zero)
+            if (cursor != IntPtr.Zero)
             {
                 target.Cursor = new Cursor(cursor);
             }

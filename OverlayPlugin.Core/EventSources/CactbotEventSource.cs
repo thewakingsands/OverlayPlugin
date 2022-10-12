@@ -252,7 +252,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
 
 
-             ffxiv_ = new FFXIVProcessCn(container);
+            ffxiv_ = new FFXIVProcessCn(container);
 
             fate_watcher_ = new FateWatcher(container);
             fate_watcher_.OnFateChanged += (o, e) => DispatchToJS(new JSEvents.FateEvent(e.eventType, e.fateID, e.progress));
