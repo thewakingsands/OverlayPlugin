@@ -513,6 +513,8 @@ namespace RainbowMage.HtmlRenderer
                     // Ignore; if we can't open the log, CEF can't do it either which means that we don't have to worry about log size.
                 }
 
+                cefSettings.EnableAudio();
+
                 // Necessary to avoid input lag with a framerate limit below 60.
                 cefSettings.CefCommandLineArgs["enable-begin-frame-scheduling"] = "1";
 
