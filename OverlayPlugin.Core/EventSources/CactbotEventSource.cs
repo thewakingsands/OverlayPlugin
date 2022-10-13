@@ -1,14 +1,14 @@
-﻿using Advanced_Combat_Tracker;
-using Newtonsoft.Json.Linq;
-using RainbowMage.HtmlRenderer;
-using RainbowMage.OverlayPlugin.MemoryProcessors;
-using RainbowMage.OverlayPlugin.NetworkProcessors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using Advanced_Combat_Tracker;
+using Newtonsoft.Json.Linq;
+using RainbowMage.HtmlRenderer;
+using RainbowMage.OverlayPlugin.MemoryProcessors;
+using RainbowMage.OverlayPlugin.NetworkProcessors;
 
 namespace RainbowMage.OverlayPlugin.EventSources
 {
@@ -252,7 +252,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
 
 
-             ffxiv_ = new FFXIVProcessCn(container);
+            ffxiv_ = new FFXIVProcessCn(container);
 
             fate_watcher_ = new FateWatcher(container);
             fate_watcher_.OnFateChanged += (o, e) => DispatchToJS(new JSEvents.FateEvent(e.eventType, e.fateID, e.progress));
@@ -332,7 +332,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 notify_state_ = new NotifyState();
             reset_notify_state_ = false;
 
-            bool game_exists = ffxiv_.FindProcess();
+            bool game_exists = ffxiv_.HasProcess();
             if (game_exists != notify_state_.game_exists)
             {
                 notify_state_.game_exists = game_exists;

@@ -121,8 +121,8 @@ namespace RainbowMage.HtmlRenderer
             {
                 BrowserStartLoading?.Invoke(this, new BrowserLoadEventArgs(0, e.Url));
             }
-           
-            catch  (Exception ex)
+
+            catch (Exception ex)
             {
                 BrowserConsoleLog?.Invoke(this, new BrowserConsoleLogEventArgs(ex.ToString(), "", 1));
             }
@@ -134,8 +134,8 @@ namespace RainbowMage.HtmlRenderer
             {
                 BrowserError?.Invoke(sender, new BrowserErrorEventArgs(e.ErrorCode, e.ErrorText, e.FailedUrl));
             }
-           
-            catch  (Exception ex)
+
+            catch (Exception ex)
             {
                 BrowserConsoleLog?.Invoke(this, new BrowserConsoleLogEventArgs(ex.ToString(), "", 1));
             }
@@ -168,8 +168,8 @@ namespace RainbowMage.HtmlRenderer
                 }
                 BrowserLoad?.Invoke(sender, new BrowserLoadEventArgs(e.HttpStatusCode, e.Url));
             }
-           
-            catch  (Exception ex)
+
+            catch (Exception ex)
             {
                 BrowserConsoleLog?.Invoke(this, new BrowserConsoleLogEventArgs(ex.ToString(), "", 1));
             }
@@ -181,7 +181,7 @@ namespace RainbowMage.HtmlRenderer
             {
                 this._browser.Load(url);
             }
-           
+
             else
             {
                 urlToLoad = url;
@@ -513,6 +513,7 @@ namespace RainbowMage.HtmlRenderer
                     // Ignore; if we can't open the log, CEF can't do it either which means that we don't have to worry about log size.
                 }
 
+                cefSettings.EnableAudio();
                 // Necessary to avoid input lag with a framerate limit below 60.
                 cefSettings.CefCommandLineArgs["enable-begin-frame-scheduling"] = "1";
 
@@ -759,7 +760,10 @@ MaxUploadsPerDay=0
 
         void IRenderWebBrowser.OnCursorChange(IntPtr cursor, CursorType type, CursorInfo customCursorInfo)
         {
-            target.Cursor = new Cursor(cursor);
+            if (cursor != IntPtr.Zero)
+            {
+                target.Cursor = new Cursor(cursor);
+            }
         }
 
         bool IRenderWebBrowser.GetScreenPoint(int contentX, int contentY, out int screenX, out int screenY)

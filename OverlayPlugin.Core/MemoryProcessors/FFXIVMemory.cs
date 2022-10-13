@@ -482,7 +482,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             Version target;
 
             //CN 6.1
-            target = new Version(6,1);
+            target = new Version(6, 1);
 
             candidates = candidates.OrderBy(x => x.GetVersion()).ToList();
             int idx = candidates.FindIndex(x => x.GetVersion() > target);

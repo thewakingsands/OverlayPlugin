@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Net.Http;
-using System.Reflection;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
-using System.ComponentModel;
 
 namespace RainbowMage.OverlayPlugin.Updater
 {
@@ -40,7 +40,8 @@ namespace RainbowMage.OverlayPlugin.Updater
             Exception error = null;
             var retry = false;
 
-            Action action = (async () => {
+            Action action = (async () =>
+            {
                 try
                 {
                     if (downloadDest == null)

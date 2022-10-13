@@ -45,7 +45,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             [FieldOffset(0x1C4)]
             public CharacterDetails charDetails;
 
-            [FieldOffset(0x19D9)]
+            [FieldOffset(0x1AD3)]
             public byte shieldPercentage;
         }
 
@@ -331,10 +331,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                             return JObject.FromObject(*(ReaperJobMemory*)&p[0]);
                     }
                 }
-                    return null;
-                }
+                return null;
             }
         }
+    }
 
     [Serializable]
     [StructLayout(LayoutKind.Explicit)]

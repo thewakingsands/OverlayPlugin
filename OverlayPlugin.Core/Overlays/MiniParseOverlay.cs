@@ -38,7 +38,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
 
             Config.ActwsCompatibilityChanged += (o, e) =>
             {
-                if (lastLoadedUrl != null && lastLoadedUrl != "about:blank"  && config!=null && config.Url!=null && base.Overlay!=null) Navigate(config.Url);
+                if (lastLoadedUrl != null && lastLoadedUrl != "about:blank" && config != null && config.Url != null && base.Overlay != null) Navigate(config.Url);
             };
             Config.NoFocusChanged += (o, e) =>
             {
@@ -306,7 +306,8 @@ namespace RainbowMage.OverlayPlugin.Overlays
                 if (lastLoadedUrl != this.Config.Url)
                 {
                     base.Navigate(Config.Url);
-                } else
+                }
+                else
                 {
                     base.Reload();
                 }

@@ -233,39 +233,30 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             ffxiv_ = container.Resolve<FFXIVRepository>();
             ffxiv_.RegisterProcessChangedHandler((process) =>
             {
-                processChanged_ = true;
+                OnProcessChanged(process);
             });
         }
-
-        bool processChanged_ = false;
 
         public bool HasProcess()
         {
             // If FindProcess failed, return false. But also return false if
             // FindProcess succeeded but the process has since exited.
-            return !processChanged_ && process_ != null && !process_.HasExited;
+            return process_ != null && !process_.HasExited;
         }
 
-        public bool FindProcess()
+        public void OnProcessChanged(Process process)
         {
-            if (HasProcess())
-                return true;
-
-            if (processChanged_) processChanged_ = false;
-
-            // Only support the DirectX 11 binary. The DirectX 9 one has different addresses.
-            Process found_process = (from x in new Process[] { ffxiv_.GetCurrentFFXIVProcess() }
-                                     where x != null && !x.HasExited && x.MainModule != null && x.MainModule.ModuleName == "ffxiv_dx11.exe"
-                                     select x).FirstOrDefault<Process>();
-            if (found_process != null && found_process.HasExited)
-                found_process = null;
-            bool changed_existance = (process_ == null) != (found_process == null);
-            bool changed_pid = process_ != null && found_process != null && process_.Id != found_process.Id;
+            if (process != null && process.HasExited)
+            {
+                process = null;
+            }
+            bool changed_existance = (process_ == null) != (process == null);
+            bool changed_pid = process_ != null && process != null && process_.Id != process.Id;
             if (changed_existance || changed_pid)
             {
                 player_ptr_addr_ = IntPtr.Zero;
                 job_data_outer_addr_ = IntPtr.Zero;
-                process_ = found_process != null ? new LimitedProcess(found_process) : null;
+                process_ = process != null ? new LimitedProcess(process) : null;
 
                 if (process_ != null)
                 {
@@ -280,12 +271,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                                    select x).Count();
                 if (found_32bit > 0)
                 {
-                    logger_.Log(LogLevel.Error, "Found DirectX9 FFXIV process. Requires DirectX11.");
+                    logger_.Log(LogLevel.Error, "发现不支持的DX9进程，请将游戏切换到DX11以使Cactbot正常运行。");
                     showed_dx9_error_ = true;
                 }
             }
-
-            return process_ != null;
         }
 
         public bool IsActive()

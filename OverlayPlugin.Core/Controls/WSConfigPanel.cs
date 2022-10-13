@@ -172,7 +172,7 @@ namespace RainbowMage.OverlayPlugin
         {
             genSslBtn.Enabled = false;
             logDisplay.Text = "获取SSL证书中，请等待...\r\n";
-            
+
             Task.Run(GenSsl);
         }
 

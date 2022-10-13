@@ -296,7 +296,7 @@ namespace RainbowMage.OverlayPlugin
 
         public string GetLocaleString()
         {
-             return "cn";
+            return "cn";
         }
 
         public GameRegion GetMachinaRegion()
