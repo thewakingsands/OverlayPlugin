@@ -332,7 +332,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 notify_state_ = new NotifyState();
             reset_notify_state_ = false;
 
-            bool game_exists = ffxiv_.FindProcess();
+            bool game_exists = ffxiv_.HasProcess();
             if (game_exists != notify_state_.game_exists)
             {
                 notify_state_.game_exists = game_exists;
