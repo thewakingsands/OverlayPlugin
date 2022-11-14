@@ -8,8 +8,8 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
 {
     public class Opcodes
     {
-        //CN 6.15
-        public static readonly int CEDirector = 0xD1;
-        public static readonly int MapEffect = 0x3AF;
+        //CN 6.18
+        public static readonly int CEDirector = 0x19A;
+        public static readonly int MapEffect = 0x1BB;
     }
 }
