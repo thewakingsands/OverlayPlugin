@@ -222,6 +222,28 @@
     <Compile Include="WebSocket\WSServer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="resources\colorpicker\alpha.png" />
+    <Content Include="resources\colorpicker\alpha_mask.png" />
+    <Content Include="resources\colorpicker\arrow.png" />
+    <Content Include="resources\colorpicker\arrows.png" />
+    <Content Include="resources\colorpicker\canvas-controls.png" />
+    <Content Include="resources\colorpicker\close.png" />
+    <Content Include="resources\colorpicker\color-wheel.png" />
+    <Content Include="resources\colorpicker\color_picker.html" />
+    <Content Include="resources\colorpicker\copy.png" />
+    <Content Include="resources\colorpicker\drop.png" />
+    <Content Include="resources\colorpicker\grain.png" />
+    <Content Include="resources\colorpicker\hue.png" />
+    <Content Include="resources\colorpicker\lock.png" />
+    <Content Include="resources\colorpicker\pick.png" />
+    <Content Include="resources\colorpicker\picker.png" />
+    <Content Include="resources\colorpicker\picker_mask_200.png" />
+    <Content Include="resources\colorpicker\resize.png" />
+    <Content Include="resources\colorpicker\script.js" />
+    <Content Include="resources\colorpicker\styles.css" />
+    <Content Include="resources\colorpicker\trash-can.png" />
+    <Content Include="resources\colorpicker\void.png" />
+    <Content Include="resources\common.min.js" />
     <Content Include="resources\enmity\aggrolist.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -276,6 +298,7 @@
     <Content Include="resources\guide.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\jquery.min.js" />
     <Content Include="resources\label.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -289,6 +312,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\miniparse_debug.html" />
+    <Content Include="resources\normalize.min.css" />
     <Content Include="resources\spelltimer.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -310,6 +334,7 @@
     <Content Include="resources\targetbars\target_of_target.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\vue.min.js" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\ConfigErrorPrompt.resx">
