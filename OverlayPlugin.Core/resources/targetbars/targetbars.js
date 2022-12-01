@@ -1,6 +1,6 @@
 'use strict';
 
-const defaultLang = 'English';
+const defaultLang = 'Chinese';
 const languages = [
   'Chinese',
   'English',
@@ -47,19 +47,19 @@ const configTitles = {
 
 const helpText = {
   English: `(🔒lock overlay to hide settings)<br>
-<a href="https://mdn.github.io/css-examples/tools/color-picker/" target="_blank">
+<a href="../colorpicker/color_picker.html" target="_blank">
   Color picker
 </a>`,
   Chinese: `(🔒锁定悬浮窗以隐藏设置)
-<a href="https://mdn.github.io/css-examples/tools/color-picker/" target="_blank">
+<a href="../colorpicker/color_picker.html" target="_blank">
   色彩选择工具
 </a>`,
   German: `(🔒Sperre das Overlay um die Einstellungen zu verstecken)
-<a href="https://mdn.github.io/css-examples/tools/color-picker/" target="_blank">
+<a href="../colorpicker/color_picker.html" target="_blank">
   Farbauswahl
 </a>`,
   Korean: `설정이 끝나면 '클릭 무시'와 '위치 잠금'을 반드시 체크합니다.<br>
-  <a href="https://mdn.github.io/css-examples/tools/color-picker/" target="_blank">
+  <a href="../colorpicker/color_picker.html" target="_blank">
     색상 선택기 바로 가기
   </a>`,
 };
