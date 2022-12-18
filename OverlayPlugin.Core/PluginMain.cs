@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ using RainbowMage.OverlayPlugin.EventSources;
 using RainbowMage.OverlayPlugin.Integration;
 using RainbowMage.OverlayPlugin.MemoryProcessors;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Aggro;
+using RainbowMage.OverlayPlugin.MemoryProcessors.AtkStage;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Combatant;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Enmity;
 using RainbowMage.OverlayPlugin.MemoryProcessors.EnmityHud;
@@ -286,7 +288,7 @@ namespace RainbowMage.OverlayPlugin
                             _container.Register(new NetworkParser(_container));
                             _container.Register(new TriggIntegration(_container));
                             _container.Register(new FFXIVCustomLogLines(_container));
-                            _container.Register(new OverlayPluginLogLines(_container));
+                            _container.Register(new MemoryProcessors.AtkStage.FFXIVClientStructs.Data(_container));
 
                             // Register FFXIV memory reading subcomponents.
                             // Must be done before loading addons.
@@ -299,6 +301,9 @@ namespace RainbowMage.OverlayPlugin
                             _container.Register<IEnmityMemory, EnmityMemoryManager>();
                             _container.Register<IEnmityHudMemory, EnmityHudMemoryManager>();
                             _container.Register<IInCombatMemory, InCombatMemoryManager>();
+                            _container.Register<IAtkStageMemory, AtkStageMemoryManager>();
+
+                            _container.Register(new OverlayPluginLogLines(_container));
 
                             this.label.Text = "Init Phase 2: Addons";
                             LoadAddons();
@@ -468,6 +473,7 @@ namespace RainbowMage.OverlayPlugin
                 // Make sure the event sources are ready before we load any overlays.
                 registry.StartEventSource(new MiniParseEventSource(_container));
                 registry.StartEventSource(new EnmityEventSource(_container));
+                registry.StartEventSource(new FFXIVClientStructsEventSource(_container));
 
                 registry.RegisterOverlay<MiniParseOverlay>();
                 registry.RegisterOverlay<SpellTimerOverlay>();
