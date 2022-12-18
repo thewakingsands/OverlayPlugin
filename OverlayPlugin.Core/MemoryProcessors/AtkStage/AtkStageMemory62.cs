@@ -12,13 +12,9 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.AtkStage
 
     class AtkStageMemory62 : AtkStageMemory, IAtkStageMemory62
     {
-        private static int GetAtkStageSingletonAddress(TinyIoCContainer container)
-        {
-            var data = container.Resolve<FFXIVClientStructs.Data>();
-            return (int)data.GetClassInstanceAddress(FFXIVClientStructs.DataNamespace.Global, "Component::GUI::AtkStage");
-        }
-
-        public AtkStageMemory62(TinyIoCContainer container) : base(container, GetAtkStageSingletonAddress(container)) { }
+        // Offset to global for atkStage singleton instance. ghidra shows `142044540`, base address of ffxiv_dx11.exe is `140000000`
+        private const int atkStageSingletonAddress = 0x2044540;
+        public AtkStageMemory62(TinyIoCContainer container) : base(container, atkStageSingletonAddress) { }
 
         public override Version GetVersion()
         {

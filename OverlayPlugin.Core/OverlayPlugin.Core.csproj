@@ -105,7 +105,6 @@
     <Compile Include="MemoryProcessors\AtkStage\AtkStageMemory.cs" />
     <Compile Include="MemoryProcessors\AtkStage\AtkStageMemory62.cs" />
     <Compile Include="MemoryProcessors\AtkStage\AtkStageMemoryManager.cs" />
-    <Compile Include="MemoryProcessors\AtkStage\FFXIVClientStructs\Data.cs" />
     <Compile Include="MemoryProcessors\AtkStage\FFXIVClientStructs\ManagedType.cs" />
     <Compile Include="MemoryProcessors\AtkStage\FFXIVClientStructs\Utilities.cs" />
     <Compile Include="MemoryProcessors\Combatant\Common.cs" />
@@ -397,10 +396,6 @@
     <Content Include="resources\vue.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Thirdparty\FFXIVClientStructs\Global\ida\data.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>resources\FFXIVClientStructs.Global.data.yml</TargetPath>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\ConfigErrorPrompt.resx">
@@ -633,9 +628,6 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="YamlDotNet">
-      <Version>12.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
