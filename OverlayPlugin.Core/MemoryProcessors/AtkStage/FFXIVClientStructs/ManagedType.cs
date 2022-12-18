@@ -232,12 +232,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.AtkGui.FFXIVClientStructs
         /// <returns>A JObject representation of this object</returns>
         public JObject ToJObject()
         {
-            // Make sure we've read the base object from FFXIV memory
-            if (!haveReadBaseObj)
-            {
-                ReadBaseObj();
-            }
-
             if (jObject != null)
             {
                 return jObject;
