@@ -95,18 +95,12 @@
     <Compile Include="EventSources\CactbotEventSource.cs" />
     <Compile Include="EventSources\CactbotEventSourceConfig.cs" />
     <Compile Include="EventSources\CactbotJSEvents.cs" />
-    <Compile Include="EventSources\FFXIVClientStructsEventSource.cs" />
     <Compile Include="EventSources\EnmityEventSource.cs" />
     <Compile Include="Integration\UnstableNewLogLines.cs" />
     <Compile Include="MemoryProcessors\Aggro\AggroMemory.cs" />
     <Compile Include="MemoryProcessors\Aggro\AggroMemory60.cs" />
     <Compile Include="MemoryProcessors\Aggro\AggroMemoryManager.cs" />
     <Compile Include="MemoryProcessors\Aggro\Common.cs" />
-    <Compile Include="MemoryProcessors\AtkStage\AtkStageMemory.cs" />
-    <Compile Include="MemoryProcessors\AtkStage\AtkStageMemory62.cs" />
-    <Compile Include="MemoryProcessors\AtkStage\AtkStageMemoryManager.cs" />
-    <Compile Include="MemoryProcessors\AtkStage\FFXIVClientStructs\ManagedType.cs" />
-    <Compile Include="MemoryProcessors\AtkStage\FFXIVClientStructs\Utilities.cs" />
     <Compile Include="MemoryProcessors\Combatant\Common.cs" />
     <Compile Include="MemoryProcessors\EnmityHud\Common.cs" />
     <Compile Include="MemoryProcessors\EnmityHud\EnmityHudMemory.cs" />
@@ -230,7 +224,6 @@
       <DependentUpon>WSConfigPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="WebSocket\WSServer.cs" />
-    <Compile Include="Thirdparty\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\colorpicker\alpha.png">
