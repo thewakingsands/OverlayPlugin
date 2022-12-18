@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -36,7 +36,7 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             get
             {
                 OpcodeConfigEntry entry;
-                if(opcodes.TryGetValue(name, out entry))
+                if (opcodes.TryGetValue(name, out entry))
                 {
                     return entry;
                 }

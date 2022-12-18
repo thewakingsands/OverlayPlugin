@@ -370,31 +370,31 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 if (HasSubscriber(ImportedLogLinesEvent))
                 {
                     try
-                {
-                    var line = args.originalLogLine.Split('|');
-
-                    if (int.TryParse(line[0], out int lineTypeInt))
                     {
-                        // If an imported log has split the encounter, also split it while importing.
-                        // TODO: should we also consider the current user's wipe config option here for splitting,
-                        // even if the original log writer did not have it set to true?
-                        LogMessageType lineType = (LogMessageType)lineTypeInt;
-                        if (lineType == LogMessageType.InCombat)
+                        var line = args.originalLogLine.Split('|');
+
+                        if (int.TryParse(line[0], out int lineTypeInt))
                         {
-                            var inACTCombat = Convert.ToUInt32(line[2]);
-                            if (inACTCombat == 0)
+                            // If an imported log has split the encounter, also split it while importing.
+                            // TODO: should we also consider the current user's wipe config option here for splitting,
+                            // even if the original log writer did not have it set to true?
+                            LogMessageType lineType = (LogMessageType)lineTypeInt;
+                            if (lineType == LogMessageType.InCombat)
                             {
-                                StopACTCombat();
+                                var inACTCombat = Convert.ToUInt32(line[2]);
+                                if (inACTCombat == 0)
+                                {
+                                    StopACTCombat();
+                                }
                             }
                         }
                     }
-                }
-                catch
-                {
-                    return;
-                }
+                    catch
+                    {
+                        return;
+                    }
 
-                lock (importedLogs)
+                    lock (importedLogs)
                     {
                         importedLogs.Add(args.originalLogLine);
                     }
