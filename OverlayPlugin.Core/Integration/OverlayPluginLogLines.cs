@@ -29,8 +29,8 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
         {
             this.container = container;
             logger = container.Resolve<ILogger>();
-            opcodes.Add("CEDirector", new OpcodeConfigEntry { opcode = (uint)Opcodes.CEDirector, size = 16 });
-            opcodes.Add("MapEffect", new OpcodeConfigEntry { opcode = (uint)Opcodes.MapEffect, size = 11 });
+            opcodes.Add("CEDirector", new OpcodeConfigEntry { opcode = (uint)GameRepoInfo.CEDirectorOpcode, size = 16 });
+            opcodes.Add("MapEffect", new OpcodeConfigEntry { opcode = (uint)GameRepoInfo.MapEffectOpcode, size = 11 });
         }
 
         public IOpcodeConfigEntry this[string name]

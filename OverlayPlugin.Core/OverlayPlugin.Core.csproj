@@ -124,7 +124,7 @@
     <Compile Include="MemoryProcessors\Combatant\CombatantMemory61.cs" />
     <Compile Include="MemoryProcessors\Combatant\CombatantMemory62.cs" />
     <Compile Include="MemoryProcessors\Combatant\CombatantMemory.cs" />
-    <Compile Include="NetworkProcessors\Opcodes.cs" />
+    <Compile Include="GameRepoInfo.cs" />
     <Compile Include="NetworkProcessors\FateWatcher.cs" />
     <Compile Include="NetworkProcessors\LineFateControl.cs" />
     <Compile Include="NetworkProcessors\LineCEDirector.cs" />
