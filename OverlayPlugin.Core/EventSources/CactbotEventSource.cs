@@ -36,6 +36,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private FFXIVProcess ffxiv_;
         private FateWatcher fate_watcher_;
 
+        private Version overlayVersion_;
+        private Version ffxivPluginVersion_;
+        private Version actVersion_;
+        private GameRegion gameRegion_;
         private string language_ = null;
         private string pc_locale_ = null;
         private List<FileSystemWatcher> watchers;
@@ -225,14 +229,15 @@ namespace RainbowMage.OverlayPlugin.EventSources
             language_ = "cn";
             pc_locale_ = System.Globalization.CultureInfo.CurrentUICulture.Name;
 
-            Version overlay = typeof(IOverlay).Assembly.GetName().Version;
-            Version ffxivPluginVersion = ffxiv.GetPluginVersion();
-            Version act = typeof(ActGlobals).Assembly.GetName().Version;
+            overlayVersion_ = typeof(IOverlay).Assembly.GetName().Version;
+            ffxivPluginVersion_ = ffxiv.GetPluginVersion();
+            actVersion_ = typeof(ActGlobals).Assembly.GetName().Version;
+            gameRegion_ = GameRegion.Chinese;
 
             // Print out version strings and locations to help users debug.
-            LogInfo("OverlayPlugin: {0} {1}", overlay.ToString(), typeof(IOverlay).Assembly.Location);
-            LogInfo("FFXIV Plugin: {0} {1}", ffxivPluginVersion.ToString(), ffxiv.GetPluginPath());
-            LogInfo("ACT: {0} {1}", act.ToString(), typeof(ActGlobals).Assembly.Location);
+            LogInfo("OverlayPlugin: {0} {1}", overlayVersion_.ToString(), typeof(IOverlay).Assembly.Location);
+            LogInfo("FFXIV Plugin: {0} {1}", ffxivPluginVersion_.ToString(), ffxiv.GetPluginPath());
+            LogInfo("ACT: {0} {1}", actVersion_.ToString(), typeof(ActGlobals).Assembly.Location);
 
             if (language_ == null)
             {
@@ -253,6 +258,13 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
 
             ffxiv_ = new FFXIVProcessCn(container);
+
+            // Avoid initialization races by always calling OnProcessChanged with the current process
+            // in case the ffxiv plugin has already sent this event and it never changes again.
+
+            // Comment this since it has done in FFXIVProcess and RainbowMage.OverlayPlugin.FFXIVRepository.RegisterProcessChangedHandler
+            // plugin_helper.RegisterProcessChangedHandler(ffxiv_.OnProcessChanged);
+            // ffxiv_.OnProcessChanged(plugin_helper.GetCurrentProcess());
 
             fate_watcher_ = new FateWatcher(container);
             fate_watcher_.OnFateChanged += (o, e) => DispatchToJS(new JSEvents.FateEvent(e.eventType, e.fateID, e.progress));
@@ -332,6 +344,33 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 notify_state_ = new NotifyState();
             reset_notify_state_ = false;
 
+            // Loading dance:
+            // * OverlayPlugin loads addons and initializes event sources.
+            // * OverlayPlugin loads its configuration.
+            // * Event sources are told to load their configuration and start (LoadConfig and Start are called).
+            // * Overlays are initialised and the browser instances are started. At this points the overlays start loading.
+            // * At some point the overlay's JavaScript is executed and OverlayPluginApi is injected. This order isn't
+            //   deterministic and depends on what the ACT process is doing at that point in time. During startup the
+            //   OverlayPluginApi is usually injected after the overlay is done loading while an overlay that's reloaded or
+            //   loaded later on will see the OverlayPluginApi before the page has loaded.
+            // * The overlay JavaScript sets up the initial event handlers and calls the cactbotLoadUser handler through
+            //   getUserConfigLocation. These actions are queued by the JS implementation in overlay_plugin_api.js until OverlayPluginApi
+            //   (or the WebSocket) is available. Once it is, the event subscriptions and handler calls are transmitted.
+            // * OverlayPlugin stores the event subscriptions and executes the C# handlers which in this case means
+            //   FetchUserFiles is called. That method loads the user files and returns them. The result is now transmitted
+            //   back to the overlay that called the handler and the Promise in JS is resolved with the result.
+            // * getUserConfigLocation processes the received information and calls the passed callback. This constructs the
+            //   overlay specific objects and registers additional event handlers. Finally, the cactbotRequestState handler
+            //   is called.
+            // * OverlayPlugin processes the new event subscriptions and executes the cactbotRequestState handler.
+            // * The next time SendFastRateEvents is called, it resets notify_state_ (since the previous handler set
+            //   reset_notify_state_ to true) which causes it to dispatch all state events again. These events are now
+            //   dispatched to all subscribed overlays. However, this means that overlays can receive state events multiple
+            //   times during startup. If the user has three Cactbot overlays, all of them will call cactbotRequestState and
+            //   thus cause this to happen one to three times depending on their timing. This shouldn't cause any issues but
+            //   it's a waste of CPU cycles.
+            // * Since this only happens during startup, it's probably not worth fixing though. Not sure.
+
             bool game_exists = ffxiv_.HasProcess();
             if (game_exists != notify_state_.game_exists)
             {
@@ -395,7 +434,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 bool send = false;
                 if (!player.Equals(notify_state_.player))
                 {
-                    // Clear the FATE dictionary if we switched characters
+                    // Clear the FateWatcher dictionaries if we switched characters
                     if (notify_state_.player != null && !player.name.Equals(notify_state_.player.name))
                     {
                         ClearFateWatcherDictionaries();
@@ -690,6 +729,13 @@ namespace RainbowMage.OverlayPlugin.EventSources
             result["displayLanguage"] = Config.DisplayLanguage;
             // For backwards compatibility:
             result["language"] = language_;
+
+            //It's unknown for ffcafe, but leave stub here should be better incase some overlays using that
+            result["cactbotVersion"] = "0.27.24.0";
+            result["overlayPluginVersion"] = overlayVersion_.ToString();
+            result["ffxivPluginVersion"] = ffxivPluginVersion_.ToString();
+            result["actVersion"] = actVersion_.ToString();
+            result["gameRegion"] = gameRegion_.ToString();
 
             var response = new JObject();
             response["detail"] = result;
