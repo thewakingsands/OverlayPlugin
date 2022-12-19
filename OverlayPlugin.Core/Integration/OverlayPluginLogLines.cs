@@ -44,7 +44,7 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
                 }
                 else
                 {
-                    logger.LogError("Unable to recive opcode config for " + name);
+                    logger.LogError("Unable to resolve opcode config for " + name);
                     return null;
                 }
             }
