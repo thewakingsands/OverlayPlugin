@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RainbowMage.OverlayPlugin.MemoryProcessors.InCombat;
 using RainbowMage.OverlayPlugin.Updater;
 
 namespace RainbowMage.OverlayPlugin.NetworkProcessors
@@ -15,43 +16,40 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             container.Register(new LineMapEffect(container));
             container.Register(new LineFateControl(container));
             container.Register(new LineCEDirector(container));
+            container.Register(new LineInCombat(container));
         }
     }
 
     class OverlayPluginLogLineConfig
     {
-        private Dictionary<string, OpcodeConfigEntry> opcodes = new Dictionary<string, OpcodeConfigEntry>();
-        private ILogger logger;
-        private FFXIVRepository repository;
-        private PluginConfig config;
         private TinyIoCContainer container;
-
+        private ILogger logger;
+        private Dictionary<string, OpcodeConfigEntry> opcodes = new Dictionary<string, OpcodeConfigEntry>();
         public OverlayPluginLogLineConfig(TinyIoCContainer container)
         {
             this.container = container;
             logger = container.Resolve<ILogger>();
-            repository = container.Resolve<FFXIVRepository>();
-            config = container.Resolve<PluginConfig>();
-            opcodes.Add("MapEffect", new OpcodeConfigEntry()
-            {
-                opcode = (uint)Opcodes.MapEffect,
-                size = 11
-            });
-            opcodes.Add("CEDirector", new OpcodeConfigEntry()
-            {
-                opcode = (uint)Opcodes.CEDirector,
-                size = 16
-            });
+            opcodes.Add("CEDirector", new OpcodeConfigEntry { opcode = (uint)GameRepoInfo.CEDirectorOpcode, size = 16 });
+            opcodes.Add("MapEffect", new OpcodeConfigEntry { opcode = (uint)GameRepoInfo.MapEffectOpcode, size = 11 });
         }
+
         public IOpcodeConfigEntry this[string name]
         {
             get
             {
-                return opcodes[name];
+                OpcodeConfigEntry entry;
+                if (opcodes.TryGetValue(name, out entry))
+                {
+                    return entry;
+                }
+                else
+                {
+                    logger.LogError("Unable to resolve opcode config for " + name);
+                    return null;
+                }
             }
         }
     }
-
     interface IOpcodeConfigEntry
     {
         uint opcode { get; }

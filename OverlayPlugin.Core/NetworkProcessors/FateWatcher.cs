@@ -45,10 +45,9 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             public int opcode;
         }
 
-        //CN 6.15
         private static readonly CEDirectorOPCodes cedirector_cn = new CEDirectorOPCodes(
           0x30,
-          Opcodes.CEDirector
+          GameRepoInfo.CEDirectorOpcode
         );
 
         private struct ActorControl143

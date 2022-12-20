@@ -54,7 +54,13 @@ namespace RainbowMage.OverlayPlugin
         PacketDump,
         Version,
         Error,
-        Timer
+        Timer,
+        // OverlayPlugin lines
+        RegisterLogLine = 256,
+        MapEffect,
+        FateDirector,
+        CEDirector,
+        InCombat,
     }
 
     public enum GameRegion
@@ -329,8 +335,6 @@ namespace RainbowMage.OverlayPlugin
         [MethodImpl(MethodImplOptions.NoInlining)]
         internal bool WriteLogLineImpl(uint ID, DateTime timestamp, string line)
         {
-            //Temporary disable due to current FFXIV plugin unsupported
-            return false;
 
             if (logOutputWriteLineFunc == null)
             {
@@ -410,6 +414,13 @@ namespace RainbowMage.OverlayPlugin
                 sub.PartyListChanged += new PartyListChangedDelegate(handler);
         }
 
+        public void RegisterZoneChangeDelegate(Action<uint, string> handler)
+        {
+            var sub = GetSubscription();
+            if (sub != null)
+                sub.ZoneChanged += new ZoneChangedDelegate(handler);
+        }
+
         // ProcessChangedDelegate(Process process)
         public void RegisterProcessChangedHandler(Action<Process> handler)
         {
@@ -425,6 +436,11 @@ namespace RainbowMage.OverlayPlugin
                     if (process != null) handler(process);
                 }
             }
+        }
+
+        public DateTime GetServerTimestamp()
+        {
+            return GetRepository()?.GetServerTimestamp() ?? DateTime.Now;
         }
     }
 }
