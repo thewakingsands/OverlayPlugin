@@ -89,7 +89,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
             if (Config.HideOutOfCombat)
             {
                 // Assume that we're not in combat when ACT starts.
-                Overlay.Visible = false;
+                Config.IsVisible = false;
             }
 
             Overlay.Renderer.BrowserStartLoading += PrepareWebsite;
