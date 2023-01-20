@@ -39,7 +39,7 @@ namespace RainbowMage.OverlayPlugin
         Timer configSaveTimer;
 
         internal PluginConfig Config { get; private set; }
-        internal List<IOverlay> Overlays { get; private set; }
+        internal IList<IOverlay> Overlays { get; private set; }
         internal event EventHandler OverlaysChanged;
 
         internal string PluginDirectory { get; private set; }
@@ -377,7 +377,7 @@ namespace RainbowMage.OverlayPlugin
         private void InitializeOverlays()
         {
             // オーバーレイ初期化
-            this.Overlays = new List<IOverlay>();
+            this.Overlays = new ConcurrentList<IOverlay>();
             foreach (var overlayConfig in this.Config.Overlays)
             {
                 var parameters = new NamedParameterOverloads();

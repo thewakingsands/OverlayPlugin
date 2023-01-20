@@ -49,7 +49,29 @@ namespace RainbowMage.OverlayPlugin
         /// </summary>
         public IPluginConfig PluginConfig { get; private set; }
         IOverlayConfig IOverlay.Config { get => Config; set => Config = (TConfig)value; }
-        IntPtr IOverlay.Handle { get => Overlay == null ? IntPtr.Zero : Overlay.Handle; }
+        IntPtr IOverlay.Handle
+        {
+            get
+            {
+                if (Overlay == null)
+                {
+                    return IntPtr.Zero;
+                }
+                IntPtr ptr;
+                try
+                {
+                    ptr = this.Overlay.Handle;
+                }
+                catch (ObjectDisposedException)
+                {
+                    Log(LogLevel.Error, "BrowserError: Overlay form has been disposed, trying regenrate...");
+                    this.Overlay.Dispose();
+                    InitializeOverlay();
+                    ptr = this.Overlay.Handle;
+                }
+                return ptr;
+            }
+        }
 
         public bool Visible
         {
@@ -59,9 +81,22 @@ namespace RainbowMage.OverlayPlugin
             }
             set
             {
-                if (Overlay != null) Overlay.Visible = value;
+                if (Overlay != null)
+
+                    try
+                    {
+                        Overlay.Visible = value;
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        Log(LogLevel.Error, "BrowserError: Overlay form has been disposed, trying regenrate...");
+                        this.Overlay.Dispose();
+                        InitializeOverlay();
+                        Overlay.Visible = value;
+                    }
             }
         }
+    
 
         protected OverlayBase(TConfig config, string name, TinyIoCContainer container)
         {
@@ -278,7 +313,8 @@ namespace RainbowMage.OverlayPlugin
         {
             this.Config.VisibleChanged += (o, e) =>
             {
-                if (this.Overlay != null) this.Overlay.Visible = e.IsVisible;
+                if (this.Overlay != null)
+                        this.Visible = e.IsVisible;
             };
 
             this.Config.ClickThruChanged += (o, e) =>

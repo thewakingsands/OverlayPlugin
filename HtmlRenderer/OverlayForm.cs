@@ -23,6 +23,7 @@ namespace RainbowMage.HtmlRenderer
     {
         private DIBitmap surfaceBuffer;
         private bool terminated = false;
+        private bool closingOverlay = false;
 
         private const int WS_EX_TOPMOST = 0x00000008;
         private const int WS_EX_LAYERED = 0x00080000;
@@ -311,6 +312,21 @@ namespace RainbowMage.HtmlRenderer
 
                 surfaceBuffer = new DIBitmap(Width, Height);
                 UpdateLayeredWindowBitmap();
+            }
+        }
+
+        public new void Close()
+        {
+            closingOverlay = true;
+            base.Close();
+        }
+
+        private void OverlayForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Prevent unexpected close (like windows blocker by 360)
+            if (!closingOverlay)
+            {
+                e.Cancel = true;
             }
         }
 

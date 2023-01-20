@@ -30,6 +30,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "OverlayForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OverlayForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OverlayForm_FormClosed);
             this.ResumeLayout(false);
 

@@ -67,6 +67,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ConcurrentList.cs" />
     <Compile Include="ConfigCreationConverter.cs" />
     <Compile Include="Controls\ConfigErrorPrompt.cs">
       <SubType>Form</SubType>
