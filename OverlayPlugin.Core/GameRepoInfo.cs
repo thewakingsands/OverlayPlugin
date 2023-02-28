@@ -10,7 +10,7 @@ namespace RainbowMage.OverlayPlugin
     {
         //CN 6.20
         public static readonly Version version = new Version(6, 2);
-        public static readonly int CEDirectorOpcode = 0x0E4;
-        public static readonly int MapEffectOpcode = 0x24B;
+        public static readonly int CEDirectorOpcode = 0x39D;
+        public static readonly int MapEffectOpcode = 0x133;
     }
 }
