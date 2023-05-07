@@ -15,10 +15,10 @@ deps = {
         'strip': 0,
         'hash': ['sha256', 'ed98fa01ec2c7ed2ac843fa8ea2eec1d66f86fad4c6864de4d73d5cfbf163dce'],
     },
-    'curl': {
-        'url': 'https://curl.haxx.se/download/curl-7.70.0.tar.xz',
-        'dest': 'Thirdparty/curl',
+    'FFXIVClientStructs': {
+        'url': 'https://github.com/aers/FFXIVClientStructs/archive/e02acce27a77f47c9076c19ad89609127fa36c30.zip',
+        'dest': 'OverlayPlugin.Core/Thirdparty/FFXIVClientStructs/Base/Global',
         'strip': 1,
-        'hash': ['sha256', '032f43f2674008c761af19bf536374128c16241fb234699a55f9fb603fcfbae7'],
+        'hash': ['sha256', 'f9ec36ec8caa15047d13e18e1e1d2beee4d50e93b42d4d822e858931b92b5958'],
     },
 }

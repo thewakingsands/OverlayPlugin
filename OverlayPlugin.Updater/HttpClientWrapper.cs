@@ -121,9 +121,25 @@ namespace RainbowMage.OverlayPlugin.Updater
 
             if (error != null)
             {
-                throw new CurlException(retry, error.Message, error);
+                throw new HttpClientException(retry, error.Message, error);
             }
             return result;
+        }
+    }
+
+    [Serializable]
+    public class HttpClientException : Exception
+    {
+        public readonly bool Retry;
+
+        public HttpClientException(bool retry, string message) : base(message)
+        {
+            this.Retry = retry;
+        }
+
+        public HttpClientException(bool retry, string message, Exception innerException) : base(message, innerException)
+        {
+            this.Retry = retry;
         }
     }
 }

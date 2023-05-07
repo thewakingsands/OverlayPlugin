@@ -69,7 +69,6 @@
     <Compile Include="CefMissingTab.Designer.cs">
       <DependentUpon>CefMissingTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="CurlWrapper.cs" />
     <Compile Include="HttpClientWrapper.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="NativeMethods.cs" />
@@ -163,12 +162,6 @@
       <Name>OverlayPlugin.Common</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\libcurl.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\libcurl-x64.dll" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Markdig.Signed">

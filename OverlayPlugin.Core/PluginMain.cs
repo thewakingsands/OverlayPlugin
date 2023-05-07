@@ -280,27 +280,37 @@ namespace RainbowMage.OverlayPlugin
                             // ** Init phase 2
                             this.label.Text = "Init Phase 2: Integrations";
 
-                            // Initialize the parser in the second phase since it needs the FFXIV plugin.
-                            // If OverlayPlugin is placed above the FFXIV plugin, it won't be available in the first
-                            // phase but it'll be loaded by the time we enter the second phase.
-                            _container.Register(new FFXIVRepository(_container));
-                            _container.Register(new NetworkParser(_container));
-                            _container.Register(new TriggIntegration(_container));
-                            _container.Register(new FFXIVCustomLogLines(_container));
+                            // Wrap FFXIV plugin related initialization in try/catch to allow OP to work when FFXIV plugin isn't present
+                            try
+                            {
+                                // Initialize the parser in the second phase since it needs the FFXIV plugin.
+                                // If OverlayPlugin is placed above the FFXIV plugin, it won't be available in the first
+                                // phase but it'll be loaded by the time we enter the second phase.
+                                _container.Register(new FFXIVRepository(_container));
+                                _container.Register(new NetworkParser(_container));
+                                _container.Register(new TriggIntegration(_container));
+                                _container.Register(new FFXIVCustomLogLines(_container));
+                                _container.Register(new MemoryProcessors.FFXIVClientStructs.Data(_container));
 
-                            // Register FFXIV memory reading subcomponents.
-                            // Must be done before loading addons.
-                            _container.Register(new FFXIVMemory(_container));
+                                // Register FFXIV memory reading subcomponents.
+                                // Must be done before loading addons.
+                                _container.Register(new FFXIVMemory(_container));
 
-                            // These are registered to be lazy-loaded. Use interface to force TinyIoC to use singleton pattern.
-                            _container.Register<ICombatantMemory, CombatantMemoryManager>();
-                            _container.Register<ITargetMemory, TargetMemoryManager>();
-                            _container.Register<IAggroMemory, AggroMemoryManager>();
-                            _container.Register<IEnmityMemory, EnmityMemoryManager>();
-                            _container.Register<IEnmityHudMemory, EnmityHudMemoryManager>();
-                            _container.Register<IInCombatMemory, InCombatMemoryManager>();
+                                // These are registered to be lazy-loaded. Use interface to force TinyIoC to use singleton pattern.
+                                _container.Register<ICombatantMemory, CombatantMemoryManager>();
+                                _container.Register<ITargetMemory, TargetMemoryManager>();
+                                _container.Register<IAggroMemory, AggroMemoryManager>();
+                                _container.Register<IEnmityMemory, EnmityMemoryManager>();
+                                _container.Register<IEnmityHudMemory, EnmityHudMemoryManager>();
+                                _container.Register<IInCombatMemory, InCombatMemoryManager>();
+                                _container.Register<IAtkStageMemory, AtkStageMemoryManager>();
 
-                            _container.Register(new OverlayPluginLogLines(_container));
+                                _container.Register(new OverlayPluginLogLines(_container));
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.Log(LogLevel.Warning, "InitPlugin: Could not init FFXIV integration: {0}", ex);
+                            }
 
                             this.label.Text = "Init Phase 2: Addons";
                             LoadAddons();
@@ -469,6 +479,8 @@ namespace RainbowMage.OverlayPlugin
 
                 // Make sure the event sources are ready before we load any overlays.
                 registry.StartEventSource(new MiniParseEventSource(_container));
+                registry.StartEventSource(new FFXIVOptionalEventSource(_container));
+                registry.StartEventSource(new FFXIVRequiredEventSource(_container));
                 registry.StartEventSource(new EnmityEventSource(_container));
 
                 registry.RegisterOverlay<MiniParseOverlay>();

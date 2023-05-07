@@ -217,14 +217,7 @@ namespace RainbowMage.OverlayPlugin.Updater
                 {
                     try
                     {
-                        if (useHttpClient)
-                        {
-                            HttpClientWrapper.Get(url, new Dictionary<string, string>(), dest, DlProgressCallback, true);
-                        }
-                        else
-                        {
-                            CurlWrapper.Get(url, new Dictionary<string, string>(), dest, DlProgressCallback, true);
-                        }
+                        HttpClientWrapper.Get(url, new Dictionary<string, string>(), dest, DlProgressCallback, true);
 
                         success = true;
                         break;
@@ -235,11 +228,11 @@ namespace RainbowMage.OverlayPlugin.Updater
 
                         if (retries > 0 && !cancel.IsCancellationRequested)
                         {
-                            // If this is a curl exception, it's most likely network related. Wait a second
+                            // If this is a HttpClient exception, it's most likely network related. Wait a second
                             // before trying again. We don't want to spam the other side with download requests.
-                            if (ex.GetType() == typeof(CurlException))
+                            if (ex.GetType() == typeof(HttpClientException))
                             {
-                                if (!((CurlException)ex).Retry)
+                                if (!((HttpClientException)ex).Retry)
                                 {
                                     // Retrying won't fix this kind of error. Abort.
                                     success = false;

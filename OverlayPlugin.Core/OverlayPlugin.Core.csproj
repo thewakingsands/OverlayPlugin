@@ -97,11 +97,20 @@
     <Compile Include="EventSources\CactbotEventSourceConfig.cs" />
     <Compile Include="EventSources\CactbotJSEvents.cs" />
     <Compile Include="EventSources\EnmityEventSource.cs" />
+    <Compile Include="EventSources\FFXIVRequiredEventSource.cs" />
+    <Compile Include="EventSources\FFXIVOptionalEventSource.cs" />
     <Compile Include="Integration\UnstableNewLogLines.cs" />
     <Compile Include="MemoryProcessors\Aggro\AggroMemory.cs" />
     <Compile Include="MemoryProcessors\Aggro\AggroMemory60.cs" />
     <Compile Include="MemoryProcessors\Aggro\AggroMemoryManager.cs" />
     <Compile Include="MemoryProcessors\Aggro\Common.cs" />
+    <Compile Include="MemoryProcessors\AtkStage\AtkStageMemory.cs" />
+    <Compile Include="MemoryProcessors\AtkStage\AtkStageMemory62.cs" />
+    <Compile Include="MemoryProcessors\AtkStage\AtkStageMemoryManager.cs" />
+    <Compile Include="MemoryProcessors\FFXIVClientStructs\Data.cs" />
+    <Compile Include="MemoryProcessors\FFXIVClientStructs\ManagedType.cs" />
+    <Compile Include="MemoryProcessors\Combatant\LineCombatant.cs" />
+    <Compile Include="MemoryProcessors\Combatant\CombatantMemory63.cs" />
     <Compile Include="MemoryProcessors\Combatant\Common.cs" />
     <Compile Include="MemoryProcessors\EnmityHud\Common.cs" />
     <Compile Include="MemoryProcessors\EnmityHud\EnmityHudMemory.cs" />
@@ -119,6 +128,7 @@
     <Compile Include="MemoryProcessors\InCombat\InCombatMemory61.cs" />
     <Compile Include="MemoryProcessors\InCombat\InCombatMemoryManager.cs" />
     <Compile Include="MemoryProcessors\InCombat\LineInCombat.cs" />
+    <Compile Include="MemoryProcessors\Target\TargetMemory63.cs" />
     <Compile Include="MemoryProcessors\Target\TargetMemoryManager.cs" />
     <Compile Include="MemoryProcessors\Target\TargetMemory.cs" />
     <Compile Include="MemoryProcessors\Target\TargetMemory60.cs" />
@@ -127,6 +137,7 @@
     <Compile Include="MemoryProcessors\Combatant\CombatantMemory.cs" />
     <Compile Include="GameRepoInfo.cs" />
     <Compile Include="NetworkProcessors\FateWatcher.cs" />
+    <Compile Include="NetworkProcessors\LineRSV.cs" />
     <Compile Include="NetworkProcessors\LineFateControl.cs" />
     <Compile Include="NetworkProcessors\LineCEDirector.cs" />
     <Compile Include="NetworkProcessors\LineMapEffect.cs" />
@@ -144,6 +155,7 @@
     <Compile Include="EventSourceBase.cs" />
     <Compile Include="ConfigEventArgs.cs" />
     <Compile Include="Integration\OverlayPluginLogLines.cs" />
+    <Compile Include="ClipboardTechSupport.cs" />
     <Compile Include="OverlayHider.cs" />
     <Compile Include="Overlays\LogParseConfigPanel.cs">
       <SubType>UserControl</SubType>
@@ -225,6 +237,7 @@
       <DependentUpon>WSConfigPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="WebSocket\WSServer.cs" />
+    <Compile Include="Thirdparty\FFXIVClientStructs\Transformed\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\colorpicker\alpha.png">
@@ -387,7 +400,10 @@
     <Content Include="resources\targetbars\target_of_target.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="resources\vue.min.js">
+	<Content Include="resources\vue.min.js">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+    <Content Include="Thirdparty\FFXIVClientStructs\Global\ida\data.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -430,6 +446,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GeneralConfigTab.resx">
       <DependentUpon>GeneralConfigTab.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GeneralConfigTab.zh-CN.resx">
       <DependentUpon>GeneralConfigTab.cs</DependentUpon>
