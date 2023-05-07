@@ -290,7 +290,8 @@ namespace RainbowMage.OverlayPlugin
                                 _container.Register(new NetworkParser(_container));
                                 _container.Register(new TriggIntegration(_container));
                                 _container.Register(new FFXIVCustomLogLines(_container));
-                                _container.Register(new MemoryProcessors.FFXIVClientStructs.Data(_container));
+                                // Disable for cn
+                                //_container.Register(new MemoryProcessors.FFXIVClientStructs.Data(_container));
 
                                 // Register FFXIV memory reading subcomponents.
                                 // Must be done before loading addons.
@@ -303,7 +304,8 @@ namespace RainbowMage.OverlayPlugin
                                 _container.Register<IEnmityMemory, EnmityMemoryManager>();
                                 _container.Register<IEnmityHudMemory, EnmityHudMemoryManager>();
                                 _container.Register<IInCombatMemory, InCombatMemoryManager>();
-                                _container.Register<IAtkStageMemory, AtkStageMemoryManager>();
+                                // Disable for cn
+                                //_container.Register<IAtkStageMemory, AtkStageMemoryManager>();
 
                                 _container.Register(new OverlayPluginLogLines(_container));
                             }

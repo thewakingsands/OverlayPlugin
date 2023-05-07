@@ -159,249 +159,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }));
         }
 
-        private void LogLineHandler(bool isImport, LogLineEventArgs args)
-        {
-            if (isImport)
-            {
-                try
-                {
-                    var line = args.originalLogLine.Split('|');
-
-                    if (int.TryParse(line[0], out int lineTypeInt))
-                    {
-                        // If an imported log has split the encounter, also split it while importing.
-                        // TODO: should we also consider the current user's wipe config option here for splitting,
-                        // even if the original log writer did not have it set to true?
-                        LogMessageType lineType = (LogMessageType)lineTypeInt;
-                        if (lineType == LogMessageType.InCombat)
-                        {
-                            var inACTCombat = Convert.ToUInt32(line[2]);
-                            if (inACTCombat == 0)
-                            {
-                                StopACTCombat();
-                            }
-                        }
-                    }
-                }
-                catch
-                {
-                    return;
-                }
-
-                lock (importedLogs)
-                {
-                    importedLogs.Add(args.originalLogLine);
-                }
-                return;
-            }
-
-            try
-            {
-                LogMessageType lineType;
-                var line = args.originalLogLine.Split('|');
-
-                if (!int.TryParse(line[0], out int lineTypeInt))
-                {
-                    return;
-                }
-
-                try
-                {
-                    lineType = (LogMessageType)lineTypeInt;
-                }
-                catch
-                {
-                    return;
-                }
-
-                switch (lineType)
-                {
-                    case LogMessageType.ChangeZone:
-                        if (line.Length < 3) return;
-
-                        var zoneID = Convert.ToUInt32(line[2], 16);
-                        var zoneName = line[3];
-
-                        DispatchAndCacheEvent(JObject.FromObject(new
-                        {
-                            type = ChangeZoneEvent,
-                            zoneID,
-                            zoneName,
-                        }));
-                        break;
-
-                    case LogMessageType.ChangeMap:
-                        if (line.Length < 6) return;
-
-                        var mapID = Convert.ToUInt32(line[2], 10);
-                        var regionName = line[3];
-                        var placeName = line[4];
-                        var placeNameSub = line[5];
-
-                        DispatchAndCacheEvent(JObject.FromObject(new
-                        {
-                            type = ChangeMapEvent,
-                            mapID,
-                            regionName,
-                            placeName,
-                            placeNameSub
-                        }));
-                        break;
-
-                    case LogMessageType.ChangePrimaryPlayer:
-                        if (line.Length < 4) return;
-
-                        var charID = Convert.ToUInt32(line[2], 16);
-                        var charName = line[3];
-
-                        DispatchAndCacheEvent(JObject.FromObject(new
-                        {
-                            type = ChangePrimaryPlayerEvent,
-                            charID,
-                            charName,
-                        }));
-                        break;
-
-                    case LogMessageType.Network6D:
-                        if (!Config.EndEncounterAfterWipe) break;
-                        if (line.Length < 4) break;
-
-                        // 4000000F is the new value for 6.2, 40000010 is the pre-6.2 value.
-                        // When CN/KR is on 6.2, this can be removed.
-                        if (line[3] == "40000010" || line[3] == "4000000F")
-                        {
-                            StopACTCombat();
-                        }
-                        break;
-                }
-
-                DispatchEvent(JObject.FromObject(new
-                {
-                    type = LogLineEvent,
-                    line,
-                    rawLine = args.originalLogLine,
-                }));
-            }
-            catch (Exception e)
-            {
-                Log(LogLevel.Error, "Failed to process log line: " + e.ToString());
-            }
-        }
-
-        struct PartyMember
-        {
-            // Player id in hex (for ease in matching logs).
-            public string id;
-            public string name;
-            public uint worldId;
-            // Raw job id.
-            public int job;
-            public int level;
-            // In immediate party (true), vs in alliance (false).
-            public bool inParty;
-        }
-
-        private int GetPartyType(PluginCombatant combatant)
-        {
-            // The PartyTypeEnum was renamed in 2.6.0.0 to work around that, we use reflection and cast the result to int.
-            return (int)combatant.GetType().GetMethod("get_PartyType").Invoke(combatant, new object[] { });
-        }
-
-        private string GetWorldName(uint WorldID)
-        {
-            var dict = repository.GetResourceDictionary(ResourceType.WorldList_EN);
-            if (dict == null)
-                return null;
-            if (dict.TryGetValue(WorldID, out string WorldName))
-                return WorldName;
-            return null;
-        }
-
-        private void DispatchPartyChangeEvent(ReadOnlyCollection<uint> partyList, int partySize)
-        {
-            cachedPartyList = partyList;
-            var combatants = repository.GetCombatants();
-            if (combatants == null)
-                return;
-
-            // This is a bit of a hack.  The goal is to return a set of party
-            // and alliance players, along with their jobs, ids, and names.
-            //
-            // |partySize| is only the size of your party, but the list of ids
-            // contains ids from both party and alliance members.
-            //
-            // Additionally, there is a race where |combatants| is not updated
-            // by the time this function is called.  However, this only seems
-            // to happen in the case of disconnects and never when zoning in.
-            // As a workaround, we use data retrieved from the NetworkAdd/RemoveCombatant
-            // lines and keep track of all combatants which are missing from
-            // the memory combatant list (the network lines are missing the
-            // party status). Once per second (in Update()) we check if all
-            // missing members have appeared and once they do, we dispatch
-            // a PartyChangedEvent. This should result in immediate events
-            // whenever the party changes and a second delayed event for each
-            // change that updates the inParty field.
-            //
-            // Alternatives:
-            // * poll GetCombatants until all party members exist (infinitely?)
-            // * find better memory location of party list
-            // * make this function only return the values from the delegate
-            // * make callers handle this via calling GetCombatants explicitly
-
-            // Build a lookup table of currently known combatants
-            var lookupTable = new Dictionary<uint, PluginCombatant>();
-            foreach (var c in combatants)
-            {
-                if (GetPartyType(c) != 0 /* None */)
-                {
-                    lookupTable[c.ID] = c;
-                }
-            }
-
-            // Accumulate party members from cached info.  If they don't exist,
-            // still send *something*, since it's better than nothing.
-            List<PartyMember> result = new List<PartyMember>(24);
-            lock (missingPartyMembers) lock (partyList)
-                {
-                    missingPartyMembers.Clear();
-
-                    foreach (var id in partyList)
-                    {
-                        PluginCombatant c;
-                        if (lookupTable.TryGetValue(id, out c))
-                        {
-                            result.Add(new PartyMember
-                            {
-                                id = $"{id:X}",
-                                name = c.Name,
-                                worldId = c.WorldID,
-                                job = c.Job,
-                                level = c.Level,
-                                inParty = GetPartyType(c) == 1 /* Party */,
-                            });
-                        }
-                        else
-                        {
-                            missingPartyMembers.Add(id);
-                        }
-                    }
-
-                    if (missingPartyMembers.Count > 0)
-                    {
-                        Log(LogLevel.Debug, "Party changed event delayed until members are available");
-                        return;
-                    }
-                }
-
-            Log(LogLevel.Debug, "party list: {0}", JObject.FromObject(new { party = result }).ToString());
-
-            DispatchAndCacheEvent(JObject.FromObject(new
-            {
-                type = PartyChangedEvent,
-                party = result,
-            }));
-        }
-
         public override Control CreateConfigControl()
         {
             return null;
@@ -567,8 +324,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
             stopwatch.Start();
 #endif
 
-            //var varStopwatch = new Stopwatch();
-
             var combatantList = new List<KeyValuePair<CombatantData, Dictionary<string, string>>>();
             Parallel.ForEach(allies, (ally) =>
             //foreach (var ally in allies)
@@ -599,12 +354,14 @@ namespace RainbowMage.OverlayPlugin.EventSources
                             if (!ally.Items[CombatantData.DamageTypeDataOutgoingDamage].Items.ContainsKey("All"))
                             {
                                 valueDict.Add(exportValuePair.Key, "");
+                                //Log(LogLevel.Debug, $"Combatant: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                                 continue;
                             }
                         }
 
                         var value = exportValuePair.Value.GetExportString(ally, "");
                         valueDict.Add(exportValuePair.Key, value);
+                        // Log(LogLevel.Debug, $"Combatant: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                     }
                     catch (Exception e)
                     {
@@ -635,15 +392,15 @@ namespace RainbowMage.OverlayPlugin.EventSources
             stopwatch.Start();
 #endif
 
-            /// var varStopwatch = new Stopwatch();
-
             var encounterDict = new Dictionary<string, string>();
             foreach (var exportValuePair in EncounterData.ExportVariables)
             {
                 try
                 {
-                    /*varStopwatch.Reset();
-                    varStopwatch.Start();*/
+#if TRACE
+                    stopwatch.Reset();
+                    stopwatch.Start();
+#endif
 
                     // ACT_FFXIV_Plugin が提供する LastXXDPS は、
                     // ally.Items[CombatantData.DamageTypeDataOutgoingDamage].Items に All キーが存在しない場合に、
@@ -656,6 +413,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                         if (!allies.All((ally) => ally.Items[CombatantData.DamageTypeDataOutgoingDamage].Items.ContainsKey("All")))
                         {
                             encounterDict.Add(exportValuePair.Key, "");
+                            // Log(LogLevel.Debug, $"Encounter: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
                             continue;
                         }
                     }
@@ -665,8 +423,6 @@ namespace RainbowMage.OverlayPlugin.EventSources
                         allies,
                         "");
                     encounterDict.Add(exportValuePair.Key, value);
-                    //Log(LogLevel.Debug, $"Encounter: {exportValuePair.Key}: {varStopwatch.ElapsedMilliseconds}ms");
-                    //}
                 }
                 catch (Exception e)
                 {

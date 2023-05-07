@@ -42,7 +42,8 @@ try {
     }
 
     if ( -not (Test-Path "OverlayPlugin.Core\Thirdparty\FFXIVClientStructs\Base\Global" )) {
-        Try-Fetch-Deps -description "FFXIVClientStructs"
+        # Disable for CN
+        # Try-Fetch-Deps -description "FFXIVClientStructs"
     }
 
     $ENV:PATH = "$VS_PATH\MSBuild\Current\Bin;${ENV:PATH}";

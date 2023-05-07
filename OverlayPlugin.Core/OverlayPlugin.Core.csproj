@@ -104,11 +104,6 @@
     <Compile Include="MemoryProcessors\Aggro\AggroMemory60.cs" />
     <Compile Include="MemoryProcessors\Aggro\AggroMemoryManager.cs" />
     <Compile Include="MemoryProcessors\Aggro\Common.cs" />
-    <Compile Include="MemoryProcessors\AtkStage\AtkStageMemory.cs" />
-    <Compile Include="MemoryProcessors\AtkStage\AtkStageMemory62.cs" />
-    <Compile Include="MemoryProcessors\AtkStage\AtkStageMemoryManager.cs" />
-    <Compile Include="MemoryProcessors\FFXIVClientStructs\Data.cs" />
-    <Compile Include="MemoryProcessors\FFXIVClientStructs\ManagedType.cs" />
     <Compile Include="MemoryProcessors\Combatant\LineCombatant.cs" />
     <Compile Include="MemoryProcessors\Combatant\CombatantMemory63.cs" />
     <Compile Include="MemoryProcessors\Combatant\Common.cs" />
@@ -237,7 +232,6 @@
       <DependentUpon>WSConfigPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="WebSocket\WSServer.cs" />
-    <Compile Include="Thirdparty\FFXIVClientStructs\Transformed\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\colorpicker\alpha.png">
@@ -400,10 +394,7 @@
     <Content Include="resources\targetbars\target_of_target.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-	<Content Include="resources\vue.min.js">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
-    <Content Include="Thirdparty\FFXIVClientStructs\Global\ida\data.yml">
+    <Content Include="resources\vue.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
