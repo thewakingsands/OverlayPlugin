@@ -33,7 +33,7 @@ namespace RainbowMage.OverlayPlugin
             pluginDirectory = container.Resolve<PluginMain>().PluginDirectory;
             config = container.Resolve<PluginConfig>();
             logger = container.Resolve<ILogger>();
-            
+
             cbUpdateCheck.Checked = config.UpdateCheck;
             cbHideOverlaysWhenNotActive.Checked = config.HideOverlaysWhenNotActive;
             cbHideOverlaysDuringCutscene.Checked = config.HideOverlayDuringCutscene;

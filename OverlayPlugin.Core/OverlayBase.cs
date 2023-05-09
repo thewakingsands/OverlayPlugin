@@ -96,7 +96,7 @@ namespace RainbowMage.OverlayPlugin
                     }
             }
         }
-    
+
 
         protected OverlayBase(TConfig config, string name, TinyIoCContainer container)
         {
@@ -314,7 +314,7 @@ namespace RainbowMage.OverlayPlugin
             this.Config.VisibleChanged += (o, e) =>
             {
                 if (this.Overlay != null)
-                        this.Visible = e.IsVisible;
+                    this.Visible = e.IsVisible;
             };
 
             this.Config.ClickThruChanged += (o, e) =>
