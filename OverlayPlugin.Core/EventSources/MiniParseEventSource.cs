@@ -16,6 +16,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private const string CombatDataEvent = "CombatData";
         private const string ImportedLogLinesEvent = "ImportedLogLines";
         private const string BroadcastMessageEvent = "BroadcastMessage";
+        private const string FileChangedEvent = "FileChanged";
 
         // Event Source
 
@@ -25,10 +26,12 @@ namespace RainbowMage.OverlayPlugin.EventSources
         {
             Name = "MiniParse";
 
+            // FileChanged isn't actually raised by this event source. That event is generated in MiniParseOverlay directly.
             RegisterEventTypes(new List<string> {
                 CombatDataEvent,
                 ImportedLogLinesEvent,
                 BroadcastMessageEvent,
+                FileChangedEvent
             });
 
             RegisterEventHandler("saveData", (msg) =>
