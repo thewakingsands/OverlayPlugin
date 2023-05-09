@@ -31,10 +31,10 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             public int remove;
             public int update;
         };
-        private static readonly AC143OPCodes ac143_v5_2 = new AC143OPCodes(
+        private static readonly AC143OPCodes ac143_v6_3 = new AC143OPCodes(
+            0x942,
             0x935,
-            0x936,
-            0x93E
+            0x93C
         );
 
         private struct CEDirectorOPCodes
@@ -134,9 +134,9 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             fateSemaphore = new SemaphoreSlim(0, 1);
             ceSemaphore = new SemaphoreSlim(0, 1);
             ac143opcodes = new Dictionary<string, AC143OPCodes>();
-            ac143opcodes.Add("ko", ac143_v5_2);
-            ac143opcodes.Add("cn", ac143_v5_2);
-            ac143opcodes.Add("intl", ac143_v5_2);
+            ac143opcodes.Add("ko", ac143_v6_3);
+            ac143opcodes.Add("cn", ac143_v6_3);
+            ac143opcodes.Add("intl", ac143_v6_3);
 
             cedirectoropcodes = new Dictionary<string, CEDirectorOPCodes>();
             cedirectoropcodes.Add("intl", cedirector_cn);
