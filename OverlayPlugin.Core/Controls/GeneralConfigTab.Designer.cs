@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneralConfigTab));
-            this.cbErrorReports = new System.Windows.Forms.CheckBox();
             this.cbUpdateCheck = new System.Windows.Forms.CheckBox();
             this.btnUpdateCheck = new System.Windows.Forms.Button();
             this.cbHideOverlaysWhenNotActive = new System.Windows.Forms.CheckBox();
@@ -41,12 +40,6 @@
             this.btnCactbotUpdate = new System.Windows.Forms.Button();
             this.btnClipboardTechSupport = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // cbErrorReports
-            // 
-            resources.ApplyResources(this.cbErrorReports, "cbErrorReports");
-            this.cbErrorReports.Name = "cbErrorReports";
-            this.cbErrorReports.UseVisualStyleBackColor = true;
             // 
             // cbUpdateCheck
             // 
@@ -77,6 +70,7 @@
             // 
             resources.ApplyResources(this.lblGithub, "lblGithub");
             this.lblGithub.Name = "lblGithub";
+            this.lblGithub.Click += new System.EventHandler(this.lblGithub_Click);
             // 
             // lnkGithubRepo
             // 
@@ -112,20 +106,15 @@
             this.btnClipboardTechSupport.Click += new System.EventHandler(this.btnClipboardTechSupport_Click);
             // 
             // GeneralConfigTab
-            // GeneralConfigTab
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Controls.Add(this.btnClipboardTechSupport);
-            //this.Controls.Add(this.btnCactbotUpdate);
             this.Controls.Add(this.lblReadMe);
             this.Controls.Add(this.lblNewUserWelcome);
             this.Controls.Add(this.lnkGithubRepo);
             this.Controls.Add(this.lblGithub);
-            //this.Controls.Add(this.btnUpdateCheck);
-            this.Controls.Add(this.cbErrorReports);
-            //this.Controls.Add(this.cbUpdateCheck);
             this.Controls.Add(this.cbHideOverlaysDuringCutscene);
             this.Controls.Add(this.cbHideOverlaysWhenNotActive);
             this.Name = "GeneralConfigTab";
@@ -135,7 +124,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.CheckBox cbErrorReports;
         private System.Windows.Forms.CheckBox cbUpdateCheck;
         private System.Windows.Forms.Button btnUpdateCheck;
         private System.Windows.Forms.CheckBox cbHideOverlaysWhenNotActive;

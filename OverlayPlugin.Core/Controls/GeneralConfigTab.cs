@@ -33,17 +33,16 @@ namespace RainbowMage.OverlayPlugin
             pluginDirectory = container.Resolve<PluginMain>().PluginDirectory;
             config = container.Resolve<PluginConfig>();
             logger = container.Resolve<ILogger>();
-
-            cbErrorReports.Checked = config.ErrorReports;
+            
             cbUpdateCheck.Checked = config.UpdateCheck;
             cbHideOverlaysWhenNotActive.Checked = config.HideOverlaysWhenNotActive;
             cbHideOverlaysDuringCutscene.Checked = config.HideOverlayDuringCutscene;
 
             // Attach the event handlers only *after* loading the configuration because we'd otherwise trigger them ourselves.
-            cbErrorReports.CheckedChanged += CbErrorReports_CheckedChanged;
             cbUpdateCheck.CheckedChanged += CbUpdateCheck_CheckedChanged;
             cbHideOverlaysWhenNotActive.CheckedChanged += cbHideOverlaysWhenNotActive_CheckedChanged;
             cbHideOverlaysDuringCutscene.CheckedChanged += cbHideOverlaysDuringCutscene_CheckedChanged;
+            Renderer.DisableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
         }
 
         public void SetReadmeVisible(bool visible)
@@ -77,30 +76,8 @@ namespace RainbowMage.OverlayPlugin
 
         private void CbErrorReports_CheckedChanged(object sender, EventArgs e)
         {
-            try
-            {
-                if (cbErrorReports.Checked)
-                {
-                    //Renderer.EnableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
-                    Renderer.DisableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
-                }
-                else
-                {
-                    Renderer.DisableErrorReports(ActGlobals.oFormActMain.AppDataFolder.FullName);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Log(LogLevel.Error, $"Failed to switch error reports: {ex}");
-                cbErrorReports.Checked = !cbErrorReports.Checked;
+            config.ErrorReports = false;
 
-                MessageBox.Show($"Failed to switch error reports: {ex}", "OverlayPlugin", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            config.ErrorReports = cbErrorReports.Checked;
-
-            MessageBox.Show("You have to restart ACT to apply this change.", "OverlayPlugin", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void CbUpdateCheck_CheckedChanged(object sender, EventArgs e)
@@ -178,6 +155,16 @@ namespace RainbowMage.OverlayPlugin
         {
             var info = new ClipboardTechSupport(this.container);
             info.CopyToClipboard();
+        }
+
+        private void cbErrorReports_CheckedChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblGithub_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
