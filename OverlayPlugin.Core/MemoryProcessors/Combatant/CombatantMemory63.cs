@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 
 namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
 {
-    interface ICombatantMemory62 : ICombatantMemory { }
+    interface ICombatantMemory63 : ICombatantMemory { }
 
-    class CombatantMemory62 : CombatantMemory, ICombatantMemory62
+    class CombatantMemory63 : CombatantMemory, ICombatantMemory63
     {
         private const string charmapSignature = "488B5720B8000000E0483BD00F84????????488D0D";
 
-        public CombatantMemory62(TinyIoCContainer container)
+        public CombatantMemory63(TinyIoCContainer container)
             : base(container, charmapSignature, CombatantMemory.Size, EffectMemory.Size)
         {
 
@@ -18,7 +18,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
 
         public override Version GetVersion()
         {
-            return new Version(6, 2);
+            return new Version(6, 3);
         }
 
         // Returns a combatant if the combatant is a mob or a PC.
@@ -143,22 +143,22 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
             [FieldOffset(0x94)]
             public byte Status;
 
-            [FieldOffset(0xA0)]
+            [FieldOffset(0xB0)]
             public Single PosX;
 
-            [FieldOffset(0xA4)]
+            [FieldOffset(0xB4)]
             public Single PosY;
 
-            [FieldOffset(0xA8)]
+            [FieldOffset(0xB8)]
             public Single PosZ;
 
-            [FieldOffset(0xB0)]
+            [FieldOffset(0xC0)]
             public Single Heading;
 
-            [FieldOffset(0xC0)]
+            [FieldOffset(0xD0)]
             public Single Radius;
 
-            [FieldOffset(0x104)]
+            [FieldOffset(0x114)]
             public int ModelStatus;
 
             [FieldOffset(0x1C4)]
@@ -194,49 +194,51 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
             [FieldOffset(0x1E1)]
             public byte Level;
 
-            [FieldOffset(0xC60)]
+            [FieldOffset(0xC80)]
             public uint PCTargetID;
 
+            // TODO: this is incorrect in 6.3, please fix
             [FieldOffset(0x19C3)]
             public byte MonsterType;
 
+            // TODO: this is incorrect in 6.3, please fix
             [FieldOffset(0x19DF)]
             public byte AggressionStatus;
 
-            [FieldOffset(0x1A68)]
+            [FieldOffset(0x1A88)]
             public uint NPCTargetID;
 
-            [FieldOffset(0x1AAC)]
+            [FieldOffset(0x1AD8)]
             public uint BNpcNameID;
 
-            [FieldOffset(0x1AC8)]
+            [FieldOffset(0x1AF4)]
             public ushort CurrentWorldID;
 
-            [FieldOffset(0x1ACA)]
+            [FieldOffset(0x1AF6)]
             public ushort WorldID;
 
-            [FieldOffset(0x1ADE)]
+            [FieldOffset(0x1B0A)]
             public byte WeaponId;
 
-            [FieldOffset(0x1B48)]
+            [FieldOffset(0x1B68)]
             public fixed byte Effects[EffectBytes];
 
-            [FieldOffset(0x1CD0)]
+            [FieldOffset(0x1CF0)]
             public byte IsCasting1;
 
-            [FieldOffset(0x1CD2)]
+            [FieldOffset(0x1CF2)]
             public byte IsCasting2;
 
-            [FieldOffset(0x1CD4)]
+            [FieldOffset(0x1CF4)]
             public uint CastBuffID;
 
-            [FieldOffset(0x1CE0)]
+            [FieldOffset(0x1CF0)]
             public uint CastTargetID;
 
-            [FieldOffset(0x1D04)]
+            [FieldOffset(0x1DF4)]
             public float CastDurationCurrent;
 
-            [FieldOffset(0x1D08)]
+            [FieldOffset(0x1DF8)]
             public float CastDurationMax;
             // Missing PartyType
         }

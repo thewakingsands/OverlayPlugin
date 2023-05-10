@@ -2,6 +2,24 @@ param (
     [switch]$ci = $false
 )
 
+function Try-Fetch-Deps {
+    param ([String]$description)
+    echo "Dependency '$description' was not found, running `tools/fetch_deps.py` to fetch any missing dependencies"
+    if ((Get-Command "python" -ErrorAction SilentlyContinue) -eq $null)
+    {
+        Write-Host "python does not appear to be in your PATH. Please fix this or manually run tools\fetch_deps.py"
+        exit 1
+    } 
+    python tools\fetch_deps.py
+    if ($LASTEXITCODE -ne 0) {
+        echo 'Error running fetch_deps.py'
+        exit 1
+    }
+    else {
+        echo 'Fetched deps successfully'
+    }
+}
+
 try {
     # This assumes Visual Studio 2022 is installed in C:. You might have to change this depending on your system.
     # $DEFAULT_VS_PATH = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
@@ -15,54 +33,57 @@ try {
     }
 
     if ( -not (Test-Path "Thirdparty\ACT\Advanced Combat Tracker.exe" )) {
-        echo 'Error: Please run tools\fetch_deps.py'
-        exit 1
+        Try-Fetch-Deps -description "Advanced Combat Tracker.exe"
     }
 
 
     if ( -not (Test-Path "Thirdparty\FFXIV_ACT_Plugin\SDK\FFXIV_ACT_Plugin.Common.dll" )) {
-        echo 'Error: Please run tools\fetch_deps.py'
-        exit 1
+        Try-Fetch-Deps -description "FFXIV_ACT_Plugin.Common.dll"
+    }
+
+    if ( -not (Test-Path "OverlayPlugin.Core\Thirdparty\FFXIVClientStructs\Base\Global" )) {
+        # Disable for CN
+        # Try-Fetch-Deps -description "FFXIVClientStructs"
     }
 
     $ENV:PATH = "$VS_PATH\MSBuild\Current\Bin;${ENV:PATH}";
     if (Test-Path "C:\Program Files\7-Zip\7z.exe") {
         $ENV:PATH = "C:\Program Files\7-Zip;${ENV:PATH}";
     }
+    # Disable for CN
+    if (False) {
+    #if (Test-Path "OverlayPlugin.Core\Thirdparty\FFXIVClientStructs\Base") {
+        echo "==> Preparing FFXIVClientStructs..."
 
-    if ( -not (Test-Path .\OverlayPlugin.Updater\Resources\libcurl.dll)) {
-        echo "==> Building cURL..."
+        echo "==> Building StripFFXIVClientStructs..."
+        msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln" -t:StripFFXIVClientStructs -restore:True -v:q
 
-        mkdir .\OverlayPlugin.Updater\Resources
-        cd Thirdparty\curl\winbuild
+        cd OverlayPlugin.Core\Thirdparty\FFXIVClientStructs\Base
 
-        echo "@call `"$VS_PATH\VC\Auxiliary\Build\vcvarsall.bat`" amd64"           | Out-File -Encoding ascii tmp_build.bat
-        echo "nmake /f Makefile.vc mode=dll VC=16 GEN_PDB=no DEBUG=no MACHINE=x64" | Out-File -Encoding ascii -Append tmp_build.bat
-        echo "@call `"$VS_PATH\VC\Auxiliary\Build\vcvarsall.bat`" x86"             | Out-File -Encoding ascii -Append tmp_build.bat
-        echo "nmake /f Makefile.vc mode=dll VC=16 GEN_PDB=no DEBUG=no MACHINE=x86" | Out-File -Encoding ascii -Append tmp_build.bat
+        # Fix code to compile against .NET 4.8, remove partial funcs and helper funcs, we only want the struct layouts themselves
+        gci * | foreach-object {
+            $ns = $_.name
 
-        cmd "/c" "tmp_build.bat"
-        sleep 3
-        del tmp_build.bat
+            echo "==> Stripping FFXIVClientStructs for namespace $ns..."
 
-        cd ..\builds
-        copy .\libcurl-vc16-x64-release-dll-ipv6-sspi-winssl\bin\libcurl.dll ..\..\..\OverlayPlugin.Updater\Resources\libcurl-x64.dll
-        copy .\libcurl-vc16-x86-release-dll-ipv6-sspi-winssl\bin\libcurl.dll ..\..\..\OverlayPlugin.Updater\Resources\libcurl.dll
+            ..\..\..\..\tools\StripFFXIVClientStructs\StripFFXIVClientStructs\bin\Release\netcoreapp3.1\StripFFXIVClientStructs.exe $ns .\$ns ..\Transformed\$ns
+        }
 
-        cd ..\..\..
+        cd ..\..\..\..
     }
 
     if ($ci) {
         echo "==> Continuous integration flag set. Building Debug..."
         msbuild -p:Configuration=Debug -p:Platform=x64 "OverlayPlugin.sln" -t:Restore
+        msbuild -p:Configuration=Debug -p:Platform=x64 "OverlayPlugin.sln" -t:Clean
         msbuild -p:Configuration=Debug -p:Platform=x64 "OverlayPlugin.sln"    
     }
 
     echo "==> Building..."
 
-    msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln" -t:Restore
-    msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln" -t:Clean
-    msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln"
+    msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln" -t:Restore -v:q
+    msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln" -t:Clean -v:q
+    msbuild -p:Configuration=Release -p:Platform=x64 "OverlayPlugin.sln" -v:q
     if (-not $?) { exit 1 }
 
     echo "==> Building archive..."
@@ -96,13 +117,15 @@ try {
 
     if (Test-Path $archive) { rm $archive }
     cd OverlayPlugin
-    & "C:\Program Files\7-Zip\7z.exe" a ..\$archive .
+    & 7z a ..\$archive .
     cd ..
 
     $archive = "..\OverlayPlugin-$version.zip"
 
     if (Test-Path $archive) { rm $archive }
-    & "C:\Program Files\7-Zip\7z.exe" a $archive OverlayPlugin
+    7z a $archive OverlayPlugin
+
+    cd ..\..
 } catch {
     Write-Error $Error[0]
 }

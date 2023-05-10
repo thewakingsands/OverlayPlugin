@@ -189,6 +189,9 @@
   <data name="simpStopBtn.Text" xml:space="preserve">
     <value>중지</value>
   </data>
+  <data name="introPage.Text" xml:space="preserve">
+    <value>소개</value>
+  </data>
   <data name="lblWsserverIntro.Text" xml:space="preserve">
     <value>다음은 두 탭에 대한 간단한 설명입니다.
 
@@ -198,8 +201,5 @@ Stream/Local 오버레이: 이 탭을 통해 WSServer를 시작하면 이 PC에�
 
 마지막으로 WSServer가 Stream/Local 오버레이 탭을 통해 시작되면 ACT 시작 시 자동으로 다시 시작됩니다. 공유 오버레이 탭을 통해 시작한 경우 매번 새 URL을 받게 되므로 자동으로 시작되지 않습니다. 참고: 이것이 귀찮다면 ACT Discord(또는 OverlayPlugin의 GitHub 저장소)에서 문제를 해결하도록 요청하세요. 이 문제를 해결할 수 있는 방법이 있지만 이 기능을 원하는 사람이 몇 명인지 잘 모르겠습니다.
 </value>
-  </data>
-  <data name="introPage.Text" xml:space="preserve">
-    <value>소개</value>
   </data>
 </root>

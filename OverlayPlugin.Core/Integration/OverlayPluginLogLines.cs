@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RainbowMage.OverlayPlugin.MemoryProcessors.Combatant;
 using RainbowMage.OverlayPlugin.MemoryProcessors.InCombat;
 using RainbowMage.OverlayPlugin.Updater;
 
@@ -17,6 +18,8 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             container.Register(new LineFateControl(container));
             container.Register(new LineCEDirector(container));
             container.Register(new LineInCombat(container));
+            container.Register(new LineCombatant(container));
+            container.Register(new LineRSV(container));
         }
     }
 
@@ -31,6 +34,7 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             logger = container.Resolve<ILogger>();
             opcodes.Add("CEDirector", new OpcodeConfigEntry { opcode = (uint)GameRepoInfo.CEDirectorOpcode, size = 16 });
             opcodes.Add("MapEffect", new OpcodeConfigEntry { opcode = (uint)GameRepoInfo.MapEffectOpcode, size = 11 });
+            opcodes.Add("RSVData", new OpcodeConfigEntry { opcode = (uint)GameRepoInfo.RSVDataOpcode, size = 1080 });
         }
 
         public IOpcodeConfigEntry this[string name]

@@ -731,7 +731,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             result["language"] = language_;
 
             //It's unknown for ffcafe, but leave stub here should be better incase some overlays using that
-            result["cactbotVersion"] = "0.27.24.0";
+            result["cactbotVersion"] = "0.28.20.0";
             result["overlayPluginVersion"] = overlayVersion_.ToString();
             result["ffxivPluginVersion"] = ffxivPluginVersion_.ToString();
             result["actVersion"] = actVersion_.ToString();
