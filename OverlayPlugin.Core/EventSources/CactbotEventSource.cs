@@ -712,6 +712,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     }
                 }
             }
+            // Set any implicitly discovered cactbot user config dirs as explicit.
+            // This will help in the future when there aren't local plugins or html.
+            if (config_dir != null)
+                Config.UserConfigFile = config_dir;
         }
 
         private JObject FetchUserFiles(JObject msg)
