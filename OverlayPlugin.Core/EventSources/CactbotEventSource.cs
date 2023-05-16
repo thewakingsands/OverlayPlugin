@@ -712,11 +712,29 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     }
                 }
             }
+
+            if (local_files == null)
+            {
+                // Second try a user directory for default one
+                try
+                {
+                    config_dir = Path.Combine(pluginMain.OfflineCactbotDirectory, "user");
+                    local_files = GetLocalUserFiles(config_dir, overlay_name);
+                }
+                catch (Exception e)
+                {
+                    LogError("Error checking html rel dir: {0}: {1}", config_dir, e.ToString());
+                    config_dir = null;
+                    local_files = null;
+
+                }
+            }
             // Set any implicitly discovered cactbot user config dirs as explicit.
             // This will help in the future when there aren't local plugins or html.
             if (config_dir != null)
                 Config.UserConfigFile = config_dir;
         }
+          
 
         private JObject FetchUserFiles(JObject msg)
         {
