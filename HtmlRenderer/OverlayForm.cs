@@ -324,7 +324,7 @@ namespace RainbowMage.HtmlRenderer
         private void OverlayForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Prevent unexpected close (like windows blocker by 360)
-            if (!closingOverlay)
+            if (!closingOverlay && e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
             }
