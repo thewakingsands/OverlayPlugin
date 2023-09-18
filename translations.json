@@ -81,11 +81,18 @@
     "OverlayPlugin.Core/Controls/GeneralConfigTab": {
         "btnCactbotUpdate.Text": {
             "en": "Check For Cactbot Updates",
+            "fr-FR": "Vérifier les mises à jour de Cactbot",
             "ko-KR": "Cactbot 업데이트 확인",
             "zh-CN": "检查 Cactbot 更新"
         },
+        "btnClearCEFCache.Text": {
+            "en": "Clear CEF Cache on Restart",
+            "fr-FR": "Vider le cache CEF au démarrage",
+            "zh-CN": "重启时清除 CEF 缓存"
+        },
         "btnClipboardTechSupport.Text": {
             "en": "Copy Tech Support Info to Clipboard",
+            "fr-FR": "Copier les informations techniques",
             "zh-CN": "复制技术支持信息到剪贴板"
         },
         "btnUpdateCheck.Text": {
@@ -131,16 +138,19 @@
         "lblGithub.Text": {
             "de-DE": "GitHub Repo:",
             "en": "GitHub Repo:",
+            "fr-FR": "Repo GitHub :",
             "ko-KR": "GitHub 저장소:",
             "zh-CN": "GitHub 项目: "
         },
         "lblNewUserWelcome.Text": {
             "en": "If you're looking for a URL field here, you're either used to the old OverlayPlugin or following an outdated guide. You need to create an overlay using the New button in the bottom-left corner before you will see any overlays from OverlayPlugin.\nPlease try using the presets instead of manually setting the URL since this can prevent a bunch of issues.\n\n",
+            "fr-FR": "Si vous cherchez un champ URL ici, vous êtes soit habitué à l'ancien OverlayPlugin, soit vous suivez un guide obsolète. Vous devez créer un overlay en utilisant le bouton Nouveau dans le coin inférieur gauche avant de voir les overlays d'OverlayPlugin.\nVeuillez essayer d'utiliser les presets au lieu de définir manuellement l'URL car cela peut éviter de nombreux problèmes.\n\n",
             "ko-KR": "여기에서 URL 필드를 찾고 있다면 옛날 OverlayPlugin 방식을 사용하는 중이거나 오래된 가이드를 따르고 있는 것입니다. 오버레이를 띄우려면 먼저 왼쪽 하단 모서리에 있는 추가 버튼을 눌러 오버레이를 만들어야 합니다.\n여러 가지 문제를 방지할 수 있으므로 URL을 수동으로 설정하는 대신 프리셋을 사용해 보십시오.\n\n",
             "zh-CN": "你在找 [链接] 这个输入框吗？在新版本插件中，您首先需要使用左下角的 [新建] 按钮创建一个悬浮窗，然后才能看到并配置一个悬浮窗。\n请尝试使用我们预先内置的预设而不是手动设置的链接，这将可以防止一系列的问题。\n\n"
         },
         "lblReadMe.Text": {
             "en": "READ THIS:",
+            "fr-FR": "Lisez ceci :",
             "ko-KR": "도움말:",
             "zh-CN": "温馨提示: "
         },
@@ -684,11 +694,6 @@
             "ko-KR": "수정 내용 적용",
             "zh-CN": "应用更改"
         },
-        "btnClearCache.Text": {
-            "en": "Clear Cache",
-            "ko-KR": "캐시 지우기",
-            "zh-CN": "清除缓存"
-        },
         "btnRemoveHotkey.Text": {
             "de-DE": "Entferne selektierten Hotkey",
             "en": "Remove Selected Hotkey",
@@ -823,7 +828,8 @@
         },
         "label14.Text": {
             "en": "Hide overlay outside combat",
-            "ko-KR": "전투 중이 아닐 때 오버레이 숨기기",
+            "fr-FR": "Cacher l'overlay hors combat",
+            "ko-KR": "비전투 시 오버레이 숨기기",
             "zh-CN": "脱战后隐藏悬浮窗"
         },
         "label15.Text": {
@@ -855,7 +861,7 @@
             "en": "Force white background",
             "fr-FR": "Forcer le fond en blanc",
             "ja-JP": "オーバーレイの背景を白にする",
-            "ko-KR": "오버레이 배경을 흰색으로 변경",
+            "ko-KR": "배경을 흰색으로 변경",
             "zh-CN": "在悬浮窗下强制启用白色背景"
         },
         "label5.Text": {
@@ -1039,6 +1045,11 @@
             "ko-KR": "ACT 웹소켓 호환성을 활성화",
             "zh-CN": "ACTWS兼容性功能已启用。"
         },
+        "ClearCacheRestart": {
+            "en": "Please restart ACT to clear the CEF cache",
+            "fr-FR": "Veuillez redémarrer ACT pour effacer le cache CEF",
+            "zh-CN": "请重启 ACT 以清除 CEF 缓存"
+        },
         "CustomPresetLabel": {
             "#comment": "This is the name for the preset entry that allows the user to select a custom overlay type instead of using a preset.",
             "de-DE": "Benutzerdefiniert",
@@ -1063,6 +1074,7 @@
         },
         "ErrorCouldNotLoadReservedLogLines": {
             "en": "FFXIVCustomLogLines: Failed to load reserved log line: {0}",
+            "fr-FR": "FFXIVCustomLogLines: Échec du chargement de la ligne du log réservé",
             "zh-CN": "FFXIV 自定义日志行: 加载保留日志行失败。{0}"
         },
         "ErrorOverlayNameEmpty": {
@@ -1082,6 +1094,7 @@
         "EventConfigTab": {
             "de-DE": "Event Einstellungen",
             "en": "Event Settings",
+            "fr-FR": "Paramètres de l'événement",
             "ko-KR": "이벤트 설정",
             "zh-CN": "基本设置"
         },
@@ -1123,6 +1136,7 @@
         "HotkeyActionToggleEnabled": {
             "de-DE": "Umschalten aktiviert",
             "en": "Toggle enabled",
+            "fr-FR": "Changement de mode activé",
             "ko-KR": "토글 활성화",
             "zh-CN": "切换悬浮窗 启用/关闭"
         },
@@ -1178,11 +1192,13 @@
         "LogNotConnectedError": {
             "#comment": "This error appears in the log box when it wasn't connected to the overlay log. This should never happen and indicates that something went really wrong during plugin startup.",
             "en": "ERROR: Log not connected.",
+            "fr-FR": "Erreur : Log non connecté",
             "zh-CN": "错误: 未连接到日志。"
         },
         "MapESMiniParse": {
             "de-DE": "MiniParseEventSource",
             "en": "MiniParseEventSource",
+            "fr-FR": "MiniParseEventSource",
             "ko-KR": "고급 설정",
             "zh-CN": "设置"
         },
@@ -1337,6 +1353,7 @@
         "TabsESLabel": {
             "de-DE": "Ereignisquelle",
             "en": "Event Source",
+            "fr-FR": "Source de l'événement",
             "zh-CN": "事件源"
         },
         "UnregisterHotkeyError": {
@@ -1349,6 +1366,7 @@
         "WSHandlerException": {
             "de-DE": "WS: Handler-Aufruf fehlgeschlagen: {0}",
             "en": "WS: Handler call failed: {0}",
+            "fr-FR": "WS : L'appel du gestionnaire a échoué : {0}",
             "ko-KR": "WS: Handler 호출 실패: {0}",
             "zh-CN": "WS: 处理程序调用失败。 {0}"
         },
@@ -1468,11 +1486,13 @@
         },
         "label6.Text": {
             "en": "End ACT encounter after wipe",
+            "fr-FR": "Arrêter le combat ACT après un wipe",
             "ko-KR": "전멸 후 전투 기록 종료",
             "zh-CN": "团灭自动重置战斗记录"
         },
         "label7.Text": {
             "en": "End ACT encounter out of combat",
+            "fr-FR": "Arrêter de parser si hors-combat",
             "ko-KR": "전투에서 벗어나면 전투 기록 종료",
             "zh-CN": "脱战自动重置战斗记录"
         },
@@ -1577,6 +1597,7 @@
         },
         "IgnoreUpdateDueToDotGitDirectoryMessage": {
             "en": "Ignoring auto-update due to OverlayPlugin being a .git repo.",
+            "fr-FR": "Ignore la mise à jour automatique car OverlayPlugin est un dépôt .git",
             "ko-KR": "OverlayPlugin 폴더가 로컬 깃 저장소이므로 자동 업데이트를 건너뜁니다.",
             "zh-CN": "由于 OverlayPlugin 文件夹是 git 本地仓库, 跳过自动更新。"
         },

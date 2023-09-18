@@ -134,5 +134,6 @@
         private System.Windows.Forms.Label lblReadMe;
         private System.Windows.Forms.Button btnCactbotUpdate;
     private System.Windows.Forms.Button btnClipboardTechSupport;
-  }
+        private System.Windows.Forms.Button btnClearCEFCache;
+    }
 }

@@ -443,6 +443,10 @@ namespace RainbowMage.HtmlRenderer
         }
 
         static bool initialized = false;
+        private static string CachePath = null;
+
+        // Delete all folders which don't potentially contain overlay configuration information
+        private static readonly string[] CacheFolders = new string[] { "Cache", "Code Cache", "GPUCache" };
 
         public static void Initialize(string pluginDirectory, string appDataDirectory, bool reportErrors)
         {
@@ -489,11 +493,13 @@ namespace RainbowMage.HtmlRenderer
                     lang = "en-US";
                 }
 
+                CachePath = Path.Combine(appDataDirectory, "OverlayPluginCache");
+
                 var cefSettings = new CefSettings
                 {
                     WindowlessRenderingEnabled = true,
                     Locale = lang,
-                    CachePath = Path.Combine(appDataDirectory, "OverlayPluginCache"),
+                    CachePath = CachePath,
                     MultiThreadedMessageLoop = true,
                     LogFile = Path.Combine(appDataDirectory, "OverlayPluginCEF.log"),
 #if DEBUG
@@ -537,12 +543,14 @@ namespace RainbowMage.HtmlRenderer
             return $"{ass.GetName().Name}/{ass.GetName().Version}";
         }
 
-        public static void Shutdown()
+        public static bool Shutdown()
         {
             if (initialized)
             {
                 Cef.Shutdown();
+                return true;
             }
+            return false;
         }
 
         public static void EnableErrorReports(string appDataDirectory)
@@ -579,6 +587,21 @@ MaxUploadsPerDay=0
 ";
             File.WriteAllText(cfgPath, cfgText);
             File.WriteAllText(subCfgPath, cfgText);
+        }
+
+        public static void ClearCache()
+        {
+            if (CachePath != null)
+            {
+                foreach (var folder in CacheFolders)
+                {
+                    var fullPath = Path.Combine(CachePath, folder);
+                    if (Directory.Exists(fullPath))
+                    {
+                        Directory.Delete(fullPath, true);
+                    }
+                }
+            }
         }
 
         public static void DisableErrorReports(string appDataDirectory)
