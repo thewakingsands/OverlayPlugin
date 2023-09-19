@@ -479,9 +479,10 @@ namespace RainbowMage.OverlayPlugin
             {
                 var shutdown = Renderer.Shutdown();
 
+                // CN - We just add button to clear cache, the method for upstream will break user data
                 // Can only clear cache if CEF is shut down, otherwise some cache files are still in use.
-                if (shutdown && this.clearCache == true)
-                    Renderer.ClearCache();
+                //if (shutdown && this.clearCache == true)
+                    //Renderer.ClearCache();
             }
 
             _logger.Log(LogLevel.Info, "DeInitPlugin: Finalized.");

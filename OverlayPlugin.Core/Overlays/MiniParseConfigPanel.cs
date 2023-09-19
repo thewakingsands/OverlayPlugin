@@ -221,7 +221,11 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             this.overlay.Reload();
         }
-
+        private void btnClearCache_Click(object sender, EventArgs e)
+        {
+            this.overlay.Overlay.Renderer.ClearCache();
+        }
+        
         private void buttonMiniParseSelectFile_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog();
