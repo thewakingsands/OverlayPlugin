@@ -589,21 +589,6 @@ MaxUploadsPerDay=0
             File.WriteAllText(subCfgPath, cfgText);
         }
 
-        public static void ClearCache()
-        {
-            if (CachePath != null)
-            {
-                foreach (var folder in CacheFolders)
-                {
-                    var fullPath = Path.Combine(CachePath, folder);
-                    if (Directory.Exists(fullPath))
-                    {
-                        Directory.Delete(fullPath, true);
-                    }
-                }
-            }
-        }
-
         public static void DisableErrorReports(string appDataDirectory)
         {
             var subProcess = Path.Combine(appDataDirectory,
