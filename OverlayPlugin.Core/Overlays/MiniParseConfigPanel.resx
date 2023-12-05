@@ -145,7 +145,7 @@
     <value>46</value>
   </data>
   <data name="btnClearCache.Text" xml:space="preserve">
-    <value>Clear Cache</value>
+    <value>清理缓存</value>
   </data>
   <data name="&gt;&gt;btnClearCache.Name" xml:space="preserve">
     <value>btnClearCache</value>
