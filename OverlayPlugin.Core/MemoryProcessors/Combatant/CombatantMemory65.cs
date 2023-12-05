@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 
 namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
 {
-    interface ICombatantMemory62 : ICombatantMemory { }
+    interface ICombatantMemory65 : ICombatantMemory { }
 
-    class CombatantMemory62 : CombatantMemory, ICombatantMemory62
+    class CombatantMemory65 : CombatantMemory, ICombatantMemory65
     {
         private const string charmapSignature = "488B5720B8000000E0483BD00F84????????488D0D";
 
-        public CombatantMemory62(TinyIoCContainer container)
+        public CombatantMemory65(TinyIoCContainer container)
             : base(container, charmapSignature, CombatantMemory.Size, EffectMemory.Size)
         {
 
@@ -18,7 +18,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
 
         public override Version GetVersion()
         {
-            return new Version(6, 2);
+            return new Version(6, 5);
         }
 
         // Returns a combatant if the combatant is a mob or a PC.
@@ -92,6 +92,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
                     IsCasting2 = mem.IsCasting2,
                     CastBuffID = mem.CastBuffID,
                     CastTargetID = mem.CastTargetID,
+                    // Y and Z are deliberately swapped to match FFXIV_ACT_Plugin's data model
+                    CastGroundTargetX = mem.CastGroundTargetX,
+                    CastGroundTargetY = mem.CastGroundTargetZ,
+                    CastGroundTargetZ = mem.CastGroundTargetY,
                     CastDurationCurrent = mem.CastDurationCurrent,
                     CastDurationMax = mem.CastDurationMax,
 
@@ -116,8 +120,8 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
         {
             public static int Size => Marshal.SizeOf(typeof(CombatantMemory));
 
-            // Unknown size, but this is the bytes up to the next field.
-            public const int NameBytes = 68;
+            // 64 bytes per both FFXIV_ACT_Plugin and aers/FFXIVClientStructs
+            public const int NameBytes = 64;
 
             public const int EffectCount = 60;
             public const int EffectBytes = EffectMemory.Size * EffectCount;
@@ -143,101 +147,113 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
             [FieldOffset(0x94)]
             public byte Status;
 
-            [FieldOffset(0xA0)]
+            [FieldOffset(0xB0)]
             public Single PosX;
 
-            [FieldOffset(0xA4)]
+            [FieldOffset(0xB4)]
             public Single PosY;
 
-            [FieldOffset(0xA8)]
+            [FieldOffset(0xB8)]
             public Single PosZ;
 
-            [FieldOffset(0xB0)]
+            [FieldOffset(0xC0)]
             public Single Heading;
 
-            [FieldOffset(0xC0)]
+            [FieldOffset(0xD0)]
             public Single Radius;
 
-            [FieldOffset(0x104)]
+            [FieldOffset(0x114)]
             public int ModelStatus;
 
-            [FieldOffset(0x1C4)]
+            [FieldOffset(0x1BC)]
             public int CurrentHP;
 
-            [FieldOffset(0x1C8)]
+            [FieldOffset(0x1C0)]
             public int MaxHP;
 
-            [FieldOffset(0x1CC)]
+            [FieldOffset(0x1C4)]
             public int CurrentMP;
 
-            [FieldOffset(0x1D0)]
+            [FieldOffset(0x1C8)]
             public int MaxMP;
 
-            [FieldOffset(0x1D4)]
+            [FieldOffset(0x1CC)]
             public ushort CurrentGP;
 
-            [FieldOffset(0x1D6)]
+            [FieldOffset(0x1CE)]
             public ushort MaxGP;
 
-            [FieldOffset(0x1D8)]
+            [FieldOffset(0x1D0)]
             public ushort CurrentCP;
 
-            [FieldOffset(0x1DA)]
+            [FieldOffset(0x1D2)]
             public ushort MaxCP;
 
-            [FieldOffset(0x1DC)]
+            [FieldOffset(0x1D4)]
             public short TransformationId;
 
-            [FieldOffset(0x1E0)]
+            [FieldOffset(0x1DA)]
             public byte Job;
 
-            [FieldOffset(0x1E1)]
+            [FieldOffset(0x1DB)]
             public byte Level;
 
-            [FieldOffset(0xC60)]
+            [FieldOffset(0xC30)]
+            public byte WeaponId;
+
+            [FieldOffset(0xD00)]
             public uint PCTargetID;
 
+            // TODO: this is still incorrect as of 6.5, should we drop this field if we can't find it again?
             [FieldOffset(0x19C3)]
             public byte MonsterType;
 
+            // TODO: this is still incorrect as of 6.5, should we drop this field if we can't find it again?
             [FieldOffset(0x19DF)]
             public byte AggressionStatus;
 
-            [FieldOffset(0x1A68)]
+            [FieldOffset(0x1B58)]
             public uint NPCTargetID;
 
-            [FieldOffset(0x1AAC)]
+            [FieldOffset(0x1B98)]
             public uint BNpcNameID;
 
-            [FieldOffset(0x1AC8)]
+            [FieldOffset(0x1BB0)]
             public ushort CurrentWorldID;
 
-            [FieldOffset(0x1ACA)]
+            [FieldOffset(0x1BB2)]
             public ushort WorldID;
 
-            [FieldOffset(0x1ADE)]
-            public byte WeaponId;
-
-            [FieldOffset(0x1B48)]
+            [FieldOffset(0x1C18)]
             public fixed byte Effects[EffectBytes];
 
-            [FieldOffset(0x1CD0)]
+            [FieldOffset(0x1F00)]
             public byte IsCasting1;
 
-            [FieldOffset(0x1CD2)]
+            [FieldOffset(0x1F02)]
             public byte IsCasting2;
 
-            [FieldOffset(0x1CD4)]
+            [FieldOffset(0x1F04)]
             public uint CastBuffID;
 
-            [FieldOffset(0x1CE0)]
+            [FieldOffset(0x1F10)]
             public uint CastTargetID;
 
-            [FieldOffset(0x1D04)]
+            [FieldOffset(0x1F20)]
+            public float CastGroundTargetX;
+
+            [FieldOffset(0x1F24)]
+            public float CastGroundTargetY;
+
+            [FieldOffset(0x1F28)]
+            public float CastGroundTargetZ;
+
+            [FieldOffset(0x1F34)]
             public float CastDurationCurrent;
 
-            [FieldOffset(0x1D08)]
+            [FieldOffset(0x1F38)]
             public float CastDurationMax;
+
             // Missing PartyType
         }
     }

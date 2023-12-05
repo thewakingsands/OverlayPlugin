@@ -247,7 +247,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 return new JObject();
             }
 
-#if DEBUG
+#if TRACEPERF
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 #endif
@@ -313,7 +313,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             obj["isActive"] = ActGlobals.oFormActMain.ActiveZone.ActiveEncounter?.Active == true ? "true" : "false";
 
-#if TRACE
+#if TRACEPERF
             stopwatch.Stop();
             Log(LogLevel.Trace, "CreateUpdateScript: {0} msec", stopwatch.Elapsed.TotalMilliseconds);
 #endif
@@ -322,7 +322,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         private List<KeyValuePair<CombatantData, Dictionary<string, string>>> GetCombatantList(List<CombatantData> allies)
         {
-#if TRACE 
+#if TRACEPERF 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 #endif
@@ -380,7 +380,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             }
             );
 
-#if TRACE
+#if TRACEPERF
             stopwatch.Stop();
             Log(LogLevel.Trace, "GetCombatantList: {0} msec", stopwatch.Elapsed.TotalMilliseconds);
 #endif
@@ -390,7 +390,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
         private Dictionary<string, string> GetEncounterDictionary(List<CombatantData> allies)
         {
-#if TRACE
+#if TRACEPERF
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 #endif
@@ -400,7 +400,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             {
                 try
                 {
-#if TRACE
+#if TRACEPERF
                     stopwatch.Reset();
                     stopwatch.Start();
 #endif
@@ -433,7 +433,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
                 }
             }
 
-#if TRACE
+#if TRACEPERF
             stopwatch.Stop();
             Log(LogLevel.Trace, "GetEncounterDictionary: {0} msec", stopwatch.Elapsed.TotalMilliseconds);
 #endif
