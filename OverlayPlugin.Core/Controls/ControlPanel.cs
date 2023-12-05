@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -79,8 +80,24 @@ namespace RainbowMage.OverlayPlugin
 
             base.Dispose(disposing);
         }
+        private System.Windows.Forms.Timer initTimer = null;
+        private ConcurrentQueue<LogEntry> pendingLog=new ConcurrentQueue<LogEntry>();
 
         private void AddLogEntry(LogEntry entry)
+        {
+            // Invoke in UI thread if needed to avoid WinForms issues.
+            // See https://github.mcom/OverlayPlugin/OverlayPlugin/issues/254
+            if (ActGlobals.oFormActMain.InvokeRequired)
+            {
+                Action action = () => { AddLogEntry0(entry); };
+                ActGlobals.oFormActMain.BeginInvoke(action);
+            }
+            else
+            {
+                AddLogEntry0(entry);
+            }
+        }
+        private void AddLogEntry0(LogEntry entry)
         {
             var msg = $"[{entry.Time}] {entry.Level}: {entry.Message}" + Environment.NewLine;
 
@@ -129,17 +146,7 @@ namespace RainbowMage.OverlayPlugin
                     NativeMethods.PostMessageA(logBox.Handle, NativeMethods.WM_VSCROLL, NativeMethods.SB_THUMBPOSITION + 0x10000 * savedVpos, 0);
                 }
             };
-
-            // Invoke in UI thread if needed to avoid WinForms issues.
-            // See https://github.com/OverlayPlugin/OverlayPlugin/issues/254
-            if (ActGlobals.oFormActMain.InvokeRequired)
-            {
-                ActGlobals.oFormActMain.Invoke(appendText);
-            }
-            else
-            {
-                appendText();
-            }
+            appendText();
         }
 
         private void AddEventSourceTab(object sender, EventSourceRegisteredEventArgs e)
