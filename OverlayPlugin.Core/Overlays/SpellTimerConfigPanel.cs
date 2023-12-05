@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SharpCompress.Common;
 
 namespace RainbowMage.OverlayPlugin.Overlays
 {
@@ -185,6 +186,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             this.config.GlobalHotkeys[0].Enabled = this.checkEnableGlobalHotkey.Checked;
             this.textGlobalHotkey.Enabled = this.config.GlobalHotkeys[0].Enabled;
+            config.TriggerGlobalHotkeyChanged();
         }
 
         private void textGlobalHotkey_KeyDown(object sender, KeyEventArgs e)
@@ -193,6 +195,7 @@ namespace RainbowMage.OverlayPlugin.Overlays
             var key = Util.RemoveModifiers(e.KeyCode, e.Modifiers);
             this.config.GlobalHotkeys[0].Key = key;
             this.config.GlobalHotkeys[0].Modifiers = e.Modifiers;
+            config.TriggerGlobalHotkeyChanged();
         }
 
         private void checkLock_CheckedChanged(object sender, EventArgs e)
