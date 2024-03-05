@@ -3,50 +3,98 @@
 // For more information, see comments on https://github.com/OverlayPlugin/OverlayPlugin/issues/235
 {
     // CN region
-    "2023.11.27.0000.0000": {
-        // Version: 6.45
+    "2024.02.21.0000.0000": {
+        // Version: 6.5
         "MapEffect": {
-            "opcode": 378,
+            "opcode": 939,
             "size": 11
         },
         "CEDirector": {
-            "opcode": 763,
+            "opcode": 208,
             "size": 16
         },
         "RSVData": {
-            "opcode": 335,
+            "opcode": 496,
             "size": 1080
+        },
+        "NpcYell": {
+            "opcode": 578,
+            "size": 32
+        },
+        "BattleTalk2": {
+            "opcode": 436,
+            "size": 40
+        },
+        "Countdown": {
+            "opcode": 935,
+            "size": 48
+        },
+        "CountdownCancel": {
+            "opcode": 559,
+            "size": 40
+        },
+        "ActorMove": {
+            "opcode": 547,
+            "size": 16
+        },
+        "ActorSetPos": {
+            "opcode": 792,
+            "size": 24
         }
     },
     // Global region
-    "2023.11.09.0000.0000": {
-        // Version: 6.51 Hotfix
+    "2024.02.05.0000.0000": {
+        // Version: 6.57
         "MapEffect": {
-            "opcode": 581,
+            "opcode": 141,
             "size": 11
         },
         "CEDirector": {
-            "opcode": 907,
+            "opcode": 984,
             "size": 16
         },
         "RSVData": {
-            "opcode": 653,
+            "opcode": 625,
             "size": 1080
+        },
+        "NpcYell": {
+            "opcode": 101,
+            "size": 32
+        },
+        "BattleTalk2": {
+            "opcode": 475,
+            "size": 40
+        },
+        "Countdown": {
+            "opcode": 928,
+            "size": 48
+        },
+        "CountdownCancel": {
+            "opcode": 322,
+            "size": 40
+        },
+        "ActorMove": {
+            "opcode": 845,
+            "size": 16
+        },
+        "ActorSetPos": {
+            "opcode": 174,
+            "size": 24
         }
     },
     // KR region
-    "2023.11.01.0000.0000":{
-        // Version: 6.40 Hotfix
+    "2023.12.18.0000.0000":{
+        // Version: 6.45
         "MapEffect": {
-            "opcode": 217,
+            "opcode": 978,
             "size": 11
         },
         "CEDirector": {
-            "opcode": 398,
+            "opcode": 540,
             "size": 16
         },
         "RSVData": {
-            "opcode": 199,
+            "opcode": 168,
             "size": 1080
         }
     }

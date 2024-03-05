@@ -25,7 +25,15 @@ namespace RainbowMage.OverlayPlugin
 
 
         IPluginConfig _config;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Usage",
+            "CA2213:Disposable fields should be disposed",
+            Justification = "_server is disposed of by TinyIoCContainer")]
         WSServer _server;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Usage",
+            "CA2213:Disposable fields should be disposed",
+            Justification = "_plugin is disposed of by TinyIoCContainer")]
         PluginMain _plugin;
         Registry _registry;
         Process _ngrok;
@@ -64,6 +72,8 @@ namespace RainbowMage.OverlayPlugin
                     break;
                 }
             }
+
+            txtNgrokToken.Text = _config.Token;
 
             UpdateStatus(null, new WSServer.StateChangedArgs(_server.IsRunning(), _server.IsFailed()));
             _server.OnStateChanged += UpdateStatus;
@@ -352,9 +362,13 @@ namespace RainbowMage.OverlayPlugin
                     hostUrl += "ws://";
                 }
 
-                if (_config.WSServerIP == "0.0.0.0")
+                if (_config.WSServerIP == "0.0.0.0" || _config.WSServerIP == "*")
                 {
                     hostUrl += "127.0.0.1";
+                }
+                else if (_config.WSServerIP == "[::]")
+                {
+                    hostUrl += "[::1]";
                 }
                 else
                 {
@@ -484,10 +498,10 @@ namespace RainbowMage.OverlayPlugin
                     }
 
                     var config = @"
+authtoken: " + (this.txtNgrokToken.Text) + @"
 region: " + region + @"
 console_ui: false
 web_addr: 127.0.0.1:" + (_config.WSServerPort + 1) + @"
-
 tunnels:
     wsserver:
         proto: http
@@ -769,6 +783,11 @@ version: 2
         private void regionCb_SelectedIndexChanged(object sender, EventArgs e)
         {
             _config.TunnelRegion = (string)regionCb.SelectedItem;
+        }
+
+        private void txtNgrokTokenChanged(object sender, EventArgs e)
+        {
+            _config.Token = txtNgrokToken.Text;
         }
     }
 }

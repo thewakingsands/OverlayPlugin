@@ -4,6 +4,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Combatant;
+using RainbowMage.OverlayPlugin.MemoryProcessors.ContentFinderSettings;
 using RainbowMage.OverlayPlugin.MemoryProcessors.InCombat;
 using RainbowMage.OverlayPlugin.Updater;
 
@@ -22,6 +23,15 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             container.Register(new LineRSV(container));
             container.Register(new LineActorCastExtra(container));
             container.Register(new LineAbilityExtra(container));
+            container.Register(new LineContentFinderSettings(container));
+            container.Register(new LineNpcYell(container));
+            container.Register(new LineBattleTalk2(container));
+            container.Register(new LineCountdown(container));
+            container.Register(new LineCountdownCancel(container));
+            container.Register(new LineActorMove(container));
+            container.Register(new LineActorSetPos(container));
+            container.Register(new LineSpawnNpcExtra(container));
+            container.Register(new LineActorControlExtra(container));
         }
     }
 

@@ -375,4 +375,7 @@ SSL 功能仅在你拥有 SSL 证书的情况下才能启用, 要使用它，你
   <data name="ctxMenuLinkCopy.Text" xml:space="preserve">
     <value>复制</value>
   </data>
+  <data name="tokenLabel.Text" xml:space="preserve">
+    <value>令牌:</value>
+  </data>
 </root>

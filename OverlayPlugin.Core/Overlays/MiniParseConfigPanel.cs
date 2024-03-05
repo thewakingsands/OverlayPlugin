@@ -15,6 +15,10 @@ namespace RainbowMage.OverlayPlugin.Overlays
         private MiniParseOverlayConfig config;
         private MiniParseOverlay overlay;
         private IReadOnlyList<IOverlayPreset> presets;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Usage",
+            "CA2213:Disposable fields should be disposed",
+            Justification = "keyboardHook is disposed of by TinyIoCContainer")]
         private readonly KeyboardHook keyboardHook;
         private readonly TinyIoCContainer container;
 
