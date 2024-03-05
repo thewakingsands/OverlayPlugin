@@ -20,7 +20,9 @@ param(
 $base = (Get-Item $PSCommandPath).Directory.Parent.FullName
 Push-Location $base
 
-if (Test-Path "OverlayPlugin.Core\Thirdparty\FFXIVClientStructs\Base") {
+#Disable for cn
+#if (Test-Path "OverlayPlugin.Core\Thirdparty\FFXIVClientStructs\Base") {
+if (False) {
     echo "==> Preparing FFXIVClientStructs..."
     
     if ($exePath -eq $null) {

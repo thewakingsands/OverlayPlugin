@@ -117,7 +117,8 @@ namespace RainbowMage.OverlayPlugin
                 logBox.Text = "============日志已被截断 ==============\n为减少内存占用，日志已被截断。\n=========================================\n" + msg;
                 return;
             }
-
+            Action appendText = () =>
+            {
                 if (checkBoxFollowLog.Checked)
                 {
                     logBox.AppendText(msg);

@@ -222,6 +222,7 @@
             // 
             // tunnelPage
             // 
+            resources.ApplyResources(this.tunnelPage, "tunnelPage");
             this.tunnelPage.Controls.Add(this.tokenLabel);
             this.tunnelPage.Controls.Add(this.txtNgrokToken);
             this.tunnelPage.Controls.Add(this.simpStopBtn);

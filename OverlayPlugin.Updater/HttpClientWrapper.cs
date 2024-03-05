@@ -57,9 +57,8 @@ namespace RainbowMage.OverlayPlugin.Updater
 
                     if (downloadDest == null)
                     {
-                        result = await client.DownloadStringTaskAsync(url);
+                        result = await response.Content.ReadAsStringAsync();
                     }
-
                     else
                     {
                         var buffer = new byte[40 * 1024];
