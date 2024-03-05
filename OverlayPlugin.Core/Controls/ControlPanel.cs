@@ -80,8 +80,6 @@ namespace RainbowMage.OverlayPlugin
 
             base.Dispose(disposing);
         }
-        private System.Windows.Forms.Timer initTimer = null;
-        private ConcurrentQueue<LogEntry> pendingLog=new ConcurrentQueue<LogEntry>();
 
         private void AddLogEntry(LogEntry entry)
         {
@@ -97,6 +95,7 @@ namespace RainbowMage.OverlayPlugin
                 AddLogEntry0(entry);
             }
         }
+
         private void AddLogEntry0(LogEntry entry)
         {
             var msg = $"[{entry.Time}] {entry.Level}: {entry.Message}" + Environment.NewLine;
