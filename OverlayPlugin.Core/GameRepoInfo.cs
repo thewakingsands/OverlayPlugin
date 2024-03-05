@@ -8,10 +8,10 @@ namespace RainbowMage.OverlayPlugin
 {
     public class GameRepoInfo
     {
-        //CN 6.45
+        //CN 6.45a
         public static readonly Version version = new Version(6, 4);
-        public static readonly int CEDirectorOpcode = 0x2FB;
-        public static readonly int MapEffectOpcode = 0x17A;
-        public static readonly int RSVDataOpcode = 0x14F;
+        public static readonly int CEDirectorOpcode = 0x362;
+        public static readonly int MapEffectOpcode = 0x378;
+        public static readonly int RSVDataOpcode = 0x246;
     }
 }
