@@ -50,7 +50,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
     {
         internal ILogger logger_ = null;
         internal FFXIVRepository ffxiv_ = null;
-        bool showed_dx9_error_ = false;
         private LimitedProcess process_ = null;
 
         // Filled in by ReadSignatures().
@@ -261,18 +260,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 if (process_ != null)
                 {
                     ReadSignatures();
-                }
-            }
-
-            if (process_ == null && !showed_dx9_error_)
-            {
-                int found_32bit = (from x in Process.GetProcessesByName("ffxiv")
-                                   where !x.HasExited && x.MainModule != null && x.MainModule.ModuleName == "ffxiv.exe"
-                                   select x).Count();
-                if (found_32bit > 0)
-                {
-                    logger_.Log(LogLevel.Error, "发现不支持的DX9进程，请将游戏切换到DX11以使Cactbot正常运行。");
-                    showed_dx9_error_ = true;
                 }
             }
         }

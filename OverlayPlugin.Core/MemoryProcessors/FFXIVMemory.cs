@@ -27,7 +27,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         //Handle the lock of process and processHandle
         private readonly ReaderWriterLockSlim _processLock = new ReaderWriterLockSlim();
 
-        private bool hasLoggedDx9 = false;
         private bool hasDisposed;
 
         public FFXIVMemory(TinyIoCContainer container)
@@ -46,7 +45,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         private void UpdateProcess(Process proc)
         {
-            bool showDX9MsgBox = false;
             _processLock.EnterWriteLock();
             try
             {
@@ -58,17 +56,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 if (proc == null || proc.HasExited)
                     return;
 
-                if (proc.ProcessName == "ffxiv")
-                {
-                    if (!hasLoggedDx9)
-                    {
-                        hasLoggedDx9 = true;
-                        showDX9MsgBox = true;
-                        logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
-                    }
-                    return;
-                }
-                else if (proc.ProcessName != "ffxiv_dx11")
+                if (proc.ProcessName != "ffxiv_dx11")
                 {
                     logger.Log(LogLevel.Error, "{0}", "Unknown ffxiv process.");
                     return;
@@ -89,10 +77,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             finally
             {
                 _processLock.ExitWriteLock();
-                if (showDX9MsgBox)
-                {
-                    MessageBox.Show("现在 ACT 的部分功能不支持 DX9 启动的游戏。\r\n请在游戏启动器器设置里选择以 DX11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             OnProcessChange?.Invoke(this, process);
         }
@@ -116,16 +100,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             if (proc == null || proc.HasExited)
                 return;
 
-            if (proc.ProcessName == "ffxiv")
-            {
-                if (!hasLoggedDx9)
-                {
-                    hasLoggedDx9 = true;
-                    logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
-                }
-                return;
-            }
-            else if (proc.ProcessName != "ffxiv_dx11")
+            if (proc.ProcessName != "ffxiv_dx11")
             {
                 logger.Log(LogLevel.Error, "{0}", "Unknown ffxiv process.");
                 return;
