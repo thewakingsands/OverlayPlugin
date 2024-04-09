@@ -183,8 +183,8 @@
             // 
             // introPage
             // 
-            this.introPage.Controls.Add(this.lblWsserverIntro);
             resources.ApplyResources(this.introPage, "introPage");
+            this.introPage.Controls.Add(this.lblWsserverIntro);
             this.introPage.Name = "introPage";
             this.introPage.UseVisualStyleBackColor = true;
             // 
@@ -195,6 +195,7 @@
             // 
             // settingsPage
             // 
+            resources.ApplyResources(this.settingsPage, "settingsPage");
             this.settingsPage.Controls.Add(this.logDisplay);
             this.settingsPage.Controls.Add(this.label1);
             this.settingsPage.Controls.Add(this.label3);
@@ -206,7 +207,6 @@
             this.settingsPage.Controls.Add(this.label2);
             this.settingsPage.Controls.Add(this.startBtn);
             this.settingsPage.Controls.Add(this.stopBtn);
-            resources.ApplyResources(this.settingsPage, "settingsPage");
             this.settingsPage.Name = "settingsPage";
             this.settingsPage.UseVisualStyleBackColor = true;
             // 
