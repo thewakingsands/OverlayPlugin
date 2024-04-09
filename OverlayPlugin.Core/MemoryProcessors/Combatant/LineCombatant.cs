@@ -28,7 +28,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Combatant
         private class CombatantChangeCriteria
         {
             // in milliseconds
-            public const int PollingRate = 20;
+            public const int PollingRate = 100;
 
             public class CriteriaData
             {
