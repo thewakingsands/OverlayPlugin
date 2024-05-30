@@ -155,11 +155,12 @@ namespace RainbowMage.OverlayPlugin
                 pluginMain.DeInitPlugin();
             }
 
-            if (ActGlobals.oFormActMain.IsActClosing)
-            {
+            //CN - disabling this for fixing crashes when act closing
+            //if (ActGlobals.oFormActMain.IsActClosing)
+            //{
                 // We can only dispose the resolver once the HtmlRenderer is shut down. HtmlRenderer is only shut down if ACT is closing.
-                asmResolver.Dispose();
-            }
+            //    asmResolver.Dispose();
+            //}
         }
 
         private string GetPluginDirectory()

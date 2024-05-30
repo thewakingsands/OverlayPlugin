@@ -476,16 +476,18 @@ namespace RainbowMage.OverlayPlugin
             if (this.wsTabPage != null && this.wsTabPage.Parent != null)
                 ((TabControl)this.wsTabPage.Parent).TabPages.Remove(this.wsTabPage);
 
+            // CN - disabling this for it cause ACT crashes - due to incorret cef shutdown order
+            // TODO: fix it later
             // Can only shut down CEF if ACT is closing
-            if (ActGlobals.oFormActMain.IsActClosing)
-            {
-                var shutdown = Renderer.Shutdown();
+            //if (ActGlobals.oFormActMain.IsActClosing)
+            //{
+            //    var shutdown = Renderer.Shutdown();
 
                 // CN - We just add button to clear cache, the method for upstream will break user data
                 // Can only clear cache if CEF is shut down, otherwise some cache files are still in use.
                 //if (shutdown && this.clearCache == true)
                     //Renderer.ClearCache();
-            }
+            //}
 
             _logger.Log(LogLevel.Info, "DeInitPlugin: Finalized.");
             if (this.label != null) this.label.Text = "Finalized.";
