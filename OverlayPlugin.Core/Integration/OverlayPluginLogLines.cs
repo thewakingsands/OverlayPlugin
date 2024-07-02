@@ -7,6 +7,9 @@ using RainbowMage.OverlayPlugin.MemoryProcessors.Combatant;
 using RainbowMage.OverlayPlugin.MemoryProcessors.ContentFinderSettings;
 using RainbowMage.OverlayPlugin.MemoryProcessors.InCombat;
 using RainbowMage.OverlayPlugin.Updater;
+using MachinaRegion = System.String;
+using OpcodeName = System.String;
+using OpcodeVersion = System.String;
 
 namespace RainbowMage.OverlayPlugin.NetworkProcessors
 {
@@ -55,8 +58,16 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
             opcodes.Add("ActorMove", new OpcodeConfigEntry { opcode = (uint)GameRepoInfo.ActorMoveOpcode, size = 16 });
             opcodes.Add("ActorSetPos", new OpcodeConfigEntry { opcode = (uint)GameRepoInfo.ActorSetPosOpcode, size = 24 });
         }
-
         public IOpcodeConfigEntry this[string name]
+        {
+            get
+            {
+                var machinaRegion = repository.GetMachinaRegion().ToString();
+                return this[name, machinaRegion];
+            }
+        }
+
+        public IOpcodeConfigEntry this[string name, MachinaRegion machinaRegion]
         {
             get
             {
