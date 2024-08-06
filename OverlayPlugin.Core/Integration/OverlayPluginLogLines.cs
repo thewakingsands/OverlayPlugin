@@ -62,8 +62,7 @@ namespace RainbowMage.OverlayPlugin.NetworkProcessors
         {
             get
             {
-                var machinaRegion = repository.GetMachinaRegion().ToString();
-                return this[name, machinaRegion];
+                return this[name];
             }
         }
 
