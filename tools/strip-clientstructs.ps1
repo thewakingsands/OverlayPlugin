@@ -22,7 +22,7 @@ Push-Location $base
 
 #Disable for cn
 #if (Test-Path "OverlayPlugin.Core\Thirdparty\FFXIVClientStructs\Base") {
-if (False) {
+if (Test-Path "OverlayPlugin.Core\Thirdparty\FFXIVClientStructs\Base") {
     echo "==> Preparing FFXIVClientStructs..."
     
     if ($exePath -eq $null) {

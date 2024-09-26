@@ -317,7 +317,6 @@ namespace RainbowMage.OverlayPlugin
                                     _container.Register<IJobGaugeMemory, JobGaugeMemoryManager>();
 
                                     _container.Register(new OverlayPluginLogLines(_container));
-                                });
                             }
                             catch (Exception ex)
                             {

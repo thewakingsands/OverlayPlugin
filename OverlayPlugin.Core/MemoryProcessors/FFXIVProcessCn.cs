@@ -710,17 +710,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             /// <summary>
             /// (From right to left)
             /// 1-2 bits: Active Primal
-            /// 3-5 bits: Counts of Attunement Stacks
-            /// <summary>
-            /// 0x04: 0x17 = Summoned other than Carbuncle, 0x00 = Other Condition
-            /// </summary>
-            [NonSerialized]
-            [FieldOffset(0x04)]
-            private byte _summonStatus;
-
-            /// <summary>
-            /// (From right to left)
-            /// 1-2 bits: Active Primal
             /// 3-5 bits: Counts 
             [NonSerialized]
             [FieldOffset(0x06)]

@@ -79,11 +79,6 @@ namespace RainbowMage.OverlayPlugin
             Invalidate();
         }
 
-        protected int WithDpi(int number)
-        {
-            return (int)Math.Floor(number * dpi);
-        }
-
         public TabControlExt() : base()
         {
             Alignment = TabAlignment.Left;

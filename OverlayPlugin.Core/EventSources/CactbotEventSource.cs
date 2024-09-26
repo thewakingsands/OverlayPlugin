@@ -40,10 +40,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private string pc_locale_ = null;
         private List<FileSystemWatcher> watchers;
         private Version cactbot_version_;
-        private Version overlayVersion_;
-        private Version ffxivPluginVersion_;
-        private Version actVersion_;
-        private GameRegion gameRegion_;
+        private Version overlay_plugin_version_;
+        private Version ffxiv_plugin_version_;
+        private Version act_version_;
+        private GameRegion game_region_;
         private PluginMain pluginMain;
 
         public const string ForceReloadEvent = "onForceReload";
@@ -215,18 +215,19 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             language_ = "cn";
             pc_locale_ = System.Globalization.CultureInfo.CurrentUICulture.Name;
+            var repository = container.Resolve<FFXIVRepository>();
 
-            cactbot_version_ = "0.32.9.0"
+            cactbot_version_ = new Version(0,32,9,0);
             overlay_plugin_version_ = typeof(IOverlay).Assembly.GetName().Version;
-            ffxivPluginVersion_ = ffxiv.GetPluginVersion();
+            ffxiv_plugin_version_ = repository.GetPluginVersion();
             act_version_ = typeof(ActGlobals).Assembly.GetName().Version;
             game_region_ = GameRegion.Chinese;
 
             // Print out version strings and locations to help users debug.
-            logger.Log(LogLevel.Info, Strings.CactbotBaseInfo, cactbot_version_.ToString(), versions.GetCactbotPluginLocation(), versions.GetCactbotDirectory());
-            LogInfo("OverlayPlugin: {0} {1}", overlayVersion_.ToString(), typeof(IOverlay).Assembly.Location);
-            LogInfo("FFXIV Plugin: {0} {1}", ffxivPluginVersion_.ToString(), ffxiv.GetPluginPath());
-            LogInfo("ACT: {0} {1}", actVersion_.ToString(), typeof(ActGlobals).Assembly.Location);
+            logger.Log(LogLevel.Info, "cactbot: {0} {1} (dir: {2})", cactbot_version_.ToString(), "(in FFcafe OverlayPlugin)", pluginMain.OfflineCactbotDirectory);
+            LogInfo("OverlayPlugin: {0} {1}", overlay_plugin_version_.ToString(), typeof(IOverlay).Assembly.Location);
+            LogInfo("FFXIV Plugin: {0} {1}", ffxiv_plugin_version_.ToString(), repository.GetPluginPath());
+            LogInfo("ACT: {0} {1}", act_version_.ToString(), typeof(ActGlobals).Assembly.Location);
 
             if (language_ == null)
             {
@@ -247,7 +248,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
 
             ffxiv_ = new FFXIVProcessCn(container);
-            logger.Log(LogLevel.Info, Strings.Version, "cn");
+            logger.Log(LogLevel.Info, "Version: {0}", "cn");
 
             // Avoid initialization races by always calling OnProcessChanged with the current process
             // in case the ffxiv plugin has already sent this event and it never changes again.
@@ -744,10 +745,10 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             //It's unknown for ffcafe, but leave stub here should be better incase some overlays using that
             result["cactbotVersion"] = "0.32.9.0";
-            result["overlayPluginVersion"] = overlayVersion_.ToString();
-            result["ffxivPluginVersion"] = ffxivPluginVersion_.ToString();
-            result["actVersion"] = actVersion_.ToString();
-            result["gameRegion"] = gameRegion_.ToString();
+            result["overlayPluginVersion"] = overlay_plugin_version_.ToString();
+            result["ffxivPluginVersion"] = ffxiv_plugin_version_.ToString();
+            result["actVersion"] = act_version_.ToString();
+            result["gameRegion"] = game_region_.ToString();
 
             var response = new JObject();
             response["detail"] = result;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -109,6 +110,19 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             process = proc;
             processHandle = NativeMethods.OpenProcess(ProcessAccessFlags.VirtualMemoryRead, false, proc.Id);
             logger.Log(LogLevel.Info, "游戏进程：{0}，来源：解析插件轮询", proc.Id);
+        }
+
+        public IntPtr GetBaseAddress()
+        {
+            _processLock.EnterReadLock();
+            try
+            {
+                return process.MainModule.BaseAddress;
+            }
+            finally
+            {
+                _processLock.ExitReadLock();
+            }
         }
 
         private void CloseProcessHandle()
@@ -231,6 +245,15 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             var value = new byte[4];
             Peek(IntPtr.Add(address, offset), value);
             fixed (byte* p = &value[0]) ret = *(int*)p;
+            return ret;
+        }
+
+        public unsafe long GetInt64(IntPtr address, int offset = 0)
+        {
+            long ret;
+            var value = new byte[8];
+            Peek(IntPtr.Add(address, offset), value);
+            fixed (byte* p = &value[0]) ret = *(long*)p;
             return ret;
         }
 
