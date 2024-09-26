@@ -33,6 +33,9 @@ namespace RainbowMage.OverlayPlugin.Updater
         public static string Get(string url, Dictionary<string, string> headers, string downloadDest,
             ProgressInfoCallback infoCb, bool resume)
         {
+            if (!ActGlobals.oFormActMain.InvokeRequired)
+                throw new HttpClientException(false, "HttpClientWrapper called on UI thread, this can cause deadlocks");
+
             var completionLock = new object();
             string result = null;
             Exception error = null;

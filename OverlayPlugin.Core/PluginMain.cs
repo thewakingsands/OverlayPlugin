@@ -13,6 +13,8 @@ using RainbowMage.OverlayPlugin.Controls;
 using RainbowMage.OverlayPlugin.EventSources;
 using RainbowMage.OverlayPlugin.MemoryProcessors;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Aggro;
+using RainbowMage.OverlayPlugin.MemoryProcessors.AtkStage;
+using RainbowMage.OverlayPlugin.MemoryProcessors.ClientFramework;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Combatant;
 using RainbowMage.OverlayPlugin.MemoryProcessors.ContentFinderSettings;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Enmity;
@@ -294,27 +296,28 @@ namespace RainbowMage.OverlayPlugin
                                 _container.Register(new NetworkParser(_container));
                                 _container.Register(new TriggIntegration(_container));
                                 _container.Register(new FFXIVCustomLogLines(_container));
-                                // Disable for cn
-                                //_container.Register(new MemoryProcessors.FFXIVClientStructs.Data(_container));
+                                _container.Register(new MemoryProcessors.FFXIVClientStructs.Data(_container));
 
-                                // Register FFXIV memory reading subcomponents.
-                                // Must be done before loading addons.
-                                _container.Register(new FFXIVMemory(_container));
+                                    // Register FFXIV memory reading subcomponents.
+                                    // Must be done before loading addons.
+                                    _container.Register(new FFXIVMemory(_container));
 
-                                // These are registered to be lazy-loaded. Use interface to force TinyIoC to use singleton pattern.
-                                _container.Register<ICombatantMemory, CombatantMemoryManager>();
-                                _container.Register<ITargetMemory, TargetMemoryManager>();
-                                _container.Register<IContentFinderSettingsMemory, ContentFinderSettingsMemoryManager>();
-                                _container.Register<IAggroMemory, AggroMemoryManager>();
-                                _container.Register<IEnmityMemory, EnmityMemoryManager>();
-                                _container.Register<IEnmityHudMemory, EnmityHudMemoryManager>();
-                                _container.Register<IInCombatMemory, InCombatMemoryManager>();
-                                // Disable for cn
-                                //_container.Register<IAtkStageMemory, AtkStageMemoryManager>();
-                                _container.Register<IPartyMemory, PartyMemoryManager>();
-                                _container.Register<IJobGaugeMemory, JobGaugeMemoryManager>();
+                                    // These are registered to be lazy-loaded. Use interface to force TinyIoC to use singleton pattern.
+                                    _container.Register<ICombatantMemory, CombatantMemoryManager>();
+                                    _container.Register<ITargetMemory, TargetMemoryManager>();
+                                    _container.Register<IClientFrameworkMemory, ClientFrameworkMemoryManager>();
+                                    _container
+                                        .Register<IContentFinderSettingsMemory, ContentFinderSettingsMemoryManager>();
+                                    _container.Register<IAggroMemory, AggroMemoryManager>();
+                                    _container.Register<IEnmityMemory, EnmityMemoryManager>();
+                                    _container.Register<IEnmityHudMemory, EnmityHudMemoryManager>();
+                                    _container.Register<IInCombatMemory, InCombatMemoryManager>();
+                                    _container.Register<IAtkStageMemory, AtkStageMemoryManager>();
+                                    _container.Register<IPartyMemory, PartyMemoryManager>();
+                                    _container.Register<IJobGaugeMemory, JobGaugeMemoryManager>();
 
-                                _container.Register(new OverlayPluginLogLines(_container));
+                                    _container.Register(new OverlayPluginLogLines(_container));
+                                });
                             }
                             catch (Exception ex)
                             {
