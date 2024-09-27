@@ -14,11 +14,22 @@ namespace RainbowMage.OverlayPlugin
             {
                 if (dpiScale == 0)
                 {
+                    dpiScale = 1;
+                }
+                return dpiScale;
+            }
+            //This needs we update to the latest act (3.8.0.x),
+            //so comment it until we finish updating
+            /*
+            get
+            {
+                if (dpiScale == 0)
+                {
                     try { dpiScale = ActGlobals.oFormActMain.DpiScale; }
                     catch { dpiScale = 1; }
                 }
                 return dpiScale;
-            }
+            }*/
         }
         int Dpi(float InputValue)
         {
