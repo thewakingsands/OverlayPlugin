@@ -278,7 +278,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         internal uint GetBait()
         {
             uint[] jorts = Read32U(bait_addr_, 1);
-            return jorts[0];
+            return jorts == null ? 0 : jorts[0];
         }
         public unsafe abstract EntityData GetEntityDataFromByteArray(byte[] source);
 
