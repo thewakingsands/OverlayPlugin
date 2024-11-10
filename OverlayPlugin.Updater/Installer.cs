@@ -245,6 +245,7 @@ namespace RainbowMage.OverlayPlugin.Updater
 
                             _display.Log(Resources.LogResumingDownload);
                             success = false;
+                            retries--;
                             continue;
                         }
                     }
