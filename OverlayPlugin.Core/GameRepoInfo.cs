@@ -8,16 +8,16 @@ namespace RainbowMage.OverlayPlugin
 {
     public class GameRepoInfo
     {
-        //CN 7.01
+        //CN 7.05
         public static readonly Version version = new Version(7, 0);
-        public static readonly int ActorMoveOpcode = 0x2BB;
-        public static readonly int ActorSetPosOpcode = 0x232;
-        public static readonly int BattleTalk2Opcode = 0x379;
-        public static readonly int CountdownOpcode = 0x146;
-        public static readonly int CountdownCancelOpcode = 0x0B2;
-        public static readonly int CEDirectorOpcode = 0x2C9;
-        public static readonly int MapEffectOpcode = 0x191;
-        public static readonly int RSVDataOpcode = 0x16D;
-        public static readonly int NpcYellOpcode = 0x0E4;
+        public static readonly int ActorMoveOpcode = 0x27B;
+        public static readonly int ActorSetPosOpcode = 0x3AF;
+        public static readonly int BattleTalk2Opcode = 0x126;
+        public static readonly int CountdownOpcode = 0x08E;
+        public static readonly int CountdownCancelOpcode = 0x18F;
+        public static readonly int CEDirectorOpcode = 0x1B5;
+        public static readonly int MapEffectOpcode = 0x1DA;
+        public static readonly int RSVDataOpcode = 0x35A;
+        public static readonly int NpcYellOpcode = 0x2D0;
     }
 }
