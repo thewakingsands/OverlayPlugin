@@ -47,10 +47,14 @@ namespace RainbowMage.OverlayPlugin
             this.pluginScreenSpace = pluginScreenSpace;
             this.pluginStatusText = pluginStatusText;
 
-            if (!CheckACTVersion())
+            /* This check just for *broken* Tab High-DPI Support
+             * And just revert broken tab changes, so we can safety comment it
+             * until we upgrade CafeACT to higher version
+             if (!CheckACTVersion())
             {
                 return;
             }
+            */
 
             /*
              * We explicitly load OverlayPlugin.Common here for two reasons:

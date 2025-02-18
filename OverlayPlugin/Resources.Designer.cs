@@ -61,9 +61,9 @@ namespace RainbowMage.OverlayPlugin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ACT ÕýÔÚÊÔÍ¼¼ÓÔØÎ»ÓÚ {0} ÏÂ°æ±¾ {1} µÄ ngld Ðü¸¡´°²å¼þ£¬ÕâÓëµ±Ç° ngld Ðü¸¡´°²å¼þ°æ±¾ {2} ²»Í¬¡£²å¼þ¼ÓÔØÒÑÖÕÖ¹¡£
+        ///   Looks up a localized string similar to ACT æ­£åœ¨è¯•å›¾åŠ è½½ä½äºŽ {0} ä¸‹ç‰ˆæœ¬ {1} çš„ ngld æ‚¬æµ®çª—æ’ä»¶ï¼Œè¿™ä¸Žå½“å‰ ngld æ‚¬æµ®çª—æ’ä»¶ç‰ˆæœ¬ {2} ä¸åŒã€‚æ’ä»¶åŠ è½½å·²ç»ˆæ­¢ã€‚
         ///
-        ///ÇëÈ·±£¾É°æ±¾µÄÐü¸¡´°²å¼þÒÑ±»½ûÓÃÇÒÒÑÖØÆôACT£¬Èç¹ûÈÔÈ»Èç´Ë£¬Çë³¢ÊÔÖØ×° ngld Ðü¸¡´°²å¼þ£¬²¢ÔÚ¸ß¼¶¹ÜÀíÖÐ½«µÚÈý·½²å¼þÏÂÒÆµ½ OverlayPlugin.dll ÏÂºóÖØÆôACT¡£
+        ///è¯·ç¡®ä¿æ—§ç‰ˆæœ¬çš„æ‚¬æµ®çª—æ’ä»¶å·²è¢«ç¦ç”¨ä¸”å·²é‡å¯ACTï¼Œå¦‚æžœä»ç„¶å¦‚æ­¤ï¼Œè¯·å°è¯•é‡è£… ngld æ‚¬æµ®çª—æ’ä»¶ï¼Œå¹¶åœ¨é«˜çº§ç®¡ç†ä¸­å°†ç¬¬ä¸‰æ–¹æ’ä»¶ä¸‹ç§»åˆ° OverlayPlugin.dll ä¸‹åŽé‡å¯ACTã€‚
         ///.
         /// </summary>
         internal static string AssemblyMismatch {
