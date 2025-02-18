@@ -210,6 +210,7 @@ namespace RainbowMage.HtmlRenderer
                 EndRender();
             }
             InitBrowser();
+
             var cefWindowInfo = CreateWindowInfo();
             _isWindowless = cefWindowInfo.WindowlessRenderingEnabled;
 
