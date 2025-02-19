@@ -36,28 +36,28 @@ namespace RainbowMage.OverlayPlugin.EventSources
         private FFXIVProcess ffxiv_;
         private FateWatcher fate_watcher_;
 
-        private Version overlayVersion_;
-        private Version ffxivPluginVersion_;
-        private Version actVersion_;
-        private GameRegion gameRegion_;
         private string language_ = null;
         private string pc_locale_ = null;
         private List<FileSystemWatcher> watchers;
-
+        private Version cactbot_version_;
+        private Version overlay_plugin_version_;
+        private Version ffxiv_plugin_version_;
+        private Version act_version_;
+        private GameRegion game_region_;
         private PluginMain pluginMain;
 
         public const string ForceReloadEvent = "onForceReload";
         public const string GameExistsEvent = "onGameExistsEvent";
         public const string GameActiveChangedEvent = "onGameActiveChangedEvent";
-        public const string LogEvent = "onLogEvent";
-        public const string ImportLogEvent = "onImportLogEvent";
-        public const string InCombatChangedEvent = "onInCombatChangedEvent";
         public const string ZoneChangedEvent = "onZoneChangedEvent";
-        public const string PlayerDiedEvent = "onPlayerDied";
         public const string PartyWipeEvent = "onPartyWipe";
         public const string FateEvent = "onFateEvent";
         public const string CEEvent = "onCEEvent";
         public const string PlayerChangedEvent = "onPlayerChangedEvent";
+        public const string LogEvent = "onLogEvent";
+        public const string ImportLogEvent = "onImportLogEvent";
+        public const string InCombatChangedEvent = "onInCombatChangedEvent";
+        public const string PlayerDiedEvent = "onPlayerDied";
         public const string SendSaveDataEvent = "onSendSaveData";
         public const string DataFilesReadEvent = "onDataFilesRead";
         public const string InitializeOverlayEvent = "onInitializeOverlay";
@@ -73,7 +73,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
         {
             pluginMain = container.Resolve<PluginMain>();
 
-            Name = "Cactbot";
+            Name = "Cactbot配置";
 
             RegisterPresets();
 
@@ -170,7 +170,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
             var url = pluginMain.OfflineCactbotConfigHtmlFile;
             control.VisibleChanged += (o, e) =>
             {
-                if (initDone)
+                if (initDone || !control.Visible)
                     return;
                 initDone = true;
                 control.Init(url);
@@ -191,22 +191,9 @@ namespace RainbowMage.OverlayPlugin.EventSources
             Config.SaveConfig(config);
         }
 
-        public override void Start()
-        {
-            var ffxiv = container.Resolve<FFXIVRepository>();
-            if (!ffxiv.IsFFXIVPluginPresent())
-            {
-                Log(LogLevel.Error, "FFXIV plugin not found. Not initializing.");
-                return;
-            }
-
+    public override void Start() {
             // Our own timer with a higher frequency than OverlayPlugin since we want to see
             // the effect of log messages quickly.
-            // TODO: Cleanup; Log messages are distributed through events and skip the update
-            //   loop. Memory scanning needs a high frequencey but that's handled by the
-            //   MemoryProcessor classes which raise events.
-            //   Everything else should be handled through events to avoid unnecessary polling.
-            //   -- ngld
             fast_update_timer_ = new System.Timers.Timer();
             fast_update_timer_.Elapsed += (o, args) =>
             {
@@ -228,16 +215,19 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
             language_ = "cn";
             pc_locale_ = System.Globalization.CultureInfo.CurrentUICulture.Name;
+            var repository = container.Resolve<FFXIVRepository>();
 
-            overlayVersion_ = typeof(IOverlay).Assembly.GetName().Version;
-            ffxivPluginVersion_ = ffxiv.GetPluginVersion();
-            actVersion_ = typeof(ActGlobals).Assembly.GetName().Version;
-            gameRegion_ = GameRegion.Chinese;
+            cactbot_version_ = new Version(0,33,7,0);
+            overlay_plugin_version_ = typeof(IOverlay).Assembly.GetName().Version;
+            ffxiv_plugin_version_ = repository.GetPluginVersion();
+            act_version_ = typeof(ActGlobals).Assembly.GetName().Version;
+            game_region_ = GameRegion.Chinese;
 
             // Print out version strings and locations to help users debug.
-            LogInfo("OverlayPlugin: {0} {1}", overlayVersion_.ToString(), typeof(IOverlay).Assembly.Location);
-            LogInfo("FFXIV Plugin: {0} {1}", ffxivPluginVersion_.ToString(), ffxiv.GetPluginPath());
-            LogInfo("ACT: {0} {1}", actVersion_.ToString(), typeof(ActGlobals).Assembly.Location);
+            logger.Log(LogLevel.Info, "cactbot: {0} {1} (dir: {2})", cactbot_version_.ToString(), "(in FFcafe OverlayPlugin)", pluginMain.OfflineCactbotDirectory);
+            LogInfo("OverlayPlugin: {0} {1}", overlay_plugin_version_.ToString(), typeof(IOverlay).Assembly.Location);
+            LogInfo("FFXIV Plugin: {0} {1}", ffxiv_plugin_version_.ToString(), repository.GetPluginPath());
+            LogInfo("ACT: {0} {1}", act_version_.ToString(), typeof(ActGlobals).Assembly.Location);
 
             if (language_ == null)
             {
@@ -258,6 +248,7 @@ namespace RainbowMage.OverlayPlugin.EventSources
 
 
             ffxiv_ = new FFXIVProcessCn(container);
+            logger.Log(LogLevel.Info, "Version: {0}", "cn");
 
             // Avoid initialization races by always calling OnProcessChanged with the current process
             // in case the ffxiv plugin has already sent this event and it never changes again.
@@ -712,7 +703,29 @@ namespace RainbowMage.OverlayPlugin.EventSources
                     }
                 }
             }
+
+            if (local_files == null)
+            {
+                // Second try a user directory for default one
+                try
+                {
+                    config_dir = Path.Combine(pluginMain.OfflineCactbotDirectory, "user");
+                    local_files = GetLocalUserFiles(config_dir, overlay_name);
+                }
+                catch (Exception e)
+                {
+                    LogError("Error checking html rel dir: {0}: {1}", config_dir, e.ToString());
+                    config_dir = null;
+                    local_files = null;
+
+                }
+            }
+            // Set any implicitly discovered cactbot user config dirs as explicit.
+            // This will help in the future when there aren't local plugins or html.
+            if (config_dir != null)
+                Config.UserConfigFile = config_dir;
         }
+          
 
         private JObject FetchUserFiles(JObject msg)
         {
@@ -731,11 +744,11 @@ namespace RainbowMage.OverlayPlugin.EventSources
             result["language"] = language_;
 
             //It's unknown for ffcafe, but leave stub here should be better incase some overlays using that
-            result["cactbotVersion"] = "0.28.20.0";
-            result["overlayPluginVersion"] = overlayVersion_.ToString();
-            result["ffxivPluginVersion"] = ffxivPluginVersion_.ToString();
-            result["actVersion"] = actVersion_.ToString();
-            result["gameRegion"] = gameRegion_.ToString();
+            result["cactbotVersion"] = "0.33.7.0";
+            result["overlayPluginVersion"] = overlay_plugin_version_.ToString();
+            result["ffxivPluginVersion"] = ffxiv_plugin_version_.ToString();
+            result["actVersion"] = act_version_.ToString();
+            result["gameRegion"] = game_region_.ToString();
 
             var response = new JObject();
             response["detail"] = result;

@@ -13,25 +13,39 @@ namespace RainbowMage.OverlayPlugin
     class NativeMethods
     {
         private WinEventDelegate dele = null;
+        private IntPtr foregroundHookHandle;
+        private IntPtr minimizeEndHookHandle;
 
         public NativeMethods(TinyIoCContainer container)
         {
             ActiveWindowHandle = GetForegroundWindow();
 
             dele = new WinEventDelegate(WinEventProc);
-            var result = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
-            if (result == IntPtr.Zero)
+            foregroundHookHandle = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
+            if (foregroundHookHandle == IntPtr.Zero)
                 container.Resolve<ILogger>().Log(LogLevel.Error, "Failed to register window foreground hook!");
 
-            result = SetWinEventHook(EVENT_SYSTEM_MINIMIZEEND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
-            if (result == IntPtr.Zero)
+            minimizeEndHookHandle = SetWinEventHook(EVENT_SYSTEM_MINIMIZEEND, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
+            if (minimizeEndHookHandle == IntPtr.Zero)
                 container.Resolve<ILogger>().Log(LogLevel.Error, "Failed to register window minimized hook!");
+        }
+
+        ~NativeMethods()
+        {
+            if (foregroundHookHandle != IntPtr.Zero)
+                UnhookWinEvent(foregroundHookHandle);
+
+            if (minimizeEndHookHandle != IntPtr.Zero)
+                UnhookWinEvent(minimizeEndHookHandle);
         }
 
         delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
         [DllImport("user32.dll")]
         static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+
+        [DllImport("user32.dll")]
+        static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
         private const uint WINEVENT_OUTOFCONTEXT = 0;
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
@@ -288,6 +302,15 @@ namespace RainbowMage.OverlayPlugin
         public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, IntPtr nSize, ref IntPtr lpNumberOfBytesRead);
 
 #pragma warning restore 0649
+
+        // Registers a hot key with Windows.
+        [DllImport("user32.dll")]
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+        // Unregisters the hot key with Windows.
+        [DllImport("user32.dll")]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        public static int WM_HOTKEY = 0x0312;
     }
 
     [Flags]

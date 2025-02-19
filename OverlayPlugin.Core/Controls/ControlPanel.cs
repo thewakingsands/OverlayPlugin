@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Advanced_Combat_Tracker;
 
 namespace RainbowMage.OverlayPlugin
 {
@@ -16,6 +18,10 @@ namespace RainbowMage.OverlayPlugin
     {
         TinyIoCContainer _container;
         ILogger _logger;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Usage",
+            "CA2213:Disposable fields should be disposed",
+            Justification = "_pluginMain is disposed of by TinyIoCContainer")]
         PluginMain _pluginMain;
         IPluginConfig _config;
         Registry _registry;
@@ -71,7 +77,9 @@ namespace RainbowMage.OverlayPlugin
         {
             if (disposing)
             {
-                if (components != null) components.Dispose();
+                components?.Dispose();
+                _generalTab?.Dispose();
+                _eventTab?.Dispose();
                 _registry.EventSourceRegistered -= AddEventSourceTab;
                 _logger.ClearListener();
             }
@@ -80,6 +88,21 @@ namespace RainbowMage.OverlayPlugin
         }
 
         private void AddLogEntry(LogEntry entry)
+        {
+            // Invoke in UI thread if needed to avoid WinForms issues.
+            // See https://github.mcom/OverlayPlugin/OverlayPlugin/issues/254
+            if (ActGlobals.oFormActMain.InvokeRequired)
+            {
+                Action action = () => { AddLogEntry0(entry); };
+                ActGlobals.oFormActMain.BeginInvoke(action);
+            }
+            else
+            {
+                AddLogEntry0(entry);
+            }
+        }
+
+        private void AddLogEntry0(LogEntry entry)
         {
             var msg = $"[{entry.Time}] {entry.Level}: {entry.Message}" + Environment.NewLine;
 
@@ -94,37 +117,40 @@ namespace RainbowMage.OverlayPlugin
                 logBox.Text = "============日志已被截断 ==============\n为减少内存占用，日志已被截断。\n=========================================\n" + msg;
                 return;
             }
-
-            if (checkBoxFollowLog.Checked)
+            Action appendText = () =>
             {
-                logBox.AppendText(msg);
-            }
-            else
-            {
-                // This is based on https://stackoverflow.com/q/1743448
-                bool bottomFlag = false;
-                int sbOffset;
-                int savedVpos;
-
-                // Win32 magic to keep the textbox scrolling to the newest append to the textbox unless
-                // the user has moved the scrollbox up
-                sbOffset = (int)((logBox.ClientSize.Height - SystemInformation.HorizontalScrollBarHeight) / (logBox.Font.Height));
-                savedVpos = NativeMethods.GetScrollPos(logBox.Handle, NativeMethods.SB_VERT);
-                NativeMethods.GetScrollRange(logBox.Handle, NativeMethods.SB_VERT, out _, out int VSmax);
-
-                if (savedVpos >= (VSmax - sbOffset - 1))
-                    bottomFlag = true;
-
-                logBox.AppendText(msg);
-
-                if (bottomFlag)
+                if (checkBoxFollowLog.Checked)
                 {
-                    NativeMethods.GetScrollRange(logBox.Handle, NativeMethods.SB_VERT, out _, out VSmax);
-                    savedVpos = VSmax - sbOffset;
+                    logBox.AppendText(msg);
                 }
-                NativeMethods.SetScrollPos(logBox.Handle, NativeMethods.SB_VERT, savedVpos, true);
-                NativeMethods.PostMessageA(logBox.Handle, NativeMethods.WM_VSCROLL, NativeMethods.SB_THUMBPOSITION + 0x10000 * savedVpos, 0);
-            }
+                else
+                {
+                    // This is based on https://stackoverflow.com/q/1743448
+                    bool bottomFlag = false;
+                    int sbOffset;
+                    int savedVpos;
+
+                    // Win32 magic to keep the textbox scrolling to the newest append to the textbox unless
+                    // the user has moved the scrollbox up
+                    sbOffset = (int)((logBox.ClientSize.Height - SystemInformation.HorizontalScrollBarHeight) / (logBox.Font.Height));
+                    savedVpos = NativeMethods.GetScrollPos(logBox.Handle, NativeMethods.SB_VERT);
+                    NativeMethods.GetScrollRange(logBox.Handle, NativeMethods.SB_VERT, out _, out int VSmax);
+
+                    if (savedVpos >= (VSmax - sbOffset - 1))
+                        bottomFlag = true;
+
+                    logBox.AppendText(msg);
+
+                    if (bottomFlag)
+                    {
+                        NativeMethods.GetScrollRange(logBox.Handle, NativeMethods.SB_VERT, out _, out VSmax);
+                        savedVpos = VSmax - sbOffset;
+                    }
+                    NativeMethods.SetScrollPos(logBox.Handle, NativeMethods.SB_VERT, savedVpos, true);
+                    NativeMethods.PostMessageA(logBox.Handle, NativeMethods.WM_VSCROLL, NativeMethods.SB_THUMBPOSITION + 0x10000 * savedVpos, 0);
+                }
+            };
+            appendText();
         }
 
         private void AddEventSourceTab(object sender, EventSourceRegisteredEventArgs e)

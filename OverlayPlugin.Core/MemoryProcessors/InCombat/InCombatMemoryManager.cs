@@ -18,7 +18,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.InCombat
         public InCombatMemoryManager(TinyIoCContainer container)
         {
             this.container = container;
-            container.Register<IInCombatMemory61, InCombatMemory61>();
+            container.Register<IInCombatMemory70, InCombatMemory70>();
             repository = container.Resolve<FFXIVRepository>();
 
             var memory = container.Resolve<FFXIVMemory>();
@@ -38,7 +38,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.InCombat
         public void ScanPointers()
         {
             List<IInCombatMemory> candidates = new List<IInCombatMemory>();
-            candidates.Add(container.Resolve<IInCombatMemory61>());
+            candidates.Add(container.Resolve<IInCombatMemory70>());
             memory = FFXIVMemory.FindCandidate(candidates, repository.GetMachinaRegion());
         }
 
@@ -51,7 +51,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.InCombat
             return true;
         }
 
-        Version IVersionedMemory.GetVersion()
+        public Version GetVersion()
         {
             if (!IsValid())
                 return null;

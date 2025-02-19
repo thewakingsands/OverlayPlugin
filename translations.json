@@ -11,6 +11,7 @@
     "OverlayPlugin.Core/Controls/ConfigErrorPrompt": {
         "errorExplanation.Text": {
             "en": "Failed to load the plugin configuration. This usually happens because the PC wasn't shut down properly which can cause the config file to become corrupted. You can either reset the plugin config or disable OverlayPlugin for now (in the latter case this prompt will reappear the next time you launch ACT).",
+            "fr-FR": "Échec du chargement de la configuration du plugin. Cela se produit généralement parce que l'ordinateur n'a pas été éteint correctement, ce qui peut entraîner la corruption du fichier de configuration. Vous pouvez soit réinitialiser la configuration du plugin, soit désactiver OverlayPlugin pour l'instant (dans ce dernier cas, cette invite réapparaîtra lors du prochain lancement d'ACT).",
             "zh-CN": "加载插件配置失败，配置文件可能已损坏。这通常是因为您的电脑没有正确关闭导致的。你可以选择重新配置插件或暂时禁用ngld悬浮窗插件（禁用该插件只会避免该提示出现）。"
         }
     },
@@ -81,11 +82,18 @@
     "OverlayPlugin.Core/Controls/GeneralConfigTab": {
         "btnCactbotUpdate.Text": {
             "en": "Check For Cactbot Updates",
+            "fr-FR": "Vérifier les mises à jour de Cactbot",
             "ko-KR": "Cactbot 업데이트 확인",
             "zh-CN": "检查 Cactbot 更新"
         },
+        "btnClearCEFCache.Text": {
+            "en": "Clear CEF Cache on Restart",
+            "fr-FR": "Vider le cache CEF au démarrage",
+            "zh-CN": "重启时清除 CEF 缓存"
+        },
         "btnClipboardTechSupport.Text": {
             "en": "Copy Tech Support Info to Clipboard",
+            "fr-FR": "Copier les informations techniques",
             "zh-CN": "复制技术支持信息到剪贴板"
         },
         "btnUpdateCheck.Text": {
@@ -131,16 +139,19 @@
         "lblGithub.Text": {
             "de-DE": "GitHub Repo:",
             "en": "GitHub Repo:",
+            "fr-FR": "Repo GitHub :",
             "ko-KR": "GitHub 저장소:",
             "zh-CN": "GitHub 项目: "
         },
         "lblNewUserWelcome.Text": {
             "en": "If you're looking for a URL field here, you're either used to the old OverlayPlugin or following an outdated guide. You need to create an overlay using the New button in the bottom-left corner before you will see any overlays from OverlayPlugin.\nPlease try using the presets instead of manually setting the URL since this can prevent a bunch of issues.\n\n",
+            "fr-FR": "Si vous cherchez un champ URL ici, vous êtes soit habitué à l'ancien OverlayPlugin, soit vous suivez un guide obsolète. Vous devez créer un overlay en utilisant le bouton Nouveau dans le coin inférieur gauche avant de voir les overlays d'OverlayPlugin.\nVeuillez essayer d'utiliser les presets au lieu de définir manuellement l'URL car cela peut éviter de nombreux problèmes.\n\n",
             "ko-KR": "여기에서 URL 필드를 찾고 있다면 옛날 OverlayPlugin 방식을 사용하는 중이거나 오래된 가이드를 따르고 있는 것입니다. 오버레이를 띄우려면 먼저 왼쪽 하단 모서리에 있는 추가 버튼을 눌러 오버레이를 만들어야 합니다.\n여러 가지 문제를 방지할 수 있으므로 URL을 수동으로 설정하는 대신 프리셋을 사용해 보십시오.\n\n",
             "zh-CN": "你在找 [链接] 这个输入框吗？在新版本插件中，您首先需要使用左下角的 [新建] 按钮创建一个悬浮窗，然后才能看到并配置一个悬浮窗。\n请尝试使用我们预先内置的预设而不是手动设置的链接，这将可以防止一系列的问题。\n\n"
         },
         "lblReadMe.Text": {
             "en": "READ THIS:",
+            "fr-FR": "Lisez ceci :",
             "ko-KR": "도움말:",
             "zh-CN": "温馨提示: "
         },
@@ -389,6 +400,11 @@
             "ko-KR": "중지",
             "zh-CN": "停止"
         },
+        "tokenLabel.Text": {
+            "en": "Token:",
+            "fr-FR": "Jeton :",
+            "zh-CN": "令牌:"
+        },
         "tunnelPage.Text": {
             "en": "Shared Overlay",
             "fr-FR": "Overlay Partagé",
@@ -451,13 +467,13 @@
         },
         "label6.Text": {
             "en": "End ACT encounter after wipe",
-            "fr-FR": "Arrêt du log après un wipe",
+            "fr-FR": "Fin du combat après un wipe",
             "ko-KR": "전멸 후 전투 기록 종료",
             "zh-CN": "团灭自动重置战斗记录"
         },
         "label7.Text": {
             "en": "End ACT encounter out of combat",
-            "fr-FR": "Arrêt du log si hors combat",
+            "fr-FR": "Arrêter le log si hors combat",
             "ko-KR": "전투에서 벗어나면 전투 기록 종료",
             "zh-CN": "脱战自动重置战斗记录"
         },
@@ -469,6 +485,7 @@
         },
         "lblLogLines.Text": {
             "en": "Write additional log lines",
+            "fr-FR": "Écrire des lignes de log additionnelles",
             "ko-KR": "추가 로그 라인 출력",
             "zh-CN": "输出额外日志行"
         }
@@ -516,7 +533,7 @@
         "label2.Text": {
             "de-DE": "Durchklicken aktiviere",
             "en": "Enable clickthrough",
-            "fr-FR": "Activer cliquer à travers",
+            "fr-FR": "Cliquer à travers",
             "ja-JP": "クリックを透過させる",
             "ko-KR": "클릭 무시",
             "zh-CN": "鼠标穿透"
@@ -540,7 +557,7 @@
         "label5.Text": {
             "de-DE": "Zeige Text als HTML",
             "en": "Display text as HTML",
-            "fr-FR": "Afficher texte en tant qu'HTML",
+            "fr-FR": "Afficher le texte en tant qu'HTML",
             "ja-JP": "テキストをHTMLとして表示",
             "ko-KR": "텍스트를 HTML로 표시",
             "zh-CN": "将文本显示为 HTML"
@@ -548,7 +565,7 @@
         "label7.Text": {
             "de-DE": "Aktiviere globale Hotkeys",
             "en": "Enable global hotkey",
-            "fr-FR": "Activer raccourci",
+            "fr-FR": "Activer le raccourci",
             "ja-JP": "グローバルホットキーを使用",
             "ko-KR": "단축키 사용",
             "zh-CN": "启用悬浮窗 开/关 快捷键"
@@ -621,7 +638,7 @@
         "label2.Text": {
             "de-DE": "Durchklicken aktiviere",
             "en": "Enable clickthrough",
-            "fr-FR": "Activer cliquer à travers",
+            "fr-FR": "Cliquer à travers",
             "ja-JP": "クリックを透過させる",
             "ko-KR": "클릭 무시",
             "zh-CN": "鼠标穿透"
@@ -684,11 +701,6 @@
             "ko-KR": "수정 내용 적용",
             "zh-CN": "应用更改"
         },
-        "btnClearCache.Text": {
-            "en": "Clear Cache",
-            "ko-KR": "캐시 지우기",
-            "zh-CN": "清除缓存"
-        },
         "btnRemoveHotkey.Text": {
             "de-DE": "Entferne selektierten Hotkey",
             "en": "Remove Selected Hotkey",
@@ -700,7 +712,7 @@
         "btnResetZoom.Text": {
             "de-DE": "Zurücksetzen",
             "en": "Reset",
-            "fr-FR": "RAZ",
+            "fr-FR": "Remise à zéro",
             "ja-JP": "リセット",
             "ko-KR": "초기화",
             "zh-CN": "重置"
@@ -731,7 +743,7 @@
         "buttonResetOverlayPosition.Text": {
             "de-DE": "Overlay Position zurücksetzen",
             "en": "Reset Overlay Position",
-            "fr-FR": "RAZ Position",
+            "fr-FR": "Remise à zéro de la position",
             "ja-JP": "オーバーレイの位置をリセットする",
             "ko-KR": "오버레이 위치 초기화",
             "zh-CN": "重置悬浮窗位置"
@@ -792,7 +804,7 @@
         "label10.Text": {
             "de-DE": "Wenn ein Overlay gesperrt ist, wird seine Position festgelegt und Sie können es erst verschieben, wenn Sie es erneut entsperren.",
             "en": "If an overlay is locked, its location becomes fixed and you won't be able to move it until you unlock it again.",
-            "fr-FR": "Si un overlay est bloqué, sa position devient fixe et vous ne pourrez pas le bouger avant de l'avoir débloqué",
+            "fr-FR": "Si un overlay est bloqué, sa position devient fixe et vous ne pourrez pas le bouger avant de l'avoir débloqué.",
             "ja-JP": "オーバーレイをロックすると、サイズと位置が固定されます。",
             "ko-KR": "오버레이 위치가 잠겨있으면, 위치 고정을 풀기 전까지는 오버레이를 움직일 수 없습니다.",
             "zh-CN": "如果某悬浮窗被锁定，其位置将固定不变，只有将其再次解锁才能移动。\n某些悬浮窗(如cactbot)锁定后方可正常工作。"
@@ -800,7 +812,7 @@
         "label11.Text": {
             "de-DE": "Diese Option muss nur aktiviert werden, wenn der Overlay-Skin normalerweise nicht kompatibel mit dem OverlayPlugin ist",
             "en": "You only need to enable the above option if the overlay skin isn't compatible with OverlayPlugin normally.",
-            "fr-FR": "Cette option est seulement nécessaire si la skin de l'overlay n'est pas compatible d'origine avec OverlayPlugin",
+            "fr-FR": "Cette option est seulement nécessaire si l'apparence (skin) de l'overlay n'est pas compatible d'origine avec OverlayPlugin.",
             "ja-JP": "オーバーレイが通常のOverlayPluginと互換性がない場合のみ、このチェックを有効にして下さい。",
             "ko-KR": "오버레이를 OverlayPlugin으로 연결했을 때, 정상적으로 동작하지 않는다면 이 기능을 사용합니다.",
             "zh-CN": "若悬浮窗与 OverlayPlugin 不兼容, 请启用此选项。"
@@ -808,7 +820,7 @@
         "label12.Text": {
             "de-DE": "Benutze diese Option, wenn du die Größe des Overlays nicht verändern kannst.",
             "en": "Use this if you can't find the overlay or for some reason can't resize it.",
-            "fr-FR": "Utilisez cette option si vous ne trouvez ou ne pouvez pas redimensionner l'overlay",
+            "fr-FR": "Utilisez cette option si vous ne trouvez ou ne pouvez pas redimensionner l'overlay.",
             "ja-JP": "オーバーレイが見つからない、リサイズが出来なくなった場合等に使用して下さい。",
             "ko-KR": "오버레이가 잘 보이지 않거나 크기 조정을 할 수 없는 경우에만 이 기능을 사용합니다.",
             "zh-CN": "如果您找不到悬浮窗或由于某种原因无法调整其大小时，请启用此选项。"
@@ -823,7 +835,8 @@
         },
         "label14.Text": {
             "en": "Hide overlay outside combat",
-            "ko-KR": "전투 중이 아닐 때 오버레이 숨기기",
+            "fr-FR": "Cacher l'overlay hors combat",
+            "ko-KR": "비전투 시 오버레이 숨기기",
             "zh-CN": "脱战后隐藏悬浮窗"
         },
         "label15.Text": {
@@ -837,7 +850,7 @@
         "label2.Text": {
             "de-DE": "Durchklicken aktiviere",
             "en": "Enable clickthrough",
-            "fr-FR": "Activer cliquer à travers",
+            "fr-FR": "Cliquer à travers",
             "ja-JP": "クリックを透過させる",
             "ko-KR": "클릭 무시",
             "zh-CN": "鼠标穿透"
@@ -855,7 +868,7 @@
             "en": "Force white background",
             "fr-FR": "Forcer le fond en blanc",
             "ja-JP": "オーバーレイの背景を白にする",
-            "ko-KR": "오버레이 배경을 흰색으로 변경",
+            "ko-KR": "배경을 흰색으로 변경",
             "zh-CN": "在悬浮窗下强制启用白色背景"
         },
         "label5.Text": {
@@ -1017,7 +1030,7 @@
         "label8.Text": {
             "de-DE": "Durchklicken aktiviere",
             "en": "Enable clickthrough",
-            "fr-FR": "Activer cliquer à travers",
+            "fr-FR": "Cliquer à travers",
             "ja-JP": "クリックを透過させる",
             "ko-KR": "클릭 무시",
             "zh-CN": "鼠标穿透"
@@ -1038,6 +1051,11 @@
             "fr-FR": "Compatibilité ACTWS activé.",
             "ko-KR": "ACT 웹소켓 호환성을 활성화",
             "zh-CN": "ACTWS兼容性功能已启用。"
+        },
+        "ClearCacheRestart": {
+            "en": "Please restart ACT to clear the CEF cache",
+            "fr-FR": "Veuillez redémarrer ACT pour effacer le cache CEF",
+            "zh-CN": "请重启 ACT 以清除 CEF 缓存"
         },
         "CustomPresetLabel": {
             "#comment": "This is the name for the preset entry that allows the user to select a custom overlay type instead of using a preset.",
@@ -1063,25 +1081,27 @@
         },
         "ErrorCouldNotLoadReservedLogLines": {
             "en": "FFXIVCustomLogLines: Failed to load reserved log line: {0}",
+            "fr-FR": "FFXIVCustomLogLines: Échec du chargement de la ligne du log réservé : {0}",
             "zh-CN": "FFXIV 自定义日志行: 加载保留日志行失败。{0}"
         },
         "ErrorOverlayNameEmpty": {
             "de-DE": "Der Name darf nicht leer sein oder nur aus Leerzeichen bestehen",
             "en": "Name must not be empty or white space only.",
-            "fr-FR": "Le nom ne doit pas être vide ou composé seulement d'espaces",
+            "fr-FR": "Le nom ne doit pas être vide ou composé seulement d'espaces.",
             "ko-KR": "이름을 입력하세요.",
             "zh-CN": "名称不得为空或只有空格。"
         },
         "ErrorOverlayNameNotUnique": {
             "de-DE": "Der Name sollte einzigartig sein.",
             "en": "Name should be unique.",
-            "fr-FR": "Le nom doit être unique",
+            "fr-FR": "Le nom doit être unique.",
             "ko-KR": "이미 있는 이름입니다. 다른 이름을 설정하세요.",
             "zh-CN": "名称不得重复。"
         },
         "EventConfigTab": {
             "de-DE": "Event Einstellungen",
             "en": "Event Settings",
+            "fr-FR": "Paramètres de l'événement",
             "ko-KR": "이벤트 설정",
             "zh-CN": "基本设置"
         },
@@ -1095,14 +1115,14 @@
         "FFXIVDataRepositoryException": {
             "de-DE": "FFXIV Daten-Repository konnte nicht abgerufen werden: {0}",
             "en": "Failed to retrieve the FFXIV DataRepository: {0}",
-            "fr-FR": "Impossible de récupérer FFXIV DataRepository: {0}",
+            "fr-FR": "Impossible de récupérer FFXIV DataRepository : {0}",
             "ko-KR": "FFXIV DataRepository을 검색하지 못했습니다 : {0}",
             "zh-CN": "FFXIV DataRepository 检索失败。 {0}"
         },
         "FFXIVDataSubscriptionException": {
             "de-DE": "FFXIV Daten-Subscription konnte nicht abgerufen werden: {0}",
             "en": "Failed to retrieve the FFXIV DataSubscription: {0}",
-            "fr-FR": "Impossible de récupérer FFXIV DataSubscription: {0}",
+            "fr-FR": "Impossible de récupérer FFXIV DataSubscription : {0}",
             "ko-KR": "FFXIV DataSubscription을 검색하지 못했습니다 : {0}",
             "zh-CN": "FFXIV DataSubscription 检索失败。 {0}"
         },
@@ -1123,6 +1143,7 @@
         "HotkeyActionToggleEnabled": {
             "de-DE": "Umschalten aktiviert",
             "en": "Toggle enabled",
+            "fr-FR": "Changement de mode activé",
             "ko-KR": "토글 활성화",
             "zh-CN": "切换悬浮窗 启用/关闭"
         },
@@ -1150,14 +1171,14 @@
         "InitOverlayLocalFileIsMissing": {
             "de-DE": "InitializeOverlay: Lokale Datei {0} existiert nicht!",
             "en": "InitializeOverlay: Local file {0} does not exist!",
-            "fr-FR": "InitializeOverlay: Le fichier local {0} n'existe pas !",
+            "fr-FR": "InitializeOverlay : Le fichier local {0} n'existe pas !",
             "ko-KR": "오버레이 초기화: 로컬 파일 {0}이 없습니다!",
             "zh-CN": "初始化插件: 本地文件 {0} 不存在!"
         },
         "InitOverlayUrlError": {
             "de-DE": "InitializeOverlay: URI-Analysefehler! Bitte konfigurieren Sie die URL neu. (Config.Url = {0}): {1}",
             "en": "InitializeOverlay: URI parse error! Please reconfigure the URL. (Config.Url = {0}): {1}",
-            "fr-FR": "InitializeOverlay: erreur d'analyse URI ! Reconfigurez l'URL. (Config.Url = {0}): {1}",
+            "fr-FR": "InitializeOverlay : Erreur d'analyse URI ! Reconfigurez l'URL. (Config.Url = {0}): {1}",
             "ko-KR": "오버레이 초기화: URL 파싱 오류! URL 경로를 다시 확인해 주십시오. (Config.Url = {0}): {1}",
             "zh-CN": "初始化插件: 地址解析错误!请重新设置悬浮窗地址。 (Config.Url = {0}): {1}"
         },
@@ -1171,18 +1192,20 @@
         "ListSortFailed": {
             "de-DE": "Liste konnte nicht nach {0} sortiert werden: {1}",
             "en": "Failed to sort list by {0}: {1}",
-            "fr-FR": "Impossible de trier la liste par {0}: {1}",
+            "fr-FR": "Impossible de trier la liste par {0} : {1}",
             "ko-KR": "{0}을 기준으로 정렬 실패: {1}",
             "zh-CN": "以 {0} 排序列表失败。 {1} "
         },
         "LogNotConnectedError": {
             "#comment": "This error appears in the log box when it wasn't connected to the overlay log. This should never happen and indicates that something went really wrong during plugin startup.",
             "en": "ERROR: Log not connected.",
+            "fr-FR": "Erreur : Log non connecté",
             "zh-CN": "错误: 未连接到日志。"
         },
         "MapESMiniParse": {
             "de-DE": "MiniParseEventSource",
             "en": "MiniParseEventSource",
+            "fr-FR": "MiniParseEventSource",
             "ko-KR": "고급 설정",
             "zh-CN": "设置"
         },
@@ -1252,14 +1275,14 @@
         "NetworkParserInitException": {
             "de-DE": "Netzwerkparser konnte nicht eingerichtet werden: {0}",
             "en": "Failed to setup network parser: {0}",
-            "fr-FR": "Echec de la configuration réseau du parser : {0}",
+            "fr-FR": "Échec de la configuration réseau du parser : {0}",
             "ko-KR": "네트워크 파서를 설정하지 못했습니다 : {0}",
             "zh-CN": "初始化网络解析器失败。 {0}"
         },
         "NetworkParserNoFfxiv": {
             "de-DE": "Machina oder das FFXIV-Plugin konnten nicht gefunden werden. Dies ist nur dann ein Problem, wenn Sie ACT mit FFXIV verwenden.",
             "en": "Could not find Machina or the FFXIV plugin. This is only an issue if you're using ACT with FFXIV.",
-            "fr-FR": "Impossible de trouver le plugin FFXIV ou Machina. C'est seulement un problème si vous utilisez ACT avec FFXIV.",
+            "fr-FR": "Impossible de trouver le plugin FFXIV ou Machina. C'est un problème seulement si vous utilisez ACT avec FFXIV.",
             "ko-KR": "Machina 혹은 FFXIV 플러그인을 발견하지 못했습니다. 이 문제는 파이널 판타지 14와 함께 ACT를 사용하는 분들께만 문제가 되는 부분입니다.",
             "zh-CN": "找不到 Machina 或 FFXIV 解析插件。"
         },
@@ -1287,7 +1310,7 @@
         "OverlayApiSubscribed": {
             "de-DE": "{0}: Hat {1} abonniert",
             "en": "{0}: Subscribed to {1}",
-            "fr-FR": "{0}: Souscription à {1}",
+            "fr-FR": "{0} : Souscription à {1}",
             "ko-KR": "{0}: 구독 {1}",
             "zh-CN": "{0}: 已订阅 {1}"
         },
@@ -1337,6 +1360,7 @@
         "TabsESLabel": {
             "de-DE": "Ereignisquelle",
             "en": "Event Source",
+            "fr-FR": "Source de l'événement",
             "zh-CN": "事件源"
         },
         "UnregisterHotkeyError": {
@@ -1349,6 +1373,7 @@
         "WSHandlerException": {
             "de-DE": "WS: Handler-Aufruf fehlgeschlagen: {0}",
             "en": "WS: Handler call failed: {0}",
+            "fr-FR": "WS : L'appel du gestionnaire a échoué : {0}",
             "ko-KR": "WS: Handler 호출 실패: {0}",
             "zh-CN": "WS: 处理程序调用失败。 {0}"
         },
@@ -1369,7 +1394,7 @@
         "WSLoadingCert": {
             "de-DE": "WS: SSL-Zertifikat {0} wird geladen ...",
             "en": "WS: Loading SSL certificate {0}...",
-            "fr-FR": "WS : Chargement du certificat SSL  {0}...",
+            "fr-FR": "WS : Chargement du certificat SSL {0}...",
             "ko-KR": "WS: SSL 인증서 {0} 로드 중...",
             "zh-CN": "WS: 正在加载 SSL 证书 {0}..."
         },
@@ -1404,7 +1429,7 @@
         "WSStartFailed": {
             "de-DE": "WS: Start fehlgeschlagen: {0}",
             "en": "WS: Failed to start: {0}",
-            "fr-FR": "WS : Impossible de démarrer : {0}",
+            "fr-FR": "WS : Démarrage impossible : {0}",
             "ko-KR": "WS: 시작하지 못했습니다. {0} ",
             "zh-CN": "WS: 启动失败。 {0}"
         },
@@ -1468,11 +1493,13 @@
         },
         "label6.Text": {
             "en": "End ACT encounter after wipe",
+            "fr-FR": "Fin du combat après un wipe",
             "ko-KR": "전멸 후 전투 기록 종료",
             "zh-CN": "团灭自动重置战斗记录"
         },
         "label7.Text": {
             "en": "End ACT encounter out of combat",
+            "fr-FR": "Arrêter le log si hors combat",
             "ko-KR": "전투에서 벗어나면 전투 기록 종료",
             "zh-CN": "脱战自动重置战斗记录"
         },
@@ -1499,6 +1526,7 @@
         },
         "tabPage3.Text": {
             "en": "Log",
+            "fr-FR": "Log :",
             "zh-CN": "日志"
         }
     },
@@ -1506,7 +1534,7 @@
         "$this.Text": {
             "de-DE": "OverlayPlugin Updater",
             "en": "OverlayPlugin Updater",
-            "fr-FR": "Mise à jour OverlayPlugin",
+            "fr-FR": "Mise à jour d'OverlayPlugin",
             "ko-KR": "OverlayPlugin 업데이트 관리자",
             "zh-CN": "ngld 悬浮窗初始化程序"
         },
@@ -1577,6 +1605,7 @@
         },
         "IgnoreUpdateDueToDotGitDirectoryMessage": {
             "en": "Ignoring auto-update due to OverlayPlugin being a .git repo.",
+            "fr-FR": "Ignore la mise à jour automatique car OverlayPlugin est un dépôt .git",
             "ko-KR": "OverlayPlugin 폴더가 로컬 깃 저장소이므로 자동 업데이트를 건너뜁니다.",
             "zh-CN": "由于 OverlayPlugin 文件夹是 git 本地仓库, 跳过自动更新。"
         },
@@ -1671,7 +1700,7 @@
         "LogFailedReplaceDirectory": {
             "de-DE": "Altes Verzeichnis konnte nicht ersetzt werden: {0}",
             "en": "Failed to replace old directory: {0}",
-            "fr-FR": "Impossible de remplacer l'ancier répertoire : {0}",
+            "fr-FR": "Impossible de remplacer l'ancien répertoire : {0}",
             "ja-JP": "古いフォルダの置き換えに失敗しました: {0}",
             "ko-KR": "이전 디렉토리를 변경하지 못했습니다: {0}",
             "zh-CN": "无法替换旧目录。 {0}"
@@ -1726,19 +1755,21 @@
         },
         "LogOverwriteFailed": {
             "en": "No retries left, update failed.",
+            "fr-FR": "Aucune tentative restante, la mise à jour a échoué.",
             "ko-KR": "재시도 횟수 초과, 업데이트 실패.",
             "zh-CN": "超过重试次数, 更新失败。"
         },
         "LogOverwriteRetry": {
             "#comment": "{0} is the filename and {1} is the error message",
             "en": "Failed to overwrite {0}, retrying...\n{1}",
+            "fr-FR": "Impossible d'écraser {0}, nouvelle tentative...\n{1}",
             "ko-KR": "{0}을(를) 덮어씌우는데 실패했습니다, 재시도 중...\n{1}",
             "zh-CN": "替换 {0} 文件失败, 正在重试...\n{1}"
         },
         "LogOverwritingOldFiles": {
             "de-DE": "Alte Dateien überschreiben ...",
             "en": "Overwriting old files...",
-            "fr-FR": "Ecrasement des anciens fichiers ...",
+            "fr-FR": "Écrasement des anciens fichiers ...",
             "ja-JP": "古いファイルを上書き中...",
             "ko-KR": "이전 파일을 덮어 쓰는 중...",
             "zh-CN": "正在替换旧文件..."
@@ -1770,7 +1801,7 @@
         "LogResumingDownload": {
             "de-DE": "Download fortsetzen ...",
             "en": "Resuming download...",
-            "fr-FR": "Reprise du téléchargement",
+            "fr-FR": "Reprise du téléchargement ...",
             "ja-JP": "ダウンロードを再開中...",
             "ko-KR": "다운로드를 재개하는 중...",
             "zh-CN": "正在恢复下载..."
@@ -1786,7 +1817,7 @@
         "LogRetryAfter1s": {
             "de-DE": "In einer Sekunde wiederholen.",
             "en": "Retrying in 1 second.",
-            "fr-FR": "Nouvel essai dans 1 seconde.",
+            "fr-FR": "Nouvel essai dans une seconde.",
             "ja-JP": "1秒後にリトライします.",
             "ko-KR": "1초 후에 다시 시도",
             "zh-CN": "1秒后重试。"
@@ -1810,7 +1841,7 @@
         "OutOfRetries": {
             "de-DE": "Keine Wiederholungsversuche mehr.",
             "en": "Out of retries.",
-            "fr-FR": "Nombre maximum d'essais dépassés",
+            "fr-FR": "Nombre de tentative maximum dépassé.",
             "ja-JP": "リトライを終了.",
             "ko-KR": "재시도 중입니다.",
             "zh-CN": "超出尝试次数。"
@@ -1892,7 +1923,7 @@
         "UpdateAlreadyLatest": {
             "de-DE": "Sie sind bereits auf der neuesten Version.",
             "en": "You are already on the latest version.",
-            "fr-FR": "Vous êtes déjà sur la dernière version.",
+            "fr-FR": "Vous utilisez déjà la dernière version.",
             "ja-JP": "現在のバージョンが最新です.",
             "ko-KR": "이미 최신 버전입니다.",
             "zh-CN": "你使用的是最新版本。"
@@ -1933,7 +1964,7 @@
         "UpdateParseVersionError": {
             "de-DE": "Version konnte nicht analysiert werden: \n {0}",
             "en": "Failed to parse version:\n{0}",
-            "fr-FR": "Impossible de détecter la version :\n{0}",
+            "fr-FR": "Impossible de détecter la version : \n{0}",
             "ja-JP": "バージョンの確認に失敗:\n{0}",
             "ko-KR": "버전을 파싱하지 못했습니다:\n{0}",
             "zh-CN": "解析版本失败 (国服玩家无须在意, 直接关闭):\n{0}"
@@ -1942,6 +1973,7 @@
             "#comment": "The placeholder here is the project being updated (i.e. OverlayPlugin or Cactbot)\nThis text is displayed in ACT's restart prompt. ACT already asks the user to restart so we don't have to.",
             "de-DE": "{0} wurde erfolgreich geupdatet.",
             "en": "{0} was updated successfully.",
+            "fr-FR": "{0} a été mis à jour avec succès.",
             "ko-KR": "{0} 업데이트에 성공했습니다.",
             "zh-CN": "{0} 已成功更新。"
         },
@@ -1988,7 +2020,7 @@
         "label1.Text": {
             "de-DE": "Es ist ein neues Update für {0} verfügbar. Jetzt installieren?",
             "en": "There's a new update for {0} available. Install it now?",
-            "fr-FR": "{0}: Une nouvelle version est disponible. Voulez-vous l'installer maintenant ?",
+            "fr-FR": "Une nouvelle version de {0} est disponible. Voulez-vous l'installer maintenant ?",
             "ko-KR": "현재 사용 가능한 {0}의 새로운 업데이트가 있습니다. 지금 설치하시겠습니까?",
             "zh-CN": "发现一个可用的{0}更新。现在安装？"
         }

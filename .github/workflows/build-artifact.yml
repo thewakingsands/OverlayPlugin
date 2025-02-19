@@ -11,8 +11,8 @@ on:
       - 'AddonExample/**'
       - 'HtmlRenderer/**'
       - 'Overlay*/**'
-      - 'tools/fetch_deps.py'
-      - 'DEPS.py'
+      - 'tools/fetch_deps.ps1'
+      - 'DEPS.json'
       - 'OverlayPlugin.sln'
       - 'build.bat'
       - 'build.ps1'
@@ -25,6 +25,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7'
+
       - name: Set artifact name
         shell: bash
         run: |
@@ -35,24 +39,21 @@ jobs:
         id: cache-dependencies
         uses: actions/cache@v2
         with:
-          path: ./Thirdparty
-          key: ${{ runner.os }}-overlayplugin-${{ hashFiles('./tools/fetch_deps.py', './DEPS.py') }}
+          path: |
+            ./Thirdparty
+            ./OverlayPlugin.Core/Thirdparty
+          key: ${{ runner.os }}-overlayplugin-${{ hashFiles('./tools/fetch_deps.ps1', './DEPS.json', './tools/StripFFXIVClientStructs/StripFFXIVClientStructs/StripFFXIVClientStructs.cs') }}
           restore-keys: |
             ${{ runner.os }}-overlayplugin-
       # Fetch dependencies only if cache-hit is false
-      - name: Set up Python 3.8
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
       - name: Fetch dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        shell: pwsh
         run: |
-          python .\tools\fetch_deps.py
+          .\tools\fetch_deps.ps1
 
       - name: Set up msbuild
-        uses: microsoft/setup-msbuild@v1.0.2
+        uses: microsoft/setup-msbuild@v2
 
       - name: Add Custom Problem Matcher
         run: |
@@ -65,14 +66,9 @@ jobs:
       - name: Determine Version
         shell: pwsh
         run: |
-          $text = [System.IO.File]::ReadAllText("OverlayPlugin\Properties\AssemblyInfo.cs");
-          $regex = [regex]::New('\[assembly: AssemblyVersion\("([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+"\)');
-          $m = $regex.Match($text);
-          if (-not $m) {
-              echo "Error: Version number not found in the AssemblyInfo.cs!"
-              exit 1
-          }
-          $version = $m.Groups[1]
+          [xml]$csprojcontents = Get-Content -Path "Directory.Build.props";
+          $version = $csprojcontents.Project.PropertyGroup.AssemblyVersion;
+          $version = ($version | Out-String).Trim()
           echo "version=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
       # Expected "OverlayPlugin" as top level item of .zip
@@ -85,7 +81,7 @@ jobs:
           mv tmp/ OverlayPlugin/         
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: OverlayPlugin-${{ env.version }}-${{ env.artifact_sha }}
           path: out/Release/OverlayPlugin/

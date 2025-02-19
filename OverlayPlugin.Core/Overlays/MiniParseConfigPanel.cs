@@ -15,6 +15,10 @@ namespace RainbowMage.OverlayPlugin.Overlays
         private MiniParseOverlayConfig config;
         private MiniParseOverlay overlay;
         private IReadOnlyList<IOverlayPreset> presets;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Usage",
+            "CA2213:Disposable fields should be disposed",
+            Justification = "keyboardHook is disposed of by TinyIoCContainer")]
         private readonly KeyboardHook keyboardHook;
         private readonly TinyIoCContainer container;
 
@@ -221,7 +225,11 @@ namespace RainbowMage.OverlayPlugin.Overlays
         {
             this.overlay.Reload();
         }
-
+        private void btnClearCache_Click(object sender, EventArgs e)
+        {
+            this.overlay.Overlay.Renderer.ClearCache();
+        }
+        
         private void buttonMiniParseSelectFile_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog();
@@ -429,11 +437,6 @@ namespace RainbowMage.OverlayPlugin.Overlays
         private void cbHideOutOfCombat_CheckedChanged(object sender, EventArgs e)
         {
             config.HideOutOfCombat = cbHideOutOfCombat.Checked;
-        }
-
-        private void btnClearCache_Click(object sender, EventArgs e)
-        {
-            overlay.Overlay.Renderer.ClearCache();
         }
     }
 }

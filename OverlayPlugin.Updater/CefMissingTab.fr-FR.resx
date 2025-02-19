@@ -147,4 +147,13 @@
   <data name="btnOpenManual.Text" xml:space="preserve">
     <value>Extraction du fichier téléchargé</value>
   </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Arrêter le log si hors combat</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Fin du combat après un wipe</value>
+  </data>
+  <data name="tabPage3.Text" xml:space="preserve">
+    <value>Log :</value>
+  </data>
 </root>

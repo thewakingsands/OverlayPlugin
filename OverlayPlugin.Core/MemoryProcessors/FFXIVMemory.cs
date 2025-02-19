@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -27,7 +28,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         //Handle the lock of process and processHandle
         private readonly ReaderWriterLockSlim _processLock = new ReaderWriterLockSlim();
 
-        private bool hasLoggedDx9 = false;
         private bool hasDisposed;
 
         public FFXIVMemory(TinyIoCContainer container)
@@ -46,7 +46,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
 
         private void UpdateProcess(Process proc)
         {
-            bool showDX9MsgBox = false;
             _processLock.EnterWriteLock();
             try
             {
@@ -58,17 +57,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                 if (proc == null || proc.HasExited)
                     return;
 
-                if (proc.ProcessName == "ffxiv")
-                {
-                    if (!hasLoggedDx9)
-                    {
-                        hasLoggedDx9 = true;
-                        showDX9MsgBox = true;
-                        logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
-                    }
-                    return;
-                }
-                else if (proc.ProcessName != "ffxiv_dx11")
+                if (proc.ProcessName != "ffxiv_dx11")
                 {
                     logger.Log(LogLevel.Error, "{0}", "Unknown ffxiv process.");
                     return;
@@ -89,10 +78,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             finally
             {
                 _processLock.ExitWriteLock();
-                if (showDX9MsgBox)
-                {
-                    MessageBox.Show("现在 ACT 的部分功能不支持 DX9 启动的游戏。\r\n请在游戏启动器器设置里选择以 DX11 模式运行游戏。", "兼容提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
             OnProcessChange?.Invoke(this, process);
         }
@@ -116,16 +101,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             if (proc == null || proc.HasExited)
                 return;
 
-            if (proc.ProcessName == "ffxiv")
-            {
-                if (!hasLoggedDx9)
-                {
-                    hasLoggedDx9 = true;
-                    logger.Log(LogLevel.Error, "{0}", "不支持 DX9 模式启动的游戏，请参考 https://www.yuque.com/ffcafe/act/dx11/ 解决");
-                }
-                return;
-            }
-            else if (proc.ProcessName != "ffxiv_dx11")
+            if (proc.ProcessName != "ffxiv_dx11")
             {
                 logger.Log(LogLevel.Error, "{0}", "Unknown ffxiv process.");
                 return;
@@ -134,6 +110,19 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             process = proc;
             processHandle = NativeMethods.OpenProcess(ProcessAccessFlags.VirtualMemoryRead, false, proc.Id);
             logger.Log(LogLevel.Info, "游戏进程：{0}，来源：解析插件轮询", proc.Id);
+        }
+
+        public IntPtr GetBaseAddress()
+        {
+            _processLock.EnterReadLock();
+            try
+            {
+                return process.MainModule.BaseAddress;
+            }
+            finally
+            {
+                _processLock.ExitReadLock();
+            }
         }
 
         private void CloseProcessHandle()
@@ -177,11 +166,10 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             }
         }
 
-        public unsafe static string GetStringFromBytes(byte* source, int size)
+        public unsafe static string GetStringFromBytes(byte* source, int size, int realSize = 0)
         {
             var bytes = new byte[size];
             Marshal.Copy((IntPtr)source, bytes, 0, size);
-            var realSize = 0;
             for (var i = 0; i < size; i++)
             {
                 if (bytes[i] != 0)
@@ -256,6 +244,15 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             var value = new byte[4];
             Peek(IntPtr.Add(address, offset), value);
             fixed (byte* p = &value[0]) ret = *(int*)p;
+            return ret;
+        }
+
+        public unsafe long GetInt64(IntPtr address, int offset = 0)
+        {
+            long ret;
+            var value = new byte[8];
+            Peek(IntPtr.Add(address, offset), value);
+            fixed (byte* p = &value[0]) ret = *(long*)p;
             return ret;
         }
 

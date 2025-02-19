@@ -6,12 +6,11 @@ namespace RainbowMage.OverlayPlugin
 {
     public class TabControlExt : TabControl
     {
-        protected float dpi;
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             e.Graphics.Clear(SystemColors.ControlLightLight);
-            e.Graphics.FillRectangle(SystemBrushes.ControlLight, (4), (4), (ItemSize.Height * RowCount) - (4), Height - (8));
+            e.Graphics.FillRectangle(SystemBrushes.ControlLight, 4, 4, (ItemSize.Height * RowCount) - 4, Height - 8);
 
             int inc = 0;
 
@@ -21,9 +20,9 @@ namespace RainbowMage.OverlayPlugin
                 Font fontF = Font;
                 Font fontFSmall = new Font(Font.FontFamily, (float)(Font.Size * 0.85));
                 Rectangle tabrect = GetTabRect(inc);
-                Rectangle rect = new Rectangle(tabrect.X + (4), tabrect.Y + (4), tabrect.Width - (8), tabrect.Height - (2));
-                Rectangle textrect1 = new Rectangle(tabrect.X + WithDpi(4), tabrect.Y + WithDpi(4), tabrect.Width - WithDpi(8), tabrect.Height - WithDpi(20));
-                Rectangle textrect2 = new Rectangle(tabrect.X + WithDpi(4), tabrect.Y + WithDpi(20), tabrect.Width - WithDpi(8), tabrect.Height - WithDpi(20));
+                Rectangle rect = new Rectangle(tabrect.X + 4, tabrect.Y + 4, tabrect.Width - 8, tabrect.Height - 2);
+                Rectangle textrect1 = new Rectangle(tabrect.X + 4, tabrect.Y + 4, tabrect.Width - 8, tabrect.Height - 20);
+                Rectangle textrect2 = new Rectangle(tabrect.X + 4, tabrect.Y + 20, tabrect.Width - 8, tabrect.Height - 20);
 
                 StringFormat sf = new StringFormat();
                 sf.LineAlignment = StringAlignment.Center;
@@ -52,11 +51,6 @@ namespace RainbowMage.OverlayPlugin
             Invalidate();
         }
 
-        protected int WithDpi(int number)
-        {
-            return (int)Math.Floor(number * dpi);
-        }
-
         public TabControlExt() : base()
         {
             Alignment = TabAlignment.Left;
@@ -69,12 +63,7 @@ namespace RainbowMage.OverlayPlugin
 
             DoubleBuffered = true;
 
-            using (var g = CreateGraphics())
-            {
-                dpi = g.DpiX / 96;
-            }
-
-            ItemSize = new Size(WithDpi(48), WithDpi(140));
+            ItemSize = new Size(46, 140);
             SizeMode = TabSizeMode.Fixed;
             BackColor = Color.Transparent;
         }

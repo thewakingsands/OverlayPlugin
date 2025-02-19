@@ -55,6 +55,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.tunnelPage = new System.Windows.Forms.TabPage();
+            this.tokenLabel = new System.Windows.Forms.Label();
+            this.txtNgrokToken = new System.Windows.Forms.TextBox();
             this.simpStopBtn = new System.Windows.Forms.Button();
             this.simpStartBtn = new System.Windows.Forms.Button();
             this.simpLogBox = new System.Windows.Forms.TextBox();
@@ -221,6 +223,8 @@
             // tunnelPage
             // 
             resources.ApplyResources(this.tunnelPage, "tunnelPage");
+            this.tunnelPage.Controls.Add(this.tokenLabel);
+            this.tunnelPage.Controls.Add(this.txtNgrokToken);
             this.tunnelPage.Controls.Add(this.simpStopBtn);
             this.tunnelPage.Controls.Add(this.simpStartBtn);
             this.tunnelPage.Controls.Add(this.simpLogBox);
@@ -230,6 +234,17 @@
             this.tunnelPage.Controls.Add(this.simpStatusLabel);
             this.tunnelPage.Name = "tunnelPage";
             this.tunnelPage.UseVisualStyleBackColor = true;
+            // 
+            // tokenLabel
+            // 
+            resources.ApplyResources(this.tokenLabel, "tokenLabel");
+            this.tokenLabel.Name = "tokenLabel";
+            // 
+            // txtNgrokToken
+            // 
+            resources.ApplyResources(this.txtNgrokToken, "txtNgrokToken");
+            this.txtNgrokToken.Name = "txtNgrokToken";
+            this.txtNgrokToken.TextChanged += new System.EventHandler(this.txtNgrokTokenChanged);
             // 
             // simpStopBtn
             // 
@@ -332,5 +347,7 @@
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.TabPage introPage;
         private System.Windows.Forms.Label lblWsserverIntro;
+        private System.Windows.Forms.Label tokenLabel;
+        private System.Windows.Forms.TextBox txtNgrokToken;
     }
 }

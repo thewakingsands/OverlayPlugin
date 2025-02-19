@@ -18,8 +18,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.EnmityHud
         public EnmityHudMemoryManager(TinyIoCContainer container)
         {
             this.container = container;
-            container.Register<IEnmityHudMemory60, EnmityHudMemory60>();
-            container.Register<IEnmityHudMemory62, EnmityHudMemory62>();
+            container.Register<IEnmityHudMemory70, EnmityHudMemory70>();
             repository = container.Resolve<FFXIVRepository>();
 
             var memory = container.Resolve<FFXIVMemory>();
@@ -39,8 +38,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.EnmityHud
         public void ScanPointers()
         {
             List<IEnmityHudMemory> candidates = new List<IEnmityHudMemory>();
-            candidates.Add(container.Resolve<IEnmityHudMemory60>());
-            candidates.Add(container.Resolve<IEnmityHudMemory62>());
+            candidates.Add(container.Resolve<IEnmityHudMemory70>());
             memory = FFXIVMemory.FindCandidate(candidates, repository.GetMachinaRegion());
         }
 
@@ -53,7 +51,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.EnmityHud
             return true;
         }
 
-        Version IVersionedMemory.GetVersion()
+        public Version GetVersion()
         {
             if (!IsValid())
                 return null;

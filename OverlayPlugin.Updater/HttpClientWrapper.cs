@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
-using System.Net;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Advanced_Combat_Tracker;
 
 namespace RainbowMage.OverlayPlugin.Updater
 {
     public static class HttpClientWrapper
     {
         public delegate bool ProgressInfoCallback(long resumed, long dltotal, long dlnow, long ultotal, long ulnow);
+        private static readonly HttpClient client = new HttpClient();
+        static HttpClientWrapper()
+        {
+            client.DefaultRequestHeaders.Add("User-Agent", "OverlayPlugin/OverlayPlugin v" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+        }
 
         public static void Init(string pluginDirectory)
         {
@@ -27,63 +34,65 @@ namespace RainbowMage.OverlayPlugin.Updater
         public static string Get(string url, Dictionary<string, string> headers, string downloadDest,
             ProgressInfoCallback infoCb, bool resume)
         {
-            var client = new WebClient();
-            client.Headers.Add("User-Agent", "OverlayPlugin/OverlayPlugin v" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
-
-            foreach (var key in headers.Keys)
-            {
-                client.Headers.Add(key, headers[key]);
-            }
+            if (!ActGlobals.oFormActMain.InvokeRequired)
+                throw new HttpClientException(false, "HttpClientWrapper called on UI thread, this can cause deadlocks");
 
             var completionLock = new object();
             string result = null;
             Exception error = null;
             var retry = false;
 
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(url),
+                Method = HttpMethod.Get,
+            };
+
+            foreach (var key in headers.Keys)
+            {
+                request.Headers.Add(key, headers[key]);
+            }
+
             Action action = (async () =>
             {
                 try
                 {
+                    var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
                     if (downloadDest == null)
                     {
-                        result = await client.DownloadStringTaskAsync(url);
+                        result = await response.Content.ReadAsStringAsync();
                     }
-
                     else
                     {
-                        var tcs = new TaskCompletionSource<object>(url);
+                        var buffer = new byte[40 * 1024];
+                        long length = 0;
 
-                        AsyncCompletedEventHandler completedHandler = (cs, ce) =>
+                        long? nLength = response.Content.Headers.ContentLength;
+                        if (nLength.HasValue)
                         {
-                            if (ce.UserState == tcs)
-                            {
-                                if (ce.Error != null)
-                                {
-                                    tcs.TrySetException(ce.Error);
-                                }
-                                else if (ce.Cancelled) tcs.TrySetCanceled();
-                                else tcs.TrySetResult(null);
-                            }
-                        };
-
-                        DownloadProgressChangedEventHandler progressChangedHandler = (ps, pe) =>
-                        {
-                            if (pe.UserState == tcs && infoCb != null)
-                                infoCb(0, pe.TotalBytesToReceive, pe.BytesReceived, 0, 0);
-                        };
-
-                        client.DownloadFileCompleted += completedHandler;
-                        client.DownloadProgressChanged += progressChangedHandler;
-
-                        try
-                        {
-                            client.DownloadFileAsync(new Uri(url), downloadDest, tcs);
-                            await tcs.Task;
+                            length = nLength.Value;
                         }
-                        finally
+
+                        using (var writer = File.Open(downloadDest, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
+                        using (var body = await response.Content.ReadAsStreamAsync())
                         {
-                            client.DownloadFileCompleted -= completedHandler;
-                            client.DownloadProgressChanged -= progressChangedHandler;
+                            var stop = false;
+                            var pos = 0;
+                            while (!stop)
+                            {
+                                var read = await body.ReadAsync(buffer, 0, buffer.Length);
+                                if (read != 0)
+                                {
+                                    writer.Write(buffer, 0, read);
+                                    pos += read;
+                                }
+                                else
+                                    break;
+
+                                if (infoCb != null && infoCb(0, length, pos, 0, 0))
+                                    break;
+                            }
                         }
                     }
                 }
@@ -141,5 +150,7 @@ namespace RainbowMage.OverlayPlugin.Updater
         {
             this.Retry = retry;
         }
+
+        protected HttpClientException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext) { }
     }
 }

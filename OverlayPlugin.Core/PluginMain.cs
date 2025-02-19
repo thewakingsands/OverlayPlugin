@@ -11,20 +11,24 @@ using Newtonsoft.Json;
 using RainbowMage.HtmlRenderer;
 using RainbowMage.OverlayPlugin.Controls;
 using RainbowMage.OverlayPlugin.EventSources;
-using RainbowMage.OverlayPlugin.Integration;
 using RainbowMage.OverlayPlugin.MemoryProcessors;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Aggro;
+using RainbowMage.OverlayPlugin.MemoryProcessors.AtkStage;
+using RainbowMage.OverlayPlugin.MemoryProcessors.ClientFramework;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Combatant;
+using RainbowMage.OverlayPlugin.MemoryProcessors.ContentFinderSettings;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Enmity;
 using RainbowMage.OverlayPlugin.MemoryProcessors.EnmityHud;
 using RainbowMage.OverlayPlugin.MemoryProcessors.InCombat;
+using RainbowMage.OverlayPlugin.MemoryProcessors.JobGauge;
+using RainbowMage.OverlayPlugin.MemoryProcessors.Party;
 using RainbowMage.OverlayPlugin.MemoryProcessors.Target;
 using RainbowMage.OverlayPlugin.NetworkProcessors;
 using RainbowMage.OverlayPlugin.Overlays;
 
 namespace RainbowMage.OverlayPlugin
 {
-    public class PluginMain
+    public class PluginMain : IDisposable
     {
         private TinyIoCContainer _container;
         private ILogger _logger;
@@ -37,6 +41,8 @@ namespace RainbowMage.OverlayPlugin
 
         Timer initTimer;
         Timer configSaveTimer;
+        private bool clearCache = false;
+        private bool _disposed;
 
         internal PluginConfig Config { get; private set; }
         internal IList<IOverlay> Overlays { get; private set; }
@@ -108,7 +114,7 @@ namespace RainbowMage.OverlayPlugin
 
                 _logger.Log(LogLevel.Info, "InitPlugin: PluginDirectory = {0}", PluginDirectory);
 
-#if DEBUG
+#if TRACEPERF
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
 #endif
@@ -140,7 +146,7 @@ namespace RainbowMage.OverlayPlugin
                 this.label.Text = "Init Phase 1: WSServer";
                 _container.Register(new WSServer(_container));
 
-#if DEBUG
+#if TRACEPERF
                 _logger.Log(LogLevel.Debug, "Component init and config load took {0}s.", watch.Elapsed.TotalSeconds);
                 watch.Reset();
 #endif
@@ -160,7 +166,7 @@ namespace RainbowMage.OverlayPlugin
                     }
                 }
 
-#if DEBUG
+#if TRACEPERF
                 _logger.Log(LogLevel.Debug, "CEF init took {0}s.", watch.Elapsed.TotalSeconds);
                 watch.Reset();
 #endif
@@ -200,7 +206,7 @@ namespace RainbowMage.OverlayPlugin
                     });
                 };
 
-#if DEBUG
+#if TRACEPERF
                 watch.Reset();
 #endif
 
@@ -283,31 +289,34 @@ namespace RainbowMage.OverlayPlugin
                             // Wrap FFXIV plugin related initialization in try/catch to allow OP to work when FFXIV plugin isn't present
                             try
                             {
-                                // Initialize the parser in the second phase since it needs the FFXIV plugin.
-                                // If OverlayPlugin is placed above the FFXIV plugin, it won't be available in the first
-                                // phase but it'll be loaded by the time we enter the second phase.
-                                _container.Register(new FFXIVRepository(_container));
-                                _container.Register(new NetworkParser(_container));
-                                _container.Register(new TriggIntegration(_container));
-                                _container.Register(new FFXIVCustomLogLines(_container));
-                                // Disable for cn
-                                //_container.Register(new MemoryProcessors.FFXIVClientStructs.Data(_container));
+                                    // Initialize the parser in the second phase since it needs the FFXIV plugin.
+                                    // If OverlayPlugin is placed above the FFXIV plugin, it won't be available in the first
+                                    // phase but it'll be loaded by the time we enter the second phase.
+                                    _container.Register(new FFXIVRepository(_container));
+                                    _container.Register(new NetworkParser(_container));
+                                    _container.Register(new TriggIntegration(_container));
+                                    _container.Register(new FFXIVCustomLogLines(_container));
+                                    _container.Register(new MemoryProcessors.FFXIVClientStructs.Data(_container));
 
-                                // Register FFXIV memory reading subcomponents.
-                                // Must be done before loading addons.
-                                _container.Register(new FFXIVMemory(_container));
+                                    // Register FFXIV memory reading subcomponents.
+                                    // Must be done before loading addons.
+                                    _container.Register(new FFXIVMemory(_container));
 
-                                // These are registered to be lazy-loaded. Use interface to force TinyIoC to use singleton pattern.
-                                _container.Register<ICombatantMemory, CombatantMemoryManager>();
-                                _container.Register<ITargetMemory, TargetMemoryManager>();
-                                _container.Register<IAggroMemory, AggroMemoryManager>();
-                                _container.Register<IEnmityMemory, EnmityMemoryManager>();
-                                _container.Register<IEnmityHudMemory, EnmityHudMemoryManager>();
-                                _container.Register<IInCombatMemory, InCombatMemoryManager>();
-                                // Disable for cn
-                                //_container.Register<IAtkStageMemory, AtkStageMemoryManager>();
+                                    // These are registered to be lazy-loaded. Use interface to force TinyIoC to use singleton pattern.
+                                    _container.Register<ICombatantMemory, CombatantMemoryManager>();
+                                    _container.Register<ITargetMemory, TargetMemoryManager>();
+                                    _container.Register<IClientFrameworkMemory, ClientFrameworkMemoryManager>();
+                                    _container
+                                        .Register<IContentFinderSettingsMemory, ContentFinderSettingsMemoryManager>();
+                                    _container.Register<IAggroMemory, AggroMemoryManager>();
+                                    _container.Register<IEnmityMemory, EnmityMemoryManager>();
+                                    _container.Register<IEnmityHudMemory, EnmityHudMemoryManager>();
+                                    _container.Register<IInCombatMemory, InCombatMemoryManager>();
+                                    _container.Register<IAtkStageMemory, AtkStageMemoryManager>();
+                                    _container.Register<IPartyMemory, PartyMemoryManager>();
+                                    _container.Register<IJobGaugeMemory, JobGaugeMemoryManager>();
 
-                                _container.Register(new OverlayPluginLogLines(_container));
+                                    _container.Register(new OverlayPluginLogLines(_container));
                             }
                             catch (Exception ex)
                             {
@@ -317,9 +326,6 @@ namespace RainbowMage.OverlayPlugin
                             this.label.Text = "Init Phase 2: Addons";
                             LoadAddons();
                             wsConfigPanel.RebuildOverlayOptions();
-
-                            this.label.Text = "Init Phase 2: Unstable new stuff";
-                            _container.Register(new UnstableNewLogLines(_container));
 
                             this.label.Text = "Init Phase 2: UI";
                             ActGlobals.oFormActMain.Invoke((Action)(() =>
@@ -372,6 +378,11 @@ namespace RainbowMage.OverlayPlugin
             }
         }
 
+        internal void ClearCacheOnRestart()
+        {
+            this.clearCache = true;
+        }
+
         private void FailWithLog()
         {
             // If the tab hasn't been initialized, yet, make sure we show at least the log.
@@ -414,7 +425,6 @@ namespace RainbowMage.OverlayPlugin
         /// <param name="overlay"></param>
         internal void RegisterOverlay(IOverlay overlay)
         {
-            overlay.OnLog += (o, e) => _logger.Log(e.Level, e.Message);
             overlay.Start();
             this.Overlays.Add(overlay);
 
@@ -467,6 +477,19 @@ namespace RainbowMage.OverlayPlugin
 
             if (this.wsTabPage != null && this.wsTabPage.Parent != null)
                 ((TabControl)this.wsTabPage.Parent).TabPages.Remove(this.wsTabPage);
+
+            // CN - disabling this for it cause ACT crashes - due to incorret cef shutdown order
+            // TODO: fix it later
+            // Can only shut down CEF if ACT is closing
+            //if (ActGlobals.oFormActMain.IsActClosing)
+            //{
+            //    var shutdown = Renderer.Shutdown();
+
+                // CN - We just add button to clear cache, the method for upstream will break user data
+                // Can only clear cache if CEF is shut down, otherwise some cache files are still in use.
+                //if (shutdown && this.clearCache == true)
+                    //Renderer.ClearCache();
+            //}
 
             _logger.Log(LogLevel.Info, "DeInitPlugin: Finalized.");
             if (this.label != null) this.label.Text = "Finalized.";
@@ -612,6 +635,30 @@ namespace RainbowMage.OverlayPlugin
                 "RainbowMage.OverlayPlugin.config." + (xml ? "xml" : "json"));
 
             return path;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    controlPanel?.Dispose();
+                    wsTabPage?.Dispose();
+                    wsConfigPanel?.Dispose();
+                    initTimer?.Stop();
+                    initTimer?.Dispose();
+                    configSaveTimer?.Stop();
+                    configSaveTimer?.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

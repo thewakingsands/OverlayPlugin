@@ -22,8 +22,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Target
         public TargetMemoryManager(TinyIoCContainer container)
         {
             this.container = container;
-            container.Register<ITargetMemory63, TargetMemory63>();
-            container.Register<ITargetMemory60, TargetMemory60>();
+            container.Register<ITargetMemory70, TargetMemory70>();
             repository = container.Resolve<FFXIVRepository>();
 
             var memory = container.Resolve<FFXIVMemory>();
@@ -43,8 +42,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Target
         public void ScanPointers()
         {
             List<ITargetMemory> candidates = new List<ITargetMemory>();
-            candidates.Add(container.Resolve<ITargetMemory63>());
-            candidates.Add(container.Resolve<ITargetMemory60>());
+            candidates.Add(container.Resolve<ITargetMemory70>());
             memory = FFXIVMemory.FindCandidate(candidates, repository.GetMachinaRegion());
         }
 
@@ -57,7 +55,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors.Target
             return true;
         }
 
-        Version IVersionedMemory.GetVersion()
+        public Version GetVersion()
         {
             if (!IsValid())
                 return null;

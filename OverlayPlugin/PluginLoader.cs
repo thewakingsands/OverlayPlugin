@@ -16,7 +16,7 @@ using RainbowMage.OverlayPlugin.Updater;
 
 namespace RainbowMage.OverlayPlugin
 {
-    public class PluginLoader : IActPluginV1
+    public class PluginLoader : IActPluginV1, IDisposable
     {
         PluginMain pluginMain;
         Logger logger;
@@ -25,6 +25,7 @@ namespace RainbowMage.OverlayPlugin
         TabPage pluginScreenSpace;
         Label pluginStatusText;
         bool initFailed = false;
+        private bool _disposed;
 
         public TinyIoCContainer Container { get; private set; }
 
@@ -46,6 +47,15 @@ namespace RainbowMage.OverlayPlugin
             this.pluginScreenSpace = pluginScreenSpace;
             this.pluginStatusText = pluginStatusText;
 
+            /* This check just for *broken* Tab High-DPI Support
+             * And just revert broken tab changes, so we can safety comment it
+             * until we upgrade CafeACT to higher version
+             if (!CheckACTVersion())
+            {
+                return;
+            }
+            */
+
             /*
              * We explicitly load OverlayPlugin.Common here for two reasons:
              *  * To prevent a stack overflow in the assembly loaded handler when we use the logger interface.
@@ -62,6 +72,20 @@ namespace RainbowMage.OverlayPlugin
 
             pluginScreenSpace.Text = "ngld悬浮窗插件";
             Initialize();
+        }
+
+        private bool CheckACTVersion()
+        {
+            var reqVersion = new Version(3, 8, 0, 281);
+            var version = ActGlobals.oFormActMain.GetVersion();
+            if (version < reqVersion)
+            {
+                var errorMsg = $"Error: OverlayPlugin requires ACT version {reqVersion}, but you're on {version}";
+                ActGlobals.oFormActMain.NotificationAdd("OverlayPlugin Error", errorMsg);
+                pluginStatusText.Text = string.Format(Resources.ActVersionTooOld, reqVersion);
+                return false;
+            }
+            return true;
         }
 
         // AssemblyResolver でカスタムリゾルバを追加する前に PluginMain が解決されることを防ぐために、
@@ -90,6 +114,14 @@ namespace RainbowMage.OverlayPlugin
             await FinishInit(container);
         }
 
+        // Make sure that .NET only tries to load HtmlRenderer once this method is called and not
+        // when a calling method is called (assembly references are resolved before a method is called).
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void SetNoMoreRenders(bool value)
+        {
+            Renderer.noMoreRenders = value;
+        }
+
         public async Task FinishInit(TinyIoCContainer container)
         {
             if (await CefInstaller.EnsureCef(GetCefPath()))
@@ -98,6 +130,9 @@ namespace RainbowMage.OverlayPlugin
                 // the CefInstaller is done.
                 if (SanityChecker.LoadSaneAssembly("HtmlRenderer"))
                 {
+                    // Make sure the killswitch isn't still enabled.
+                    SetNoMoreRenders(false);
+
                     // Since this is an async method, we could have switched threds. Make sure InitPlugin() runs on the ACT main thread.
                     ActGlobals.oFormActMain.Invoke((Action)(() =>
                     {
@@ -149,25 +184,29 @@ namespace RainbowMage.OverlayPlugin
 
         public void DeInitPlugin()
         {
+            try
+            {
+                // Due to some issues with WinForms, some event handlers might try to create new renderers which is
+                // pointless since we're shutting down anyway and can cause crashes because CEF just crashes the entire
+                // process if a window handle for a parent window disappears while it's constructing a new renderer.
+                // To work around that, we just enable our killswitch here which causes any attempt to create a new
+                // renderer to noop.
+                SetNoMoreRenders(true);
+            }
+            catch (Exception) { }
+
             if (pluginMain != null && !initFailed)
             {
                 pluginMain.DeInitPlugin();
             }
 
-            // We can't re-init CEF after shutting it down. So let's only do that when ACT closes to avoid unexpected behaviour (crash when re-enabling the plugin).
-            // TODO: Figure out how to detect disabling plugin vs ACT shutting down.
-            // ShutdownRenderer(null, null);
+            //CN - disabling this for fixing crashes when act closing
+            //if (ActGlobals.oFormActMain.IsActClosing)
+            //{
+                // We can only dispose the resolver once the HtmlRenderer is shut down. HtmlRenderer is only shut down if ACT is closing.
+            //    asmResolver.Dispose();
+            //}
         }
-
-        /*
-        public void ShutdownRenderer(object sender, EventArgs e)
-        {
-            Renderer.Shutdown();
-
-            // We can only dispose the resolver once the HtmlRenderer is shut down.
-            asmResolver.Dispose();
-        }
-        */
 
         private string GetPluginDirectory()
         {
@@ -187,6 +226,25 @@ namespace RainbowMage.OverlayPlugin
         private string GetCefPath()
         {
             return Path.Combine(ActGlobals.oFormActMain.AppDataFolder.FullName, "OverlayPluginCef", Environment.Is64BitProcess ? "x64" : "x86");
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    pluginMain.Dispose();
+                    Container.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

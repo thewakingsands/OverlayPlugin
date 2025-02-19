@@ -5,13 +5,14 @@ on:
     branches:
       - main
     paths:
-      - '**/AssemblyInfo.cs'
+      - 'Directory.Build.props'
 
 jobs:
   validate_tag:
     runs-on: windows-latest
     outputs:
       version: ${{ steps.determine_version.outputs.version }}
+      do_release: ${{ steps.check_tag.outputs.do_release }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -21,41 +22,29 @@ jobs:
         id: determine_version
         shell: pwsh
         run: |
-          $text = [System.IO.File]::ReadAllText("OverlayPlugin\Properties\AssemblyInfo.cs");
-          $regex = [regex]::New('\[assembly: AssemblyVersion\("([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+"\)');
-          $m = $regex.Match($text);
-          if (-not $m) {
-              echo "Error: Version number not found in the AssemblyInfo.cs!"
-              exit 1
-          }
-          $version = $m.Groups[1]
-          echo "::set-output name=version::$version"
+          [xml]$csprojcontents = Get-Content -Path "Directory.Build.props";
+          $version = $csprojcontents.Project.PropertyGroup.AssemblyVersion;
+          $version = ($version | Out-String).Trim()
+          echo "version=$version" >> $env:GITHUB_OUTPUT
 
       - name: Check Tag Exists
+        id: check_tag
         shell: bash
         run: |
           if [ $(git tag -l "v${{ steps.determine_version.outputs.version }}") ]; then
-              echo "Error: Existing git tag found. Exiting..."
-              exit 1
+              echo "Existing git tag found. Exiting..."
+              echo "do_release=false" >> $GITHUB_OUTPUT
+          else
+              echo "Version bump detected - ${{ steps.determine_version.outputs.version }}"
+              echo "do_release=true" >> $GITHUB_OUTPUT
           fi
 
-  validate_version:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
-      - name: Validate AssemblyInfo Versions
-        run: |
-          python tools/validate_versions.py
-
   create_release:
-    needs: [validate_tag, validate_version]
+    needs: [validate_tag]
     runs-on: windows-latest
+    if: |
+      github.repository == 'OverlayPlugin/OverlayPlugin' &&
+      needs.validate_tag.outputs.do_release == 'true'
     steps:
       - uses: actions/checkout@v2
 
@@ -63,25 +52,25 @@ jobs:
         id: cache-dependencies
         uses: actions/cache@v2
         with:
-          path: ./Thirdparty
-          key: ${{ runner.os }}-overlayplugin-${{ hashFiles('./tools/fetch_deps.py', './DEPS.py') }}
+          path: |
+            ./Thirdparty
+            ./OverlayPlugin.Core/Thirdparty
+          key: ${{ runner.os }}-overlayplugin-${{ hashFiles('./tools/fetch_deps.ps1', './DEPS.json', './tools/StripFFXIVClientStructs/StripFFXIVClientStructs/StripFFXIVClientStructs.cs') }}
           restore-keys: |
             ${{ runner.os }}-overlayplugin-
-
       # Fetch dependencies only if cache-hit is false
-      - name: Set up Python 3.8
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
       - name: Fetch dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        shell: pwsh
         run: |
-          python .\tools\fetch_deps.py
+          .\tools\fetch_deps.ps1
+
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7'
 
       - name: Set up msbuild
-        uses: microsoft/setup-msbuild@v1.0.2
+        uses: microsoft/setup-msbuild@v2
 
       - name: Run Build
         run: build.bat

@@ -46,6 +46,7 @@ namespace StripFFXIVClientStructs
             "InfoProxy",
             "VTableAddress",
             "FixedString",
+            "CExportIgnore",
         };
 
         // Files whose relative path start with an entry in this array are skipped for transformation
@@ -73,8 +74,6 @@ namespace StripFFXIVClientStructs
         private static string[] GlobalUsings = new string[] {
             "System.Runtime.InteropServices",
             "FFXIVClientStructs.{0}.STD",
-            "FFXIVClientStructs.{0}.FFXIV.Client.Graphics",
-            "FFXIVClientStructs.{0}.FFXIV.Common.Math",
         };
 
         // Entries in this dictionary will have their types remapped to concrete types.
@@ -99,11 +98,6 @@ namespace StripFFXIVClientStructs
     {{
         public Node* Head;
         public ulong Count;
-        public ref struct Enumerator
-        {{
-            private readonly Node* _head;
-            private Node* _current;
-        }}
 
         [StructLayout(LayoutKind.Sequential)]
         public struct Node
@@ -138,11 +132,6 @@ namespace StripFFXIVClientStructs
     {{
         public Node* Head;
         public ulong Count;
-        public ref struct Enumerator
-        {{
-            private readonly Node* _head;
-            private Node* _current;
-        }}
 
         [StructLayout(LayoutKind.Sequential)]
         public struct Node
@@ -289,10 +278,10 @@ namespace StripFFXIVClientStructs
                     // The documentation doesn't indicate why, but sometimes it randomly returned old node text instead of replaced/updated text?
                     File.WriteAllText(destFile, outTree.NormalizeWhitespace().ToFullString());
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine(file);
-                    throw e;
+                    throw;
                 }
             }
             return;
@@ -341,7 +330,6 @@ namespace StripFFXIVClientStructs
             /// Technically this isn't required for `return null` cases, but in any situation where that doesn't result
             /// in an NPE it should be done as well.
             /// </summary>
-            [return: NotNullIfNotNull("node")]
             public override SyntaxNode Visit(SyntaxNode node)
             {
                 if (node == null)
@@ -481,6 +469,35 @@ namespace StripFFXIVClientStructs
                     return Visit(null);
                 }
 
+                // To prevent a bug with Roslyn not prepending newline properly in the case of a block comment right before
+                // an attribute list, convert leading trivia from a block comment to a set of single-line comments
+                if (newNode.HasLeadingTrivia)
+                {
+                    var origTrivia = newNode.GetLeadingTrivia();
+                    var newTrivia = SyntaxFactory.TriviaList();
+                    foreach (var trivia in origTrivia)
+                    {
+                        if (!trivia.IsKind(SyntaxKind.MultiLineCommentTrivia))
+                        {
+                            newTrivia.Add(trivia);
+                        }
+                        else
+                        {
+                            var text = trivia.ToString();
+                            var lines = text.Substring(2, text.Length - 4).Split('\n');
+                            foreach (var line in lines)
+                            {
+                                var trimmedLine = line.Trim().TrimStart('/');
+                                if (trimmedLine.Length > 0)
+                                {
+                                    newTrivia.Add(SyntaxFactory.Comment(trimmedLine));
+                                }
+                            }
+                        }
+                    }
+                    newNode = newNode.WithLeadingTrivia(newTrivia);
+                }
+
                 return newNode;
             }
 
@@ -603,7 +620,7 @@ namespace StripFFXIVClientStructs
                 // Strip off base types that don't exist on older language versions
                 var types = node.Types.Where((type) =>
                 {
-                    switch (type.ToString().Split("<")[0])
+                    switch (type.ToString().Split('<')[0])
                     {
                         case "IEquatable":
                         case "IFormattable":

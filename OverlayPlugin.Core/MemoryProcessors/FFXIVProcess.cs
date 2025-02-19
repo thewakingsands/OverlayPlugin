@@ -50,7 +50,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
     {
         internal ILogger logger_ = null;
         internal FFXIVRepository ffxiv_ = null;
-        bool showed_dx9_error_ = false;
         private LimitedProcess process_ = null;
 
         // Filled in by ReadSignatures().
@@ -117,6 +116,8 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
             DNC = 38,
             RPR = 39,
             SGE = 40,
+            VPR = 41,
+            PCT = 42,
         };
 
         static internal bool IsGatherer(EntityJob job)
@@ -263,18 +264,6 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
                     ReadSignatures();
                 }
             }
-
-            if (process_ == null && !showed_dx9_error_)
-            {
-                int found_32bit = (from x in Process.GetProcessesByName("ffxiv")
-                                   where !x.HasExited && x.MainModule != null && x.MainModule.ModuleName == "ffxiv.exe"
-                                   select x).Count();
-                if (found_32bit > 0)
-                {
-                    logger_.Log(LogLevel.Error, "发现不支持的DX9进程，请将游戏切换到DX11以使Cactbot正常运行。");
-                    showed_dx9_error_ = true;
-                }
-            }
         }
 
         public bool IsActive()
@@ -289,7 +278,7 @@ namespace RainbowMage.OverlayPlugin.MemoryProcessors
         internal uint GetBait()
         {
             uint[] jorts = Read32U(bait_addr_, 1);
-            return jorts[0];
+            return jorts == null ? 0 : jorts[0];
         }
         public unsafe abstract EntityData GetEntityDataFromByteArray(byte[] source);
 
